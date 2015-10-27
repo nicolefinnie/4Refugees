@@ -1,13 +1,13 @@
 ---
-declared-services: 
-  mean-mongo: 
-    label: mongolab 
-    plan: sandbox 
+declared-services:
+  mean-mongo:
+    label: mongolab
+    plan: sandbox
 applications:
-- name: mean
-  host: mean-${random-word}
+- name: 4Refugees
+  host: 4Refugees
   memory: 128M
   services:
-  - mean-mongo
+    - mean-mongo
   env:
     NODE_ENV: cloud-foundry
