@@ -27,8 +27,8 @@ module.exports = {
     options: {}
   },
   facebook: {
-    clientID: getCred('mean-facebook', 'id') || 'APP_ID',
-    clientSecret: getCred('mean-facebook', 'secret') || 'APP_SECRET',
+    clientID: getCred('mean-facebook', 'id') || '1513322465659494',
+    clientSecret: getCred('mean-facebook', 'secret') || '4fed1213104623c900fd96bfd57043d6',
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
