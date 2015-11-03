@@ -1,6 +1,9 @@
 <div ng-controller="AuthenticationController">
 
- <h5 class="col-md-12 text-center rf-brand-text">Or with your account</h5>
+ <h6 class="col-md-12 text-center rf-brand-text">Or with your account</h6>
+ <!--  very violent new lines, hahahaha -->
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+  
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
         <div class="input-field form-group" show-errors>
@@ -17,11 +20,11 @@
             <p class="help-block error-text" ng-message="required">Password is required.</p>
           </div>
         </div>
+		
+		 <br><br> 
         <div class="text-center form-group">
           <button type="submit" class="btn waves-effect waves-light rf-brand-bg">Sign in
-          	<i class="material-icons right">send</i>
           </button>
-        
           &nbsp; or&nbsp;
           <a ui-sref="authentication.signup">Sign up</a>
         </div>

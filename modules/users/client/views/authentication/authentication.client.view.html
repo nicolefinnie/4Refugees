@@ -1,13 +1,15 @@
 <section class="row" ng-controller="AuthenticationController">
 	<br><br> 
-  <h5 class="col-md-12 text-center rf-brand-text">Sign in using your social accounts</h5>
+	<br><br>
+<!-- Not necessary to say  -->
+  <h6 class="col-md-12 text-center rf-brand-text">Sign in using your social accounts</h6> 
   <div class="col-md-12 text-center">
-    <img ng-click="callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png">
-    <img ng-click="callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png">
-    <img ng-click="callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png">
-    <img ng-click="callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png">
-    <img ng-click="callOauthProvider('/api/auth/github')" ng-src="/modules/users/client/img/buttons/github.png">
-    <img ng-click="callOauthProvider('/api/auth/paypal')"  ng-src="/modules/users/client/img/buttons/paypal.png">
+    <img ng-click="callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png" style="height:75px;margin:0 auto;">
+    <img ng-click="callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png" style="height:75px;margin:0 auto;">
+    <img ng-click="callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png" style="height:75px;margin:0 auto;">
+    <img ng-click="callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png" style="height:75px;margin:0 auto;">
+    <img ng-click="callOauthProvider('/api/auth/github')" ng-src="/modules/users/client/img/buttons/github.png" style="height:75px;margin:0 auto;">
+    <img ng-click="callOauthProvider('/api/auth/paypal')"  ng-src="/modules/users/client/img/buttons/paypal.png" style="height:75px;margin:0 auto;">
   </div>
   <div ui-view></div>
 </section>
