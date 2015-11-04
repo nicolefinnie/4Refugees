@@ -1,0 +1,49 @@
+<section ng-controller="OfferingsController">
+  <div class="page-header">
+    <h1>New Offering</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="offeringForm" class="form-horizontal" ng-submit="create(offeringForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="description">Description</label>
+          <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
+          <div ng-messages="offeringForm.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Offering description is required.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <textarea name="category" ng-model="category" id="category" class="form-control" placeholder="Category"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <textarea name="city" ng-model="city" id="city" class="form-control" placeholder="City"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="longitude">Longitude</label>
+          <textarea name="longitude" ng-model="longitude" id="longitude" class="form-control" placeholder="Longitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="latitude">Latitude</label>
+          <textarea name="latitude" ng-model="latitude" id="latitude" class="form-control" placeholder="Latitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="when">When</label>
+          <textarea name="when" ng-model="when" id="when" class="form-control" placeholder="When"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="offerType">OfferType</label>
+          <textarea name="offerType" ng-model="offerType" id="offerType" class="form-control" placeholder="OfferType"></textarea>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-default">
+        </div>
+        <div ng-show="error" class="text-danger">
+          <strong ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
