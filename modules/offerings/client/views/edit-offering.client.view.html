@@ -1,0 +1,49 @@
+<section ng-controller="OfferingsController" ng-init="findOne()">
+  <div class="page-header">
+    <h1>Edit Offering</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="offeringForm" class="form-horizontal" ng-submit="update(offeringForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="description">Description</label>
+          <input name="description" type="text" ng-model="offering.description" id="description" class="form-control" placeholder="Description" required>
+          <div ng-messages="offeringForm.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Offering description is required.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <textarea name="category" ng-model="offering.category" id="category" class="form-control" placeholder="Category"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <textarea name="city" ng-model="offering.city" id="city" class="form-control" placeholder="City"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="longitude">Longitude</label>
+          <textarea name="longitude" ng-model="offering.longitude" id="longitude" class="form-control" placeholder="Longitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="latitude">Latitude</label>
+          <textarea name="latitude" ng-model="offering.latitude" id="latitude" class="form-control" placeholder="Latitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="when">When</label>
+          <textarea name="when" ng-model="offering.when" id="when" class="form-control" placeholder="When"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="offerType">OfferType</label>
+          <textarea name="offerType" ng-model="offering.offerType" id="offerType" class="form-control" placeholder="OfferType"></textarea>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" value="Update" class="btn btn-default">
+        </div>
+        <div ng-show="error" class="text-danger">
+          <strong ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
