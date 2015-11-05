@@ -1,4 +1,17 @@
 
+<section ng-controller="CarouselControl">
+  <div class="row" style="height: 100px">
+    <carousel interval="5000" no-pause="false" iinterval="myInterval" no-wrap="false" nno-wrap="noWrapSlides"> 
+      <slide ng-repeat="slide in slides" active="slide.active">
+        <img ng-src="{{slide.image}}" style="margin:auto;" width="600px" height="305px">
+        <iv class="carousel-caption">
+          <p>{{slide.text}}</p>
+        </div>
+      </slide>
+    </carousel>
+  </div>
+</section>
+
 <section ng-controller="HomeController">
     <div class="container">
     <br><br>

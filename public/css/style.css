@@ -102,6 +102,9 @@ footer.page-footer.rf-footer {
     -moz-border-radius: 222px 222px 222px 222px;
     -webkit-border-radius: 222px 222px 222px 222px;
 }
+.navbar-inverse {
+   background-image: linear-gradient(to bottom, #008571 0%, #008571 100%);
+}
 
 /* DONT foget to add <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One"> */
 .brand-logo {
