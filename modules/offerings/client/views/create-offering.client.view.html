@@ -1,10 +1,35 @@
+  <div class="page-header">
+    <h1 ng-bind="offering.description"></h1>
+  </div>
+
 <section ng-controller="OfferingsController">
   <div class="page-header">
-    <h1>New Offering</h1>
+    <h3 class="rf-brand-text">New Offering</h3>
   </div>
+<style>
+/* non materialize radio buttons are back now */
+[type="radio"]:not(:checked), [type="radio"]:checked {
+    position: relative;
+    left: 0px;
+    visibility: visible;
+
+}
+</style>
   <div class="col-md-12">
-    <form name="offeringForm" class="form-horizontal" ng-submit="create(offeringForm.$valid)" novalidate>
+    <form name="offeringForm" class="simple-form" ng-submit="create(offeringForm.$valid)" novalidate>
       <fieldset>
+
+    <label for="category">Category</label>
+          <br /> <input type="radio" ng-model="category" value="job" />Jobs<br />
+               <input type="radio" ng-model="category" value="bureaucrazy" />Help with administrative tasks<br />
+               <input type="radio" ng-model="category" value="accomodation" />Accommodation<br />
+               <input type="radio" ng-model="category" value="language" />Language Course<br />
+               <input type="radio" ng-model="category" value="medical" />Medical Assistance<br />
+               <input type="radio" ng-model="category" value="childcare" />Childcare<br />
+               <input type="radio" ng-model="category" value="clothing" />Clothing<br />
+               <input type="radio" ng-model="category" value="others" />Others<br />
+    <pre>Current selection: {{category | json}}</pre><br />
+
         <div class="form-group" show-errors>
           <label for="description">Description</label>
           <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
@@ -12,10 +37,7 @@
             <p class="help-block error-text" ng-message="required">Offering description is required.</p>
           </div>
         </div>
-        <div class="form-group">
-          <label for="category">Category</label>
-          <textarea name="category" ng-model="category" id="category" class="form-control" placeholder="Category"></textarea>
-        </div>
+
         <div class="form-group">
           <label for="city">City</label>
           <textarea name="city" ng-model="city" id="city" class="form-control" placeholder="City"></textarea>
@@ -30,7 +52,10 @@
         </div>
         <div class="form-group">
           <label for="when">When</label>
+          <input id="when" type="date" name="date" class="datepicker" ng-model="when">
+<!--
           <textarea name="when" ng-model="when" id="when" class="form-control" placeholder="When"></textarea>
+-->
         </div>
         <div class="form-group">
           <label for="offerType">OfferType</label>
@@ -46,4 +71,3 @@
       </fieldset>
     </form>
   </div>
-</section>
