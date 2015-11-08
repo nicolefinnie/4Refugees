@@ -10,7 +10,7 @@ module.exports = {
         'public/lib/angular-materialize/css/style.css',
         'public/css/materialize.css',
         'public/css/style.css',
-        'public/ng-tags-input/ng-tags-input.css',
+        'public/ng-tags-input/ng-tags-input.css'
       ],
       js: [
         'public/lib/angular/angular.js',
@@ -25,7 +25,7 @@ module.exports = {
         'public/lib/angular-material/angular-material.js',
         'public/lib/angular-materialize/js/app.js',
         'public/lib/angular-aria/angular-aria.js',
-        'public/lib/ng-tags-input/ng-tags-input.js',
+        'public/lib/ng-tags-input/ng-tags-input.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

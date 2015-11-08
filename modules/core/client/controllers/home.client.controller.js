@@ -22,30 +22,22 @@ angular.module('core').controller('HomeController', ['$scope',
    }
 ]);
 
+
+// NF: Keep it simple and readable, no more hacks
 angular.module('core').controller('CarouselControl', function ($scope) {
-//$scope.myInterval = 5000;
-//$scope.noWrapSlides = false;
   var slides = $scope.slides = [];
 
-  $scope.addSlide = function(index1,index2) {
-    var index = index1;
+  $scope.addSlide = function(index) {
     var newWidth = 600 + slides.length + 1;
-    var imgName = 'modules/core/client/img/startpage/img';
-    if (index2 !== 0) {
-      imgName = 'modules/core/client/img/startpage/imh';
-      index = index2;
-    }
-
+   
     slides.push({
-      image: imgName + index + '.jpg',
-      text: ['Refugees', 'Refugees', 'Future citizens'][slides.length % 3]
+      image: 'modules/core/client/img/startpage/img' + index + '.jpg'
+      //,text: ['Refugees', 'Refugees', 'Future citizens'][slides.length % 3]
     });
   };
-  for (var i=0; i<9; i++) {
-    $scope.addSlide(i+1,0);
-  }
-  for (i=0; i<2; i++) {
-    $scope.addSlide(i+1,i+1);
+ 
+  for (var i=0; i<3; i++) {
+    $scope.addSlide(i);
   }
 });
 

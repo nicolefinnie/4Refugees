@@ -6,7 +6,7 @@ module.exports = {
       css: [
         'public/lib/bootstrap/dist/css/bootstrap.min.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.min.css',
-        'public/lib/ng-tags-input/ng-tags-input.min.css',
+        'public/lib/ng-tags-input/ng-tags-input.min.css'
       ],
       js: [
         'public/lib/angular/angular.min.js',
