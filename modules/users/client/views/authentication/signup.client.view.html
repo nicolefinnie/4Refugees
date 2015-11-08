@@ -9,36 +9,36 @@
     <form name="userForm" ng-submit="signup(userForm.$valid)" class="signin" novalidate autocomplete="off">
         <div class="input-field form-group" show-errors>
           <i class="material-icons prefix">perm_identity</i>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="credentials.firstName" placeholder="First Name" required>
+          <input type="text" id="firstName" name="firstName" class="validate" ng-model="credentials.firstName" placeholder="First Name" required>
           <div ng-messages="userForm.firstName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">First name is required.</p>
           </div>
         </div>
         <div class="input-field form-group" show-errors>
         <i class="material-icons prefix">perm_identity</i>
-          <input type="text" id="lastName" name="lastName" class="form-control" ng-model="credentials.lastName" placeholder="Last Name" required>
+          <input type="text" id="lastName" name="lastName" class="validate" ng-model="credentials.lastName" placeholder="Last Name" required>
           <div ng-messages="userForm.lastName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Last name is required.</p>
           </div>
         </div>
         <div class="input-field form-group" show-errors>
           <i class="material-icons prefix">email</i>
-          <input type="email" id="email" name="email" class="form-control" ng-model="credentials.email" placeholder="Email" lowercase required>
+          <input type="email" id="email" name="email" class="validate" ng-model="credentials.email" placeholder="Email" lowercase required>
           <div ng-messages="userForm.email.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Email address is required.</p>
             <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
           </div>
         </div>
         <div class="input-field form-group" show-errors>
-          <i class="material-icons prefix">thumb_up</i>
-          <input type="text" id="username" name="username" class="form-control" ng-model="credentials.username" placeholder="Username" lowercase required>
+          <i class="material-icons prefix">account_circle</i>
+          <input type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="Username" lowercase required>
           <div ng-messages="userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
         </div>
         <div class="input-field form-group" show-errors>
          <i class="material-icons prefix">lock_open</i>
-         <input type="password" id="password" name="password" class="form-control" ng-model="credentials.password" placeholder="Password" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
+         <input type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="Password" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
           <div ng-messages="userForm.password.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Password is required.</p>
             <div ng-repeat="passwordError in passwordErrors">
