@@ -31,6 +31,36 @@
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
         </div>
+        <div class="form-group" show-errors>
+          <label for="aboutMe">About me</label>
+          <input type="text" id="aboutMe" name="aboutMe" class="form-control" ng-model="user.aboutMe" placeholder="Write something about you">
+        </div>
+        <p>DEBUG - aboutMe : {{user.aboutMe}}</p>
+        <div class="form-group" show-errors>
+          <label for="tags">Choose tags you are interested in</label>
+          <tags-input name="tags"
+                      ng-model="user.tags"
+                      display-property="tagName"
+                      placeholder="Click here to choose tags or enter text to search for one"
+                      replace-spaces-with-dashes="false"
+                      add-from-autocomplete-only="true"
+                      add-on-enter="true"
+                      add-on-comma="true"
+                      add-on-space="true"
+                      allow-leftover-text="false"
+                      on-invalid-tag="$tag">
+              <auto-complete 
+                source="loadTags($query)"
+                load-on-focus="true"
+                load-on-empty="true"
+                min-length="1"
+                highlight-matched-text="true"
+                max-results-to-show="10"
+                select-first-match="true">
+	          </auto-complete>
+          </tags-input>
+          <p>DEBUG - current user.tags : {{user.tags}} </p>
+        </div>
         <div class="text-center form-group">
           <button type="submit" class="btn btn-primary">Save Profile</button>
         </div>
