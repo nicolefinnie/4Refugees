@@ -58,8 +58,8 @@ nav {
 <!-- Dropdown Structure -->
     <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
       <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
-         <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="dropdown-menu" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
-          <ul ng-switch-when="dropdown" id='dropdown-menu' class='dropdown-content'>
+         <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
+          <ul ng-switch-when="dropdown" id="{{item.title}}" class='dropdown-content'>
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
             <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
           </li>
@@ -67,9 +67,6 @@ nav {
           <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
        </li>
     </ul>
-
-
-    </div>
   </nav>
 
 </div>

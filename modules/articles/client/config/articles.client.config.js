@@ -13,13 +13,20 @@ angular.module('articles').run(['Menus',
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'List Articles',
+      title: 'List Postings',
       state: 'articles.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'Create Articles',
+      title: 'New Posting',
+      state: 'articles.create',
+      roles: ['user']
+    });
+
+    // Add the dropdown create item
+    Menus.addSubMenuItem('topbar', 'articles', {
+      title: 'Reply',
       state: 'articles.create',
       roles: ['user']
     });
