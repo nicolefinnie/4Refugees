@@ -6,8 +6,6 @@ module.exports = {
       css: [
         'public/lib/materialize/dist/css/materialize.css',
         'public/lib/angular-materialize/css/style.css',
-        //'public/css/materialize.css',
-        //'public/css/style.css',
         'public/ng-tags-input/ng-tags-input.css'
       ],
       js: [
@@ -21,7 +19,6 @@ module.exports = {
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-file-upload/angular-file-upload.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-        //'public/lib/arrive/minified/arrive.min.js',
         'public/lib/materialize/dist/js/materialize.js',
         'public/lib/angular-materialize/src/angular-materialize.js',
         'public/lib/ng-tags-input/ng-tags-input.js'

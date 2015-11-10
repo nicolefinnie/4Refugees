@@ -23,7 +23,6 @@ angular.module('core').controller('HomeController', ['$scope',
 ]);
 
 
-// NF: Keep it simple and readable, no more hacks
 angular.module('core').controller('CarouselControl', function ($scope) {
   var slides = $scope.slides = [];
 
@@ -32,7 +31,6 @@ angular.module('core').controller('CarouselControl', function ($scope) {
    
     slides.push({
       image: 'modules/core/client/img/startpage/img' + index + '.jpg'
-      //,text: ['Refugees', 'Refugees', 'Future citizens'][slides.length % 3]
     });
   };
  
