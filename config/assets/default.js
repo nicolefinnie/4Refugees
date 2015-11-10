@@ -8,6 +8,7 @@ module.exports = {
         'public/lib/angular-materialize/css/style.css',
         //'public/css/materialize.css',
         //'public/css/style.css',
+        'public/ng-tags-input/ng-tags-input.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.js',
@@ -23,6 +24,7 @@ module.exports = {
         //'public/lib/arrive/minified/arrive.min.js',
         'public/lib/materialize/dist/js/materialize.js',
         'public/lib/angular-materialize/src/angular-materialize.js',
+        'public/lib/ng-tags-input/ng-tags-input.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

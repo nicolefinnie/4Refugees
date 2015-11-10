@@ -1,35 +1,64 @@
 <section class="row" ng-controller="EditProfileController">
   <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
     <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="signin" novalidate autocomplete="off">
-      <fieldset>
         <div class="form-group" show-errors>
+          <input type="text" id="firstName" name="firstName" class="validate" ng-model="user.firstName" placeholder="First Name" required>
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="user.firstName" placeholder="First Name" required>
           <div ng-messages="userForm.firstName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">First name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
+          <input type="text" id="lastName" name="lastName" class="validate" ng-model="user.lastName" placeholder="Last Name" required>
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" name="lastName" class="form-control" ng-model="user.lastName" placeholder="Last Name" required>
           <div ng-messages="userForm.lastName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Last name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
+          <input type="email" id="email" name="email" class="validate" ng-model="user.email" placeholder="Email" lowercase required>
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="form-control" ng-model="user.email" placeholder="Email" lowercase required>
           <div ng-messages="userForm.email.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Email address is required.</p>
             <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
+          <input type="text" id="username" name="username" class="validate" ng-model="user.username" placeholder="Username" lowercase required>
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" class="form-control" ng-model="user.username" placeholder="Username" lowercase required>
           <div ng-messages="userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
+        </div>
+        <div class="form-group" show-errors>
+          <input type="text" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="Write something about you">
+          <label for="aboutMe">About me</label>
+        </div>
+        <p>DEBUG - aboutMe : {{user.aboutMe}}</p>
+        <div class="form-group" show-errors>
+          <label for="tags">Choose tags you are interested in</label>
+          <tags-input name="tags"
+                      ng-model="user.tags"
+                      display-property="tagName"
+                      placeholder="Click here to choose tags or enter text to search for one"
+                      replace-spaces-with-dashes="false"
+                      add-from-autocomplete-only="true"
+                      add-on-enter="true"
+                      add-on-comma="true"
+                      add-on-space="true"
+                      allow-leftover-text="false"
+                      on-invalid-tag="$tag">
+              <auto-complete 
+                source="loadTags($query)"
+                load-on-focus="true"
+                load-on-empty="true"
+                min-length="1"
+                highlight-matched-text="true"
+                max-results-to-show="10"
+                select-first-match="true">
+	          </auto-complete>
+          </tags-input>
+          <p>DEBUG - current user.tags : {{user.tags}} </p>
         </div>
         <div class="text-center form-group">
           <button type="submit" class="btn btn-primary">Save Profile</button>
@@ -40,7 +69,6 @@
         <div ng-show="error" class="text-center text-danger">
           <strong ng-bind="error"></strong>
         </div>
-      </fieldset>
     </form>
   </div>
 </section>
