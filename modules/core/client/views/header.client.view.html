@@ -2,21 +2,23 @@
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One">
 
- 
-<div class="rf-header" ng-controller="HeaderController">
-<!--  
-  <div class="navbar-header">
-    <button class="navbar-toggle" type="button" ng-click="toggleCollapsibleMenu()">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
-   	-->
-  <nav class="rf-header navbar-collapse" collapse="!isCollapsed" role="navigation">
-    <div class="nav-wrapper container"><a ui-sref="home" class="brand-logo">4Refuge.es</a>
-    
+
+<style>
+header, main, footer {
+    padding-left: 0px;
+}
+
+nav {
+    overflow: visible;
+ }
+</style>
+
+<div ng-controller="HeaderController">
+
+<!-- .dropdown-content li > span -->
+  <nav class="rf-header green darken-4">
+    <div class="nav-wrapper container"><a ui-sref="home" class="brand-logo" font-family="Sansita+One" font-style="oblique">4Refuge.es</a>
+<!-- Dropdown Trigger -->
     
     <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
       <li ui-sref-active="active">
@@ -27,14 +29,11 @@
         <a ui-sref="authentication.signin">Sign In</a>
       </li>
     </ul>
-    
-    <ul class="right hide-on-med-and-down " ng-show="authentication.user">
-      <li class="dropdown" dropdown>
-        <a class="dropdown-toggle" dropdown-toggle role="button">
-          <img ng-src="{{authentication.user.profileImageURL}}" alt="{{authentication.user.displayName}}" class="header-profile-image" />
-          <span ng-bind="authentication.user.displayName"></span> <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu" role="menu">
+
+    <ul class="right hide-on-med-and-down" ng-show="authentication.user">
+     <li>
+     <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
+      <ul id='dropdownAuth' class='dropdown-content'>
           <li ui-sref-active="active">
             <a ui-sref="settings.profile">Edit Profile</a>
           </li>
@@ -51,24 +50,26 @@
           <li>
             <a href="/api/auth/signout" target="_self">Signout</a>
           </li>
-        </ul>
-      </li>
+       </ul>
+     </li>
     </ul>
-    
+
+
+<!-- Dropdown Structure -->
     <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
-      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}" dropdown="item.type === 'dropdown'">
-        <a ng-switch-when="dropdown" class="dropdown-toggle" dropdown-toggle role="button">{{::item.title}}&nbsp;<span class="caret"></span></a>
-        <ul ng-switch-when="dropdown" class="dropdown-menu">
+      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
+         <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="dropdown-menu" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
+          <ul ng-switch-when="dropdown" id='dropdown-menu' class='dropdown-content'>
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
             <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
           </li>
-        </ul>
-        <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
-      </li>
+          </ul>
+          <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
+       </li>
     </ul>
-    
+
+
     </div>
   </nav>
+
 </div>
-
-

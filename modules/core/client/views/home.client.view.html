@@ -1,18 +1,41 @@
 
-<section ng-controller="CarouselControl">
-  <div class="row" style="height: 100px">
-    <carousel interval="5000" no-pause="false" iinterval="myInterval" no-wrap="false" nno-wrap="noWrapSlides"> 
-      <slide ng-repeat="slide in slides" active="slide.active">
-        <img ng-src="{{slide.image}}" style="margin:auto;" width="600px" height="305px">
-        <iv class="carousel-caption">
-          <p>{{slide.text}}</p>
-        </div>
-      </slide>
-    </carousel>
-  </div>
-</section>
 
 <section ng-controller="HomeController">
+  <div slider height='500' transition='400'>
+    <ul class="slides">
+      <li>
+        <img src="modules/core/client/img/startpage/img4.jpg">
+        <div class="caption center-align">
+          <h3>Welcome</h3>
+          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
+        </div>
+      </li>
+      <li>
+        <img src="modules/core/client/img/startpage/img1.jpg">
+        <div class="caption left-align">
+          <h3> to </h3>
+          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
+        </div>
+      </li>
+      <li>
+        <img src="modules/core/client/img/startpage/img3.jpg">
+        <div class="caption right-align">
+          <h3>Germany</h3>
+          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
+        </div>
+      </li>
+      <li>
+        <img src="http://www.make-it-in-germany.com/fileadmin/content/make-it-in-germany/Bilder/MakeitinGermany/Offensive/Die-Offensive_01.gif">
+<!--
+        <div class="caption center-align">
+          <h3>You can make it here</h3>
+          <h5 class="light grey-text text-lighten-3">small</h5>
+        </div>
+-->
+      </li>
+    </ul>
+  </div>
+
     <div class="container">
     <br><br>
       <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
