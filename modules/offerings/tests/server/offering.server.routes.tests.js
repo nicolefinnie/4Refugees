@@ -47,8 +47,11 @@ describe('Offering CRUD tests', function () {
     // Save a user to the test db and create new offering
     user.save(function () {
       offering = {
-        title: 'Offering Title',
-        content: 'Offering Content'
+        description: 'Offering description',
+        city: 'Offering city',
+        longitude: '8.8',
+        latitude: '9.9',
+        user: user
       };
 
       done();
@@ -91,7 +94,7 @@ describe('Offering CRUD tests', function () {
 
                 // Set assertions
                 (offerings[0].user._id).should.equal(userId);
-                (offerings[0].title).should.match('Offering Title');
+                (offerings[0].description).should.match('Offering description');
 
                 // Call the assertion callback
                 done();
@@ -110,9 +113,9 @@ describe('Offering CRUD tests', function () {
       });
   });
 
-  it('should not be able to save an offering if no title is provided', function (done) {
-    // Invalidate title field
-    offering.title = '';
+  it('should not be able to save an offering if no description is provided', function (done) {
+    // Invalidate geo location type field
+    offering.description = '';
 
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -132,7 +135,7 @@ describe('Offering CRUD tests', function () {
           .expect(400)
           .end(function (offeringSaveErr, offeringSaveRes) {
             // Set message assertion
-            (offeringSaveRes.body.message).should.match('Title cannot be blank');
+            (offeringSaveRes.body.message).should.match('Description cannot be blank');
 
             // Handle offering save error
             done(offeringSaveErr);
@@ -164,7 +167,7 @@ describe('Offering CRUD tests', function () {
             }
 
             // Update offering title
-            offering.title = 'WHY YOU GOTTA BE SO MEAN?';
+            offering.description = 'WHY YOU GOTTA BE SO MEAN?';
 
             // Update an existing offering
             agent.put('/api/offerings/' + offeringSaveRes.body._id)
@@ -178,7 +181,7 @@ describe('Offering CRUD tests', function () {
 
                 // Set assertions
                 (offeringUpdateRes.body._id).should.equal(offeringSaveRes.body._id);
-                (offeringUpdateRes.body.title).should.match('WHY YOU GOTTA BE SO MEAN?');
+                (offeringUpdateRes.body.description).should.match('WHY YOU GOTTA BE SO MEAN?');
 
                 // Call the assertion callback
                 done();
@@ -215,7 +218,7 @@ describe('Offering CRUD tests', function () {
       request(app).get('/api/offerings/' + offeringObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('title', offering.title);
+          res.body.should.be.instanceof(Object).and.have.property('description', offering.description);
 
           // Call the assertion callback
           done();

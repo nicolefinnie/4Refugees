@@ -21,7 +21,8 @@ var OfferingSchema = new Schema({
   description: {
     type: String,
     default: '',
-    trim: true
+    trim: true,
+    required: 'Description cannot be blank'
   },
   city: {
     type: String,

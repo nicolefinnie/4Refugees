@@ -1,0 +1,69 @@
+<section ng-controller="OfferingsController">
+  <div class="page-header">
+    <h1>Search Offerings</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="description">Description</label>
+          <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
+          <div ng-messages="offeringFormSearch.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Offering description is required.</p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="category">Category</label>
+          <textarea name="category" ng-model="category" id="category" class="form-control" placeholder="Category"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="city">City</label>
+          <textarea name="city" ng-model="city" id="city" class="form-control" placeholder="City"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="longitude">Longitude</label>
+          <textarea name="longitude" ng-model="longitude" id="longitude" class="form-control" placeholder="Longitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="latitude">Latitude</label>
+          <textarea name="latitude" ng-model="latitude" id="latitude" class="form-control" placeholder="Latitude"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="radius">Search Radius</label>
+          <textarea name="radius" ng-model="radius" id="radius" class="form-control" placeholder="Radius in km"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="when">When</label>
+          <textarea name="when" ng-model="when" id="when" class="form-control" placeholder="When"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="offerType">OfferType</label>
+          <textarea name="offerType" ng-model="offerType" id="offerType" class="form-control" placeholder="OfferType"></textarea>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-default">
+        </div>
+        <div ng-show="error" class="text-danger">
+          <strong ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Offered by
+        <span ng-bind="offering.displayName"></span>
+        and available on
+        <span ng-bind="offering.when | date:'mediumDate'"></span>
+        and last updated on
+        <span ng-bind="offering.updated | date:'mediumDate'"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>
+      <p class="list-group-item-text">Categories: <span ng-bind="offering.category"></span></p>
+      <p class="list-group-item-text">Location: <span ng-bind="offering.city"></span></p>
+      <p class="list-group-item-text">Distance: <span ng-bind="offering.distance"></span> metres</p>
+    </a>
+  </div>
+</section>

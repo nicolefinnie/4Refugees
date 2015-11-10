@@ -25,7 +25,7 @@ exports.invokeRolesPolicies = function () {
     roles: ['user'],
     allows: [{
       resources: '/api/offerings',
-      permissions: ['get', 'post']
+      permissions: ['get', 'post', 'put']
     }, {
       resources: '/api/offerings/:offeringId',
       permissions: ['get']
@@ -34,7 +34,7 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/offerings',
-      permissions: ['get']
+      permissions: ['get', 'put']
     }, {
       resources: '/api/offerings/:offeringId',
       permissions: ['get']
