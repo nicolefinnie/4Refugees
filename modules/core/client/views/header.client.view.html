@@ -11,6 +11,13 @@ header, main, footer {
 nav {
     overflow: visible;
  }
+
+.dropdown-content li > a, .dropdown-content li > span {
+    font-size: 1.0rem;
+    color: #26A69A;
+    display: block;
+    padding: 1rem;
+}
 </style>
 
 <div ng-controller="HeaderController">
@@ -35,7 +42,7 @@ nav {
      <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
       <ul id='dropdownAuth' class='dropdown-content'>
           <li ui-sref-active="active">
-            <a ui-sref="settings.profile">Edit Profile</a>
+            <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
           </li>
           <li ui-sref-active="active">
             <a ui-sref="settings.picture">Change Profile Picture</a>

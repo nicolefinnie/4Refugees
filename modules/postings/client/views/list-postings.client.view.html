@@ -1,0 +1,22 @@
+<section ng-controller="PostingsController" ng-init="find()">
+  <div class="page-header">
+    <h1>Postings</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="posting in postings" ui-sref="postings.view({postingId: posting._id})" class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="posting.created | date:'mediumDate'"></span>
+        by
+        <span ng-bind="posting.user.displayName"></span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="posting.title"></h4>
+      <p class="list-group-item-text" ng-bind="posting.content"></p>
+      <p class="list-group-item-text" ng-bind="posting.replyTo"></p>
+      <p class="list-group-item-text" ng-bind="posting.offeringId"></p>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="postings.$resolved && !postings.length">
+    No posting yet, why don't you <a ui-sref="postings.create">post one</a>?
+  </div>
+</section>
