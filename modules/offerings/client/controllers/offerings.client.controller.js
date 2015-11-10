@@ -6,7 +6,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
   function ($scope, $stateParams, $location, Authentication, Offerings) {
     $scope.authentication = Authentication;
 
-    // Note - need to include the googleapis javascript in some .html file somehow, before
+    // TODO: Need to include the googleapis javascript in some .html file somehow, before
     // the google.maps APIs will work....  the following link needs to be added, but where???
     // <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 //    if (navigator.geolocation) {
@@ -89,7 +89,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'offeringForm');
-
         return false;
       }
 
@@ -105,6 +104,49 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     // Find a list of Offerings
     $scope.find = function () {
       $scope.offerings = Offerings.query();
+    };
+
+    // Create new Offering
+    $scope.searchAll = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
+        return false;
+      }
+
+      // Create new Offering object
+      var searchOfferings = new Offerings({
+        when: this.when,
+        updated: Date.now,
+        description: this.description,
+        city: this.city,
+        category: this.category,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        radius: this.radius,
+        offerType: this.offerType
+      });
+
+      // Use $update to send json search using PUT request
+      searchOfferings.$update(function (response) {
+        // Search results arrive as a single json doc, and 'searchResults'
+        // field contains the search payload - an array of matching offerings.
+        var arrayResultsOuter = response.searchResults;
+        var arrayResults = [];
+        arrayResultsOuter.forEach(function(result) {
+          // The offering's distance is returned separately, so add it to output json.
+          result.obj.distance = result.dis;
+          // TODO: Search result should return offering originator's user displayName (*NOT* email)?
+          result.obj.displayName = 'Need_to_find_originating_use';
+          arrayResults.push(result.obj);
+        });
+
+        // TODO: Should we re-direct to another page to display results?  If so, how?
+        $scope.offerings = arrayResults;
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
     };
 
     // Find existing Offering

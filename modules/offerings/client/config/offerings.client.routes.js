@@ -10,9 +10,13 @@ angular.module('offerings').config(['$stateProvider',
         url: '/offerings',
         template: '<ui-view/>'
       })
-      .state('offerings.list', {
+      .state('offerings.listMine', {
         url: '',
-        templateUrl: 'modules/offerings/client/views/list-offerings.client.view.html'
+        templateUrl: 'modules/offerings/client/views/list-my-offerings.client.view.html'
+      })
+      .state('offerings.searchAll', {
+        url: '/search',
+        templateUrl: 'modules/offerings/client/views/search-all-offerings.client.view.html'
       })
       .state('offerings.create', {
         url: '/create',

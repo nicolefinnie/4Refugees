@@ -13,8 +13,14 @@ angular.module('offerings').run(['Menus',
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'offerings', {
-      title: 'List Offerings',
-      state: 'offerings.list'
+      title: 'List My Offerings',
+      state: 'offerings.listMine'
+    });
+
+    // Add the dropdown search item
+    Menus.addSubMenuItem('topbar', 'offerings', {
+      title: 'Search All Offerings',
+      state: 'offerings.searchAll'
     });
 
     // Add the dropdown create item

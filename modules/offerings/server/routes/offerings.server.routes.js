@@ -9,8 +9,9 @@ var offeringsPolicy = require('../policies/offerings.server.policy'),
 module.exports = function (app) {
   // Offerings collection routes
   app.route('/api/offerings').all(offeringsPolicy.isAllowed)
-    .get(offerings.list)
-    .post(offerings.create);
+    .get(offerings.listMine)
+    .post(offerings.create)
+    .put(offerings.searchAll);
 
   // Single offering routes
   app.route('/api/offerings/:offeringId').all(offeringsPolicy.isAllowed)

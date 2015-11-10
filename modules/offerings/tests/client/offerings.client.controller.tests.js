@@ -52,8 +52,9 @@
       // create mock offering
       mockOffering = new Offerings({
         _id: '525a8422f6d0f87f0e407a33',
-        title: 'An Offering about MEAN',
-        content: 'MEAN rocks!'
+        description: 'A MEAN Offering',
+        city: 'Stuttgart',
+        loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] }
       });
 
       // Mock logged in user
@@ -102,14 +103,25 @@
 
       beforeEach(function () {
         // Create a sample offering object
+        var sampleUserPostData = {
+          firstName: 'Full',
+          lastName: 'Name',
+          displayName: 'Full Name',
+          email: 'test@test.com',
+          username: 'username',
+          password: 'M3@n.jsI$Aw3$0m3'
+        };
         sampleOfferingPostData = new Offerings({
-          title: 'An Offering about MEAN',
-          content: 'MEAN rocks!'
+          _id: '525a8422f6d0f87f0e407a33',
+          description: 'A MEAN Offering',
+          city: 'Stuttgart',
+          loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
+          user: sampleUserPostData
         });
 
         // Fixture mock form input values
-        scope.title = 'An Offering about MEAN';
-        scope.content = 'MEAN rocks!';
+        scope.description = 'A MEAN Offering';
+        scope.city = 'Stuttgart';
 
         spyOn($location, 'path');
       });
@@ -123,8 +135,8 @@
         $httpBackend.flush();
 
         // Test form inputs are reset
-        expect(scope.title).toEqual('');
-        expect(scope.content).toEqual('');
+        expect(scope.description).toEqual('');
+        expect(scope.city).toEqual('');
 
         // Test URL redirection after the offering was created
         expect($location.path.calls.mostRecent().args[0]).toBe('offerings/' + mockOffering._id);

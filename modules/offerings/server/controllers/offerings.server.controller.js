@@ -89,7 +89,7 @@ exports.delete = function (req, res) {
 /**
  * List of Offerings
  */
-exports.list = function (req, res) {
+exports.listMine = function (req, res) {
   Offering.find().sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
     if (err) {
       return res.status(400).send({
@@ -97,6 +97,64 @@ exports.list = function (req, res) {
       });
     } else {
       res.json(offerings);
+    }
+  });
+};
+
+/**
+ * Search matching offerings
+ */
+exports.searchAll = function (req, res) {
+  // TODO: Right now, we just search based on location.  The pre-mean.js prototype also
+  // restricted by search description + categories.  The following mongodb query was used:
+//  db.collection('offerItem').aggregate(
+//      [
+//        { "$geoNear": { "near": { "type": "Point",
+//                                "coordinates": [ Number((req.body.geo.lng).toFixed(6)),
+//                                                 Number((req.body.geo.lat).toFixed(6)) ]},
+//                        "distanceField": "distance",
+//                        "distanceMultiplier": 1/1000,
+//                        "maxDistance": radius,
+//                        "spherical": true,
+//                        query: { category: { $in: req.body.categories } },
+//                      }
+//        },
+//        { 
+//            "$sort": {"distance": 1} // Sort the nearest first
+//        }
+//      ]).toArray( function(err, docs) {
+//            if (err) throw err;
+//            db.close();
+//            var matchedDocs = "[";
+//            docs.forEach( function( testDoc, index) {
+//              // here, need to do some matching!
+//              if ( index > 0 ) {
+//                matchedDocs = matchedDocs + ",";
+//              }
+//              testDoc.distance = Math.round(testDoc.distance * 100) / 100;
+//              matchedDocs = matchedDocs + JSON.stringify(testDoc);
+//            });
+//            matchedDocs = matchedDocs + "]"
+//      res.send(matchedDocs);
+//  });
+  // The additional fields that can/should be used for the query are:
+  // req.body.category -- category list to restrict returned results
+  // req.body.description -- description of the offering the user is searching for
+  // req.body.when -- date the user is interested in receiving offers for
+  // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
+  // req.body.city -- open question, should we allow searching by city when no coords are provided???
+  var nearPoint = { type : 'Point', coordinates : [ Number(req.body.longitude), Number(req.body.latitude) ] };
+  Offering.geoNear(nearPoint, { maxDistance : req.body.radius*1000, spherical : true }, function(err, results, stats) {
+    //console.log(results);
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      // PUT request on the client expects a single json doc as response,
+      // so wrap the results array into a new json document.
+      var returnSearch = { 'searchResults' : results };
+      res.json(returnSearch);
     }
   });
 };
