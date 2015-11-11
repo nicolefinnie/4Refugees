@@ -33,7 +33,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     // TODO provide API to store and retrieve tags
     // TODO extend user object with tags and aboutMe section
     // TODO extend API to safe those new fields
-    // TODO custom template to format the tags, e.g have those tags next to each other
     ctrl.user.tags = [{ tagName: '\"samurai on the toilet\" - by takeshi kitano (1970)' },
                       { tagName: '(>_<)' },
                       { tagName: '(o_o)' },
@@ -71,5 +70,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         });
       });
     };
+    
+    ctrl.user.aboutMe = "stuff \n ss This is some awesome stuff to blabla about me blabla sutff thing \n safewf fea \t <sdf s\t ";
   }
 ]);
