@@ -1,45 +1,45 @@
 <section class="row" ng-controller="EditProfileController">
   <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
     <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="signin" novalidate autocomplete="off">
-        <div class="form-group" show-errors>
+        <div input-field>
           <input type="text" id="firstName" name="firstName" class="validate" ng-model="user.firstName" placeholder="First Name" required>
-          <label for="firstName">First Name</label>
+          <label class="active" for="firstName">First Name</label>
           <div ng-messages="userForm.firstName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">First name is required.</p>
           </div>
         </div>
-        <div class="form-group" show-errors>
+        <div input-field>
           <input type="text" id="lastName" name="lastName" class="validate" ng-model="user.lastName" placeholder="Last Name" required>
-          <label for="lastName">Last Name</label>
+          <label class="active" for="lastName">Last Name</label>
           <div ng-messages="userForm.lastName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Last name is required.</p>
           </div>
         </div>
-        <div class="form-group" show-errors>
+        <div input-field>
           <input type="email" id="email" name="email" class="validate" ng-model="user.email" placeholder="Email" lowercase required>
-          <label for="email">Email</label>
+          <label class="active" for="email">Email</label>
           <div ng-messages="userForm.email.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Email address is required.</p>
             <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
           </div>
         </div>
-        <div class="form-group" show-errors>
+        <div input-field>
           <input type="text" id="username" name="username" class="validate" ng-model="user.username" placeholder="Username" lowercase required>
-          <label for="username">Username</label>
+          <label class="active" for="username">Username</label>
           <div ng-messages="userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
         </div>
-        <div class="form-group" show-errors>
-          <input type="text" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="Write something about you">
-          <label for="aboutMe">About me</label>
+        <div input-field>
+          <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="Write something about you"></textarea>
+          <label class="active" for="aboutMe">About me</label>
         </div>
-        <div class="form-group" show-errors>
-          <label for="tags">Choose tags you are interested in</label>
+        <div input-field>
+          <label class="active" for="tags">Choose tags you are interested in</label>
           <tags-input name="tags"
                       ng-model="user.tags"
                       display-property="tagName"
-                      placeholder="Click here to choose tags or enter text to search for one"
+                      placeholder="Click here to choose tags or enter text to filter for one"
                       replace-spaces-with-dashes="false"
                       add-from-autocomplete-only="true"
                       add-on-enter="true"
@@ -47,9 +47,9 @@
                       add-on-space="true"
                       allow-leftover-text="false"
                       on-invalid-tag="$tag">
-              <auto-complete 
+              <auto-complete
                 source="loadTags($query)"
-                load-on-focus="true"
+                load-on-focus="false"
                 load-on-empty="true"
                 min-length="1"
                 highlight-matched-text="true"
