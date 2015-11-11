@@ -22,20 +22,3 @@ angular.module('core').controller('HomeController', ['$scope',
    }
 ]);
 
-
-angular.module('core').controller('CarouselControl', function ($scope) {
-  var slides = $scope.slides = [];
-
-  $scope.addSlide = function(index) {
-    var newWidth = 600 + slides.length + 1;
-   
-    slides.push({
-      image: 'modules/core/client/img/startpage/img' + index + '.jpg'
-    });
-  };
- 
-  for (var i=0; i<3; i++) {
-    $scope.addSlide(i);
-  }
-});
-
