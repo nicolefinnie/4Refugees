@@ -6,7 +6,7 @@ module.exports = {
       css: [
         'public/lib/materialize/dist/css/materialize.css',
         'public/lib/angular-materialize/css/style.css',
-        'public/ng-tags-input/ng-tags-input.css'
+        'public/lib/ng-tags-input/ng-tags-input.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.js',
