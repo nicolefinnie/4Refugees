@@ -90,23 +90,10 @@ exports.delete = function (req, res) {
  * List of Offerings
  */
 exports.listMine = function (req, res) {
-  Offering.find().sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(offerings);
-    }
-  });
-};
-
-/**
- * Search matching offerings
- */
-exports.searchAll = function (req, res) {
-  // TODO: Right now, we just search based on location.  The pre-mean.js prototype also
-  // restricted by search description + categories.  The following mongodb query was used:
+  if (req.query.description) {
+    // We were passed in fields implying a record-search should be performed.
+    // TODO: Right now, we just search based on location.  The pre-mean.js prototype also
+    // restricted by search description + categories.  The following mongodb query was used:
 //  db.collection('offerItem').aggregate(
 //      [
 //        { "$geoNear": { "near": { "type": "Point",
@@ -137,26 +124,63 @@ exports.searchAll = function (req, res) {
 //            matchedDocs = matchedDocs + "]"
 //      res.send(matchedDocs);
 //  });
-  // The additional fields that can/should be used for the query are:
-  // req.body.category -- category list to restrict returned results
-  // req.body.description -- description of the offering the user is searching for
-  // req.body.when -- date the user is interested in receiving offers for
-  // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
-  // req.body.city -- open question, should we allow searching by city when no coords are provided???
-  var nearPoint = { type : 'Point', coordinates : [ Number(req.body.longitude), Number(req.body.latitude) ] };
-  Offering.geoNear(nearPoint, { maxDistance : req.body.radius*1000, spherical : true }, function(err, results, stats) {
-    //console.log(results);
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      // PUT request on the client expects a single json doc as response,
-      // so wrap the results array into a new json document.
-      var returnSearch = { 'searchResults' : results };
-      res.json(returnSearch);
-    }
-  });
+    // TODO: The additional fields that can/should be used for the query are:
+    // req.body.category -- category list to restrict returned results
+    // req.body.description -- description of the offering the user is searching for
+    // req.body.when -- date the user is interested in receiving offers for
+    // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
+    // req.body.city -- open question, should we allow searching by city when no coords are provided???
+    var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
+    Offering.geoNear(nearPoint,
+    { maxDistance : req.query.radius*1000,
+      spherical : true
+    }, function(err, results, stats) {
+      //console.log(results);
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        // TODO: Somehow need to populate the user object to get the displayName...
+//        Offering.populate(results, { path: 'user', select: 'displayName' }, function(err, matchingOffers) {
+//          if (err) {
+//            return res.status(400).send({
+//              message: errorHandler.getErrorMessage(err)
+//            });
+//          }
+//          res.json(matchingOffers);
+//        });
+
+        //results.populate('user', 'displayName');
+        var arrayResults = [];
+        //console.log('RAW RESULT: ' + JSON.stringify(results));
+        results.forEach(function(result) {
+          // TODO: Rather than just returning the whole record, we should filter out
+          // some of these fields - only return the fields the user is authorized to see.
+          var tmpRes = result.obj.toObject();
+          // The offering's distance is returned separately, so add it to output json.
+          tmpRes.distance = Math.round(result.dis * 100) / 100;
+          // TODO: Search result should return offering originator's user displayName (*NOT* email)?
+          tmpRes.displayName = 'Need_to_find_originating_use';
+          arrayResults.push(tmpRes);
+        });
+        //console.log('RETURNING: ' + JSON.stringify(arrayResults));
+        res.json(arrayResults);
+      }
+    });
+  } else {
+    // list all of my offerings
+    // TODO: This should be restricted to just the current user's offerings
+    Offering.find().sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.json(offerings);
+      }
+    });
+  }
 };
 
 /**

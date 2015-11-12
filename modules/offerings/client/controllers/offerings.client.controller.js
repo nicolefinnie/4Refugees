@@ -146,25 +146,15 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         radius: this.radius,
         offerType: this.offerType
       });
-
-      // Use $update to send json search using PUT request
-      searchOfferings.$update(function (response) {
-        // Search results arrive as a single json doc, and 'searchResults'
-        // field contains the search payload - an array of matching offerings.
-        var arrayResultsOuter = response.searchResults;
-        var arrayResults = [];
-        arrayResultsOuter.forEach(function(result) {
-          // The offering's distance is returned separately, so add it to output json.
-          result.obj.distance = result.dis;
-          // TODO: Search result should return offering originator's user displayName (*NOT* email)?
-          result.obj.displayName = 'Need_to_find_originating_use';
-          arrayResults.push(result.obj);
-        });
-
-        // TODO: Should we re-direct to another page to display results?  If so, how?
-        $scope.offerings = arrayResults;
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+      // TODO: Should we re-direct to a new page? or render a new page?
+      $scope.offerings = Offerings.query({
+        description: this.description,
+        city: this.city,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        radius: this.radius,
+        when: this.when,
+        category: this.category
       });
     };
 
