@@ -1,4 +1,5 @@
 'use strict';
+/* global Materialize:false */
 
 angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
   function ($scope, $state, Authentication, Menus) {
@@ -18,6 +19,38 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     // Collapsing the menu after navigation
     $scope.$on('$stateChangeSuccess', function () {
       $scope.isCollapsed = false;
+    });
+  }
+]);
+
+angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Authentication', 'Socket',
+  function ($scope, Authentication, Socket) {
+    $scope.authentication = Authentication;
+
+    if (!Authentication.user) return;
+
+    // Make sure the Socket is connected
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    // Add an event listener to the 'offeringMessage' event - and limit to 3 messages
+    Socket.on('offeringMessage', function (message) {
+      var toastContent = '<span>new ' + message.content.category;
+      if (message.content.offerType === 0) {
+        toastContent = toastContent + ' request ';
+      } else {
+        toastContent = toastContent + ' offering ';
+      }
+      toastContent = toastContent + 'posted by user ' + message.username;
+
+      console.log('new stuff ' + toastContent);
+      Materialize.toast(toastContent, 5000);
+    });
+
+    // Remove the event listener when the controller instance is destroyed
+    $scope.$on('$destroy', function () {
+      Socket.removeListener('offeringMessage');
     });
   }
 ]);

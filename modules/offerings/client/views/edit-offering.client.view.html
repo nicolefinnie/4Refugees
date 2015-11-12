@@ -32,10 +32,13 @@
           <label for="when">When</label>
           <textarea name="when" ng-model="offering.when" id="when" class="form-control" placeholder="When"></textarea>
         </div>
-        <div class="form-group">
-          <label for="offerType">OfferType</label>
-          <textarea name="offerType" ng-model="offering.offerType" id="offerType" class="form-control" placeholder="OfferType"></textarea>
-        </div>
+        <div class="switch form-group">
+          <label for="offerType"> Request
+          <input type="checkbox" id="offerType" ng-model="offerType">
+          <span class="lever"></span>Offering
+          </label>
+        </div><br>
+
 
         <div class="form-group">
           <input type="submit" value="Update" class="btn btn-default">

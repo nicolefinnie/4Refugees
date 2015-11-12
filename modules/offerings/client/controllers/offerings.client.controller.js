@@ -1,6 +1,5 @@
 'use strict';
 
-
 // Offerings controller
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
@@ -26,6 +25,18 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
 //      });
 //    }
 
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    $scope.messages = [];
+
+    // If user is not signed in then redirect back home
+    if (!Authentication.user) {
+      $location.path('/');
+    }
+
     // Create new Offering
     $scope.create = function (isValid) {
       $scope.error = null;
@@ -48,18 +59,13 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         offerType: this.offerType
       });
 
-      // Create a new message object for any new offering
-      var msgtext = 'new offering.category ';
-      if (offering.offerType === 0) msgtext = msgtext + ' offering in ';
-      else msgtext = msgtext + 'request in ';
-      msgtext = msgtext + offering.city + ' at ' + JSON.stringify(offering.when);
+      console.log('new offering ' + JSON.stringify(offering));
 
+      // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
-        text: msgtext
+        content: offering
       };
-
-      // Emit a 'chatMessage' message event
-      Socket.emit('chatMessage', message);
+      Socket.emit('offeringMessage', message);
 
       // Redirect after save
       offering.$save(function (response) {

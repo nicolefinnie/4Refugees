@@ -36,12 +36,13 @@
           <label for="when">When</label>
           <textarea name="when" ng-model="when" id="when" class="form-control" placeholder="When"></textarea>
         </div>
-        <div class="switch">
-          <label for="offerType">OfferType</label><br>
-          <label> Request
-          <input type="checkbox">
+        <div class="switch form-group">
+          <label for="offerType"> Request
+          <input type="checkbox" id="offerType" ng-model="offerType">
           <span class="lever"></span>Offering
+          </label>
         </div><br>
+
 
         <div class="form-group">
           <input type="submit" class="waves-effect waves-light btn btn-default">
