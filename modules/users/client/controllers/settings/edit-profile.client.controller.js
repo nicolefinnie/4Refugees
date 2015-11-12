@@ -71,6 +71,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
       });
     };
     
-    ctrl.user.aboutMe = "stuff \n ss This is some awesome stuff to blabla about me blabla sutff thing \n safewf fea \t <sdf s\t ";
+    ctrl.user.aboutMe = 'stuff \n ss This is some awesome stuff to blabla about me blabla sutff thing \n safewf fea \t <sdf s\t ';
   }
 ]);

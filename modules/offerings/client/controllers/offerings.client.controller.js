@@ -2,8 +2,8 @@
 
 
 // Offerings controller
-angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings',
-  function ($scope, $stateParams, $location, Authentication, Offerings) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
 
     // TODO: Need to include the googleapis javascript in some .html file somehow, before
@@ -47,6 +47,19 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         latitude: this.latitude,
         offerType: this.offerType
       });
+
+      // Create a new message object for any new offering
+      var msgtext = 'new offering.category ';
+      if (offering.offerType === 0) msgtext = msgtext + ' offering in ';
+      else msgtext = msgtext + 'request in ';
+      msgtext = msgtext + offering.city + ' at ' + JSON.stringify(offering.when);
+
+      var message = {
+        text: msgtext
+      };
+
+      // Emit a 'chatMessage' message event
+      Socket.emit('chatMessage', message);
 
       // Redirect after save
       offering.$save(function (response) {

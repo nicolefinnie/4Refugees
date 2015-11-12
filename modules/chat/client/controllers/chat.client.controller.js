@@ -16,9 +16,11 @@ angular.module('chat').controller('ChatController', ['$scope', '$location', 'Aut
       Socket.connect();
     }
 
-    // Add an event listener to the 'chatMessage' event
+    // Add an event listener to the 'chatMessage' event - and limit to 3 messages
     Socket.on('chatMessage', function (message) {
-      $scope.messages.unshift(message);
+      if ($scope.messages.unshift(message) > 3) {
+        $scope.messages.length = 3;
+      }
     });
 
     // Create a controller method for sending messages

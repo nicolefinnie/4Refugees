@@ -1,6 +1,6 @@
 <section ng-controller="OfferingsController">
   <div class="page-header">
-    <h1>Search Offerings</h1>
+    <h3>Search Offerings</h3>
   </div>
   <div class="col-md-12">
     <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
@@ -36,13 +36,15 @@
           <label for="when">When</label>
           <textarea name="when" ng-model="when" id="when" class="form-control" placeholder="When"></textarea>
         </div>
-        <div class="form-group">
-          <label for="offerType">OfferType</label>
-          <textarea name="offerType" ng-model="offerType" id="offerType" class="form-control" placeholder="OfferType"></textarea>
-        </div>
+        <div class="switch">
+          <label for="offerType">OfferType</label><br>
+          <label> Request
+          <input type="checkbox">
+          <span class="lever"></span>Offering
+        </div><br>
 
         <div class="form-group">
-          <input type="submit" class="btn btn-default">
+          <input type="submit" class="waves-effect waves-light btn btn-default">
         </div>
         <div ng-show="error" class="text-danger">
           <strong ng-bind="error"></strong>
