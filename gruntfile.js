@@ -114,6 +114,32 @@ module.exports = function (grunt) {
         src: defaultAssets.client.css
       }
     },
+    htmllint: {
+      options: {
+        'attr-bans': [],
+        'attr-name-style': false,
+        'attr-req-value': false,
+        'id-class-style': false,
+        'img-req-alt': false,
+        'img-req-src': false,
+        'indent-style': 'spaces',
+        'indent-width': 2,
+        'maxerr': 5,
+        'tag-name-lowercase': true,
+        'tag-bans': [],
+      },
+      src: [
+        'modules/*/client/views/*html'
+      ]
+    },
+    htmlhint: {
+      options: {
+        'tag-pair': true,
+      },
+      src: [
+        'modules/*/client/views/*html'
+      ]
+    },
     ngAnnotate: {
       production: {
         files: {
@@ -239,6 +265,8 @@ module.exports = function (grunt) {
 
   // Load NPM tasks
   require('load-grunt-tasks')(grunt);
+  //grunt.loadNpmTasks('grunt-htmllint');
+  //grunt.loadNpmTasks('grunt-htmlhint');
   grunt.loadNpmTasks('grunt-protractor-coverage');
 
   // Make sure upload directory exists
@@ -296,8 +324,8 @@ module.exports = function (grunt) {
     });
   });
 
-  // Lint CSS and JavaScript files.
-  grunt.registerTask('lint', ['sass', 'less', 'jshint', 'eslint', 'csslint']);
+  // Lint CSS and JavaScript and HTML files.
+  grunt.registerTask('lint', ['sass', 'less', 'jshint', 'eslint', 'csslint', 'htmllint', 'htmlhint']);
 
   // Lint project files and minify them into two production files.
   grunt.registerTask('build', ['env:dev', 'lint', 'ngAnnotate', 'uglify', 'cssmin']);

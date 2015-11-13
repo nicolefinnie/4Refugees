@@ -1,6 +1,6 @@
 <!-- TODO import CSS locally -->
- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One">
 
 <div ng-controller="HeaderController">
   <nav class="rf-header green darken-4">
@@ -10,53 +10,54 @@
       </span>
 
 <!-- Dropdown Trigger -->
-    <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
-      <li ui-sref-active="active">
-        <a ui-sref="authentication.signup">Sign Up</a>
-      </li>
-      <li class="divider-vertical"></li>
-      <li ui-sref-active="active">
-        <a ui-sref="authentication.signin">Sign In</a>
-      </li>
-    </ul>
+      <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
+        <li ui-sref-active="active">
+          <a ui-sref="authentication.signup">Sign Up</a>
+        </li>
+        <li class="divider-vertical"></li>
+        <li ui-sref-active="active">
+          <a ui-sref="authentication.signin">Sign In</a>
+        </li>
+      </ul>
 
-    <ul class="right hide-on-med-and-down" ng-show="authentication.user">
-     <li>
-     <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
-      <ul id="dropdownAuth" class="dropdown-content">
-          <li ui-sref-active="active">
-            <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.picture">Change Profile Picture</a>
-          </li>
-          <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-            <a ui-sref="settings.password">Change Password</a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.accounts">Manage Social Accounts</a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a href="/api/auth/signout" target="_self">Signout</a>
-          </li>
-       </ul>
-     </li>
-    </ul>
+      <ul class="right hide-on-med-and-down" ng-show="authentication.user">
+        <li>
+          <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
+          <ul id="dropdownAuth" class="dropdown-content">
+            <li ui-sref-active="active">
+              <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
+            </li>
+            <li ui-sref-active="active">
+              <a ui-sref="settings.picture">Change Profile Picture</a>
+            </li>
+            <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
+              <a ui-sref="settings.password">Change Password</a>
+            </li>
+            <li ui-sref-active="active">
+              <a ui-sref="settings.accounts">Manage Social Accounts</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a href="/api/auth/signout" target="_self">Signout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
 
 <!-- Dropdown Structure -->
-    <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
-      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
-         <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
-          <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
+      <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
+        <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
+        <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
+        <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
             <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
           </li>
-          </ul>
-          <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
-       </li>
-    </ul>
+        </ul>
+        <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
+        </li>
+      </ul>
+    </div>
   </nav>
 
 </div>

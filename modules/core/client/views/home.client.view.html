@@ -17,7 +17,7 @@
 </style>
 
 <section ng-controller="HomeController">
-  <div slider height='500' transition='400' class="ref-outer">
+  <div slider height="500" transition="400" class="ref-outer">
     <ul class="slides">
       <li>
         <img src="modules/core/client/img/startpage/img4.jpg">
@@ -52,34 +52,31 @@
     </ul>
   </div>
 
-    <div class="ref-overlay container">
-    <br><br>
-      <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-          <img src="modules/core/client/img/brand/logo.svg" style="display:block;height:200px;margin:0 auto;" class="imgLogo" />  
+  <div class="ref-overlay container">
   <br><br>
+    <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+      <img src="modules/core/client/img/brand/logo.svg" style="display:block;height:200px;margin:0 auto;" class="imgLogo"/>  
+      <br><br>
+    </div>
+  </div><br>
 
-      </div>
-    </div>
-    <br>
-   
-    <div ng-hide="mainCallToButtons" class="row center">
-        <a href="" id="findHelp" class="btn-large waves-effect waves-light red darken-1" ng-click="toggleFindHelp()"><i class="material-icons left">live_help</i>Find Help</a>
-        <a href="" id="helpOthers" class="btn-large waves-effect waves-light" ng-click="toggleHelpOthers()"><i class="material-icons left">supervisor_account</i>Help Others</a>
-    </div>
+  <div ng-hide="mainCallToButtons" class="row center">
+    <a href="" id="findHelp" class="btn-large waves-effect waves-light red darken-1" ng-click="toggleFindHelp()"><i class="material-icons left">live_help</i>Find Help</a>
+    <a href="" id="helpOthers" class="btn-large waves-effect waves-light" ng-click="toggleHelpOthers()"><i class="material-icons left">supervisor_account</i>Help Others</a>
+  </div>
     
-     <div ng-show="findHelpCallToButtons" class="row center" >
-        <a href="offerings" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">live_help</i>Search existing Offers</a>
-        <a href="" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">supervisor_account</i>Create new Help Request</a>
-        <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleFindHelp()"><i class="material-icons">skip_previous</i></a>
-      </div>
+  <div ng-show="findHelpCallToButtons" class="row center" >
+    <a href="offerings" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">live_help</i>Search existing Offers</a>
+    <a href="offerings" id="searchOffers" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">supervisor_account</i>Create new Help Request</a>
+    <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleFindHelp()"><i class="material-icons">skip_previous</i></a>
+  </div>
     
-      <div ng-show="helpOthersCallToButtons" class="row center">
-        <a href="" id="" class="btn-large waves-effect waves-light"><i class="material-icons left">live_help</i>Search existing Help Request</a>
-        <a href="" id="" class="btn-large waves-effect waves-light"><i class="material-icons left">supervisor_account</i>Insert new Offer</a>
-        <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleHelpOthers()"><i class="material-icons">skip_previous</i></a>
-      </div>
-     
- <br><br>
+  <div ng-show="helpOthersCallToButtons" class="row center">
+    <a href="" id="searchHelp" class="btn-large waves-effect waves-light"><i class="material-icons left">live_help</i>Search existing Help Request</a>
+    <a href="" id="newOffer" class="btn-large waves-effect waves-light"><i class="material-icons left">supervisor_account</i>Insert new Offer</a>
+    <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleHelpOthers()"><i class="material-icons">skip_previous</i></a>
+  </div>
+  <br><br>
 </section>
 
 <section>

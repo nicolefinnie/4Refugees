@@ -1,5 +1,19 @@
 'use strict';
 
+function numOfferType(ot) {
+  if (ot === true) {
+    return 1;
+  }
+  return 0;
+}
+
+function stringCategory(cat) {
+  if (cat.length !== 0) {
+    return Object.keys(cat)[0];
+  }
+  return '';
+}
+
 // Offerings controller
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
@@ -47,19 +61,22 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         return false;
       }
 
+      // mapping JSON array category from checkbox on webpage to String (first key)
+      var category = 'Others';
+
       // Create new Offering object
       var offering = new Offerings({
         when: this.when,
         updated: Date.now,
         description: this.description,
         city: this.city,
-        category: this.category,
+             // mapping JSON array category from checkbox on webpage to String (first key)
+        category: stringCategory(this.category),
         longitude: this.longitude,
         latitude: this.latitude,
-        offerType: this.offerType
+            // mapping boolean offerType from slider on webpage to integer 0 and 1
+        offerType: numOfferType(this.offerType) 
       });
-
-      console.log('new offering ' + JSON.stringify(offering));
 
       // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
@@ -140,11 +157,13 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         updated: Date.now,
         description: this.description,
         city: this.city,
-        category: this.category,
+             // mapping JSON array category from checkbox on webpage to String (first key)
+        category: stringCategory(this.category),
         longitude: this.longitude,
         latitude: this.latitude,
         radius: this.radius,
-        offerType: this.offerType
+            // mapping boolean offerType from slider on webpage to integer 0 and 1
+        offerType: numOfferType(this.offerType) 
       });
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({

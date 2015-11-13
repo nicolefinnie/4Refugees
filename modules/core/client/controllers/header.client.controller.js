@@ -37,12 +37,15 @@ angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Au
     // Add an event listener to the 'offeringMessage' event - and limit to 3 messages
     Socket.on('offeringMessage', function (message) {
       var toastContent = '<span>new ' + message.content.category;
+
       if (message.content.offerType === 0) {
-        toastContent = toastContent + ' request ';
+        toastContent = toastContent + ' request: ';
       } else {
-        toastContent = toastContent + ' offering ';
+        toastContent = toastContent + ' offering: ';
       }
-      toastContent = toastContent + 'posted by user ' + message.username;
+
+      toastContent = toastContent + 
+        message.content.description.substr(0,10) + ' - posted by user ' + message.username.substr(1,20);
 
       console.log('new stuff ' + toastContent);
       Materialize.toast(toastContent, 5000);
