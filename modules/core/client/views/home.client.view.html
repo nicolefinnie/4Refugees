@@ -1,58 +1,35 @@
-<style>
-.ref-outer {
-  z-index: 10; // smaller than z-index of overlay
-  width: 100%;
-  height: 100%;
-}
-.ref-overlay {
-  position: relative;
-  height: 400px;
-  width: 200px;
-  z-index: 11;
-  overflow: hidden;
-  margin:0 auto;
-  top: 50%;
-  margin-top: -360px; // go up 360 px
-}
-</style>
-
 <section ng-controller="HomeController">
-  <div slider height="500" transition="400" class="ref-outer">
+<!-- loading google map API asynchronizely TODO only initialize this once, otherwise chrome developer console will complain
+You have included the Google Maps API multiple times on this page. This may cause unexpected errors. -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  
+  <div slider height="500" transition="400" class="welcome-caption-behaviour">
     <ul class="slides">
       <li>
         <img src="modules/core/client/img/startpage/img4.jpg">
         <div class="caption center-align">
           <h3>Welcome</h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
         </div>
       </li>
       <li>
         <img src="modules/core/client/img/startpage/img1.jpg">
         <div class="caption left-align">
           <h3> to </h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
         </div>
       </li>
       <li>
         <img src="modules/core/client/img/startpage/img3.jpg">
         <div class="caption right-align">
           <h3>Germany</h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
         </div>
       </li>
       <li>
         <img src="http://www.make-it-in-germany.com/fileadmin/content/make-it-in-germany/Bilder/MakeitinGermany/Offensive/Die-Offensive_01.gif">
-<!--
-        <div class="caption center-align">
-          <h3>You can make it here</h3>
-          <h5 class="light grey-text text-lighten-3">small</h5>
-        </div>
--->
       </li>
     </ul>
   </div>
 
-  <div class="ref-overlay container">
+  <div class="logo-position container">
   <br><br>
     <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
       <img src="modules/core/client/img/brand/logo.svg" style="display:block;height:200px;margin:0 auto;" class="imgLogo"/>  

@@ -16,31 +16,30 @@ function getCategoryArray(cat, defaultSetting) {
     return [defaultSetting];
   }
 }
-
+                                                               
 // Offerings controller
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
-
-    // TODO: Need to include the googleapis javascript in some .html file somehow, before
-    // the google.maps APIs will work....  the following link needs to be added, but where???
-    // <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-//    if (navigator.geolocation) {
-//      navigator.geolocation.getCurrentPosition(
-//        function(position) {
-//        var geocoder = new google.maps.Geocoder();
-//        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-//        $scope.lat = position.coords.latitude;
-//        $scope.lng = position.coords.longitude;
-//        geocoder.geocode({
-//          'latLng': latlng
-//        }, function(results, status) {
-//          $scope.city = results[4].formatted_address;
-//          $scope.$apply();
-//          $("input[name='location']").focus();$("input[name='location']").blur();
-//        });
-//      });
-//    }
+    
+      // get current geo location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          var geocoder = new google.maps.Geocoder();
+          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          $scope.latitude = position.coords.latitude;
+          $scope.longitude = position.coords.longitude;
+          
+          geocoder.geocode({
+            'latLng': latlng
+          }, function(results, status) {
+            $scope.city = results[4].formatted_address;
+            $scope.$apply();
+//            $("input[name='location']").focus();$("input[name='location']").blur();
+          });
+        });
+    }
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -72,12 +71,13 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         city: this.city,
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, 'Other'),
-        longitude: this.longitude,
-        latitude: this.latitude,
+        longitude: $scope.longitude,
+        latitude: $scope.latitude,
             // mapping boolean offerType from slider on webpage to integer 0 and 1
         offerType: numOfferType(this.offerType) 
       });
-
+      console.log('Nicole debugging: ' + JSON.stringify(offering));
+      
       // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
         content: offering
