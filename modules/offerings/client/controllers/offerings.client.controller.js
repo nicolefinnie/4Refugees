@@ -7,11 +7,14 @@ function numOfferType(ot) {
   return 0;
 }
 
-function stringCategory(cat) {
-  if (cat.length !== 0) {
-    return Object.keys(cat)[0];
+// Converts the category selections from the input form into an
+// array of category strings
+function getCategoryArray(cat, defaultSetting) {
+  if (cat && cat.length !== 0) {
+    return Object.keys(cat);
+  } else {
+    return [defaultSetting];
   }
-  return '';
 }
 
 // Offerings controller
@@ -61,17 +64,14 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         return false;
       }
 
-      // mapping JSON array category from checkbox on webpage to String (first key)
-      var category = 'Others';
-
       // Create new Offering object
       var offering = new Offerings({
         when: this.when,
         updated: Date.now,
         description: this.description,
         city: this.city,
-             // mapping JSON array category from checkbox on webpage to String (first key)
-        category: stringCategory(this.category),
+             // mapping JSON array category from checkbox on webpage to String
+        category: getCategoryArray(this.category, 'Other'),
         longitude: this.longitude,
         latitude: this.latitude,
             // mapping boolean offerType from slider on webpage to integer 0 and 1
@@ -142,7 +142,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
       $scope.offerings = Offerings.query();
     };
 
-    // Create new Offering
+    // Search all offerings for the input criteria
     $scope.searchAll = function (isValid) {
       $scope.error = null;
 
@@ -151,20 +151,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         return false;
       }
 
-      // Create new Offering object
-      var searchOfferings = new Offerings({
-        when: this.when,
-        updated: Date.now,
-        description: this.description,
-        city: this.city,
-             // mapping JSON array category from checkbox on webpage to String (first key)
-        category: stringCategory(this.category),
-        longitude: this.longitude,
-        latitude: this.latitude,
-        radius: this.radius,
-            // mapping boolean offerType from slider on webpage to integer 0 and 1
-        offerType: numOfferType(this.offerType) 
-      });
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
@@ -173,7 +159,10 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         latitude: this.latitude,
         radius: this.radius,
         when: this.when,
-        category: this.category
+             // mapping JSON array category from checkbox on webpage to String
+        category: getCategoryArray(this.category, ''),
+            // mapping boolean offerType from slider on webpage to integer 0 and 1
+        offerType: numOfferType(this.offerType) 
       });
     };
 
