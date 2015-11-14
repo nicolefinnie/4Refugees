@@ -12,9 +12,22 @@
             <p class="help-block error-text" ng-message="required">Offering description is required.</p>
           </div>
         </div>
-        <div class="form-group">
-          <label for="category">Category</label>
-          <textarea name="category" ng-model="category" id="category" class="form-control" placeholder="Category"></textarea>
+        <div id="labels">
+          <p>Category</p>
+          <input type="checkbox" id="training" name="training" ng-model="category.training">
+          <label for="training" class="category-checkbox">Job Training</label>   
+
+          <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
+          <label for="courses" class="category-checkbox">Language Courses </label> 
+
+          <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
+          <label for="medical" class="category-checkbox">Medical Assistance </label> 
+
+          <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
+          <label for="childcare" class="category-checkbox">Childcare </label> 
+            
+          <input type="checkbox" id="others" name="others" ng-model="category.others">
+          <label for="others" class="category-checkbox">Others </label> 
         </div>
         <div class="form-group">
           <label for="city">City</label>
@@ -66,7 +79,7 @@
       <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>
       <p class="list-group-item-text">Categories: <span ng-bind="offering.category"></span></p>
       <p class="list-group-item-text">Location: <span ng-bind="offering.city"></span></p>
-      <p class="list-group-item-text">Distance: <span ng-bind="offering.distance"></span> metres</p>
+      <p class="list-group-item-text">Distance: <span ng-bind="offering.distance"></span> km</p>
     </a>
   </div>
 </section>
