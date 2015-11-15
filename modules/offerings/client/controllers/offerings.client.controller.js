@@ -16,7 +16,7 @@ function getCategoryArray(cat, defaultSetting) {
     return [defaultSetting];
   }
 }
-                                                               
+              
 // Offerings controller
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
@@ -156,7 +156,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         city: this.city,
         longitude: this.longitude,
         latitude: this.latitude,
-        radius: this.radius,
+        radius: this.radius? this.radius:10,
         when: this.when,
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, ''),
@@ -171,5 +171,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         offeringId: $stateParams.offeringId
       });
     };
+    
+  
   }
 ]);

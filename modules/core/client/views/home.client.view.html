@@ -39,16 +39,17 @@
     <a href="" id="helpOthers" class="btn-large waves-effect waves-light" ng-click="toggleHelpOthers()"><i class="material-icons left">supervisor_account</i>Help Others</a>
   </div>
     
+  <!-- TODO pass parameters to affect radio button -->
   <div ng-show="findHelpCallToButtons" class="row center" >
-    <a href="offerings" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">live_help</i>Search existing Offers</a>
-    <a href="offerings" id="searchOffers" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">supervisor_account</i>Create new Help Request</a>
-    <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleFindHelp()"><i class="material-icons">skip_previous</i></a>
+    <a href="offerings/search" id="searchOffers" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">live_help</i>Search existing Offers</a>
+    <a href="offerings/create" id="createOffers" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">supervisor_account</i>Create new Request</a>
+    <a class="btn-floating btn-large waves-effect waves-light grey lighten-1 goBackCallToButtons" ng-click="toggleFindHelp()"><i class="material-icons">skip_previous</i></a>
   </div>
     
   <div ng-show="helpOthersCallToButtons" class="row center">
-    <a href="" id="searchHelp" class="btn-large waves-effect waves-light"><i class="material-icons left">live_help</i>Search existing Help Request</a>
-    <a href="" id="newOffer" class="btn-large waves-effect waves-light"><i class="material-icons left">supervisor_account</i>Insert new Offer</a>
-    <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleHelpOthers()"><i class="material-icons">skip_previous</i></a>
+    <a href="offerings/search" id="searchHelp" class="btn-large waves-effect waves-light"><i class="material-icons left">live_help</i>Search existing Help Requests</a>
+    <a href="offerings/create" id="newOffer" class="btn-large waves-effect waves-light"><i class="material-icons left">supervisor_account</i>Insert new Offer</a>
+    <a class="btn-floating btn-large waves-effect waves-light grey lighten-1 goBackCallToButtons" ng-click="toggleHelpOthers()"><i class="material-icons">skip_previous</i></a>
   </div>
   <br><br>
 </section>

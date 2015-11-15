@@ -1,10 +1,9 @@
 <div ng-controller="AuthenticationController">
 
  <h6 class="col-md-12 text-center rf-brand-text">Or with your account</h6>
- <!--  very violent new lines, hahahaha -->
-  <br><br><br><br><br><br><br><br><br><br><br><br>
-  
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
+ <br><br>
+ <div class="row">
+  <div class="col s4">
     <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
         <div class="input-field form-group" show-errors>
          <i class="material-icons prefix">account_circle</i>
@@ -35,5 +34,6 @@
           <span ng-bind="error"></span>
         </alert>
     </form>
+   </div>
   </div>
 </div>
