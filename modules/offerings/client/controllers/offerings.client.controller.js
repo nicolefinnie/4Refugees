@@ -76,7 +76,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
             // mapping boolean offerType from slider on webpage to integer 0 and 1
         offerType: numOfferType(this.offerType) 
       });
-      console.log('Nicole debugging: ' + JSON.stringify(offering));
       
       // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
@@ -147,7 +146,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
       $scope.error = null;
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
+        $scope.$broadcast('show-errors-check-validity', 'offeringFormSearch');
         return false;
       }
 
