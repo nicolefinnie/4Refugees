@@ -130,7 +130,7 @@ exports.listMine = function (req, res) {
           if (err) {
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
           } else {
-            console.log('RAW RESULTS: ' + JSON.stringify(docs));
+            //console.log('RAW RESULTS: ' + JSON.stringify(docs));
             // restrict results to only public-viewable fields
             var publicResults = [];
             docs.forEach(function(doc) {
