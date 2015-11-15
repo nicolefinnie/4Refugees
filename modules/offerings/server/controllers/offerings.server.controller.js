@@ -90,7 +90,7 @@ exports.delete = function (req, res) {
  * List of Offerings
  */
 exports.listMine = function (req, res) {
-  if (req.query.description) {
+  if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
     // TODO: The additional fields that can/should be used for the query are:
     // req.body.description -- description of the offering the user is searching for
@@ -135,6 +135,7 @@ exports.listMine = function (req, res) {
             var publicResults = [];
             docs.forEach(function(doc) {
               var tmpRes = {};
+              tmpRes._id = doc._id;
               tmpRes.distance = Math.round(doc.distance * 100) / 100;
               tmpRes.displayName = doc.user.displayName;
               tmpRes.when = doc.when;

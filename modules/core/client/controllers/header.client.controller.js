@@ -45,7 +45,7 @@ angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Au
       }
 
       toastContent = toastContent + 
-        message.content.description.substr(0,10) + ' - posted by user ' + message.username.substr(1,20);
+        message.content.description.substr(0,10) + ' - posted by user ' + message.username.substr(0,20);
 
       console.log('new stuff ' + toastContent);
       Materialize.toast(toastContent, 5000);
