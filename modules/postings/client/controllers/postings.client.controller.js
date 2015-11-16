@@ -1,9 +1,19 @@
 'use strict';
 
 // Postings controller
-angular.module('postings').controller('PostingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Postings',
-  function ($scope, $stateParams, $location, Authentication, Postings) {
+angular.module('postings').controller('PostingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
+  function ($scope, $stateParams, $location, Authentication, Postings, Socket) {
     $scope.authentication = Authentication;
+
+    // If user is not signed in then redirect back home
+    if (!Authentication.user) {
+      $location.path('/');
+    }
+
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
 
     // Create new Posting
     $scope.create = function (isValid) {
@@ -19,9 +29,17 @@ angular.module('postings').controller('PostingsController', ['$scope', '$statePa
       var posting = new Postings({
         title: this.title,
         content: this.content,
+        unread: true,
+        recipient: this.recipient,
         replyTo: this.replyTo,
         offeringId: this.offeringId,
       });
+
+      // Emit a 'postingMessage' message event with the JSON posting object
+      var message = {
+        content: posting
+      };
+      Socket.emit('postingMessage', message);
 
       // Redirect after save
       posting.$save(function (response) {

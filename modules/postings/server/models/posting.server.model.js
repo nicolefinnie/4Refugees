@@ -25,17 +25,21 @@ var PostingSchema = new Schema({
     default: '',
     trim: true
   },
+  unread: {
+    type: Boolean,
+    default: true
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'
   },
   offeringId: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'Offering'
   },
   replyTo: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'Posting'
   }
 });
 

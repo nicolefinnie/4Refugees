@@ -22,7 +22,10 @@
 
       <ul class="right hide-on-med-and-down" ng-show="authentication.user">
         <li>
-          <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
+          <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}
+            <i class="material-icons right">arrow_drop_down</i>
+            <span class="{{postingBadge}}"></span>
+          </a>
           <ul id="dropdownAuth" class="dropdown-content">
             <li ui-sref-active="active">
               <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
