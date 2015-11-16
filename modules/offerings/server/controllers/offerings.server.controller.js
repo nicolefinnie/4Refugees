@@ -90,82 +90,65 @@ exports.delete = function (req, res) {
  * List of Offerings
  */
 exports.listMine = function (req, res) {
-  if (req.query.description) {
+  if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
-    // TODO: Right now, we just search based on location.  The pre-mean.js prototype also
-    // restricted by search description + categories.  The following mongodb query was used:
-//  db.collection('offerItem').aggregate(
-//      [
-//        { "$geoNear": { "near": { "type": "Point",
-//                                "coordinates": [ Number((req.body.geo.lng).toFixed(6)),
-//                                                 Number((req.body.geo.lat).toFixed(6)) ]},
-//                        "distanceField": "distance",
-//                        "distanceMultiplier": 1/1000,
-//                        "maxDistance": radius,
-//                        "spherical": true,
-//                        query: { category: { $in: req.body.categories } },
-//                      }
-//        },
-//        { 
-//            "$sort": {"distance": 1} // Sort the nearest first
-//        }
-//      ]).toArray( function(err, docs) {
-//            if (err) throw err;
-//            db.close();
-//            var matchedDocs = "[";
-//            docs.forEach( function( testDoc, index) {
-//              // here, need to do some matching!
-//              if ( index > 0 ) {
-//                matchedDocs = matchedDocs + ",";
-//              }
-//              testDoc.distance = Math.round(testDoc.distance * 100) / 100;
-//              matchedDocs = matchedDocs + JSON.stringify(testDoc);
-//            });
-//            matchedDocs = matchedDocs + "]"
-//      res.send(matchedDocs);
-//  });
     // TODO: The additional fields that can/should be used for the query are:
-    // req.body.category -- category list to restrict returned results
     // req.body.description -- description of the offering the user is searching for
     // req.body.when -- date the user is interested in receiving offers for
     // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
     // req.body.city -- open question, should we allow searching by city when no coords are provided???
-    var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
-    Offering.geoNear(nearPoint,
-    { maxDistance : req.query.radius*1000,
-      spherical : true
-    }, function(err, results, stats) {
-      //console.log(results);
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+    var restrictQuery = {};
+    restrictQuery.maxDistance = req.query.radius*1000;
+    restrictQuery.spherical = true;
+    restrictQuery.distanceMultiplier = 1/1000;
+    // if any categories were selected, restrict on those
+    if (req.query.category) {
+      var searchCategories = [];
+      if (typeof req.query.category === 'string') {
+        searchCategories.push(req.query.category);
       } else {
-        // TODO: Somehow need to populate the user object to get the displayName...
-//        Offering.populate(results, { path: 'user', select: 'displayName' }, function(err, matchingOffers) {
-//          if (err) {
-//            return res.status(400).send({
-//              message: errorHandler.getErrorMessage(err)
-//            });
-//          }
-//          res.json(matchingOffers);
-//        });
-
-        //results.populate('user', 'displayName');
-        var arrayResults = [];
-        //console.log('RAW RESULT: ' + JSON.stringify(results));
-        results.forEach(function(result) {
-          // TODO: Rather than just returning the whole record, we should filter out
-          // some of these fields - only return the fields the user is authorized to see.
-          var tmpRes = result.obj.toObject();
-          // The offering's distance is returned separately, so add it to output json.
-          tmpRes.distance = Math.round(result.dis * 100) / 100;
-          // TODO: Search result should return offering originator's user displayName (*NOT* email)?
-          tmpRes.displayName = 'Need_to_find_originating_use';
-          arrayResults.push(tmpRes);
+        searchCategories = req.query.category;
+      }
+      restrictQuery.query = { category: { $in: searchCategories } };
+    }
+    var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
+    restrictQuery.near = nearPoint;
+    restrictQuery.distanceField = 'distance';
+    //console.log('restrictQuery is: ' + JSON.stringify(restrictQuery));
+    // Run the query, and then do some post-query filtering
+    Offering.aggregate([
+      { '$geoNear': restrictQuery },
+      { '$skip': 0 },
+      { '$limit': 25 },
+      { '$sort': { 'distance': 1 } } // Sort the nearest first
+    ], function(err,offerings) {
+      if (err) {
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+      } else {
+        // Populate the display name of the user that created this offering.
+        Offering.populate(offerings, { path: 'user', select: 'displayName' }, function(err,docs) {
+          if (err) {
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+          } else {
+            //console.log('RAW RESULTS: ' + JSON.stringify(docs));
+            // restrict results to only public-viewable fields
+            var publicResults = [];
+            docs.forEach(function(doc) {
+              var tmpRes = {};
+              tmpRes._id = doc._id;
+              tmpRes.distance = Math.round(doc.distance * 100) / 100;
+              tmpRes.displayName = doc.user.displayName;
+              tmpRes.when = doc.when;
+              tmpRes.updated = doc.updated;
+              tmpRes.category = doc.category;
+              tmpRes.description = doc.description;
+              tmpRes.city = doc.city;
+              publicResults.push(tmpRes);
+            });
+            //console.log('RETURNING: ' + JSON.stringify(publicResults));
+            res.json(publicResults);
+          }
         });
-        //console.log('RETURNING: ' + JSON.stringify(arrayResults));
-        res.json(arrayResults);
       }
     });
   } else {

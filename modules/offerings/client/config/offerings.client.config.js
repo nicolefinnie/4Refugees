@@ -19,7 +19,7 @@ angular.module('offerings').run(['Menus',
 
     // Add the dropdown search item
     Menus.addSubMenuItem('topbar', 'offerings', {
-      title: 'Search All Offerings',
+      title: 'Search Offerings',
       state: 'offerings.searchAll'
     });
 

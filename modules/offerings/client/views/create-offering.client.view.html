@@ -1,74 +1,84 @@
 <section ng-controller="OfferingsController">
-  <div class="page-header">
-    <h1 ng-bind="offering.description"></h1>
-    <h3 class="rf-brand-text">New Offering</h3>
-  </div>
+<div class="row">
+
+    <div class="col s8">
+        <div class="page-header">
+            <h3>Create</h3>
+        </div>
   
-  <div class="col-md-12">
-    <form name="offeringForm" class="simple-form" ng-submit="create(offeringForm.$valid)" novalidate>
-    <fieldset>
-      <div id="labels">
-        <p>In which categories do you want to offer?</p>
-          <input type="checkbox" id="training" name="training" ng-model="category.training">
-          <label for="training" class="category-checkbox">Job Training</label>   
+        <form name="offeringForm" class="simple-form" ng-submit="create(offeringForm.$valid)" novalidate>
+          <div class="form-group" show-errors>
+            <br>
+            <div>
+                <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" />
+                <label for="offeringRadioButton" class="category-checkbox">Offer</label>
+                <input name="radioGroup" type="radio" id="requestRadioButton" />
+                <label for="requestRadioButton"  class="category-checkbox">Request</label>
+            </div>
+            <br>
 
-          <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
-          <label for="courses" class="category-checkbox">Language Courses </label> 
+            <div id="labels">
+                <p>Category</p>
+                <input type="checkbox" id="training" name="training" ng-model="category.training">
+                <label for="training" class="category-checkbox">Job Training</label>   
+      
+                <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
+                <label for="courses" class="category-checkbox">Language Courses </label> 
+      
+                <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
+                <label for="medical" class="category-checkbox">Medical Assistance </label> 
+      
+                <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
+                <label for="childcare" class="category-checkbox">Childcare </label> 
+                  
+                <input type="checkbox" id="others" name="others" ng-model="category.others">
+                <label for="others" class="category-checkbox">Others </label> 
+            </div>
+            <br><br>
+        
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">description</i>
+                    <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
+                    <div ng-messages="offeringForm.description.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Offering description is required.</p>
+                    </div>
+                </div>
+            </div>
+      
+            <div class="row">
+                <div class="input-field col s6">
+                <i class="material-icons prefix">room</i> <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
+                </div>
+            </div>
 
-          <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
-          <label for="medical" class="category-checkbox">Medical Assistance </label> 
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">schedule</i>
+                    <label for="when">When</label>
+                    <input id="when" type="date" name="date" class="datepicker" ng-model="when">
+                </div>
+            </div>
 
-          <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
-          <label for="childcare" class="category-checkbox">Childcare </label> 
-            
-          <input type="checkbox" id="others" name="others" ng-model="category.others">
-          <label for="others" class="category-checkbox">Others </label> 
-      </div>
-      <br><br>
-      <div class="form-group" show-errors>
-        <label for="description">Description</label>
-        <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
-        <div ng-messages="offeringForm.description.$error" role="alert">
-          <p class="help-block error-text" ng-message="required">Offering description is required.</p>
-        </div>
-      </div>
-
-        <div class="form-group">
-          <label for="city">City</label>
-          <textarea name="city" ng-model="city" id="city" class="form-control" placeholder="City"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="longitude">Longitude</label>
-          <textarea name="longitude" ng-model="longitude" id="longitude" class="form-control" placeholder="Longitude"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="latitude">Latitude</label>
-          <textarea name="latitude" ng-model="latitude" id="latitude" class="form-control" placeholder="Latitude"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="when">When</label>
-          <input id="when" type="date" name="date" class="datepicker" ng-model="when">
-        </div>
         <script>
           $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 10 // Creates a dropdown of 15 years to control year
           });
         </script>
-        <div class="switch form-group">
-          <label for="offerType"> Request
-          <input type="checkbox" id="offerType" ng-model="offerType">
-          <span class="lever"></span>Offering
-          </label>
-        </div><br>
 
-        <div class="form-group">
-          <input type="submit" class="btn btn-default">
-        </div>
-        <div ng-show="error" class="text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-      </fieldset>
+            <div class="form-group">
+                <button type="submit" id="createButton" class="btn waves-effect waves-light">Add
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+
+            <div ng-show="error" class="text-danger">
+                <strong ng-bind="error"></strong>
+            </div>
+
+        </div> <!-- end of main form-group -->
     </form>
-  </div>
+  </div> <!-- end of main class col s8 -->
+</div>
 </section>

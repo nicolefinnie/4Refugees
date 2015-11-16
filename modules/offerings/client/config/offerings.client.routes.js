@@ -10,6 +10,7 @@ angular.module('offerings').config(['$stateProvider',
         url: '/offerings',
         template: '<ui-view/>'
       })
+      // TODO: listMine should only be for authenticated users
       .state('offerings.listMine', {
         url: '',
         templateUrl: 'modules/offerings/client/views/list-my-offerings.client.view.html'
