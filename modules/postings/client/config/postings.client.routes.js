@@ -14,6 +14,10 @@ angular.module('postings').config(['$stateProvider',
         url: '',
         templateUrl: 'modules/postings/client/views/list-postings.client.view.html'
       })
+      .state('postings.listnew', {
+        url: '',
+        templateUrl: 'modules/postings/client/views/list-postings.client.view.html'
+      })
       .state('postings.create', {
         url: '/create',
         templateUrl: 'modules/postings/client/views/create-posting.client.view.html',

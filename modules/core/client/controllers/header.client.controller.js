@@ -10,6 +10,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     // Get the topbar menu
     $scope.menu = Menus.getMenu('topbar');
 
+    $scope.postingBadge = 'badge';
+
+    //if (Authentication.user) {
+       //$scope.postingBadge = hasUserNewMessages(Authentication.user);
+    //}
+
     // Toggle the menu items
     $scope.isCollapsed = false;
     $scope.toggleCollapsibleMenu = function () {
@@ -26,15 +32,13 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       Socket.connect();
     }
 
-    // Add an event listener to the 'postingMessage' event and show new postings for logged in users
+    // Add an event listener to the 'postingMessage' event and show new inMails for logged in users
     Socket.on('postingMessage', function (message) {
 
       // TODO - do not check against the SENDER userName
       //if (Authentication.user.userName === message.username) {
-      console.log('Received posting');
+      console.log('Received email');
       
-      //document.getElementById("postingBadge").className = "new badge";
-      //$scope.find('#postingBadge').className = 'new badge';
       $scope.postingBadge = 'new badge';
       //}
     });

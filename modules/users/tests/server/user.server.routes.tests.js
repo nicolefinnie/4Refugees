@@ -45,7 +45,7 @@ describe('User CRUD tests', function () {
 
     user = new User(_user);
 
-    // Save a user to the test db and create new posting
+    // Save a user to the test db and create new email 
     user.save(function (err) {
       should.not.exist(err);
       done();

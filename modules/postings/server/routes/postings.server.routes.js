@@ -10,6 +10,7 @@ module.exports = function (app) {
   // Postings collection routes
   app.route('/api/postings').all(postingsPolicy.isAllowed)
     .get(postings.list)
+    .get(postings.listnew)
     .post(postings.create);
 
   // Single posting routes

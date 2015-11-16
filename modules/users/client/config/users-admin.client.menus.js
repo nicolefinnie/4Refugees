@@ -1,6 +1,6 @@
 'use strict';
 
-// Configuring the Postings module
+// Configuring the admin module
 angular.module('users.admin').run(['Menus',
   function (Menus) {
     Menus.addSubMenuItem('topbar', 'admin', {

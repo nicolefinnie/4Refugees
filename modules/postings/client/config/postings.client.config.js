@@ -5,28 +5,34 @@ angular.module('postings').run(['Menus',
   function (Menus) {
     // Add the postings dropdown item
     Menus.addMenuItem('topbar', {
-      title: 'Postings',
+      title: 'InMail',
       state: 'postings',
-      type: 'dropdown',
+      type: 'inmail',
       roles: ['*']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'List Postings',
+      title: 'Show New Mail',
+      state: 'postings.listnew'
+    });
+
+    // Add the dropdown list item
+    Menus.addSubMenuItem('topbar', 'postings', {
+      title: 'Show Mail',
       state: 'postings.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'New Posting',
+      title: 'New Mail',
       state: 'postings.create',
       roles: ['user']
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'Reply',
+      title: 'Reply To',
       state: 'postings.create',
       roles: ['user']
     });

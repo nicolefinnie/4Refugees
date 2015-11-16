@@ -33,6 +33,10 @@ var PostingSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  recipient: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
   offeringId: {
     type: Schema.ObjectId,
     ref: 'Offering'

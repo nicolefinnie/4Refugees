@@ -75,10 +75,41 @@ exports.delete = function (req, res) {
 };
 
 /**
+ * List of all Postings - admin
+ */
+exports.listall = function (req, res) {
+  Posting.find().sort('-created').populate('user', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(postings);
+    }
+  });
+};
+
+
+/**
  * List of Postings
  */
 exports.list = function (req, res) {
-  Posting.find().sort('-created').populate('user', 'displayName').exec(function (err, postings) {
+  Posting.find({ 'recipient' : req.user }).sort('-created').populate('user', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(postings);
+    }
+  });
+};
+
+/**
+ * List of New Postings
+ */
+exports.listnew = function (req, res) {
+  Posting.find({ 'recipient' : req.user }).sort('-created').populate('user', 'displayName').exec(function (err, postings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)

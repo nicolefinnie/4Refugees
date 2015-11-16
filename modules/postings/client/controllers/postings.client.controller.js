@@ -1,8 +1,8 @@
 'use strict';
 
 // Postings controller
-angular.module('postings').controller('PostingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
-  function ($scope, $stateParams, $location, Authentication, Postings, Socket) {
+angular.module('postings').controller('PostingsController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
+  function ($scope, $http, $stateParams, $location, Authentication, Postings, Socket) {
     $scope.authentication = Authentication;
 
     // If user is not signed in then redirect back home
@@ -100,6 +100,23 @@ angular.module('postings').controller('PostingsController', ['$scope', '$statePa
     $scope.findOne = function () {
       $scope.posting = Postings.get({
         postingId: $stateParams.PostingId
+      });
+    };
+
+    $scope.tags = [];
+
+    $scope.loadUsers = function($query) {
+      var found = false;
+      //console.log("load users for " + $query);
+      return $http.get('/api/users',{ cache: true }).then(function(response) {
+        var users = response.data;
+        return users.filter(function(users) {
+          var match = users.username && users.username.toLowerCase().indexOf($query.toLowerCase()) !== -1;
+          if (found) match = false;
+          else if (match) found = true;
+          //console.log("load user " + users.username + "   " + found + "  " + match);
+          return match;
+        });
       });
     };
   }

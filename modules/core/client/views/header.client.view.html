@@ -26,7 +26,6 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <li>
           <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}
             <i class="material-icons right">arrow_drop_down</i>
-            <span class="{{postingBadge}}"></span>
           </a>
           <ul id="dropdownAuth" class="dropdown-content">
             <li ui-sref-active="active">
@@ -53,7 +52,18 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <!-- Dropdown Structure -->
       <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
         <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
-        <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
+        <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
+          {{::item.title}}&nbsp;
+          <span class="{{postingBadge}}"></span>
+        </a>
+        <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
+          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
+            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
+          </li>
+        </ul>
+        <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>
+          {{::item.title}}&nbsp;
+        </a>
         <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
             <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>

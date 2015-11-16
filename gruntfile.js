@@ -120,6 +120,7 @@ module.exports = function (grunt) {
         'attr-name-style': false,
         'attr-req-value': false,
         'id-class-style': false,
+        'id-class-ignore-regex': '{{.*?}}',
         'img-req-alt': false,
         'img-req-src': false,
         'indent-style': 'spaces',
