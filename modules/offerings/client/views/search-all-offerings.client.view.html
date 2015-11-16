@@ -8,15 +8,15 @@
   
     <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
       <div class="form-group" show-errors>
-         <br>
-         <div>
-            <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" />
-            <label for="offeringRadioButton" class="category-checkbox">Offer</label>
-            <input name="radioGroup" type="radio" id="requestRadioButton" />
-            <label for="requestRadioButton"  class="category-checkbox">Request</label>
-         </div>
-          <br>
-      
+        <br>
+        <div>
+          <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" />
+          <label for="offeringRadioButton" class="category-checkbox">Offer</label>
+          <input name="radioGroup" type="radio" id="requestRadioButton" />
+          <label for="requestRadioButton"  class="category-checkbox">Request</label>
+        </div>
+        <br>
+
         <div id="labels">
           <p>Category</p>
           <input type="checkbox" id="training" name="training" ng-model="category.training">
@@ -47,9 +47,9 @@
             <div class="input-field col s6">
                 <i class="material-icons prefix">explore</i>
                 <input name="radius" type="text" ng-model="radius" id="radius" class="form-control" placeholder="Search radius in ? km">
-             </div>
+            </div>
         </div>
-        
+
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">schedule</i>
@@ -92,7 +92,7 @@
         <span ng-bind="offering.when | date:'mediumDate'"></span>
         <!--         and last updated on
         <span ng-bind="offering.updated | date:'mediumDate'"></span>
-         -->
+        -->
     </a>
   </div>
 </div>
