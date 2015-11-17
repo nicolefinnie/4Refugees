@@ -24,6 +24,7 @@ var path = require('path'),
 exports.create = function (req, res) {
   var offering = new Offering();
   offering.user = req.user;
+  offering.userId = req.user._id;
   offering.when = req.body.when;
   offering.updated = new Date();
   offering.description = req.body.description;
@@ -96,38 +97,66 @@ exports.delete = function (req, res) {
   });
 };
 
+function buildGeoNearAggregateRestriction(req) {
+  var restrictQuery = {};
+  // TODO: The additional fields that can/should be used for the query are:
+  // req.body.description -- description of the offering the user is searching for
+  // req.body.when -- date the user is interested in receiving offers for
+  // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
+  // req.body.city -- open question, should we allow searching by city when no coords are provided???
+  restrictQuery.maxDistance = req.query.radius*1000;
+  restrictQuery.spherical = true;
+  restrictQuery.distanceMultiplier = 1/1000;
+  // if any categories were selected, restrict on those
+  if (req.query.category) {
+    var searchCategories = [];
+    if (typeof req.query.category === 'string') {
+      searchCategories.push(req.query.category);
+    } else {
+      searchCategories = req.query.category;
+    }
+    restrictQuery.query = { category: { $in: searchCategories } };
+  }
+  var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
+  restrictQuery.near = nearPoint;
+  restrictQuery.distanceField = 'distance';
+  return restrictQuery;
+}
+
+function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
+  var filteredResults = [];
+  rawDocs.forEach(function(rawDoc) {
+    var tmpRes = {};
+    tmpRes._id = rawDoc._id;
+    tmpRes.displayName = rawDoc.user.displayName;
+    tmpRes.when = rawDoc.when;
+    tmpRes.updated = rawDoc.updated;
+    tmpRes.category = rawDoc.category;
+    tmpRes.description = rawDoc.description;
+    if (myOwnDoc === true) {
+      // this is my own document, we can show exact co-ordinates in results
+      tmpRes.city = rawDoc.city + ' (@' + rawDoc.loc.coordinates[1] + ',' + rawDoc.loc.coordinates[0] + ')';
+    } else {
+      tmpRes.city = rawDoc.city;
+    }
+    if (includeDistance === true) {
+      tmpRes.distance = Math.round(rawDoc.distance * 100) / 100;
+    }
+    filteredResults.push(tmpRes);
+  });
+  return filteredResults;
+}
+
 /**
  * List of Offerings
  */
 exports.listMine = function (req, res) {
   if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
-    // TODO: The additional fields that can/should be used for the query are:
-    // req.body.description -- description of the offering the user is searching for
-    // req.body.when -- date the user is interested in receiving offers for
-    // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
-    // req.body.city -- open question, should we allow searching by city when no coords are provided???
-    var restrictQuery = {};
-    restrictQuery.maxDistance = req.query.radius*1000;
-    restrictQuery.spherical = true;
-    restrictQuery.distanceMultiplier = 1/1000;
-    // if any categories were selected, restrict on those
-    if (req.query.category) {
-      var searchCategories = [];
-      if (typeof req.query.category === 'string') {
-        searchCategories.push(req.query.category);
-      } else {
-        searchCategories = req.query.category;
-      }
-      restrictQuery.query = { category: { $in: searchCategories } };
-    }
-    var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
-    restrictQuery.near = nearPoint;
-    restrictQuery.distanceField = 'distance';
-    //console.log('restrictQuery is: ' + JSON.stringify(restrictQuery));
+    var restriction = buildGeoNearAggregateRestriction(req);
     // Run the query, and then do some post-query filtering
     Offering.aggregate([
-      { '$geoNear': restrictQuery },
+      { '$geoNear': restriction },
       { '$skip': 0 },
       { '$limit': 25 },
       { '$sort': { 'distance': 1 } } // Sort the nearest first
@@ -142,19 +171,7 @@ exports.listMine = function (req, res) {
           } else {
             //console.log('RAW RESULTS: ' + JSON.stringify(docs));
             // restrict results to only public-viewable fields
-            var publicResults = [];
-            docs.forEach(function(doc) {
-              var tmpRes = {};
-              tmpRes._id = doc._id;
-              tmpRes.distance = Math.round(doc.distance * 100) / 100;
-              tmpRes.displayName = doc.user.displayName;
-              tmpRes.when = doc.when;
-              tmpRes.updated = doc.updated;
-              tmpRes.category = doc.category;
-              tmpRes.description = doc.description;
-              tmpRes.city = doc.city;
-              publicResults.push(tmpRes);
-            });
+            var publicResults = filterInternalOfferingFields(docs, false, true);
             //console.log('RETURNING: ' + JSON.stringify(publicResults));
             res.json(publicResults);
           }
@@ -163,14 +180,16 @@ exports.listMine = function (req, res) {
     });
   } else {
     // list all of my offerings
-    // TODO: This should be restricted to just the current user's offerings
-    Offering.find().sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
+    Offering.find({ userId: req.user._id }).sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.json(offerings);
+        //console.log('RAW RESULTS: ' + JSON.stringify(offerings));
+        // restrict results to only public-viewable fields
+        var publicResults = filterInternalOfferingFields(offerings, true, false);
+        res.json(publicResults);
       }
     });
   }

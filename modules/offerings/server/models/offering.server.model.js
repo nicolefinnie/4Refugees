@@ -43,6 +43,12 @@ var OfferingSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  userId: { // Partial repeat of user._id, to allow filtering without populating sub-documents
+    type: String,
+    default: '',
+    trim: true,
+    required: 'user _id cannot be blank'
   }
 });
 

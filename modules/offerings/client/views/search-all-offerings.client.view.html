@@ -81,7 +81,7 @@
   
     <br>  
     <div class="list-group">
-    <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
+    <a ng-repeat="offering in offerings" ui-sref="offerings.viewOthers({offeringId: offering._id})" class="list-group-item">
       <small class="list-group-item-text">
       </small>
       <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>

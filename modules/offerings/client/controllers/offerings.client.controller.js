@@ -12,6 +12,54 @@ function getCategoryArray(cat, defaultSetting) {
   }
 }
    
+function geoUpdateLocation(position, scope) {
+  var geocoder = new google.maps.Geocoder();
+  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  scope.latitude = position.coords.latitude;
+  scope.longitude = position.coords.longitude;
+
+  geocoder.geocode({ 'latLng': latlng }, function(results, status) {
+    var city = 'Unknown';
+    var country = 'Unknown';
+    // Search through the returned results to find a reasonably good city + country to display
+    // In general, the returned 'results' start from the most specific address, to the most general,
+    // and since we only look for city + country (not street address, postal code, etc), we should be
+    // able to find them from results[0].
+    for (var x = 0, length_1 = results.length; x < length_1; x++){
+      for (var y = 0, length_2 = results[x].address_components.length; y < length_2; y++){
+        var type = results[x].address_components[y].types[0];
+        if (type === 'locality'){
+          city = results[x].address_components[y].long_name;
+          if (country !== 'Unknown') {
+            break;
+          }
+        } else if (type === 'country') {
+          country = results[x].address_components[y].long_name;
+          if (city !== 'Unknown') {
+            break;
+          }
+        }
+      }
+      if (city !== 'Unknown' && country !== 'Unknown') {
+        break;
+      }
+    }
+    if (city === 'Unknown' || country === 'Unknown') {
+      // according to Google map docs, results[4].formatted_address should provide
+      // a relatively coarse address, for example, 'Stuttgart, Germany'.
+      scope.city = results[4].formatted_address;
+    } else {
+      scope.city = city + ', ' + country;
+    }
+    scope.$apply();
+  });
+}
+
+function geoUpdateLocationError(error, scope) {
+  console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
+  scope.city = 'Google geo error, try again later.';
+  scope.$apply();
+}
 
 // Offerings controller available for un-authenticated users
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
@@ -31,23 +79,21 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.showTitle = 'Find help';
       $scope.createRequest = !$scope.createRequest;
     }
-    
-      // get current geo location
+
+    // get current location using Google GeoLocation services
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          var geocoder = new google.maps.Geocoder();
-          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          $scope.latitude = position.coords.latitude;
-          $scope.longitude = position.coords.longitude;
-          
-          geocoder.geocode({
-            'latLng': latlng
-          }, function(results, status) {
-            $scope.city = results[4].formatted_address;
-            $scope.$apply();
-          });
-        });
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
     }
 
     // Make sure the Socket is connected to notify of updates
@@ -109,23 +155,21 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
       $scope.showTitle = 'Offer help';
       $scope.searchRequest = !$scope.searchRequest;
     }
-    
-      // get current geo location
+
+    // get current location using Google GeoLocation services
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          var geocoder = new google.maps.Geocoder();
-          var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          $scope.latitude = position.coords.latitude;
-          $scope.longitude = position.coords.longitude;
-          
-          geocoder.geocode({
-            'latLng': latlng
-          }, function(results, status) {
-            $scope.city = results[4].formatted_address;
-            $scope.$apply();
-          });
-        });
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
     }
 
     // Make sure the Socket is connected to notify of updates
@@ -224,9 +268,14 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
 
     // Find a list of Offerings
     $scope.find = function () {
-      // TODO: Pass in currently-authenticated user to restrict search
       $scope.offerings = Offerings.query();
     };
 
+    // Find existing Offering
+    $scope.findOne = function () {
+      $scope.offering = Offerings.get({
+        offeringId: $stateParams.offeringId
+      });
+    };
   }
 ]);
