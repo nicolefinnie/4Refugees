@@ -1,7 +1,6 @@
 'use strict';
 
 function mapOfferTypeToBoolean(offerType) {
-  console.log('what happens to offertype ' + offerType);
   if (offerType === 'offer') {
     return 0;
   } else if (offerType === 'request') {

@@ -137,6 +137,84 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
   }
 ]);
 
+//Edit controller only available for authenticated users
+angular.module('offerings').controller('OfferingsEditController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
+    
+    // If user is not signed in then redirect back home
+    if (!Authentication.user) {
+      $location.path('/');
+    }
+
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    $scope.messages = [];
+    $scope.category = {};
+    
+    $scope.authentication = Authentication;
+ 
+    // get current location using Google GeoLocation services
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
+    }
+
+    // Update existing Offering
+    $scope.update = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
+        return false;
+      }
+
+      var offering = $scope.offering;
+
+      offering.$update(function () {
+        $location.path('offerings/' + offering._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    
+    // Find existing Offering
+    $scope.findOne = function () {
+      $scope.offering = Offerings.get({ 
+        offeringId: $stateParams.offeringId 
+      }, function () {
+        //determine if it's edit request or offer
+        if ($scope.offering.offerType === 0){
+          $scope.showTitle = 'Edit Offer';
+        } else {
+          $scope.showTitle = 'Edit Request';
+        }
+       
+        // set selected category checkbox of the to-edit-request/offer 
+        var selectedCategory = {};
+        $scope.offering.category.forEach(function(eachCategory) {
+          selectedCategory[eachCategory] = true;
+        });
+        $scope.category = selectedCategory;
+      });
+    };
+
+  }
+]);
+
 //Offerings controller only available for authenticated users
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
