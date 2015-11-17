@@ -14,7 +14,8 @@ angular.module('offerings').run(['Menus',
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'offerings', {
       title: 'List My Offerings',
-      state: 'offerings.listMine'
+      state: 'offerings.listMine',
+      roles: ['user']
     });
   }
 ]);
