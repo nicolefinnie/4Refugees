@@ -56,7 +56,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
         <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
           {{::item.title}}&nbsp;
-        <!--  NF: looks like a bug to me  <span class="{{postingBadge}}"></span> -->
+          <span class="{{postingBadge}}"></span>
         </a>
         <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">

@@ -1,7 +1,7 @@
 <section ng-controller="OfferingsController">
 <div class="row">
 
-    <div class="col s8">
+    <div class="col s12">
         <div class="page-header">
             <h3>{{showTitle}}</h3>
         </div>
@@ -30,7 +30,7 @@
             <br><br>
         
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s7">
                     <i class="material-icons prefix">description</i>
                     <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
                     <div ng-messages="offeringForm.description.$error" role="alert">
@@ -40,13 +40,13 @@
             </div>
       
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s7">
                 <i class="material-icons prefix">room</i> <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
                 </div>
             </div>
 
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s7">
                     <i class="material-icons prefix">schedule</i>
                     <label for="when">When</label>
                     <input id="when" type="date" name="date" class="datepicker" ng-model="when">
@@ -61,15 +61,15 @@
         </script>
 
             <div class="row">
-                <div class="form-group col s2">
+                <div class="form-group col s4">
                     <button type="submit" id="createButton" class="btn waves-effect waves-light">Add
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
-                <div class="col s6" ng-show="searchOffer">
+                <div class="col s4" ng-show="searchOffer">
                   <a href="offerings/search?offerType=offer" id="searchOffer">Or find what offers are out there!</a>
                 </div>
-                <div class="col s6" ng-show="searchRequest">
+                <div class="col s4" ng-show="searchRequest">
                   <a href="offerings/search?offerType=request" id="searchRequest">Or find what helps are needed!</a>
                 </div>
               </div>

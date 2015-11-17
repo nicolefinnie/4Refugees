@@ -1,7 +1,7 @@
 <section ng-controller="OfferingsPublicController">
 <div class="row">
   
-  <div class="col s8">
+  <div class="col s12">
     <div class="page-header">
       <h3>{{showTitle}}</h3>
     </div>   
@@ -29,21 +29,21 @@
         <br><br>
         
         <div class="row"> 
-            <div class="input-field col s6">
+            <div class="input-field col s7">
                 <i class="material-icons prefix">room</i>
                 <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
             </div>
         </div>
         
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s7">
                 <i class="material-icons prefix">explore</i>
                 <input name="radius" type="text" ng-model="radius" id="radius" class="form-control" placeholder="Search radius in ? km">
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s6">
+            <div class="input-field col s7">
                 <i class="material-icons prefix">schedule</i>
                 <label for="when">When</label>
                 <input id="when" type="date" name="date" class="datepicker" ng-model="when">
@@ -60,15 +60,15 @@
       </div>  <!-- end of the main form-group -->
       
       <div class="row">  
-        <div class="form-group col s2">
+        <div class="form-group col s4">
           <button type="submit" id="searchButton" class="btn waves-effect waves-light">Search
               <i class="material-icons right">search</i>
           </button>
         </div>
-        <div class="col s6" ng-show="createOffer">
+        <div class="col s4" ng-show="createOffer">
             <a href="offerings/create?offerType=offer" id="createOffer">Or offer others your help!</a>
         </div>
-        <div class="col s6" ng-show="createRequest">
+        <div class="col s4" ng-show="createRequest">
             <a href="offerings/create?offerType=request" id="createRequest">Or tell others your needs!</a>
         </div>
       </div>
@@ -78,8 +78,9 @@
       </div>
         
     </form>
-  </div>
-  <div class="list-group col s4">
+  
+    <br>  
+    <div class="list-group">
     <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
       <small class="list-group-item-text">
       </small>
@@ -96,5 +97,8 @@
         -->
     </a>
   </div>
+  
+  </div>
+  
 </div>
 </section>
