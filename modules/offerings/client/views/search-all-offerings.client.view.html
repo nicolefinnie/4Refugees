@@ -8,14 +8,6 @@
   
     <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
       <div class="form-group" show-errors>
-       <!-- 
-        <div ng-controller="RadioButtonController">
-          <input name="radioGroup" type="radio" id="offerSelected" ng-model="offerType" value="offer"/>
-          <label for="offerSelected" class="category-checkbox">Offer</label>
-          <input name="radioGroup" type="radio" id="requestSelected" ng-model="offerType" value="request"/>
-          <label for="requestSelected"  class="category-checkbox">Request</label>
-        </div>
-         -->
         <br>
         <div id="labels">
           <p>Category</p>
@@ -74,7 +66,7 @@
           </button>
         </div>
         <div class="col s6" ng-show="createOffer">
-            <a href="offerings/create?offerType=offer" id="createRequest">Or offer others your help!</a>
+            <a href="offerings/create?offerType=offer" id="createOffer">Or offer others your help!</a>
         </div>
         <div class="col s6" ng-show="createRequest">
             <a href="offerings/create?offerType=request" id="createRequest">Or tell others your needs!</a>
