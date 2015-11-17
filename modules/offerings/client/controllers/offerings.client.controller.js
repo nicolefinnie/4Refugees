@@ -1,12 +1,6 @@
 'use strict';
 
-// TODO: Rename/improve this method
-function numOfferType(ot) {
-  if (ot === true) {
-    return 1;
-  }
-  return 0;
-}
+//TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
 
 // Converts the category selections from the input form into an
 // array of category strings
@@ -17,11 +11,26 @@ function getCategoryArray(cat, defaultSetting) {
     return [defaultSetting];
   }
 }
-              
+   
+
 // Offerings controller available for un-authenticated users
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
+    
+    // determine offer type 
+    $scope.offerType = $location.search().offerType;
+    
+    //Volunteer mode: determine the title to show, this mode search needs or create offer
+    if ($scope.offerType === 'request') {
+      $scope.showTitle = 'Search needs';
+      $scope.createOffer = !$scope.createOffer;
+    
+    // Refugee mode: determine the title to show, this mode search help OR create request
+    } else if ($scope.offerType === 'offer'){
+      $scope.showTitle = 'Find help';
+      $scope.createRequest = !$scope.createRequest;
+    }
     
       // get current geo location
     if (navigator.geolocation) {
@@ -50,6 +59,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     // Search all offerings for the input criteria
     $scope.searchAll = function (isValid) {
+        
       $scope.error = null;
 
       if (!isValid) {
@@ -67,8 +77,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         when: this.when,
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, ''),
-            // mapping boolean offerType from slider on webpage to integer 0 and 1
-        offerType: numOfferType(this.offerType) 
+        offerType: this.offerType 
       });
     };
 
@@ -86,6 +95,20 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
+    
+    // determine offer type 
+    $scope.offerType = $location.search().offerType;
+    
+    // Refugee mode: determine the title to show, this mode create request OR search offer
+    if ($scope.offerType === 'request') {
+      $scope.showTitle = 'Need help';
+      $scope.searchOffer = !$scope.searchOffer;
+     
+    // volunteer mode: determine the title to show, this mode create offer OR search request
+    } else if ($scope.offerType === 'offer'){
+      $scope.showTitle = 'Offer help';
+      $scope.searchRequest = !$scope.searchRequest;
+    }
     
       // get current geo location
     if (navigator.geolocation) {
@@ -137,8 +160,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         category: getCategoryArray(this.category, 'Other'),
         longitude: $scope.longitude,
         latitude: $scope.latitude,
-            // mapping boolean offerType from slider on webpage to integer 0 and 1
-        offerType: numOfferType(this.offerType) 
+        offerType: this.offerType 
       });
       
       // Emit a 'offeringMessage' message event with the JSON offering object

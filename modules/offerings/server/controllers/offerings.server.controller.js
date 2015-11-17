@@ -1,5 +1,15 @@
 'use strict';
 
+function mapOfferTypeToBoolean(offerType) {
+  console.log('what happens to offertype ' + offerType);
+  if (offerType === 'offer') {
+    return 0;
+  } else if (offerType === 'request') {
+    return 1;
+  }
+  // unsupported states or unknown errors
+  return -1;
+}
 /**
  * Module dependencies.
  */
@@ -22,7 +32,7 @@ exports.create = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = req.body.offerType;
+  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
 
   offering.save(function (err) {
     if (err) {
@@ -56,7 +66,7 @@ exports.update = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = req.body.offerType;
+  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
 
   offering.save(function (err) {
     if (err) {

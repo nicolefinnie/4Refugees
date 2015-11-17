@@ -24,7 +24,9 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 
       <ul class="right hide-on-med-and-down" ng-show="authentication.user">
         <li>
-          <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}
+          <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>
+            <img ng-src="{{authentication.user.profileImageURL}}" class="header-profile-image" />
+            {{authentication.user.displayName}}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
           <ul id="dropdownAuth" class="dropdown-content">
@@ -54,7 +56,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
         <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
           {{::item.title}}&nbsp;
-          <span class="{{postingBadge}}"></span>
+        <!--  NF: looks like a bug to me  <span class="{{postingBadge}}"></span> -->
         </a>
         <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
           <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">

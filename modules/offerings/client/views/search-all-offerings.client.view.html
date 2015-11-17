@@ -3,20 +3,20 @@
   
   <div class="col s8">
     <div class="page-header">
-      <h3>Search</h3>
+      <h3>{{showTitle}}</h3>
     </div>   
   
     <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
       <div class="form-group" show-errors>
-        <br>
-        <div>
-          <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" />
-          <label for="offeringRadioButton" class="category-checkbox">Offer</label>
-          <input name="radioGroup" type="radio" id="requestRadioButton" />
-          <label for="requestRadioButton"  class="category-checkbox">Request</label>
+       <!-- 
+        <div ng-controller="RadioButtonController">
+          <input name="radioGroup" type="radio" id="offerSelected" ng-model="offerType" value="offer"/>
+          <label for="offerSelected" class="category-checkbox">Offer</label>
+          <input name="radioGroup" type="radio" id="requestSelected" ng-model="offerType" value="request"/>
+          <label for="requestSelected"  class="category-checkbox">Request</label>
         </div>
+         -->
         <br>
-
         <div id="labels">
           <p>Category</p>
           <input type="checkbox" id="training" name="training" ng-model="category.training">
@@ -66,12 +66,21 @@
         </script>
         
       </div>  <!-- end of the main form-group -->
-        
-      <div class="form-group">
+      
+      <div class="row">  
+        <div class="form-group col s2">
           <button type="submit" id="searchButton" class="btn waves-effect waves-light">Search
               <i class="material-icons right">search</i>
           </button>
+        </div>
+        <div class="col s6" ng-show="createOffer">
+            <a href="offerings/create?offerType=offer" id="createRequest">Or offer others your help!</a>
+        </div>
+        <div class="col s6" ng-show="createRequest">
+            <a href="offerings/create?offerType=request" id="createRequest">Or tell others your needs!</a>
+        </div>
       </div>
+      
       <div ng-show="error" class="text-danger">
           <strong ng-bind="error"></strong>
       </div>

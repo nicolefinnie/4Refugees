@@ -16,18 +16,5 @@ angular.module('offerings').run(['Menus',
       title: 'List My Offerings',
       state: 'offerings.listMine'
     });
-
-    // Add the dropdown search item
-    Menus.addSubMenuItem('topbar', 'offerings', {
-      title: 'Search Offerings',
-      state: 'offerings.searchAll'
-    });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'offerings', {
-      title: 'Create Offerings',
-      state: 'offerings.create',
-      roles: ['user']
-    });
   }
 ]);

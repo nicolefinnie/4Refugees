@@ -3,18 +3,19 @@
 
     <div class="col s8">
         <div class="page-header">
-            <h3>Create</h3>
+            <h3>{{showTitle}}</h3>
         </div>
   
         <form name="offeringForm" class="simple-form" ng-submit="create(offeringForm.$valid)" novalidate>
           <div class="form-group" show-errors>
-            <br>
-            <div>
-                <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" />
+            <!-- 
+            <div ng-controller="RadioButtonController">
+                <input name="radioGroup" type="radio" id="offeringRadioButton" ng-model="offerType" value="offer" />
                 <label for="offeringRadioButton" class="category-checkbox">Offer</label>
-                <input name="radioGroup" type="radio" id="requestRadioButton" />
+                <input name="radioGroup" type="radio" id="requestRadioButton" ng-model="offerType" value="request" />
                 <label for="requestRadioButton"  class="category-checkbox">Request</label>
             </div>
+             -->
             <br>
 
             <div id="labels">
@@ -67,12 +68,20 @@
           });
         </script>
 
-            <div class="form-group">
-                <button type="submit" id="createButton" class="btn waves-effect waves-light">Add
-                    <i class="material-icons right">send</i>
-                </button>
-            </div>
-
+            <div class="row">
+                <div class="form-group col s2">
+                    <button type="submit" id="createButton" class="btn waves-effect waves-light">Add
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <div class="col s6" ng-show="searchOffer">
+                 <a href="offerings/search?offerType=offer" id="searchOffer">Or find what offers are out there!</a>
+                </div>
+                <div class="col s6" ng-show="searchRequest">
+                 <a href="offerings/search?offerType=request" id="searchRequest">Or find what helps are needed!</a>
+                </div>
+              </div>
+            
             <div ng-show="error" class="text-danger">
                 <strong ng-bind="error"></strong>
             </div>
