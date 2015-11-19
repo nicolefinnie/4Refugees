@@ -61,7 +61,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
     };
 
     // Remove existing Posting
-    $scope.remove = function (posting) {
+    $scope.removePosting = function (posting) {
       if (posting) {
         posting.$remove();
 
@@ -75,6 +75,18 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
           $location.path('postings');
         });
       }
+    };
+
+    // ReplyTo existing Posting
+    $scope.replyPosting = function (posting) {
+      $scope.posting = posting;
+      $('#modalReply').openModal();
+    };
+
+
+    $scope.modalDetails = function(posting){
+      $scope.posting = posting;
+      $('#modalDetails').openModal();
     };
 
     // Update existing Posting 
@@ -98,7 +110,15 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
     // Find a list of Postings
     $scope.find = function () {
-      $scope.postings = Postings.query({ unread: false });
+      $scope.postings = Postings.query();
+
+      // Emit a 'postingMessage' message event with an empty JSON posting object
+      var message = {
+        content : {
+          recipient : Authentication.user._id
+        }
+      };
+      Socket.emit('postingMessage', message);
     };
 
     // Find a list of new Postings

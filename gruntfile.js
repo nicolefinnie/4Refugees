@@ -125,6 +125,7 @@ module.exports = function (grunt) {
         'img-req-src': false,
         'indent-style': 'spaces',
         'indent-width': 2,
+        'label-req-for': false,
         'maxerr': 5,
         'tag-name-lowercase': true,
         'tag-bans': [],

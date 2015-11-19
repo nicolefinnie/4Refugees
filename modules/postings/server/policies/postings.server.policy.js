@@ -48,8 +48,12 @@ exports.invokeRolesPolicies = function () {
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
+  //if (req.user && req.posting) {
+  //  console.log('isAllowed: user: ' + JSON.stringify(req.user) + '  recipient user: ' + JSON.stringify(req.posting.recipient));
+  //}
+
   // If a posting is being processed and the current user created it then allow any manipulation
-  if (req.posting && req.user && req.posting.user.id === req.user.id) {
+  if (req.posting && req.user && req.posting.recipient._id === req.user.id) {
     return next();
   }
 

@@ -3,6 +3,73 @@
     <h3>Your emails</h3>
   </div>
 
+
+  <div class="row">
+    <div class="s12 col">
+<!--
+            <form class="forms forms-inline input-field ">
+                <input type="text" class="input-big width-50" id="query" ng-model="query">
+                <label for="query">Filter</label>
+            </form>
+-->
+      <ul class="collection">
+        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="posting in postings| filter:query | orderBy:'posting.sender.displayName'">
+          <a href="" ng-click="modalDetails(posting.title)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">{{posting.sender.displayName}}</a><br>
+          <p>Subj: {{posting.title}}</p> <!--, {{u.user.location.state}}</p> -->
+          <span class="new badge" ng-show="posting.unread"></span>
+          <a href="#!" class="secondary-content" ng-click="removePosting(posting)"><i class="small mdi-action-highlight-remove"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div id="modalDetails" class="modal bottom-sheet">
+    <div class="modal-content">
+      <div class="row">
+        <div class="l2 col">
+          <img ng-src="{{posting.sender.picture.thumbnail}}" alt="{{posting.sender.displayName}}" class="align-right circle">
+        </div>
+        <div class="l10 col">
+          <h2>Details</h2>
+          <label>Content</label> {{posting.content}} <br/>
+          <label>Password</label> {{user.password}}
+          <hr>
+          <label>Phone</label> {{user.phone}} <br/>
+          <label>Location</label> {{user.location.city}}, {{user.location.state}} <br/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" ng-click="replyPosting(posting)" class="modal-action waves-effect waves-green btn-flat">Reply</a>
+        <!-- 
+          <a href="#!" ng-click="removePosting(posting)" class="modal-action modal-close waves-effect waves-red btn-flat">Remove</a>
+        -->
+        <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Done</a>
+      </div>
+    </div>
+  </div>
+  <div id="modalReply" class="modal">
+    <div class="modal-content">
+      <div class="row">
+        <div class="l2 col">
+          <img ng-src="{{posting.sender.picture.thumbnail}}" alt="{{posting.sender.displayName}}" class="align-right circle">
+        </div>
+        <div class="l10 col">
+          <h2>Details</h2>
+          <label>Content</label> {{posting.content}} <br/>
+          <label>Password</label> {{user.password}}
+          <hr>
+          <label>Phone</label> {{user.phone}} <br/>
+          <label>Location</label> {{user.location.city}}, {{user.location.state}} <br/>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" ng-click="replyPosting(posting)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
+  </div>
+</div>
+
+<!--
   <div class="list-group">
     <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
       <li ng-repeat="posting in postings">
@@ -27,4 +94,5 @@
       </li>
     </ul>
   </div>
+-->
 </section>

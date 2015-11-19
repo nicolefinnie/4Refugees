@@ -111,6 +111,7 @@ exports.list = function (req, res) {
   if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
     query.recipient = req.user._id;
   }
+
   if (query.unread === 'true') {
     query.unread = true;
   }
@@ -118,7 +119,7 @@ exports.list = function (req, res) {
     query.unread = false;
   }
   
-  var reset = false;
+  var reset = true;
   if (query.reset) {
     reset = query.reset;
     delete query.reset;
