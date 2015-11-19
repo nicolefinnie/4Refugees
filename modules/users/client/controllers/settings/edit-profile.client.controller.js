@@ -30,20 +30,10 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     };
 
     // TODO load available tags here, already set ones should come from user object authentication.user later;
-    // TODO provide API to store and retrieve tags
-    // TODO extend user object with tags and aboutMe section
-    // TODO extend API to safe those new fields
-    ctrl.user.tags = [{ tagName: '\"samurai on the toilet\" - by takeshi kitano (1970)' },
-                      { tagName: '(>_<)' },
-                      { tagName: '(o_o)' },
-                      { tagName: '(O_O)' },
-                      { tagName: '(^_^)' }
-                     ];
-
-    // mocked data until I figured out how to create APIs
+    // mocked data until I got a concept how to provide / manage the tags in the DB
     ctrl.loadTags = function($query) {
-      return $http.get('/public/lib/tags.json', { cache: true }).then(function(response) {
-//          var tags = response.data;
+      return $http.get('/api/tags', { cache: true }).then(function(response) {
+        var tags = response.data;
         log.info('DEBUG - resonse.data content: ' + response.data);
         var tags = [
                     { tagName: 'sleepy' },
@@ -71,6 +61,5 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
       });
     };
     
-    ctrl.user.aboutMe = 'stuff \n ss This is some awesome stuff to blabla about me blabla sutff thing \n safewf fea \t <sdf s\t ';
   }
 ]);
