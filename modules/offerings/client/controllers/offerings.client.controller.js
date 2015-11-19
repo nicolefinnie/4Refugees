@@ -66,9 +66,6 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
-    // determine offer type 
-    $scope.offerType = $location.search().offerType;
-    
     //Volunteer mode: determine the title to show, this mode search needs or create offer
     if ($scope.offerType === 'request') {
       $scope.showTitle = 'Search needs';
@@ -220,9 +217,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
-    // determine offer type 
-    $scope.offerType = $location.search().offerType;
-    
     // Refugee mode: determine the title to show, this mode create request OR search offer
     if ($scope.offerType === 'request') {
       $scope.showTitle = 'Need help';
@@ -258,9 +252,9 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     $scope.messages = [];
 
     // If user is not signed in then redirect back home
-    if (!Authentication.user) {
-      $location.path('/');
-    }
+//    if (!Authentication.user) {
+//      $location.path('/');
+//    }
 
     // Create new Offering
     $scope.create = function (isValid) {
