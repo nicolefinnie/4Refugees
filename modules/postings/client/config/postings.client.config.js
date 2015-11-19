@@ -8,7 +8,7 @@ angular.module('postings').run(['Menus',
       title: 'InMail',
       state: 'postings',
       type: 'inmail',
-      roles: ['*']
+      roles: ['user','admin']
     });
 
     // Add the dropdown list item

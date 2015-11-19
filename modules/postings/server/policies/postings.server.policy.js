@@ -53,7 +53,7 @@ exports.isAllowed = function (req, res, next) {
   //}
 
   // If a posting is being processed and the current user created it then allow any manipulation
-  if (req.posting && req.user && req.posting.recipient._id === req.user.id) {
+  if (req.posting && req.user && req.posting.recipient._id.equals(req.user.id)) {
     return next();
   }
 

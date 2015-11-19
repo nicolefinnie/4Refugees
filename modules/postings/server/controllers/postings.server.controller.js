@@ -17,6 +17,7 @@ exports.create = function (req, res) {
   posting.sender = req.user;
   posting.updated = new Date();
   posting.title = req.body.title;
+  posting.content = req.body.content;
   posting.recipient = req.body.recipient;
   console.log('recipient is: ' + JSON.stringify(req.body));
   posting.offeringId = req.body.offeringId;
@@ -119,7 +120,7 @@ exports.list = function (req, res) {
     query.unread = false;
   }
   
-  var reset = true;
+  var reset = false;
   if (query.reset) {
     reset = query.reset;
     delete query.reset;
