@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var path = require('path'),
+  url = require('url'),
   mongoose = require('mongoose'),
   Posting = mongoose.model('Posting'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
@@ -13,10 +14,11 @@ var path = require('path'),
  */
 exports.create = function (req, res) {
   var posting = new Posting();
-  posting.user = req.user;
+  posting.sender = req.user;
   posting.updated = new Date();
   posting.title = req.body.title;
-  posting.content = req.body.content;
+  posting.recipient = req.body.recipient;
+  console.log('recipient is: ' + JSON.stringify(req.body));
   posting.offeringId = req.body.offeringId;
   posting.replyTo = req.body.postingId;
 
@@ -45,6 +47,7 @@ exports.update = function (req, res) {
   var posting = req.posting;
 
   posting.replyTo = req.body.postingId;
+  posting.recipient = req.body.recipient;
 
   posting.save(function (err) {
     if (err) {
@@ -78,7 +81,9 @@ exports.delete = function (req, res) {
  * List of all Postings - admin
  */
 exports.listall = function (req, res) {
-  Posting.find().sort('-created').populate('user', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+  var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'recipient' : req.user._id };
+
+  Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -94,30 +99,55 @@ exports.listall = function (req, res) {
  * List of Postings
  */
 exports.list = function (req, res) {
-  Posting.find({ 'recipient' : req.user }).sort('-created').populate('user', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(postings);
-    }
-  });
-};
 
-/**
- * List of New Postings
- */
-exports.listnew = function (req, res) {
-  Posting.find({ 'recipient' : req.user }).sort('-created').populate('user', 'displayName').exec(function (err, postings) {
+  var query = url.parse(req.url, true).query;
+  
+  if (!req.user) {
+    return res.status(400).send({
+      message: errorHandler.getErrorMessage('no user')
+    });
+  }
+
+  if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
+    query.recipient = req.user._id;
+  }
+  if (query.unread === 'true') {
+    query.unread = true;
+  }
+  if (query.unread === 'false') {
+    query.unread = false;
+  }
+  
+  var reset = false;
+  if (query.reset) {
+    reset = query.reset;
+    delete query.reset;
+  }
+
+  console.log('list: query is ' + JSON.stringify(query));
+  //console.log('list: body is ' + JSON.stringify(req.body));
+
+  Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      // mark mails read - even for admins only for their specific id
+      //if (!query.recipient) {
+      //  query.recipient = req.user._id;
+      //}
       res.json(postings);
+      console.log('mail result: ' + JSON.stringify(postings));
+
+      if (reset) {
+        Posting.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
+          console.log('mark mail read result: ' + JSON.stringify(res));
+        });
+      }
     }
   });
+      
 };
 
 /**
@@ -131,7 +161,7 @@ exports.postingByID = function (req, res, next, id) {
     });
   }
 
-  Posting.findById(id).populate('user', 'displayName').exec(function (err, posting) {
+  Posting.findById(id).populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, posting) {
     if (err) {
       return next(err);
     } else if (!posting) {
@@ -155,7 +185,7 @@ exports.mailChainByOfferingId = function (req, res, next, id) {
     });
   }
 
-  Posting.where('offeringId').equals(req.offeringId).populate('user','displayName').exec(function (err, postings) {
+  Posting.where('offeringId').equals(req.offeringId).populate('sender','displayName').exec(function (err, postings) {
     if (err) {
       return next(err);
     } else if (!postings) {

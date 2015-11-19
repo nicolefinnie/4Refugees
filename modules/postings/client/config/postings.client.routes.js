@@ -15,12 +15,23 @@ angular.module('postings').config(['$stateProvider',
         templateUrl: 'modules/postings/client/views/list-postings.client.view.html'
       })
       .state('postings.listnew', {
+        url: '/unread',
+        templateUrl: 'modules/postings/client/views/listnew-postings.client.view.html'
+      })
+      .state('postings.search', {
         url: '',
         templateUrl: 'modules/postings/client/views/list-postings.client.view.html'
       })
       .state('postings.create', {
         url: '/create',
         templateUrl: 'modules/postings/client/views/create-posting.client.view.html',
+        data: {
+          roles: ['user']
+        }
+      })
+      .state('postings.createadmin', {
+        url: '/createadmin',
+        templateUrl: 'modules/postings/client/views/createadmin-posting.client.view.html',
         data: {
           roles: ['user', 'admin']
         }

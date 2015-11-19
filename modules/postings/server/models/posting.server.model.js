@@ -29,7 +29,7 @@ var PostingSchema = new Schema({
     type: Boolean,
     default: true
   },
-  user: {
+  sender: {
     type: Schema.ObjectId,
     ref: 'User'
   },

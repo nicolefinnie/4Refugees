@@ -2,7 +2,7 @@
   <div class="page-header">
     <h1 ng-bind="posting.title"></h1>
   </div>
-  <div class="pull-right" ng-show="authentication.user._id == posting.user._id">
+  <div class="pull-right" ng-show="authentication.user._id == posting.sender._id">
     <a class="btn btn-primary" ui-sref="postings.edit({postingId: posting._id})">
       <i class="glyphicon glyphicon-edit"></i>
     </a>
@@ -15,7 +15,7 @@
       Posted on
       <span ng-bind="posting.created | date:'mediumDate'"></span>
       by
-      <span ng-bind="posting.user.displayName"></span>
+      <span ng-bind="posting.sender.displayName"></span>
     </em>
   </small>
   <p class="lead" ng-bind="posting.content"></p>

@@ -1,8 +1,8 @@
 'use strict';
 /* global Materialize:false */
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus', 'Socket',
-  function ($scope, $state, Authentication, Menus, Socket) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
+  function ($scope, $state, $http, Authentication, Menus, Socket) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -11,6 +11,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.menu = Menus.getMenu('topbar');
 
     $scope.postingBadge = 'badge';
+
+    // set 'new' badge to InMail if there is unread mail for me
+    $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
+      var postings = response.data;
+      if (postings.length > -1) $scope.postingBadge = 'new badge';
+    });
 
     //if (Authentication.user) {
        //$scope.postingBadge = hasUserNewMessages(Authentication.user);
@@ -36,11 +42,21 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     Socket.on('postingMessage', function (message) {
 
       // TODO - do not check against the SENDER userName
-      //if (Authentication.user.userName === message.username) {
-      console.log('Received email');
-      
-      $scope.postingBadge = 'new badge';
-      //}
+      if (message.content.recipient === Authentication.user._id) {
+        if (message.content.title) {
+          console.log('Received new email');
+          $scope.postingBadge = 'new badge';
+        }
+        else {
+          console.log('Received remove email');
+          $scope.postingBadge = 'badge';
+        }
+      }
+      else
+      {
+        console.log('Somebody else received email');
+      }
+
     });
   }
 ]);

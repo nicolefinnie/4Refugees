@@ -26,8 +26,8 @@ angular.module('postings').run(['Menus',
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'postings', {
       title: 'New Mail',
-      state: 'postings.create',
-      roles: ['user']
+      state: 'postings.createadmin',
+      roles: ['admin']
     });
 
     // Add the dropdown create item

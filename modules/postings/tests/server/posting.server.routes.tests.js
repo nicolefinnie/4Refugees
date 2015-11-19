@@ -90,7 +90,7 @@ describe('Posting CRUD tests', function () {
                 var postings = postingsGetRes.body;
 
                 // Set assertions
-                (postings[0].user._id).should.equal(userId);
+                (postings[0].sender._id).should.equal(userId);
                 (postings[0].title).should.match('Posting Title');
 
                 // Call the assertion callback
@@ -292,7 +292,7 @@ describe('Posting CRUD tests', function () {
 
   it('should not be able to delete an posting if not signed in', function (done) {
     // Set posting user
-    posting.user = user;
+    posting.sender = user;
 
     // Create new posting model instance
     var postingObj = new Posting(posting);

@@ -32,7 +32,8 @@ describe('Posting Model Unit Tests:', function () {
       posting = new Posting({
         title: 'Posting Title',
         content: 'Posting Content',
-        user: user
+        sender: user,
+        recipient: user
       });
 
       done();

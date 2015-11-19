@@ -25,12 +25,14 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
         return false;
       }
 
+      console.log('posting in ' + JSON.stringify(this.recipient[0]));
+
       // Create new Posting object
       var posting = new Postings({
         title: this.title,
         content: this.content,
         unread: true,
-        recipient: this.recipient,
+        recipient: this.recipient[0]._id,
         replyTo: this.replyTo,
         offeringId: this.offeringId,
       });
@@ -41,6 +43,8 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
       };
       Socket.emit('postingMessage', message);
 
+      console.log('posting is ' + JSON.stringify(posting));
+
       // Redirect after save
       posting.$save(function (response) {
         $location.path('postings/' + response._id);
@@ -50,6 +54,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
         $scope.content = '';
         $scope.replyTo = '';
         $scope.offeringId = '';
+        $scope.recipient = {};
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -93,7 +98,20 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
     // Find a list of Postings
     $scope.find = function () {
-      $scope.postings = Postings.query();
+      $scope.postings = Postings.query({ unread: false });
+    };
+
+    // Find a list of new Postings
+    $scope.findNew = function () {
+      $scope.postings = Postings.query({ unread : true,reset : true });
+
+      // Emit a 'postingMessage' message event with an empty JSON posting object
+      var message = {
+        content : {
+          recipient : Authentication.user._id
+        }
+      };
+      Socket.emit('postingMessage', message);
     };
 
     // Find existing Posting
