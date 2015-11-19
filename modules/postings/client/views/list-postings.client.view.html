@@ -6,18 +6,16 @@
 
   <div class="row">
     <div class="s12 col">
-<!--
-            <form class="forms forms-inline input-field ">
-                <input type="text" class="input-big width-50" id="query" ng-model="query">
-                <label for="query">Filter</label>
-            </form>
--->
       <ul class="collection">
-        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="posting in postings| filter:query | orderBy:'posting.sender.displayName'">
-          <a href="" ng-click="modalDetails(posting.title)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">{{posting.sender.displayName}}</a><br>
-          <p>Subj: {{posting.title}}</p> <!--, {{u.user.location.state}}</p> -->
+        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="posting in postings| filter:query | orderBy:'posting.created'">
+          <a href="" ng-click="modalDetails(posting)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">Subject: {{posting.title}}
+          </a>
           <span class="new badge" ng-show="posting.unread"></span>
-          <a href="#!" class="secondary-content" ng-click="removePosting(posting)"><i class="small mdi-action-highlight-remove"></i></a>
+          <br>
+          <a href="#!" ng-click="replyPosting(posting)" class="modal-action waves-effect waves-green">Reply to {{posting.sender.displayName}}</a>
+          <a href="#!" class="secondary-content" ng-click="removePosting(posting)">
+            <i class="small mdi-action-highlight-remove"></i>
+          </a>
         </li>
       </ul>
     </div>
@@ -29,12 +27,8 @@
           <img ng-src="{{posting.sender.picture.thumbnail}}" alt="{{posting.sender.displayName}}" class="align-right circle">
         </div>
         <div class="l10 col">
-          <h2>Details</h2>
+          <h5>Details</h5>
           <label>Content</label> {{posting.content}} <br/>
-          <label>Password</label> {{user.password}}
-          <hr>
-          <label>Phone</label> {{user.phone}} <br/>
-          <label>Location</label> {{user.location.city}}, {{user.location.state}} <br/>
         </div>
       </div>
       <div class="modal-footer">
@@ -48,51 +42,19 @@
   </div>
   <div id="modalReply" class="modal">
     <div class="modal-content">
-      <div class="row">
-        <div class="l2 col">
-          <img ng-src="{{posting.sender.picture.thumbnail}}" alt="{{posting.sender.displayName}}" class="align-right circle">
-        </div>
-        <div class="l10 col">
-          <h2>Details</h2>
-          <label>Content</label> {{posting.content}} <br/>
-          <label>Password</label> {{user.password}}
+      <form name="postingForm" class="my-form" novalidate>
+        <div class="row">
+          <p>Reply to {{posting.sender.displayName}}</p>
+          <input id="titleid" name="title" ng-model="title">
+          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="Content" cols="30" rows="10" required>Hier</textarea>
           <hr>
-          <label>Phone</label> {{user.phone}} <br/>
-          <label>Location</label> {{user.location.city}}, {{user.location.state}} <br/>
+          <!-- <label>Content</label> {{posting.content}} <br/> -->
         </div>
-      </div>
+      </form>
     </div>
     <div class="modal-footer">
-      <a href="#!" ng-click="replyPosting(posting)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" ng-click="create(postingForm, posting.sender )" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
     </div>
   </div>
-</div>
-
-<!--
-  <div class="list-group">
-    <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
-      <li ng-repeat="posting in postings">
-        <div class="collapsible-header blue white-text"  ng-class="($index==1) ? 'active' : ''">
-          {{posting.title}}
-        </div>
-        <div class="collapsible-body blue lighten-3">
-          <div class="m12 col">
-            <div class="card">
-              <div class="card-content row">
-                <div class="s12 l3 col">
-                  <img src="{{posting.sender.picture.medium}}"
-                  placeholder="{{posting.sender.displayName}}" class="align-right circle">
-                </div>
-                <div class="s12 l9 col">
-                  {{posting.content}} <br>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
--->
 </section>

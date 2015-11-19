@@ -16,7 +16,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
     }
 
     // Create new Posting
-    $scope.create = function (isValid) {
+    $scope.create = function (isValid, recipient) {
       $scope.error = null;
 
       if (!isValid) {
@@ -25,14 +25,25 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
         return false;
       }
 
-      console.log('posting in ' + JSON.stringify(this.recipient[0]));
+      var recipient_id, reload_on_save;
+
+      if (this.recipient) {
+        console.log('posting for ' + JSON.stringify(this.recipient[0]));
+        recipient_id = this.recipient[0]._id;
+        reload_on_save = true;
+      }
+      else {
+        console.log('reply to ' + JSON.stringify(recipient));
+        recipient_id = recipient._id;
+        reload_on_save = false;
+      }
 
       // Create new Posting object
       var posting = new Postings({
         title: this.title,
         content: this.content,
         unread: true,
-        recipient: this.recipient[0]._id,
+        recipient: recipient_id,
         replyTo: this.replyTo,
         offeringId: this.offeringId,
       });
@@ -47,7 +58,9 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
       // Redirect after save
       posting.$save(function (response) {
-        $location.path('postings/' + response._id);
+        if (reload_on_save) {
+          $location.path('postings/' + response._id);
+        }
 
         // Clear form fields
         $scope.title = '';
@@ -110,7 +123,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
     // Find a list of Postings
     $scope.find = function () {
-      $scope.postings = Postings.query();
+      $scope.postings = Postings.query({ reset : true });
 
       // Emit a 'postingMessage' message event with an empty JSON posting object
       var message = {
