@@ -19,6 +19,11 @@ module.exports = {
       pass: ''
     }
   },
+//  translation: {
+//    uri: getCred('watson-translation', 'uri'),
+//    apiKey : getCred('watson-translation', 'apiKey'),
+//    password : 
+//  },
   log: {
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
     format: 'combined',
