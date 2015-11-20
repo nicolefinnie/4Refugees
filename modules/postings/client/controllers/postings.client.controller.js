@@ -124,7 +124,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
     // Find a list of Postings
     $scope.find = function () {
       $scope.postings = Postings.query({ reset : true }, function() {
-        for( var i = 0,len = $scope.postings.length; i < len;i++) {
+        for(var i = 0,len = $scope.postings.length; i < len;i++) {
           $scope.postings[i].contentShort = $scope.postings[i].content.substr(0,30);
         }
       });
@@ -138,10 +138,31 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
       Socket.emit('postingMessage', message);
     };
 
+        // Add an event listener to the 'postingMessage' event and show new inMails for logged in users
+    Socket.on('postingMessage', function (message) {
+
+      if (message.content.recipient === Authentication.user._id) {
+        if (message.content.title) {
+          console.log('PostingController: Received new email');
+          message.content.contentShort = message.content.content.substr(0,30);
+          $scope.postings.unshift(message.content);
+        }
+        else {
+          console.log('PostingController: Received remove email');
+        }
+      }
+      else
+      {
+        console.log('PostingController: Somebody else received email');
+      }
+
+    });
+
+
     // Find a list of new Postings
     $scope.findNew = function () {
       $scope.postings = Postings.query({ unread : true,reset : true }, function() {
-        for( var i = 0,len = $scope.postings.length; i < len;i++) {
+        for(var i = 0,len = $scope.postings.length; i < len;i++) {
           $scope.postings[i].contentShort = $scope.postings[i].content.substr(0,30);
         }
       });
