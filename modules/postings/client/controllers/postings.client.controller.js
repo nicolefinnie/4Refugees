@@ -123,7 +123,11 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
     // Find a list of Postings
     $scope.find = function () {
-      $scope.postings = Postings.query({ reset : true });
+      $scope.postings = Postings.query({ reset : true }, function() {
+        for( var i = 0,len = $scope.postings.length; i < len;i++) {
+          $scope.postings[i].contentShort = $scope.postings[i].content.substr(0,30);
+        }
+      });
 
       // Emit a 'postingMessage' message event with an empty JSON posting object
       var message = {
@@ -136,7 +140,11 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
     // Find a list of new Postings
     $scope.findNew = function () {
-      $scope.postings = Postings.query({ unread : true,reset : true });
+      $scope.postings = Postings.query({ unread : true,reset : true }, function() {
+        for( var i = 0,len = $scope.postings.length; i < len;i++) {
+          $scope.postings[i].contentShort = $scope.postings[i].content.substr(0,30);
+        }
+      });
 
       // Emit a 'postingMessage' message event with an empty JSON posting object
       var message = {

@@ -32,10 +32,11 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     // TODO load available tags here, already set ones should come from user object authentication.user later;
     // mocked data until I got a concept how to provide / manage the tags in the DB
     ctrl.loadTags = function($query) {
+      var tags;
       return $http.get('/api/tags', { cache: true }).then(function(response) {
-        var tags = response.data;
+        tags = response.data;
         log.info('DEBUG - resonse.data content: ' + response.data);
-        var tags = [
+        tags = [
                     { tagName: 'sleepy' },
                     { tagName: 'super sleepy' },
                     { tagName: 'Translation' },

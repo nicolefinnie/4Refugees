@@ -101,7 +101,7 @@ var UserSchema = new Schema({
   tags: [{
     tagName : String,
     value : String
-     }],
+  }],
   aboutMe: {
     type: String
   }

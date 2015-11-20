@@ -13,28 +13,21 @@ angular.module('postings').run(['Menus',
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'Show New Mail',
+      title: 'Show New Mails',
       state: 'postings.listnew'
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'Show Mail',
+      title: 'Your Mail',
       state: 'postings.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'New Mail',
+      title: 'Send New Mail',
       state: 'postings.createadmin',
       roles: ['admin']
-    });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'Reply To',
-      state: 'postings.create',
-      roles: ['user']
     });
   }
 ]);

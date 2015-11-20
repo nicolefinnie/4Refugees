@@ -13,7 +13,7 @@ var TagsSchema = new Schema({
   tags: [{
     tagName : String,
     value : String
-     }]
+  }]
 });
 
 /**

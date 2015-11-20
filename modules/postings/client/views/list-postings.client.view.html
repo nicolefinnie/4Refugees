@@ -2,13 +2,12 @@
   <div class="page-header">
     <h3>Your emails</h3>
   </div>
-
-
   <div class="row">
     <div class="s12 col">
       <ul class="collection">
         <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="posting in postings| filter:query | orderBy:'posting.created'">
-          <a href="" ng-click="modalDetails(posting)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">Subject: {{posting.title}}
+          <a href="" ng-click="modalDetails(posting)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">Subject: {{posting.title}}<br>
+            <small>{{posting.contentShort}}</small>
           </a>
           <span class="new badge" ng-show="posting.unread"></span>
           <br>
