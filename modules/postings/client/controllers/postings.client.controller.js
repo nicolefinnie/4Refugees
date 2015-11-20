@@ -27,7 +27,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
 
       var recipient_id, reload_on_save;
 
-      if (this.recipient) {
+      if (this.recipient && this.recipient[0]) {
         console.log('posting for ' + JSON.stringify(this.recipient[0]));
         recipient_id = this.recipient[0]._id;
         reload_on_save = true;
@@ -52,22 +52,25 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
       var message = {
         content: posting
       };
-      Socket.emit('postingMessage', message);
+      //Socket.emit('postingMessage', message);
 
       console.log('posting is ' + JSON.stringify(posting));
 
       // Redirect after save
       posting.$save(function (response) {
+        Socket.emit('postingMessage', message);
+
         if (reload_on_save) {
           $location.path('postings/' + response._id);
+          // Clear form fields
+          $scope.replyTo = '';
+          $scope.offeringId = '';
+          $scope.recipient = {};
         }
-
-        // Clear form fields
         $scope.title = '';
         $scope.content = '';
-        $scope.replyTo = '';
-        $scope.offeringId = '';
-        $scope.recipient = {};
+        $scope.authentication = Authentication;
+
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -144,8 +147,13 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
       if (message.content.recipient === Authentication.user._id) {
         if (message.content.title) {
           console.log('PostingController: Received new email');
-          message.content.contentShort = message.content.content.substr(0,30);
-          $scope.postings.unshift(message.content);
+          $scope.postings = Postings.query({ reset : false }, function() {
+            for(var i = 0,len = $scope.postings.length; i < len;i++) {
+              $scope.postings[i].contentShort = $scope.postings[i].content.substr(0,30);
+            }
+          });
+          //message.content.contentShort = message.content.content.substr(0,30);
+          //$scope.postings.unshift(message.content);
         }
         else {
           console.log('PostingController: Received remove email');
@@ -153,7 +161,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
       }
       else
       {
-        console.log('PostingController: Somebody else received email');
+        console.log('PostingController: Somebody else received email ' + JSON.stringify(message.content.recipient));
       }
 
     });

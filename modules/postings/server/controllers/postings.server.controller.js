@@ -15,6 +15,7 @@ var path = require('path'),
 exports.create = function (req, res) {
   var posting = new Posting();
   posting.sender = req.user;
+  console.log('sender is: ' + JSON.stringify(req.user));
   posting.updated = new Date();
   posting.title = req.body.title;
   posting.content = req.body.content;
@@ -140,7 +141,7 @@ exports.list = function (req, res) {
       //  query.recipient = req.user._id;
       //}
       res.json(postings);
-      console.log('mail result: ' + JSON.stringify(postings));
+      //console.log('mail result: ' + JSON.stringify(postings));
 
       if (reset) {
         Posting.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
