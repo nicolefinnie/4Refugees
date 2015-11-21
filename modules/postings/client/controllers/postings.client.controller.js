@@ -6,9 +6,9 @@ angular.module('postings').controller('PostingsCreateController', ['$scope', '$h
     $scope.authentication = Authentication;
 
     if ($stateParams.offeringId) {
-      $scope.showTitle = "Contact Offering Owner";
+      $scope.showTitle = 'Contact Offering Owner';
     } else {
-      $scope.showTitle = "Send new mail";
+      $scope.showTitle = 'Send new mail';
     }
 
     // Create new Posting
