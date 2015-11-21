@@ -24,9 +24,9 @@ exports.create = function (req, res) {
   var offering = new Offering();
   offering.user = req.user;
   offering.userId = req.user._id;
-  console.log('Liam pre: ' + req.body.when);
+  //console.log('Liam pre: ' + req.body.when);
   offering.when = new Date(req.body.when);
-  console.log('Liam post1: ' + offering.when);
+  //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
   offering.description = req.body.description;
   offering.city = req.body.city;
@@ -42,8 +42,8 @@ exports.create = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log('Liam post2: ' + offering.when);
-      console.log('Liam post3: ' + JSON.stringify(offering));
+      //console.log('Liam post2: ' + offering.when);
+      //console.log('Liam post3: ' + JSON.stringify(offering));
       res.json(offering);
     }
   });
