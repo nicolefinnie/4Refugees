@@ -2,9 +2,15 @@
   <div class="page-header">
     <h1 ng-bind="offering.description"></h1>
   </div>
+  <!--  <div class="pull-right" ng-show="!(authentication.user._id == offering.user._id)">-->
+  <div class="pull-right" ng-show="true">
+    <a class="waves-effect waves-light btn" ui-sref="offerings.edit({offeringId: offering._id})">
+      <i class="material-icons right ">delete</i> Contact </a>
+    </a>
+  </div>
   <small>
     <em class="text-muted">
-      Posted on
+      Posted BB on
       <span ng-bind="offering.when | date:'mediumDate'"></span>
       by
       <span ng-bind="offering.user.displayName"></span>

@@ -9,9 +9,14 @@
       <i class="material-icons right ">delete</i> Delete
     </a>
   </div>
+  <div class="pull-right" ng-show="authentication.user._id != offering.user._id">
+    <a class="waves-effect waves-light btn" ui-sref="postings.createFromOffer({offeringId: offering._id})">
+      <i class="material-icons right ">email</i> Contact </a>
+    </a>
+  </div>
   <small>
     <em class="text-muted">
-      Posted on
+      Posted CC on
       <span ng-bind="offering.when | date:'mediumDate'"></span>
       by
       <span ng-bind="offering.user.displayName"></span>

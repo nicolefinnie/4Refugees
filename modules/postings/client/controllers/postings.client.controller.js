@@ -1,5 +1,67 @@
 'use strict';
 
+// Controller to create a posting from an offering contact request
+angular.module('postings').controller('PostingsCreateController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Offerings', 'Socket',
+  function ($scope, $http, $stateParams, $location, Authentication, Postings, Offerings, Socket) {
+    $scope.authentication = Authentication;
+
+    if ($stateParams.offeringId) {
+      $scope.showTitle = "Contact Offering Owner";
+    } else {
+      $scope.showTitle = "Send new mail";
+    }
+
+    // Create new Posting
+    $scope.create = function (isValid, recipient) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'postingForm');
+
+        return false;
+      }
+
+      // Create new Posting object
+      var posting = new Postings({
+        title: this.title,
+        content: this.content,
+        unread: true,
+        recipient: this.recipientId,
+        replyTo: this.replyTo,
+        offeringId: this.offeringId,
+      });
+
+      // Emit a 'postingMessage' message event with the JSON posting object
+      var message = {
+        content: posting
+      };
+
+      // Redirect after save
+      posting.$save(function (response) {
+        Socket.emit('postingMessage', message);
+        $location.path('postings/createFromOfferSuccess');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Lookup offering to pre-fill contact request form
+    $scope.prefillForm = function () {
+      $scope.offering = Offerings.get({ 
+        offeringId: $stateParams.offeringId 
+      }, function () {
+        $scope.title = 'RE your 4Refuge.es offering: ' + $scope.offering.description;
+        $scope.offeringId = $scope.offering._id;
+        $scope.recipientName = $scope.offering.user.displayName;
+        $scope.recipientId = $scope.offering.userId;
+        $scope.replyTo = Authentication.user.email;
+        $scope.content = 'Hello,\nI am interested in your offering.  Please e-mail me to discuss further.\n\nThank you,\n' + Authentication.user.displayName;
+      });
+    };
+  }
+]);
+
+
 // Postings controller
 angular.module('postings').controller('PostingsController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
   function ($scope, $http, $stateParams, $location, Authentication, Postings, Socket) {
