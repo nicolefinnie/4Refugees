@@ -1,0 +1,16 @@
+.ibm-header-color {
+  background: #323c3c;
+  color: #fff; }
+
+.ibm-welcome-bar-color {
+  background: #5596e6;
+  color: #fff; }
+
+.ibm-help-bar-color {
+  background: #dfe9e9; }
+  .ibm-help-bar-color h5 {
+    color: #5596e6; }
+  .ibm-help-bar-color a {
+    background: #006d5d; }
+
+/*# sourceMappingURL=core-ibm-colors.css.map */
