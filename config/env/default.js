@@ -28,7 +28,7 @@ module.exports = {
   sessionKey: 'sessionId',
   sessionCollection: 'sessions',
   logo: 'modules/core/client/img/brand/logo.svg',
-  favicon: 'modules/core/client/img/brand/logo.ico',
+  favicon: 'modules/core/client/img/brand/logo.svg',
   uploads: {
     profileUpload: {
       dest: './modules/users/client/img/profile/uploads/', // Profile upload destination path
