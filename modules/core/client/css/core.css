@@ -34,16 +34,15 @@ nav {
     border-radius: 100px;  
 }
 
-.crop-container {
+.cover-container {
   overflow: hidden;
   display: block;
 }
 
-.crop-container img {
+.cover-container img {
   width: 100%;
   positoin: relative;
-  margin-top: -100px;
-  margin-bottom: -100px;
+  margin-bottom: -10px;
 }
 
 /* to match designer's look */
