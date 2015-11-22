@@ -1,20 +1,89 @@
 header, main, footer {
-    padding-left: 0;
+    display: block;
+    padding: 0;
 }
 
 nav {
     overflow: visible;
 }
 
-/* Control the behaviour of welcome caption */
- .welcome-caption-behaviour {
- /* smaller than z-index of overlay */
-  z-index: 10; 
-  width: 100%;
-  height: 100%;
+.logo-header {
+  display: inline-block;
+  margin-left: 100px;
+  padding: 0 50px 0 0;
+  background: url(../img/brand/logo.svg);
+  background-repeat: no-repeat;
+  background-color:rgb(255,255,255);
+  background-color:rgba(255,255,255,0.9); 
+  
 }
- 
+
+.logo-main {
+    display: block;
+    height: 100px;
+    padding: 0px;
+    margin: 0 20px 0px 50px;
+    border: 4px solid white;
+    background-color:rgb(255,255,255); 
+    background-color:rgba(255,255,255,0.7);
+    border-radius: 100px;  
+}
+
+.crop-container {
+  overflow: hidden;
+  display: block;
+}
+
+.crop-container img {
+  width: 100%;
+  positoin: relative;
+  margin-top: -100px;
+  margin-bottom: -100px;
+}
+
+.container-header{
+ margin-right:100px;
+}
+/* for designer's look*/
+.container-footer{
+ padding: 20px 20px 20px;
+ margin-top: 20px;
+} 
+
+/* IBM design icons*/
+.ibm-icon-help {
+  opacity: 0.5;
+  width: 75px;
+  height: 75px;
+  background: url(/lib/ibm-icons/svg/object-based/help_32.svg);
+  background-repeat: no-repeat;
+  background-size: 75px 75px;
+  margin-left: 90px;
+}
+
+.ibm-icon-location {
+  opacity: 0.5;
+  width: 75px;
+  height: 75px;
+  background: url(/lib/ibm-icons/svg/object-based/location_32.svg);
+  background-repeat: no-repeat;
+  background-size: 75px 75px;
+  margin-left: 90px;
+}
+
+.ibm-icon-group {
+  opacity: 0.5;
+  width: 75px;
+  height: 75px;
+  background: url(/lib/ibm-icons/svg/object-based/group_32.svg);
+  background-repeat: no-repeat;
+  background-size: 75px 75px;
+  margin-left: 90px;
+}
+
+
 /* Control the position of logo */  
+/*
 .logo-position {
   position: relative;
   height: 400px;
@@ -23,13 +92,25 @@ nav {
   overflow: hidden;
   margin:0 auto;
   top: 50%;
-  /*go up 360 px */
-  margin-top: -360px; 
+  margin-top: -360px; // go up to 360px
 }
- 
+*/
+/* Control the behaviour of welcome caption */
+/*
+ .welcome-caption-behaviour {
+  z-index: 10; // smaller than z-index of overlay 
+  width: 100%;
+  height: 100%;
+}
+*/
+
+/*
 .content {
   margin-top: 50px;
 }
+*/
+
+
 .undecorated-link:hover {
   text-decoration: none;
 }
@@ -65,14 +146,4 @@ a:hover .header-profile-image {
   display: inline;
 }
 
-.imgLogo {
-    padding: 20px;
-    margin: 20px;
-    border: 5px solid white;
-    /* This is a fallback background colour for older browsers which don't support rgba() */
-    background-color:rgb(255,255,255);
-    background-color:rgba(255,255,255,0.7);
-    -moz-border-radius: 222px 222px 222px 222px;
-    -webkit-border-radius: 222px 222px 222px 222px;
-     border-radius: 222px 222px 222px 222px;  
-}
+

@@ -1,25 +1,29 @@
 <!-- According to Mean.JS design, external scripts have to be included in header, see the example here:
 https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One">
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-  
-<div ng-controller="HeaderController">
-  <nav class="rf-header green darken-4">
-    <div class="nav-wrapper container">
-      <span style="font-family: Sansita,serif,bold">
-        <a ui-sref="home" class="brand-logo"> 4Refuge.es</a>
-      </span>
+<!-- we don't need this font for the new design -->
+<!--  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One"> -->
 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<style>@import 'public/lib/IBM-Design-Colors';</style>  
+  
+<div ng-controller="HeaderController"">
+  <nav class="rf-header grey darken-4">
+    <div class="nav-wrapper container ">
+      <span>
+         <a ui-sref="home" class="brand-logo"><i class="logo-header left"></i>4Refuge.es</a>
+      </span>
+    
 <!-- Dropdown Trigger -->
+    <div class="container-header">
       <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
-        <li ui-sref-active="active">
-          <a ui-sref="authentication.signup">Sign Up</a>
-        </li>
-        <li class="divider-vertical"></li>
         <li ui-sref-active="active">
           <a ui-sref="authentication.signin">Sign In</a>
         </li>
+        <li ui-sref-active="active">
+          <a ui-sref="authentication.signup">Register</a>
+        </li>
+        <li class="divider-vertical"></li>
       </ul>
 
       <ul class="right hide-on-med-and-down" ng-show="authentication.user">
@@ -50,7 +54,6 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         </li>
       </ul>
 
-
 <!-- Dropdown Structure -->
       <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
         <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
@@ -75,7 +78,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         </li>
       </ul>
     </div>
+    </div>
   </nav>
-
 </div>
 <section ng-controller="HeaderNewOfferingsController"></section>
