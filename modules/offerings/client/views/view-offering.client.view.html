@@ -1,6 +1,18 @@
-<section ng-controller="OfferingsPublicController" ng-init="findOne()">
+<section ng-controller="OfferingsController" ng-init="findOne()">
   <div class="page-header">
     <h1 ng-bind="offering.description"></h1>
+  </div>
+  <div class="pull-right" ng-show="authentication.user._id == offering.user._id">
+    <a class="waves-effect waves-light btn" ui-sref="offerings.edit({offeringId: offering._id})">
+      <i class="material-icons right ">mode_edit</i> Edit </a>
+    <a class="btn waves-effect waves-light red darken-1" ng-click="remove();">
+      <i class="material-icons right ">delete</i> Delete
+    </a>
+  </div>
+  <div class="pull-right" ng-show="authentication.user._id != offering.user._id">
+    <a class="waves-effect waves-light btn" ui-sref="postings.createFromOffer({offeringId: offering._id})">
+      <i class="material-icons right ">email</i> Contact
+    </a>
   </div>
   <small>
     <em class="text-muted">

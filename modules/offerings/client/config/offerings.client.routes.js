@@ -33,11 +33,7 @@ angular.module('offerings').config(['$stateProvider',
           $scope.offerType = $stateParams.offerType;
         }
       })
-      .state('offerings.viewMine', {
-        url: '/:offeringId',
-        templateUrl: 'modules/offerings/client/views/view-my-offering.client.view.html'
-      })
-      .state('offerings.viewOthers', {
+      .state('offerings.view', {
         url: '/:offeringId',
         templateUrl: 'modules/offerings/client/views/view-offering.client.view.html'
       })

@@ -29,6 +29,20 @@ angular.module('postings').config(['$stateProvider',
           roles: ['user']
         }
       })
+      .state('postings.createFromOffer', {
+        url: '/createFromOffer?offeringId',
+        templateUrl: 'modules/postings/client/views/create-posting-offer.client.view.html',
+        data: {
+          roles: ['user']
+        }
+      })
+      .state('postings.createFromOfferSuccess', {
+        url: '/createFromOfferSuccess',
+        templateUrl: 'modules/postings/client/views/create-posting-offer-success.client.view.html',
+        data: {
+          roles: ['user']
+        }
+      })
       .state('postings.createadmin', {
         url: '/createadmin',
         templateUrl: 'modules/postings/client/views/createadmin-posting.client.view.html',
