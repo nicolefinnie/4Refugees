@@ -4,8 +4,8 @@ declared-services:
     label: mongolab
     plan: sandbox
 applications:
-- name: 4Refugees
-  host: 4Refugees
+- name: 4Refugees-pradeep
+  host: 4Refugees-pradeep
   memory: 128M
   services:
     - mean-mongo

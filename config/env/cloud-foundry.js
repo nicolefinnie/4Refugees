@@ -3,9 +3,11 @@
 var cfenv = require('cfenv'),
   appEnv = cfenv.getAppEnv(),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
-  appEnv.getService('mean-mongo').credentials.uri : undefined,
+  appEnv.getService('mean-mongo').credentials.url : undefined,
   cfWatsonUrl = appEnv.getService('language_translation') ?
-  appEnv.getService('language_translation').credentials.url:undefined;		  
+  appEnv.getService('language_translation').credentials.url:undefined;	
+  
+  
 
 var getCred = function (serviceName, credProp) {
   return appEnv.getService(serviceName) ?
