@@ -5,7 +5,7 @@ var cfenv = require('cfenv'),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
   appEnv.getService('mean-mongo').credentials.uri : undefined,
   cfWatsonUrl = appEnv.getService('language_translation') ?
-  appEnv.getService('language_translation').credentials.uri:undefined;		  
+  appEnv.getService('language_translation').credentials.url:undefined;		  
 
 var getCred = function (serviceName, credProp) {
   return appEnv.getService(serviceName) ?
