@@ -13,14 +13,15 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', '$htt
     $scope.hasPostingBadge = false;
 
     // set 'new' badge to InMail if there is unread mail for me
-    $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
-      var postings = response.data;
-      if (postings.length > -1) $scope.hasPostingBadge = true;
-    });
-
-    //if (Authentication.user) {
-       //$scope.postingBadge = hasUserNewMessages(Authentication.user);
-    //}
+    if (Authentication.user) {
+      $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
+        var postings;
+        if (response.statusCode >= 200 || response.statusCode <= 299) {
+          postings = response.data;
+          if (postings.length > -1) $scope.hasPostingBadge = true;
+        }
+      });
+    }
 
     // Toggle the menu items
     $scope.isCollapsed = false;
