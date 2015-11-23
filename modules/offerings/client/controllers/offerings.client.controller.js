@@ -213,8 +213,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
 ]);
 
 //Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Postings', 'Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Postings, Socket) {
     $scope.authentication = Authentication;
     
     // Refugee mode: determine the title to show, this mode create request OR search offer
@@ -347,6 +347,39 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     $scope.findOne = function () {
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
+      });
+    };
+
+    // ask about offering
+    $scope.askAboutOffering = function (offering) {
+      $scope.offering = offering;
+      $('#modalAskAboutOffering').openModal();
+    };
+
+    $scope.createMail = function(postingForm, offering) {
+
+      // Create new Posting object
+      var posting = new Postings({
+        title: this.title,
+        content: this.content,
+        unread: true,
+        recipient: this.offering.user,
+        replyTo: this.replyTo,
+        offeringId: this.offering._id,
+      });
+
+      // Emit a 'postingMessage' message event with the JSON posting object
+      var message = {
+        content: posting
+      };
+
+      // Redirect after save
+      posting.$save(function (response) {
+        Socket.emit('postingMessage', message);
+        $location.path('postings/createFromOfferSuccess');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+        $scope.authentication = Authentication;
       });
     };
   }

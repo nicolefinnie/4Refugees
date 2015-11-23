@@ -110,9 +110,9 @@ exports.list = function (req, res) {
     });
   }
 
-  if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
-    query.recipient = req.user._id;
-  }
+  //if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
+  query.recipient = req.user._id;
+  //}
 
   if (query.unread === 'true') {
     query.unread = true;
@@ -160,7 +160,7 @@ exports.postingByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'PostingId is invalid'
+      message: 'Posting is invalid'
     });
   }
 

@@ -11,7 +11,7 @@ var should = require('should'),
 /**
  * Globals
  */
-var app, agent, credentials, user, posting;
+var app, agent, credentials, user, sendUser, posting;
 
 /**
  * Posting routes tests
@@ -44,14 +44,27 @@ describe('Posting CRUD tests', function () {
       provider: 'local'
     });
 
+    sendUser = new User({
+      firstName: 'John',
+      lastName: 'Doe',
+      displayName: 'John Doe',
+      email: 'john@doe.com',
+      username: credentials.username,
+      password: credentials.password,
+      provider: 'local'
+    });
+
     // Save a user to the test db and create new posting
     user.save(function () {
-      posting = {
-        title: 'Posting Title',
-        content: 'Posting Content'
-      };
+      sendUser.save(function () {
+        posting = {
+          title: 'Posting Title',
+          content: 'Posting Content',
+          recipient: user.id
+        };
 
-      done();
+        done();
+      });
     });
   });
 
@@ -67,6 +80,7 @@ describe('Posting CRUD tests', function () {
 
         // Get the userId
         var userId = user.id;
+        var sendUserId = sendUser.id;
 
         // Save a new posting
         agent.post('/api/postings')
@@ -187,7 +201,8 @@ describe('Posting CRUD tests', function () {
       });
   });
 
-  it('should be able to get a list of postings if not signed in', function (done) {
+  //it('should be able to get a list of postings if not signed in', function (done) {
+  it('should *NOT* be able to get a list of postings if not signed in', function (done) {
     // Create new posting model instance
     var postingObj = new Posting(posting);
 
@@ -197,7 +212,8 @@ describe('Posting CRUD tests', function () {
       request(app).get('/api/postings')
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Array).and.have.lengthOf(1);
+          //res.body.should.be.instanceof(Array).and.have.lengthOf(1);
+          res.body.should.be.instanceof(Object).and.have.property('message', 'User is not authorized');
 
           // Call the assertion callback
           done();
@@ -206,7 +222,8 @@ describe('Posting CRUD tests', function () {
     });
   });
 
-  it('should be able to get a single posting if not signed in', function (done) {
+  //it('should be able to get a single posting if not signed in', function (done) {
+  it('should *NOT* be able to get a single posting if not signed in', function (done) {
     // Create new posting model instance
     var postingObj = new Posting(posting);
 
@@ -215,7 +232,8 @@ describe('Posting CRUD tests', function () {
       request(app).get('/api/postings/' + postingObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('title', posting.title);
+          //res.body.should.be.instanceof(Object).and.have.property('title', posting.title);
+          res.body.should.be.instanceof(Object).and.have.property('message', 'User is not authorized');
 
           // Call the assertion callback
           done();

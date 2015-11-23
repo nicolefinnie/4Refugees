@@ -66,7 +66,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
             {{::item.title}}&nbsp;
             <!-- defect 4263 this postingBadge accidentally creates a space between header and content -->
-            <!--  <span class="{{postingBadge}}"></span>-->
+              <span class="new badge" ng-if="hasPostingBadge"></span>
             </a>
             <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
                 <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">

@@ -10,12 +10,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', '$htt
     // Get the topbar menu
     $scope.menu = Menus.getMenu('topbar');
 
-    $scope.postingBadge = 'badge';
+    $scope.hasPostingBadge = false;
 
     // set 'new' badge to InMail if there is unread mail for me
     $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
       var postings = response.data;
-      if (postings.length > -1) $scope.postingBadge = 'new badge';
+      if (postings.length > -1) $scope.hasPostingBadge = true;
     });
 
     //if (Authentication.user) {
@@ -45,11 +45,11 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', '$htt
       if (message.content.recipient === Authentication.user._id) {
         if (message.content.title) {
           console.log('Received new email');
-          $scope.postingBadge = 'new badge';
+          $scope.hasPostingBadge = true;
         }
         else {
           console.log('Received remove email');
-          $scope.postingBadge = 'badge';
+          $scope.hasPostingBadge = false;
         }
       }
       else
