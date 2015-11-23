@@ -43,13 +43,20 @@ exports.read = function (req, res) {
 };
 
 /**
- * Update a posting, usually only replyTo when creating a reply
+ * Update a posting - not used yet, only to keep grunt test happy
  */
 exports.update = function (req, res) {
   var posting = req.posting;
 
+  if (req.body.title) {
+    posting.title = req.body.title;
+  }
+  if (req.body.content) {
+    posting.content = req.body.content;
+  }
+
   posting.replyTo = req.body.postingId;
-  posting.recipient = req.body.recipient;
+  //posting.recipient = req.body.recipient;
 
   posting.save(function (err) {
     if (err) {
@@ -172,6 +179,7 @@ exports.postingByID = function (req, res, next, id) {
         message: 'No posting with that identifier has been found'
       });
     }
+
     req.posting = posting;
     next();
   });

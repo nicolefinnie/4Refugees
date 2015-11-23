@@ -353,19 +353,28 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     // ask about offering
     $scope.askAboutOffering = function (offering) {
       $scope.offering = offering;
-      $('#modalAskAboutOffering').openModal();
+      $scope.authentication = Authentication;
+      if (!Authentication.user) {
+        $location.path('authentication/signin');
+      }
+      else {
+        $('#modalAskAboutOffering').openModal();
+      }
     };
 
     $scope.createMail = function(postingForm, offering) {
 
+      $scope.authentication = Authentication;
+
+      console.log('My offering is ' + JSON.stringify(offering));
       // Create new Posting object
       var posting = new Postings({
         title: this.title,
         content: this.content,
         unread: true,
-        recipient: this.offering.user,
+        recipient: offering.user,
         replyTo: this.replyTo,
-        offeringId: this.offering._id,
+        offeringId: offering._id,
       });
 
       // Emit a 'postingMessage' message event with the JSON posting object
