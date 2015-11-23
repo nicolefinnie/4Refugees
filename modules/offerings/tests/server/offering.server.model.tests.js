@@ -33,7 +33,8 @@ describe('Offering Model Unit Tests:', function () {
         description: 'Offering description',
         city: 'Offering city',
         loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
-        user: user
+        user: user,
+        userId: user.displayName
       });
 
       done();

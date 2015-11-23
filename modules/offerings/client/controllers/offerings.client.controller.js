@@ -1,29 +1,259 @@
 'use strict';
 
+//TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
 
-// Offerings controller
-angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+// Converts the category selections from the input form into an
+// array of category strings
+function getCategoryArray(cat, defaultSetting) {
+  if (cat && cat.length !== 0) {
+    return Object.keys(cat);
+  } else {
+    return [defaultSetting];
+  }
+}
+   
+function geoUpdateLocation(position, scope) {
+  var geocoder = new google.maps.Geocoder();
+  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  scope.latitude = position.coords.latitude;
+  scope.longitude = position.coords.longitude;
+
+  geocoder.geocode({ 'latLng': latlng }, function(results, status) {
+    var city = 'Unknown';
+    var country = 'Unknown';
+    // Search through the returned results to find a reasonably good city + country to display
+    // In general, the returned 'results' start from the most specific address, to the most general,
+    // and since we only look for city + country (not street address, postal code, etc), we should be
+    // able to find them from results[0].
+    for (var x = 0, length_1 = results.length; x < length_1; x++){
+      for (var y = 0, length_2 = results[x].address_components.length; y < length_2; y++){
+        var type = results[x].address_components[y].types[0];
+        if (type === 'locality'){
+          city = results[x].address_components[y].long_name;
+          if (country !== 'Unknown') {
+            break;
+          }
+        } else if (type === 'country') {
+          country = results[x].address_components[y].long_name;
+          if (city !== 'Unknown') {
+            break;
+          }
+        }
+      }
+      if (city !== 'Unknown' && country !== 'Unknown') {
+        break;
+      }
+    }
+    if (city === 'Unknown' || country === 'Unknown') {
+      // according to Google map docs, results[4].formatted_address should provide
+      // a relatively coarse address, for example, 'Stuttgart, Germany'.
+      scope.city = results[4].formatted_address;
+    } else {
+      scope.city = city + ', ' + country;
+    }
+    scope.$apply();
+  });
+}
+
+function geoUpdateLocationError(error, scope) {
+  console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
+  scope.city = 'Google geo error, try again later.';
+  scope.$apply();
+}
+
+// Offerings controller available for un-authenticated users
+angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
+    
+    //Volunteer mode: determine the title to show, this mode search needs or create offer
+    if ($scope.offerType === 'request') {
+      $scope.showTitle = 'Search needs';
+      $scope.createOffer = !$scope.createOffer;
+    
+    // Refugee mode: determine the title to show, this mode search help OR create request
+    } else if ($scope.offerType === 'offer'){
+      $scope.showTitle = 'Find help';
+      $scope.createRequest = !$scope.createRequest;
+    }
 
-    // TODO: Need to include the googleapis javascript in some .html file somehow, before
-    // the google.maps APIs will work....  the following link needs to be added, but where???
-    // <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-//    if (navigator.geolocation) {
-//      navigator.geolocation.getCurrentPosition(
-//        function(position) {
-//        var geocoder = new google.maps.Geocoder();
-//        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-//        $scope.lat = position.coords.latitude;
-//        $scope.lng = position.coords.longitude;
-//        geocoder.geocode({
-//          'latLng': latlng
-//        }, function(results, status) {
-//          $scope.city = results[4].formatted_address;
-//          $scope.$apply();
-//          $("input[name='location']").focus();$("input[name='location']").blur();
-//        });
-//      });
+    // get current location using Google GeoLocation services
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
+    }
+
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    $scope.messages = [];
+
+    // Search all offerings for the input criteria
+    $scope.searchAll = function (isValid) {
+        
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'offeringFormSearch');
+        return false;
+      }
+
+      // TODO: Should we re-direct to a new page? or render a new page?
+      $scope.offerings = Offerings.query({
+        description: this.description,
+        city: this.city,
+        longitude: this.longitude,
+        latitude: this.latitude,
+        radius: this.radius? this.radius:10,
+        when: this.when,
+             // mapping JSON array category from checkbox on webpage to String
+        category: getCategoryArray(this.category, ''),
+        offerType: this.offerType 
+      });
+    };
+
+    // Find existing Offering
+    $scope.findOne = function () {
+      $scope.offering = Offerings.get({
+        offeringId: $stateParams.offeringId
+      });
+    };
+
+  }
+]);
+
+//Edit controller only available for authenticated users
+angular.module('offerings').controller('OfferingsEditController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
+    
+    // If user is not signed in then redirect back home
+    if (!Authentication.user) {
+      $location.path('/');
+    }
+
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    $scope.messages = [];
+    $scope.category = {};
+    
+    $scope.authentication = Authentication;
+ 
+    // get current location using Google GeoLocation services
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
+    }
+
+    // Update existing Offering
+    $scope.update = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
+        return false;
+      }
+
+      var offering = $scope.offering;
+
+      offering.$update(function () {
+        $location.path('offerings/' + offering._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    
+    // Find existing Offering
+    $scope.findOne = function () {
+      $scope.offering = Offerings.get({ 
+        offeringId: $stateParams.offeringId 
+      }, function () {
+        //determine if it's edit request or offer
+        if ($scope.offering.offerType === 0){
+          $scope.showTitle = 'Edit Offer';
+        } else {
+          $scope.showTitle = 'Edit Request';
+        }
+       
+        // set selected category checkbox of the to-edit-request/offer 
+        var selectedCategory = {};
+        $scope.offering.category.forEach(function(eachCategory) {
+          selectedCategory[eachCategory] = true;
+        });
+        $scope.category = selectedCategory;
+      });
+    };
+
+  }
+]);
+
+//Offerings controller only available for authenticated users
+angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Postings', 'Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Postings, Socket) {
+    $scope.authentication = Authentication;
+    
+    // Refugee mode: determine the title to show, this mode create request OR search offer
+    if ($scope.offerType === 'request') {
+      $scope.showTitle = 'Need help';
+      $scope.searchOffer = !$scope.searchOffer;
+     
+    // volunteer mode: determine the title to show, this mode create offer OR search request
+    } else if ($scope.offerType === 'offer'){
+      $scope.showTitle = 'Offer help';
+      $scope.searchRequest = !$scope.searchRequest;
+    }
+
+    // get current location using Google GeoLocation services
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        geoUpdateLocation(position, $scope);
+      },
+      function errorCallback(error) {
+        geoUpdateLocationError(error, $scope);
+      },
+        {
+          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+          // that causes 'google not defined' errors when re-loading pages.
+          timeout:10000        // 10-second timeout
+        }
+      );
+    }
+
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    $scope.messages = [];
+
+    // If user is not signed in then redirect back home
+//    if (!Authentication.user) {
+//      $location.path('/');
 //    }
 
     // Create new Offering
@@ -42,24 +272,18 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         updated: Date.now,
         description: this.description,
         city: this.city,
-        category: this.category,
-        longitude: this.longitude,
-        latitude: this.latitude,
-        offerType: this.offerType
+             // mapping JSON array category from checkbox on webpage to String
+        category: getCategoryArray(this.category, 'Other'),
+        longitude: $scope.longitude,
+        latitude: $scope.latitude,
+        offerType: this.offerType 
       });
-
-      // Create a new message object for any new offering
-      var msgtext = 'new offering.category ';
-      if (offering.offerType === 0) msgtext = msgtext + ' offering in ';
-      else msgtext = msgtext + 'request in ';
-      msgtext = msgtext + offering.city + ' at ' + JSON.stringify(offering.when);
-
+      
+      // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
-        text: msgtext
+        content: offering
       };
-
-      // Emit a 'chatMessage' message event
-      Socket.emit('chatMessage', message);
+      Socket.emit('offeringMessage', message);
 
       // Redirect after save
       offering.$save(function (response) {
@@ -119,53 +343,43 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
       $scope.offerings = Offerings.query();
     };
 
-    // Create new Offering
-    $scope.searchAll = function (isValid) {
-      $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
-        return false;
-      }
-
-      // Create new Offering object
-      var searchOfferings = new Offerings({
-        when: this.when,
-        updated: Date.now,
-        description: this.description,
-        city: this.city,
-        category: this.category,
-        longitude: this.longitude,
-        latitude: this.latitude,
-        radius: this.radius,
-        offerType: this.offerType
-      });
-
-      // Use $update to send json search using PUT request
-      searchOfferings.$update(function (response) {
-        // Search results arrive as a single json doc, and 'searchResults'
-        // field contains the search payload - an array of matching offerings.
-        var arrayResultsOuter = response.searchResults;
-        var arrayResults = [];
-        arrayResultsOuter.forEach(function(result) {
-          // The offering's distance is returned separately, so add it to output json.
-          result.obj.distance = result.dis;
-          // TODO: Search result should return offering originator's user displayName (*NOT* email)?
-          result.obj.displayName = 'Need_to_find_originating_use';
-          arrayResults.push(result.obj);
-        });
-
-        // TODO: Should we re-direct to another page to display results?  If so, how?
-        $scope.offerings = arrayResults;
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
     // Find existing Offering
     $scope.findOne = function () {
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
+      });
+    };
+
+    // ask about offering
+    $scope.askAboutOffering = function (offering) {
+      $scope.offering = offering;
+      $('#modalAskAboutOffering').openModal();
+    };
+
+    $scope.createMail = function(postingForm, offering) {
+
+      // Create new Posting object
+      var posting = new Postings({
+        title: this.title,
+        content: this.content,
+        unread: true,
+        recipient: this.offering.user,
+        replyTo: this.replyTo,
+        offeringId: this.offering._id,
+      });
+
+      // Emit a 'postingMessage' message event with the JSON posting object
+      var message = {
+        content: posting
+      };
+
+      // Redirect after save
+      posting.$save(function (response) {
+        Socket.emit('postingMessage', message);
+        $location.path('postings/createFromOfferSuccess');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+        $scope.authentication = Authentication;
       });
     };
   }

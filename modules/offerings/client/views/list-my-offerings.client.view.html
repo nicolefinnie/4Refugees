@@ -1,23 +1,20 @@
 <section ng-controller="OfferingsController" ng-init="find()">
   <div class="page-header">
-    <h1>Offerings</h1>
+    <h1>My Offerings</h1>
   </div>
   <div class="list-group">
     <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
-      <small class="list-group-item-text">
-        Offered by
-        <span ng-bind="offering.user.displayName"></span>
-        and available on
-        <span ng-bind="offering.when | date:'mediumDate'"></span>
-      </small>
       <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>
       <p class="list-group-item-text" ng-bind="offering.category"></p>
       <p class="list-group-item-text" ng-bind="offering.city"></p>
-      <p class="list-group-item-text" ng-bind="offering.loc.coordinates[0]"></p>
-      <p class="list-group-item-text" ng-bind="offering.loc.coordinates[1]"></p>
       <p class="list-group-item-text" ng-bind="offering.offerType"></p>
+    
       <small class="list-group-item-text">
-        Last updated on
+        Offered by
+        <span ng-bind="offering.displayName"></span>
+        , available on
+        <span ng-bind="offering.when | date:'mediumDate'"></span>
+        , last updated on
         <span ng-bind="offering.updated | date:'mediumDate'"></span>
       </small>
     </a>

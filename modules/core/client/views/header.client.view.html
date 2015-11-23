@@ -1,82 +1,92 @@
-<!-- TODO import CSS locally -->
- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One">
+<!-- According to Mean.JS design, external scripts have to be included in header, see the example here:
+https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- we don't need this font for the new design -->
+<!--  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One"> -->
 
-
-<style>
-header, main, footer {
-    padding-left: 0px;
-}
-
-nav {
-    overflow: visible;
- }
-.dropdown-content li > a, .dropdown-content li > span {
-    font-size: 1.0rem;
-    color: #26A69A;
-    display: block;
-    padding: 1rem;
-}
-</style>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
 <div ng-controller="HeaderController">
-
-<!-- .dropdown-content li > span -->
-  <nav class="rf-header green darken-4">
-    <div class="nav-wrapper container">
-      <span style="font-family: Sansita,serif,bold">
-        <a ui-sref="home" class="brand-logo"> 4Refuge.es</a>
+  <nav class="ibm-header-color">
+    <div class="nav-wrapper container ">
+      <span>
+        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="logo-header left">4Refuge.es</a>
       </span>
-
-<!-- Dropdown Trigger -->
     
-    <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
-      <li ui-sref-active="active">
-        <a ui-sref="authentication.signup">Sign Up</a>
-      </li>
-      <li class="divider-vertical"></li>
-      <li ui-sref-active="active">
-        <a ui-sref="authentication.signin">Sign In</a>
-      </li>
-    </ul>
+      <!-- Dropdown container -->
+      <div class="dropdown-container">
+        
+        <!-- Dropdown for unauthenticated users -->
+        <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
+            <li ui-sref-active="active">
+            <a ui-sref="authentication.signin">Sign In</a>
+            </li>
+            <li ui-sref-active="active">
+            <a ui-sref="authentication.signup">Register</a>
+            </li>
+            <li class="divider-vertical"></li>
+        </ul>
 
-    <ul class="right hide-on-med-and-down" ng-show="authentication.user">
-     <li>
-     <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>{{authentication.user.displayName}}<i class="material-icons right">arrow_drop_down</i></a>
-      <ul id='dropdownAuth' class='dropdown-content'>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.picture">Change Profile Picture</a>
-          </li>
-          <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-            <a ui-sref="settings.password">Change Password</a>
-          </li>
-          <li ui-sref-active="active">
-            <a ui-sref="settings.accounts">Manage Social Accounts</a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a href="/api/auth/signout" target="_self">Signout</a>
-          </li>
-       </ul>
-     </li>
-    </ul>
+        <!-- Dropdown for authenticated users -->
+        <ul class="right hide-on-med-and-down" ng-show="authentication.user">
+            <li>
+                <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>
+                <img ng-src="{{authentication.user.profileImageURL}}" class="header-profile-image" />
+                {{authentication.user.displayName}}
+                <i class="material-icons right">arrow_drop_down</i>
+                </a>
+                <ul id="dropdownAuth" class="dropdown-content">
+                    <li ui-sref-active="active">
+                    <a ui-sref="offerings.listMine">List My Offerings</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
+                    </li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="settings.picture">Change Profile Picture</a>
+                    </li>
+                    <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
+                    <a ui-sref="settings.password">Change Password</a>
+                    </li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="settings.accounts">Manage Social Accounts</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                    <a href="/api/auth/signout" target="_self">Signout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
-
-<!-- Dropdown Structure -->
-    <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
-      <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
-         <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>{{::item.title}}&nbsp;<span class="caret"></span></a>
-          <ul ng-switch-when="dropdown" id="{{item.title}}" class='dropdown-content'>
-          <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
-            <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
-          </li>
-          </ul>
-          <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
-       </li>
-    </ul>
+        <!-- TODO merge into the single drop-down - Dropdown InMail for authenticated users -->
+        <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
+            <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
+            <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
+            {{::item.title}}&nbsp;
+            <!-- defect 4263 this postingBadge accidentally creates a space between header and content -->
+              <span class="new badge" ng-if="hasPostingBadge"></span>
+            </a>
+            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
+                <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
+                <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
+                </li>
+            </ul>
+            <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>
+            {{::item.title}}&nbsp;
+            </a>
+            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
+                <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
+                <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
+                </li>
+            </ul>
+            <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
+            </li>
+        </ul>
+      </div> <!-- end of dropdown-container for designer's look -->
+    </div>
   </nav>
-
 </div>
+
+<section ng-controller="HeaderNewOfferingsController"></section>

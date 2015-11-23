@@ -1,0 +1,30 @@
+<section ng-controller="PostingsController" ng-init="findNew()">
+  <div class="page-header">
+    <h3>New emails for you</h3>
+  </div>
+
+  <div class="list-group">
+    <ul class="collapsible collapsible-accordion" data-collapsible="accordion">
+      <li ng-repeat="posting in postings">
+        <div class="collapsible-header blue white-text"  ng-class="($index==1) ? 'active' : ''">
+          {{posting.title}}
+        </div>
+        <div class="collapsible-body blue lighten-3">
+          <div class="m12 col">
+            <div class="card">
+              <div class="card-content row">
+                <div class="s12 l3 col">
+                  <img src="{{posting.sender.picture.medium}}"
+                  placeholder="{{posting.sender.displayName}}" class="align-right circle">
+                </div>
+                <div class="s12 l9 col">
+                  {{posting.content}} <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

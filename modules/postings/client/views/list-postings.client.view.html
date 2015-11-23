@@ -1,22 +1,59 @@
 <section ng-controller="PostingsController" ng-init="find()">
   <div class="page-header">
-    <h1>Postings</h1>
+    <h3>Your emails</h3>
   </div>
-  <div class="list-group">
-    <a ng-repeat="posting in postings" ui-sref="postings.view({postingId: posting._id})" class="list-group-item">
-      <small class="list-group-item-text">
-        Posted on
-        <span ng-bind="posting.created | date:'mediumDate'"></span>
-        by
-        <span ng-bind="posting.user.displayName"></span>
-      </small>
-      <h4 class="list-group-item-heading" ng-bind="posting.title"></h4>
-      <p class="list-group-item-text" ng-bind="posting.content"></p>
-      <p class="list-group-item-text" ng-bind="posting.replyTo"></p>
-      <p class="list-group-item-text" ng-bind="posting.offeringId"></p>
-    </a>
+  <div class="row">
+    <div class="s12 col">
+      <ul class="collection">
+        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="posting in postings| filter:query | orderBy:'posting.created'">
+          <a href="" ng-click="modalDetails(posting)" class="modal-trigger title"><img ng-src="{{posting.sender.picture.thumbnail}}" alt="" class="circle">Subject: {{posting.title}}<br>
+            <small>{{posting.contentShort}}</small>
+          </a>
+          <span class="new badge" ng-show="posting.unread"></span>
+          <br>
+          <a href="#!" ng-click="replyPosting(posting)" class="modal-action waves-effect waves-green">Reply to {{posting.sender.displayName}}</a>
+          <a href="#!" class="secondary-content" ng-click="removePosting(posting)">
+            <i class="small mdi-action-highlight-remove"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div class="alert alert-warning text-center" ng-if="postings.$resolved && !postings.length">
-    No posting yet, why don't you <a ui-sref="postings.create">post one</a>?
+  <div id="modalDetails" class="modal bottom-sheet">
+    <div class="modal-content">
+      <div class="row">
+        <div class="l2 col">
+          <img ng-src="{{posting.sender.picture.thumbnail}}" alt="{{posting.sender.displayName}}" class="align-right circle">
+        </div>
+        <div class="l10 col">
+          <h5>Details</h5>
+          <label>Content</label> {{posting.content}} <br/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" ng-click="replyPosting(posting)" class="modal-action waves-effect waves-green btn-flat">Reply</a>
+        <!-- 
+          <a href="#!" ng-click="removePosting(posting)" class="modal-action modal-close waves-effect waves-red btn-flat">Remove</a>
+        -->
+        <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Done</a>
+      </div>
+    </div>
+  </div>
+  <div id="modalReply" class="modal">
+    <div class="modal-content">
+      <form name="postingForm" class="my-form" novalidate>
+        <div class="row">
+          <p>Reply to {{posting.sender.displayName}}</p>
+          <input id="titleid" name="title" ng-model="title">
+          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="Content" cols="30" rows="10" required>Hier</textarea>
+          <hr>
+          <!-- <label>Content</label> {{posting.content}} <br/> -->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" ng-click="create(postingForm, posting.sender )" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
   </div>
 </section>

@@ -14,15 +14,23 @@ angular.module('offerings').config(['$stateProvider',
         url: '',
         templateUrl: 'modules/offerings/client/views/list-my-offerings.client.view.html'
       })
+      // it doesn't authenticate the user but routes to the search page directly
       .state('offerings.searchAll', {
-        url: '/search',
-        templateUrl: 'modules/offerings/client/views/search-all-offerings.client.view.html'
+        url: '/search?offerType',
+        templateUrl: 'modules/offerings/client/views/search-all-offerings.client.view.html',
+        controller: function($scope, $stateParams) {
+          $scope.offerType = $stateParams.offerType;
+        }
       })
+      // works in order, first, it has to be user or admin, second, it stores the parameter offerType and passes its value to $scope
       .state('offerings.create', {
-        url: '/create',
+        url: '/create?offerType',
         templateUrl: 'modules/offerings/client/views/create-offering.client.view.html',
         data: {
           roles: ['user', 'admin']
+        },
+        controller: function($scope, $stateParams) {
+          $scope.offerType = $stateParams.offerType;
         }
       })
       .state('offerings.view', {

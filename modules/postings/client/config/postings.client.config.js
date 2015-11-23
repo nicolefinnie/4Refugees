@@ -5,30 +5,29 @@ angular.module('postings').run(['Menus',
   function (Menus) {
     // Add the postings dropdown item
     Menus.addMenuItem('topbar', {
-      title: 'Postings',
+      title: 'InMail',
       state: 'postings',
-      type: 'dropdown',
-      roles: ['*']
+      type: 'inmail',
+      roles: ['user','admin']
     });
 
     // Add the dropdown list item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'List Postings',
+      title: 'Show New Mails',
+      state: 'postings.listnew'
+    });
+
+    // Add the dropdown list item
+    Menus.addSubMenuItem('topbar', 'postings', {
+      title: 'Your Mail',
       state: 'postings.list'
     });
 
     // Add the dropdown create item
     Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'New Posting',
-      state: 'postings.create',
-      roles: ['user']
-    });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'postings', {
-      title: 'Reply',
-      state: 'postings.create',
-      roles: ['user']
+      title: 'Send New Mail',
+      state: 'postings.createadmin',
+      roles: ['admin']
     });
   }
 ]);

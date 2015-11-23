@@ -1,114 +1,52 @@
-<style>
-.ref-outer {
-  z-index: 10; // smaller than z-index of overlay
-  width: 100%;
-  height: 100%;
-}
-.ref-overlay {
-  position: relative;
-  height: 400px;
-  width: 200px;
-  z-index: 11;
-  overflow: hidden;
-  margin:0 auto;
-  top: 50%;
-  margin-top: -360px; // go up 360 px
-}
-</style>
-
 <section ng-controller="HomeController">
-  <div slider height='500' transition='400' class="ref-outer">
-    <ul class="slides">
-      <li>
-        <img src="modules/core/client/img/startpage/img4.jpg">
-        <div class="caption center-align">
-          <h3>Welcome</h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
-        </div>
-      </li>
-      <li>
-        <img src="modules/core/client/img/startpage/img1.jpg">
-        <div class="caption left-align">
-          <h3> to </h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
-        </div>
-      </li>
-      <li>
-        <img src="modules/core/client/img/startpage/img3.jpg">
-        <div class="caption right-align">
-          <h3>Germany</h3>
-          <!-- <h5 class="light grey-text text-lighten-3">small</h5> -->
-        </div>
-      </li>
-      <li>
-        <img src="http://www.make-it-in-germany.com/fileadmin/content/make-it-in-germany/Bilder/MakeitinGermany/Offensive/Die-Offensive_01.gif">
-<!--
-        <div class="caption center-align">
-          <h3>You can make it here</h3>
-          <h5 class="light grey-text text-lighten-3">small</h5>
-        </div>
--->
-      </li>
-    </ul>
+  <div class="container cover-container">
+      <img src="modules/core/client/img/startpage/cover.jpg">
   </div>
-
-    <div class="ref-overlay container">
-    <br><br>
-      <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-          <img src="modules/core/client/img/brand/logo.svg" style="display:block;height:200px;margin:0 auto;" class="imgLogo" />  
-  <br><br>
-
-      </div>
-    </div>
+  <div class="container">
+    <div class="col s12 m4 ibm-welcome-bar-color">
     <br>
-   
-    <div ng-hide="mainCallToButtons" class="row center">
-        <a href="" id="findHelp" class="btn-large waves-effect waves-light red darken-1" ng-click="toggleFindHelp()"><i class="material-icons left">live_help</i>Find Help</a>
-        <a href="" id="helpOthers" class="btn-large waves-effect waves-light" ng-click="toggleHelpOthers()"><i class="material-icons left">supervisor_account</i>Help Others</a>
+      <h3><img src="modules/core/client/img/brand/logo.svg" class="logo-main left"/>  
+      Welcome to Germany</h3>
+      <h5>Hi there, how can we help you today?</h5>
+      <br><br>
     </div>
-    
-     <div ng-show="findHelpCallToButtons" class="row center" >
-        <a href="offerings" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">live_help</i>Search existing Offers</a>
-        <a href="" id="" class="btn-large waves-effect waves-light red darken-1"><i class="material-icons left">supervisor_account</i>Create new Help Request</a>
-        <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleFindHelp()"><i class="material-icons">skip_previous</i></a>
-      </div>
-    
-      <div ng-show="helpOthersCallToButtons" class="row center">
-        <a href="" id="" class="btn-large waves-effect waves-light"><i class="material-icons left">live_help</i>Search existing Help Request</a>
-        <a href="" id="" class="btn-large waves-effect waves-light"><i class="material-icons left">supervisor_account</i>Insert new Offer</a>
-        <a class="btn-floating btn-large waves-effect waves-light transparent goBackCallToButtons" ng-click="toggleHelpOthers()"><i class="material-icons">skip_previous</i></a>
-      </div>
-     
- <br><br>
-</section>
-
-<section>
-  <div class="container ">
-      <!--   Icon Section   -->
-      <div class="row">
+    <div class="row">
         <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">supervisor_account</i></h2>
-            <h5 class="center">You are one of us</h5>
-            <p class="light">You're not alone. We try to connect refugees who need help and people who want to offer help.</p>
+          <div class="container container-footer ibm-help-bar-color">
+            <h1 class="ibm-icon-help center"></h1>
+              <h5 class="center">Germany in a nutshell</h5>
+            <p class="center light">Register in the city hall, open a bank account, get health care, learn languages, find schools for your kids</p>
+            <br>
+            <p class="center"><a href="#" id="quickHelp" class="btn-large waves-effect waves-light">
+                Quick Help</a>
+            </p>
+            <br>
           </div>
         </div>
 
         <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">place</i></h2>
+          <div class="container container-footer ibm-help-bar-color">
+            <h1 class="ibm-icon-location center"></h1>
             <h5 class="center">Coordinating help</h5>
-
-            <p class="light">We take your geo location into account to make it easy to find nearby offers and requests.</p>
+            <p class="center light">We take your geo location into account to make it easy to find nearby offers and requests.</p>
+            <br>
+            <p class="center"><a href="offerings/search?offerType=offer" id="findHelp" class="btn-large waves-effect waves-light">
+                Find Help</a>
+            </p>
+            <br>
           </div>
         </div>
 
         <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">insert_emoticon</i></h2>
-            <h5 class="center">Easy to use</h5>
-
-            <p class="light">You can search available offers or demands, or add offers yourself.</p>
+          <div class="container container-footer ibm-help-bar-color">
+            <h1 class="ibm-icon-group center"></h1>
+            <h5 class="center">You are One of Us</h5>
+            <p class="center light">You're not alone. We try to connect refugees who need help and people who want to offer help.</p>
+            <br>
+            <p class="center"> <a href="offerings/create?offerType=offer" id="helpOthers" class="btn-large waves-effect waves-light">
+                Help Others</a> 
+            </p>
+            <br>
           </div>
         </div>
       </div>

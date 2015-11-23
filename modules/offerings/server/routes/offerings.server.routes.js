@@ -10,8 +10,7 @@ module.exports = function (app) {
   // Offerings collection routes
   app.route('/api/offerings').all(offeringsPolicy.isAllowed)
     .get(offerings.listMine)
-    .post(offerings.create)
-    .put(offerings.searchAll);
+    .post(offerings.create);
 
   // Single offering routes
   app.route('/api/offerings/:offeringId').all(offeringsPolicy.isAllowed)

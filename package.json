@@ -11,7 +11,7 @@
     "url": "https://github.com/meanjs/mean.git"
   },
   "engines": {
-    "node": ">=0.10.28",
+    "node": ">=0.12.7",
     "npm": ">=1.4.28"
   },
   "scripts": {
@@ -41,6 +41,7 @@
     "grunt": "0.4.5",
     "grunt-cli": "~0.1.13",
     "helmet": "~0.9.1",
+    "ibm-design-icons": "^1.0.0",
     "jasmine-core": "^2.3.4",
     "lodash": "^3.10.0",
     "method-override": "^2.3.3",
@@ -80,6 +81,8 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-env": "~0.4.4",
     "grunt-eslint": "~17.3.1",
+    "grunt-htmlhint": "^0.9.12",
+    "grunt-htmllint": "^0.2.7",
     "grunt-karma": "~0.11.2",
     "grunt-mocha-istanbul": "^2.4.0",
     "grunt-mocha-test": "~0.12.7",
@@ -108,6 +111,7 @@
     "gulp-sass": "^2.0.3",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
+    "htmllint": "^0.2.7",
     "karma": "~0.12.37",
     "karma-chrome-launcher": "~0.2.0",
     "karma-coverage": "~0.4.2",
