@@ -1,13 +1,17 @@
 ---
 declared-services:
   mean-mongo:
-    label: mongolab
-    plan: sandbox
+    label: mean-mongo
+    plan: 100
+  language_translation:
+    label: language_translation
+    plan: standard   
 applications:
 - name: 4Refugees-pradeep
   host: 4Refugees-pradeep
   memory: 128M
   services:
     - mean-mongo
+    - language_translation	
   env:
     NODE_ENV: cloud-foundry
