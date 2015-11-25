@@ -1,5 +1,6 @@
 'use strict';
 
+
 //TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
 
 // Converts the category selections from the input form into an
@@ -218,7 +219,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     $scope.authentication = Authentication;
     
     // Refugee mode: determine the title to show, this mode create request OR search offer
-    if ($scope.offerType === 'request') {
+    if ($scope.offerType === 'request') {c
       $scope.showTitle = 'Need help';
       $scope.searchOffer = !$scope.searchOffer;
      
@@ -265,7 +266,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
 
         return false;
       }
-
+    
       // Create new Offering object
       var offering = new Offerings({
         when: this.when,
