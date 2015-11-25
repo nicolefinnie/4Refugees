@@ -1,3 +1,4 @@
+/* indent: 0 */
 'use strict';
 
 function mapOfferTypeToBoolean(offerType) {
@@ -18,32 +19,41 @@ var path = require('path'),
   watson = require('watson-developer-cloud'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-
 var language_translation = watson.language_translation({
 	username: '0771b667-54c2-4010-8dcd-9eed53194136',
 	password: 'IeBtcoZy6hgH',
 	version: 'v2'
-}) ;
+});
+
+// Translation method
+
+var do_translate = function(text_translate)
+{
+	 var dest_description;
+	 language_translation.translate({
+		  text: text_translate, source : 'es', target: 'en' },
+		  function (err, translation) {
+		    if (err)
+		      console.log('error:', err);
+		    else
+		      console.log(JSON.stringify(translation, null, 2));
+		      dest_description = JSON.stringify(translation, null, 2); 
+		});
+	return dest_description;
+	}
 /**
  * Create a offering
  */
 exports.create = function (req, res) {
   var offering = new Offering();
-  language_translation.translate({
-	  text: req.body.description, source : 'en', target: 'es' },
-	  function (err, translation) {
-	    if (err)
-	      console.log('error:', err);
-	    else
-	      console.log(JSON.stringify(translation, null, 2));
-	});
   offering.user = req.user;
   offering.userId = req.user._id;
   //console.log('Liam pre: ' + req.body.when);
   offering.when = new Date(req.body.when);
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
-  offering.description = req.body.description;
+ // offering.description = req.body.description;
+  offering.description = do_translate(req.body.description);
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';

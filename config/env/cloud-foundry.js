@@ -3,10 +3,10 @@
 var cfenv = require('cfenv'),
   appEnv = cfenv.getAppEnv(),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
-  appEnv.getService('mean-mongo').credentials.url : undefined,
-  cfWatsonUrl = appEnv.getService('language_translation') ?
+  appEnv.getService('mean-mongo').credentials.url : undefined;
+ /* cfWatsonUrl = appEnv.getService('language_translation') ?
   appEnv.getService('language_translation').credentials.url:undefined;	
-  
+  */
   
 
 var getCred = function (serviceName, credProp) {
@@ -22,13 +22,13 @@ module.exports = {
       user: '',
       pass: ''
     },
-  translate: {
+ /* translate: {
 	  uri: cfWatsonUrl,
 	  options: {
 		 user: getCred('language_translation','username'),
 		 pass: getCred('language_translation','password')
 	  }
-  }  
+  }  */
   },
 //  translation: {
 //    uri: getCred('watson-translation', 'uri'),
