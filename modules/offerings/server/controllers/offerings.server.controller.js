@@ -132,6 +132,7 @@ function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
     var tmpRes = {};
     tmpRes._id = rawDoc._id;
     tmpRes.displayName = rawDoc.user.displayName;
+    tmpRes.user = { _id : rawDoc.user._id };
     tmpRes.when = rawDoc.when;
     tmpRes.updated = rawDoc.updated;
     tmpRes.category = rawDoc.category;
@@ -154,6 +155,8 @@ function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
  * List of Offerings
  */
 exports.listMine = function (req, res) {
+  var Query = (req.user) ? { userId: req.user._id } : {};
+
   if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
     var restriction = buildGeoNearAggregateRestriction(req);
@@ -183,13 +186,14 @@ exports.listMine = function (req, res) {
     });
   } else {
     // list all of my offerings
-    Offering.find({ userId: req.user._id }).sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
+    //Offering.find({ userId: req.user._id }).sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
+    Offering.find(Query).sort('-created').populate('user').exec(function (err, offerings) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        //console.log('RAW RESULTS: ' + JSON.stringify(offerings));
+        console.log('RAW RESULTS for ' + JSON.stringify(Query) + ' : ' + JSON.stringify(offerings));
         // restrict results to only public-viewable fields
         var publicResults = filterInternalOfferingFields(offerings, true, false);
         res.json(publicResults);
