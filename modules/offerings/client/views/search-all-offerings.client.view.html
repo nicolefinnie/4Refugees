@@ -29,11 +29,23 @@
         <br><br>
         
         <div class="row"> 
-            <div class="input-field col s7">
+            <div class="input-field col s7" ng-hide="geoManual">
                 <i class="material-icons prefix">room</i>
                 <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
             </div>
+            <div class="input-field col s7" ng-show="geoManual">
+                <i class="material-icons prefix">room</i>
+                <select name="repeatSelect" id="where" ng-model="where" 
+                  ng-options="option.name for option in citylist">
+                </select>
+                <hr>
+                <i>current selection = {{where.name}}</i><br/>
+            </div>
+            <style>
+            select { display: flex; margin-left: 3rem; width: 93%}
+            </style>
         </div>
+
         
         <div class="row">
             <div class="input-field col s7">
