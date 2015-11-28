@@ -37,24 +37,11 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         tags = response.data;
         log.info('DEBUG - resonse.data content: ' + response.data);
         tags = [
-                    { tagName: 'sleepy' },
-                    { tagName: 'super sleepy' },
-                    { tagName: 'Translation' },
-                    { tagName: 'Offices' },
-                    { tagName: 'Politics' },
-                    { tagName: 'Toys' },
-                    { tagName: 'Food' },
-                    { tagName: 'Calculation' },
-                    { tagName: 'Stuff' },
-                    { tagName: 'Cheese' },
-                    { tagName: 'Sports' },
-                    { tagName: 'Smelly feet' },
-                    { tagName: 'Chocolate' },
-                    { tagName: 'Fun' },
-                    { tagName: 'Sleep' },
-                    { tagName: 'SomeSleep1' },
-                    { tagName: 'SleepDeprivedProgrammer' },
-                    { tagName: 'PowerSleep' }
+                    { tagName: 'Job Training' },
+                    { tagName: 'Language Courses' },
+                    { tagName: 'Medical Assistance' },
+                    { tagName: 'Childcare' },
+                    { tagName: 'Others' }
         ];
         return tags.filter(function(tag) {
           return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
