@@ -1,8 +1,8 @@
 'use strict';
 
-// Controller to create a posting from an offering contact request
-angular.module('postings').controller('PostingsCreateController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Offerings', 'Socket',
-  function ($scope, $http, $stateParams, $location, Authentication, Postings, Offerings, Socket) {
+// Controller to create a posting/mail to the offering owner, from an offering contact request
+angular.module('postings').controller('PostingsCreateController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
+  function ($scope, $http, $stateParams, $location, Authentication, Postings, Socket) {
     $scope.authentication = Authentication;
 
     if ($stateParams.offeringId) {
@@ -11,13 +11,20 @@ angular.module('postings').controller('PostingsCreateController', ['$scope', '$h
       $scope.showTitle = 'Send new mail';
     }
 
+    // Make sure the Socket is connected to notify of updates
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
     // Create new Posting
-    $scope.create = function (isValid, recipient) {
+    $scope.createMail = function (isValid) {
       $scope.error = null;
 
+      // TODO: Need better validation of input fields.
+      // TODO: Right now, user gets back 'success' message, even if some
+      // TODO: fields are blank, i.e. they refreshed the page before sending.
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'postingForm');
-
         return false;
       }
 
@@ -45,18 +52,12 @@ angular.module('postings').controller('PostingsCreateController', ['$scope', '$h
       });
     };
 
-    // Lookup offering to pre-fill contact request form
+    // Fill in form based on input offering, user just has to click 'Send'
     $scope.prefillForm = function () {
-      $scope.offering = Offerings.get({ 
-        offeringId: $stateParams.offeringId 
-      }, function () {
-        $scope.title = 'RE your 4Refuge.es offering: ' + $scope.offering.description;
-        $scope.offeringId = $scope.offering._id;
-        $scope.recipientName = $scope.offering.user.displayName;
-        $scope.recipientId = $scope.offering.userId;
-        $scope.replyTo = Authentication.user.email;
-        $scope.content = 'Hello,\nI am interested in your offering.  Please e-mail me to discuss further.\n\nThank you,\n' + Authentication.user.displayName;
-      });
+      $scope.title = 'RE Your 4Refuge.es offering: ' + $stateParams.offeringDescription;
+      $scope.replyTo = Authentication.user.email;
+      $scope.content = 'Hello,\nI am interested in your offering.  Please e-mail me to discuss further.\n\nThank you,\n' + Authentication.user.displayName;
+      $('#modalAskAboutOffering').openModal();
     };
   }
 ]);
