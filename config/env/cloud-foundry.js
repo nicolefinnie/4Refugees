@@ -3,7 +3,13 @@
 var cfenv = require('cfenv'),
   appEnv = cfenv.getAppEnv(),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
-  appEnv.getService('mean-mongo').credentials.uri : undefined;
+  appEnv.getService('mean-mongo').credentials.url : undefined;
+
+// Fallback in case they are trying to use the Mongolab service,
+// which uses ...credentials.uri
+if ((cfMongoUrl === undefined) && appEnv.getService('mean-mongo').credentials.uri) {
+  cfMongoUrl = appEnv.getService('mean-mongo').credentials.uri;
+}
 
 var getCred = function (serviceName, credProp) {
   return appEnv.getService(serviceName) ?
