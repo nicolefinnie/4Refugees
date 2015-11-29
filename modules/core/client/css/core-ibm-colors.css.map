@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AASA,iBAAiB;EACb,UAAU,ECmRL,OAAO;EDlRZ,KAAK,EALD,IAAc;;AAQtB,sBAAsB;EAClB,UAAU,EAXF,OAAiB;EAYzB,KAAK,EAVD,IAAc;;AAatB,mBAAmB;EACf,UAAU,EAfD,OAAsB;EAiB/B,sBAAE;IACE,KAAK,EAnBD,OAAiB;EAsBzB,qBAAC;IACG,UAAU,EApBJ,OAAiB",
-"sources": ["../scss/core-ibm-colors.scss","../../../../public/lib/IBM-Design-Colors/_ibm-colors.scss"],
-"names": [],
-"file": "core-ibm-colors.css"
-}

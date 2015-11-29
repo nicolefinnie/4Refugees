@@ -1,0 +1,173 @@
+@import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
+
+
+/** color/font/icon designed by IBM designer Christian Fritsche
+ * All CSS styles have to show properly on smartphone as well.
+*/
+header, main, footer {
+    display: block;
+    padding: 0;
+}
+
+nav {
+    overflow: visible;
+}
+
+/** The header that controls the entire bar color/text/font **/
+.ibm-header{
+    background: color('gray', 80);
+    /* text color */
+    color: color('white', core);
+     /* a: title */
+    a{
+        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+     }    
+}
+
+/** The logo in the header bar */
+.ibm-header-logo{
+  display: inline-block;
+  margin-top: 10px;
+  // design change will be made
+  //margin-left: 100px;
+  margin-right: 20px;
+  padding: 0;
+  background-repeat: no-repeat;
+  width: 12%;
+  height: 12%;
+  border: 3px solid white;
+  background-color:rgb(255,255,255); 
+  background-color:rgba(255,255,255,0.7);
+  border-radius: 50%;  
+}
+
+/* dropdown container needs space to the right */
+.ibm-dropdown-container{
+
+  // design change will be made
+// margin-right:100px;
+}
+
+/** Cover picture - no gap between the picture and its neighbours **/
+.ibm-cover-container {
+  overflow: hidden;
+  display: block;
+  
+  /* img: cover picture */
+  img {
+    width: 100%;
+    positoin: relative;
+    margin-bottom: -10px;
+  }
+}
+
+
+/** welcome bar - between the header and the footer */
+.ibm-welcome-bar{
+    padding: 20px;
+    background: color('blue', 40);
+    /* text color */
+    color: color('white', core);
+    
+    /* img: logo */
+    img {
+        display: block;
+        height: 100px;
+        padding: 0;
+        margin: 10px 20px 20px 50px;
+        border: 4px solid white;
+        background-color:rgb(255,255,255); 
+        background-color:rgba(255,255,255,0.7);
+        border-radius: 100px;  
+    }   
+     
+    /* h1: headline */
+    h1 {
+        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+        font-size: 32px;
+        margin: 20px;
+    }
+    
+    /* h2: sub-headline */
+    h2 {
+        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:500; font-stretch:normal;
+        font-size: 16px;
+        margin: 20px;
+    }
+}
+
+/* Help bar/footer */
+
+.ibm-help-bar{
+    background: color('cool-white', 20);
+    padding: 10px 10px 10px;
+     margin-top: 20px;
+ 
+    /* h1: icon */
+    h1 svg{
+        fill: color('blue', 40);
+    }
+    /* h2: headline */
+    h2{
+        color: color('blue', 40);
+        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+        font-size: 20px;
+        
+    }  
+    /* p: text */
+    p{
+        color: #30393b;
+        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+        font-size: 11px;
+        
+    }
+    /* a: button */
+    a{
+        background: color('teal', core);
+        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+        font-size: 16px;
+        text-transform: capitalize;
+    }
+    
+}
+
+
+/** This design below comes with Mean.JS **/
+.undecorated-link:hover {
+  text-decoration: none;
+}
+[ng\:cloak],
+[ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}
+.header-profile-image {
+  opacity: 0.8;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.open .header-profile-image,
+a:hover .header-profile-image {
+  opacity: 1;
+
+}
+.user-header-dropdown-toggle {
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+}
+.error-text {
+  display: none;
+}
+.has-error .help-block.error-text {
+  display: block;
+}
+.has-error .help-inline.error-text {
+  display: inline;
+}
+
+
+
