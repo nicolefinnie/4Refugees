@@ -30,6 +30,7 @@ var language_translation = watson.language_translation({
 var do_translate = function(text_translate)
 {
 	 var dest_description;
+	 var json_obj;
 	 language_translation.translate({
 		  text: text_translate, source : 'es', target: 'en' },
 		  function (err, translation) {
@@ -37,7 +38,8 @@ var do_translate = function(text_translate)
 		      console.log('error:', err);
 		    else
 		      console.log(JSON.stringify(translation, null, 2));
-		      dest_description = JSON.stringify(translation, null, 2); 
+		      json_obj= JSON.parse(translation);
+		      dest_description = jsob_obj.translations[1].translation;
 		});
 	return dest_description;
 	}
@@ -53,7 +55,7 @@ exports.create = function (req, res) {
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
  // offering.description = req.body.description;
-  offering.description = do_translate(req.body.description);
+  offering.description =do_translate("buena casa");
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
