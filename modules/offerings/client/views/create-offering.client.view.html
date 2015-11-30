@@ -1,15 +1,14 @@
+
 <section ng-controller="OfferingsController">
 <div class="row">
-
     <div class="col s12 offset-s2">
         <div class="page-header">
             <h3>{{showTitle}}</h3>
         </div>
   
-        <form name="offeringForm" class="simple-form" ng-submit="create(offeringForm.$valid)" novalidate>
+        <form name="offeringForm" class="col s12" ng-submit="create(offeringForm.$valid)" novalidate>
           <div class="form-group" show-errors>
             <br>
-
             <div id="labels">
                 <p>Category</p>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
@@ -30,9 +29,10 @@
             <br><br>
         
             <div class="row">
-                <div class="input-field col s7">
+                <div class="input-field col m6 s12">
                     <i class="material-icons prefix">description</i>
-                    <input name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description" required>
+                    <input name="description" type="text" ng-model="description" id="description" class="form-control" required>
+                    <label for="description">Description</label>
                     <div ng-messages="offeringForm.description.$error" role="alert">
                     <p class="help-block error-text" ng-message="required">Offering description is required.</p>
                     </div>
@@ -40,9 +40,26 @@
             </div>
       
             <div class="row">
-                <div class="input-field col s7">
-                <i class="material-icons prefix">room</i> <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
-                </div>
+              <div class="input-field col s7" ng-hide="geoManual">
+                <i class="material-icons prefix">room</i>
+                <input id="city" type="text" class="validate" placeholder="City" ng-model="city">
+                <label for="city" class="category-checkbox">City</label> 
+              </div>
+              <div class="input-field col s7" ng-show="geoManual">
+                <i class="material-icons prefix">room</i>
+                <select name="repeatSelect" id="where" ng-model="where" 
+                  ng-options="option.name for option in citylist">
+<!--
+                  <option value="" disabled selected>Choose your city</option>
+                  <option ng-repeat="option in citylist" value="{{option.name}}">{{option.name}}</option>
+-->
+                </select>
+                <hr>
+                <i>current selection = {{where.name}}</i><br/>
+              </div>
+              <style>
+              select { display: flex; margin-left: 3rem; width: 93%}
+              </style>
             </div>
 
             <div class="row">
