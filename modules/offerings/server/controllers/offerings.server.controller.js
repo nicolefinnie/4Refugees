@@ -18,7 +18,6 @@ var path = require('path'),
   Offering = mongoose.model('Offering'),
   watson = require('watson-developer-cloud'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-var translated_text;
 var language_translation = watson.language_translation({
 	username: '0771b667-54c2-4010-8dcd-9eed53194136',
 	password: 'IeBtcoZy6hgH',
@@ -37,12 +36,12 @@ function doTranslate(text_translate,trans_result)
 		    if (err)
 		      console.log('error:', err);
 		    else
-		    	
+		    {
 		      trans_result(result.translations[0].translation);  
 		      console.log("The JSON value is" + result.translations[0].translation);	
-		     
+		    }
 		});
-	return dest_description;
+	
 	}
 /**
  * Create a offering
@@ -55,30 +54,31 @@ exports.create = function (req, res) {
   offering.when = new Date(req.body.when);
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
- // offering.description = req.body.description;
- doTranslate(req.body.description,function(trans_offering){
-	  console.log("The trans_offering is "+trans_offering);
-	  
-  
-  });
+ //offering.description = req.body.description;
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
-
-  offering.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      //console.log('Liam post2: ' + offering.when);
-      //console.log('Liam post3: ' + JSON.stringify(offering));
-      res.json(offering);
-    }
-  });
+  
+  doTranslate(req.body.description,function(trans_offering){
+	  console.log("The trans_offering is "+trans_offering);
+	  offering.description = trans_offering;
+		 offering.save(function (err) {
+			    if (err) {
+			      return res.status(400).send({
+			        message: errorHandler.getErrorMessage(err)
+			      });
+			    } else {
+			      //console.log('Liam post2: ' + offering.when);
+			      //console.log('Liam post3: ' + JSON.stringify(offering));
+			      res.json(offering);
+			    }
+			  });
+		
+	  });
+  
 };
 
 /**
