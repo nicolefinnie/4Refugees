@@ -18,7 +18,7 @@ var path = require('path'),
   Offering = mongoose.model('Offering'),
   watson = require('watson-developer-cloud'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-
+var translated_text;
 var language_translation = watson.language_translation({
 	username: '0771b667-54c2-4010-8dcd-9eed53194136',
 	password: 'IeBtcoZy6hgH',
@@ -27,19 +27,20 @@ var language_translation = watson.language_translation({
 
 // Translation method
 
-var do_translate = function(text_translate)
+function doTranslate(text_translate,trans_result)
 {
-	 var dest_description;
+	 var dest_description=null;
 	 var json_obj;
 	 language_translation.translate({
 		  text: text_translate, source : 'es', target: 'en' },
-		  function (err, translation) {
+		  function (err, result) {
 		    if (err)
 		      console.log('error:', err);
 		    else
-		      console.log(JSON.stringify(translation, null, 2));
-		      json_obj= JSON.parse(translation);
-		      dest_description = jsob_obj.translations[1].translation;
+		    	
+		      trans_result(result.translations[0].translation);  
+		      console.log("The JSON value is" + result.translations[0].translation);	
+		     
 		});
 	return dest_description;
 	}
@@ -55,7 +56,12 @@ exports.create = function (req, res) {
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
  // offering.description = req.body.description;
-  offering.description =do_translate("buena casa");
+ doTranslate(req.body.description,function(trans_offering){
+	  console.log("The trans_offering is "+trans_offering);
+	  
+  
+  });
+ offering.description = trans_offering;
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
