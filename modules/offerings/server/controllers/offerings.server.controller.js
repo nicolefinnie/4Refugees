@@ -61,7 +61,6 @@ exports.create = function (req, res) {
 	  
   
   });
- offering.description = trans_offering;
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
