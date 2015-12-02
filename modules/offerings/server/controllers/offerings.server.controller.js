@@ -17,13 +17,23 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
   watson = require('watson-developer-cloud'),
+  bluemix = require(path.resolve('./config/config')),
+  extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-var language_translation = watson.language_translation({
+//Get the local username & password if running locally.
+var languageCredentials = extend({
+	version: '<service_version>',
+	username: '<username>',
+	password: '<password>'
+}, bluemix.getServiceCreds('language_translation')); //VCAP_SERVICES
+
+var language_translation = watson.language_translation(languageCredentials); // User language translation service
+/*var language_translation = watson.language_translation({
 	username: '0771b667-54c2-4010-8dcd-9eed53194136',
 	password: 'IeBtcoZy6hgH',
 	version: 'v2'
 });
-
+*/
 // Translation method
 
 function doTranslate(text_translate,trans_result)

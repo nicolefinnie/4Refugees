@@ -219,7 +219,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     $scope.authentication = Authentication;
     
     // Refugee mode: determine the title to show, this mode create request OR search offer
-    if ($scope.offerType === 'request') {c
+    if ($scope.offerType === 'request') {
       $scope.showTitle = 'Need help';
       $scope.searchOffer = !$scope.searchOffer;
      
