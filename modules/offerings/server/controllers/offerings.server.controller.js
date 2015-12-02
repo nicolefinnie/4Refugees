@@ -17,42 +17,56 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
   watson = require('watson-developer-cloud'),
-  bluemix = require(path.resolve('./config/config')),
+  config = require(path.resolve('./config/config')),
   extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-//Get the local username & password if running locally.
-var languageCredentials = extend({
-	version: '<service_version>',
-	username: '<username>',
-	password: '<password>'
-}, bluemix.getServiceCreds('language_translation')); //VCAP_SERVICES
 
-var language_translation = watson.language_translation(languageCredentials); // User language translation service
+//Get the local username & password if running locally.
+var languageCredentials;
+try {
+  languageCredentials = extend({
+    version: '<service_version>',
+    username: '<username>',
+    password: '<password>'
+  }, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
+} catch(e) {
+  console.log('Cannot get watson credentials');
+  languageCredentials = {};
+}
+
+var language_translation;
+try {
+  language_translation = watson.language_translation(languageCredentials); // User language translation service
+} catch(e) {
+  console.log('Cannot get watson translation service');
+  language_translation = {};
+}
 /*var language_translation = watson.language_translation({
-	username: '0771b667-54c2-4010-8dcd-9eed53194136',
-	password: 'IeBtcoZy6hgH',
-	version: 'v2'
+  username: '0771b667-54c2-4010-8dcd-9eed53194136',
+  password: 'IeBtcoZy6hgH',
+  version: 'v2'
 });
 */
 // Translation method
 
 function doTranslate(text_translate,trans_result)
 {
-	 var dest_description=null;
-	 var json_obj;
-	 language_translation.translate({
-		  text: text_translate, source : 'ar', target: 'en' },
-		  function (err, result) {
-		    if (err)
-		      console.log('error:', err);
-		    else
-		    {
-		      trans_result(result.translations[0].translation);  
-		      console.log("The JSON value is" + result.translations[0].translation);	
-		    }
-		});
-	
-	}
+  var dest_description=null;
+  var json_obj;
+  if (language_translation) {
+    language_translation.translate({
+      text: text_translate, source : 'ar', target: 'en' },
+      function (err, result) {
+        if (err) {
+          console.log('error:', err);
+        }
+        else {
+          trans_result(result.translations[0].translation);  
+          console.log('The JSON value is' + result.translations[0].translation);  
+        }
+      });
+  }
+}
 /**
  * Create a offering
  */
@@ -73,21 +87,21 @@ exports.create = function (req, res) {
   offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
   
   doTranslate(req.body.description,function(trans_offering){
-	  console.log("The trans_offering is "+trans_offering);
-	  offering.description = trans_offering;
-		 offering.save(function (err) {
-			    if (err) {
-			      return res.status(400).send({
-			        message: errorHandler.getErrorMessage(err)
-			      });
-			    } else {
-			      //console.log('Liam post2: ' + offering.when);
-			      //console.log('Liam post3: ' + JSON.stringify(offering));
-			      res.json(offering);
-			    }
-			  });
-		
-	  });
+    console.log('The trans_offering is '+trans_offering);
+    offering.description = trans_offering;
+    offering.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        //console.log('Liam post2: ' + offering.when);
+        //console.log('Liam post3: ' + JSON.stringify(offering));
+        res.json(offering);
+      }
+    });
+    
+  });
   
 };
 
