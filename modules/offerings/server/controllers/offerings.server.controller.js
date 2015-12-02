@@ -31,7 +31,7 @@ function doTranslate(text_translate,trans_result)
 	 var dest_description=null;
 	 var json_obj;
 	 language_translation.translate({
-		  text: text_translate, source : 'es', target: 'en' },
+		  text: text_translate, source : 'ar', target: 'en' },
 		  function (err, result) {
 		    if (err)
 		      console.log('error:', err);
