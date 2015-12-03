@@ -22,25 +22,16 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 //Get the local username & password if running locally.
-var languageCredentials;
-try {
-  languageCredentials = extend({
-    version: '<service_version>',
+
+ var languageCredentials = extend({
+    version: 'v2',
     username: '<username>',
     password: '<password>'
   }, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
-} catch(e) {
-  console.log('Cannot get watson credentials');
-  languageCredentials = {};
-}
 
-var language_translation;
-try {
-  language_translation = watson.language_translation(languageCredentials); // User language translation service
-} catch(e) {
-  console.log('Cannot get watson translation service');
-  language_translation = {};
-}
+
+ var language_translation = watson.language_translation(languageCredentials); // User language translation service
+
 /*var language_translation = watson.language_translation({
   username: '0771b667-54c2-4010-8dcd-9eed53194136',
   password: 'IeBtcoZy6hgH',
@@ -51,9 +42,6 @@ try {
 
 function doTranslate(text_translate,trans_result)
 {
-  var dest_description=null;
-  var json_obj;
-  if (language_translation) {
     language_translation.translate({
       text: text_translate, source : 'ar', target: 'en' },
       function (err, result) {
@@ -64,8 +52,7 @@ function doTranslate(text_translate,trans_result)
           trans_result(result.translations[0].translation);  
           console.log('The JSON value is' + result.translations[0].translation);  
         }
-      });
-  }
+      }); 
 }
 /**
  * Create a offering
@@ -85,7 +72,6 @@ exports.create = function (req, res) {
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
-  
   doTranslate(req.body.description,function(trans_offering){
     console.log('The trans_offering is '+trans_offering);
     offering.description = trans_offering;
