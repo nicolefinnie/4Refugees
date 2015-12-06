@@ -20,9 +20,17 @@
       <span ng-bind="offering.when | date:'mediumDate'"></span>
       by
       <span ng-bind="offering.user.displayName"></span>
+      <br>
+      <!-- Comment out until we can get proper conversion of internal server offering
+        format into 'public' format, which includes converting 'offerType' into
+        a user-readable string.
+      <span ng-bind="offering.offerType"></span>
+      -->
+      expires on
+      <span ng-bind="offering.expiry | date:'mediumDate'"></span>
     </em>
   </small>
   <p class="lead" ng-bind="offering.category"></p>
   <p class="lead" ng-bind="offering.city"></p>
-  <p class="lead" ng-bind="offering.offerType"></p>
+  <p class="lead">numOffered: <span ng-bind="offering.numOffered"></span></p>
 </section>
