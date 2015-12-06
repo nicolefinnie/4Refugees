@@ -1,6 +1,6 @@
 'use strict';
 
-function mapOfferTypeToBoolean(offerType) {
+function mapOfferTypeStringToNumber(offerType) {
   if (offerType === 'offer') {
     return 0;
   } else if (offerType === 'request') {
@@ -15,7 +15,7 @@ function mapOfferTypeToBoolean(offerType) {
   return -1;
 }
 
-function mapOfferBooleanToType(offerType) {
+function mapOfferTypeNumberToString(offerType) {
   if (offerType === 0) {
     return 'offer';
   } else if (offerType === 1) {
@@ -63,7 +63,7 @@ exports.create = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
+  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
 
   offering.save(function (err) {
@@ -100,7 +100,7 @@ exports.update = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
+  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
 
   offering.save(function (err) {
     if (err) {
@@ -135,7 +135,6 @@ function buildGeoNearAggregateRestriction(req) {
   // TODO: The additional fields that can/should be used for the query are:
   // req.body.description -- description of the offering the user is searching for
   // req.body.when -- date the user is interested in receiving offers for
-  // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
   // req.body.city -- open question, should we allow searching by city when no coords are provided???
   restrictQuery.maxDistance = req.query.radius*1000;
   restrictQuery.spherical = true;
@@ -149,6 +148,14 @@ function buildGeoNearAggregateRestriction(req) {
       searchCategories = req.query.category;
     }
     restrictQuery.query = { category: { $in: searchCategories } };
+  }
+  if (req.query.offerType) {
+    var offerTypeRestrict = mapOfferTypeStringToNumber(req.query.offerType);
+    if (restrictQuery.query) {
+      restrictQuery.query.offerType = offerTypeRestrict;
+    } else {
+      restrictQuery.query = { offerType: offerTypeRestrict };
+    }
   }
   var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
   restrictQuery.near = nearPoint;
@@ -172,7 +179,7 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   tmpRes.description = rawDoc.description;
   tmpRes.numOffered = rawDoc.numOffered;
   tmpRes.expiry = rawDoc.expiry;
-  tmpRes.offerType = mapOfferBooleanToType(rawDoc.offerType);
+  tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
   if (myOwnDoc === true) {
     // this is my own document, we can show exact co-ordinates in results
     tmpRes.city = rawDoc.city + ' (@' + rawDoc.loc.coordinates[1] + ',' + rawDoc.loc.coordinates[0] + ')';

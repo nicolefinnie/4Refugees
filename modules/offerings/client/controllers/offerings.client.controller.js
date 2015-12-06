@@ -15,7 +15,13 @@ function geoSetupCityList($scope) {
 // array of category strings
 function getCategoryArray(cat, defaultSetting) {
   if (cat && cat.length !== 0) {
-    return Object.keys(cat);
+    var myArray = [''];
+    Object.keys(cat).forEach(function(category) {
+      if (cat[category] === true) {
+        myArray.push(category);
+      }
+    });
+    return myArray;
   } else {
     return [defaultSetting];
   }
