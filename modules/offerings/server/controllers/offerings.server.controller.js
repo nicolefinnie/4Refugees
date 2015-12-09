@@ -1,14 +1,36 @@
 'use strict';
 
-function mapOfferTypeToBoolean(offerType) {
+function mapOfferTypeStringToNumber(offerType) {
   if (offerType === 'offer') {
     return 0;
   } else if (offerType === 'request') {
     return 1;
   }
+  else if (offerType === 'offer (expired)') {
+    return 2;
+  } else if (offerType === 'request (expired)') {
+    return 3;
+  }
   // unsupported states or unknown errors
   return -1;
 }
+
+function mapOfferTypeNumberToString(offerType) {
+  if (offerType === 0) {
+    return 'offer';
+  } else if (offerType === 1) {
+    return 'request';
+  }
+  else if (offerType === 2) {
+    return 'offer (expired)';
+  }
+  else if (offerType === 3) {
+    return 'request (expired)';
+  }
+  // unsupported states or unknown errors
+  return 'unknown';
+}
+
 /**
  * Module dependencies.
  */
@@ -28,13 +50,21 @@ exports.create = function (req, res) {
   offering.when = new Date(req.body.when);
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
+  offering.expiry = req.body.expiry;
   offering.description = req.body.description;
+  // TODO: Need to call the translation services to convert from the
+  // input language to English
+  offering.descriptionLanguage = 'English';
+  offering.descriptionEnglish = req.body.description;
+  offering.descriptionDetails = req.body.descriptionDetails;
+  offering.descriptionDetailsEnglish = req.body.descriptionDetailsEnglish;
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
+  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
+  offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
 
   offering.save(function (err) {
     if (err) {
@@ -70,7 +100,7 @@ exports.update = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
+  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
 
   offering.save(function (err) {
     if (err) {
@@ -105,7 +135,6 @@ function buildGeoNearAggregateRestriction(req) {
   // TODO: The additional fields that can/should be used for the query are:
   // req.body.description -- description of the offering the user is searching for
   // req.body.when -- date the user is interested in receiving offers for
-  // req.body.offerType -- whether the user is searching offers (1), or outstanding requests (0)
   // req.body.city -- open question, should we allow searching by city when no coords are provided???
   restrictQuery.maxDistance = req.query.radius*1000;
   restrictQuery.spherical = true;
@@ -120,33 +149,53 @@ function buildGeoNearAggregateRestriction(req) {
     }
     restrictQuery.query = { category: { $in: searchCategories } };
   }
+  if (req.query.offerType) {
+    var offerTypeRestrict = mapOfferTypeStringToNumber(req.query.offerType);
+    if (restrictQuery.query) {
+      restrictQuery.query.offerType = offerTypeRestrict;
+    } else {
+      restrictQuery.query = { offerType: offerTypeRestrict };
+    }
+  }
   var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
   restrictQuery.near = nearPoint;
   restrictQuery.distanceField = 'distance';
   return restrictQuery;
 }
 
+function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
+  var tmpRes = {};
+  tmpRes._id = rawDoc._id;
+  tmpRes.displayName = rawDoc.user.displayName;
+  if (myOwnDoc === true) {
+    tmpRes.user = rawDoc.user;
+  } else {
+    tmpRes.user = { _id : rawDoc.user._id,
+                    displayName : rawDoc.user.displayName };
+  }
+  tmpRes.when = rawDoc.when;
+  tmpRes.updated = rawDoc.updated;
+  tmpRes.category = rawDoc.category;
+  tmpRes.description = rawDoc.description;
+  tmpRes.numOffered = rawDoc.numOffered;
+  tmpRes.expiry = rawDoc.expiry;
+  tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
+  if (myOwnDoc === true) {
+    // this is my own document, we can show exact co-ordinates in results
+    tmpRes.city = rawDoc.city + ' (@' + rawDoc.loc.coordinates[1] + ',' + rawDoc.loc.coordinates[0] + ')';
+  } else {
+    tmpRes.city = rawDoc.city;
+  }
+  if (includeDistance === true) {
+    tmpRes.distance = Math.round(rawDoc.distance * 100) / 100;
+  }
+  return tmpRes;
+}
+
 function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
   var filteredResults = [];
   rawDocs.forEach(function(rawDoc) {
-    var tmpRes = {};
-    tmpRes._id = rawDoc._id;
-    tmpRes.displayName = rawDoc.user.displayName;
-    tmpRes.user = { _id : rawDoc.user._id };
-    tmpRes.when = rawDoc.when;
-    tmpRes.updated = rawDoc.updated;
-    tmpRes.category = rawDoc.category;
-    tmpRes.description = rawDoc.description;
-    if (myOwnDoc === true) {
-      // this is my own document, we can show exact co-ordinates in results
-      tmpRes.city = rawDoc.city + ' (@' + rawDoc.loc.coordinates[1] + ',' + rawDoc.loc.coordinates[0] + ')';
-    } else {
-      tmpRes.city = rawDoc.city;
-    }
-    if (includeDistance === true) {
-      tmpRes.distance = Math.round(rawDoc.distance * 100) / 100;
-    }
-    filteredResults.push(tmpRes);
+    filteredResults.push(filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance));
   });
   return filteredResults;
 }
@@ -179,23 +228,39 @@ exports.listMine = function (req, res) {
             // restrict results to only public-viewable fields
             var publicResults = filterInternalOfferingFields(docs, false, true);
             //console.log('RETURNING: ' + JSON.stringify(publicResults));
+            // TODO: Need to implement translation services, so description
+            // matches the language desired by the user.
             res.json(publicResults);
           }
         });
       }
     });
   } else {
-    // list all of my offerings
-    //Offering.find({ userId: req.user._id }).sort('-created').populate('user', 'displayName').exec(function (err, offerings) {
-    Offering.find(Query).sort('-created').populate('user').exec(function (err, offerings) {
+    // Build up query, depending on whether the user is authenticated or not.  Authenticated
+    // users are returned a list of all their offerings.  Non-authenticated users get
+    // a sampling of 5 (random) offerings - the limit is to reduce load on the server.
+    // Note that currently only unit tests call this without authentication, normally
+    // non-authenticated users go through the search path above.
+    var query = Offering.find({});
+    if (req.user) {
+      query.where('userId', req.user._id);
+      query.sort('-created');
+    } else {
+      query.limit(5);
+    }
+    query.populate('user');
+
+    query.exec(function (err, offerings) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        console.log('RAW RESULTS for ' + JSON.stringify(Query) + ' : ' + JSON.stringify(offerings));
+        // console.log('RAW RESULTS for ' + JSON.stringify(Query) + ' : ' + JSON.stringify(offerings));
         // restrict results to only public-viewable fields
         var publicResults = filterInternalOfferingFields(offerings, true, false);
+        // Note - these results do not go through translation services, they are
+        // returned the same way the user entered them.
         res.json(publicResults);
       }
     });
@@ -221,6 +286,13 @@ exports.offeringByID = function (req, res, next, id) {
         message: 'No offering with that identifier has been found'
       });
     }
+    // TODO: The filtering here seems to cause a 'Forbidden' error when trying
+    // to edit your own offering.  Comment out for now, until this 'Forbidden'
+    // error is fixed.  Alternatively, if there's no easy way to fix that, we
+    // can return the un-filtered offering if it matches the current user, and
+    // only filter when other users are searching for matching offers (that
+    // feature already works with this filtering enabled).
+    // req.offering = filterSingleInternalOfferingFields(offering, (req.user && req.user._id === offering.userId), false);
     req.offering = offering;
     next();
   });

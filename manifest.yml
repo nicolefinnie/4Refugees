@@ -1,12 +1,12 @@
 ---
 declared-services:
   mean-mongo:
-    label: mongolab
-    plan: sandbox
+    label: mongodb-2.4
+    plan: 100
 applications:
 - name: 4Refugees
   host: 4Refugees
-  memory: 128M
+  memory: 512M
   services:
     - mean-mongo
   env:

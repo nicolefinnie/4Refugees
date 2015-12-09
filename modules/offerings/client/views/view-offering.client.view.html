@@ -10,12 +10,7 @@
     </a>
   </div>
   <div class="pull-right" ng-show="authentication.user._id != offering.user._id">
-    <!-- 
-    <a class="waves-effect waves-light btn" ui-sref="postings.createFromOffer({offeringId: offering._id})">
-      <i class="material-icons right ">email</i> Contact
-    </a>
-    -->
-    <a href="" ng-click="askAboutOffering(offering)" class="modal-trigger modal-action waves-effect waves-green btn">
+    <a class="waves-effect waves-light btn" ui-sref="postings.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
       <i class="material-icons right ">email</i> Contact
     </a>
   </div>
@@ -25,26 +20,17 @@
       <span ng-bind="offering.when | date:'mediumDate'"></span>
       by
       <span ng-bind="offering.user.displayName"></span>
+      <br>
+      <!-- Comment out until we can get proper conversion of internal server offering
+        format into 'public' format, which includes converting 'offerType' into
+        a user-readable string.
+      <span ng-bind="offering.offerType"></span>
+      -->
+      expires on
+      <span ng-bind="offering.expiry | date:'mediumDate'"></span>
     </em>
   </small>
   <p class="lead" ng-bind="offering.category"></p>
   <p class="lead" ng-bind="offering.city"></p>
-  <p class="lead" ng-bind="offering.offerType"></p>
-
-  <div id="modalAskAboutOffering" class="modal">
-    <div class="modal-content">
-      <form name="postingForm" class="my-form" novalidate>
-        <div class="row">
-          <p>Contact {{offering.user.displayName}}</p>
-          <input id="titleid" name="title" ng-model="title">
-          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="Content" cols="30" rows="10" required>Hier</textarea>
-          <hr>
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" ng-click="createMail(postingForm, offering)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
-    </div>
-  </div>
+  <p class="lead">numOffered: <span ng-bind="offering.numOffered"></span></p>
 </section>

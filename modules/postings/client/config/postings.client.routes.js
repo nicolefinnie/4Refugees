@@ -30,10 +30,22 @@ angular.module('postings').config(['$stateProvider',
         }
       })
       .state('postings.createFromOffer', {
-        url: '/createFromOffer?offeringId',
+        url: '/createFromOffer',
+        params: {
+          offeringId: null,
+          offeringDescription: null,
+          recipientName: null,
+          recipientId: null
+        },
         templateUrl: 'modules/postings/client/views/create-posting-offer.client.view.html',
         data: {
           roles: ['user']
+        },
+        controller: function($scope, $stateParams) {
+          $scope.offeringId = $stateParams.offeringId;
+          $scope.offeringDescription = $stateParams.offeringDescription;
+          $scope.recipientName = $stateParams.recipientName;
+          $scope.recipientId = $stateParams.recipientId;
         }
       })
       .state('postings.createFromOfferSuccess', {

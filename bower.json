@@ -17,8 +17,7 @@
     "angular-materialize": "*",
     "materialize": "0.97.2",
     "arrive": "~2.3.0",
-    "ng-tags-input": "~3.0.0",
-    "ibm-icons": "~1.0.1"
+    "ng-tags-input": "~3.0.0"
   },
   "resolutions": {
     "angular": "~1.3"

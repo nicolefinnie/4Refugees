@@ -2,38 +2,24 @@
   <div class="page-header">
     <h3>{{showTitle}}</h3>
   </div>
-  <div class="col-md-12">
-    Mail to {{recipientName}}
-  </div>
-  <div class="col-md-12">
-    <form name="postingForm" class="form-horizontal" ng-submit="create(postingForm.$valid)" novalidate>
-      <fieldset>
-        <div class="form-group" show-errors>
-          <label for="title">Subject</label>
-          <input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title" required>
-          <div ng-messages="postingForm.title.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Mail subject is required.</p>
-          </div>
+  <div id="modalAskAboutOffering" class="modal">
+    <div class="modal-content">
+      <form name="postingForm" class="my-form" novalidate>
+        <div class="row">
+          Send mail to:   <input ng-model="recipientName" readonly><br>
+          About offering: <input ng-model="offeringDescription" readonly><br>
+          <!-- Hidden fields set/used by controller
+          Recipient Id: <input ng-model="recipientId" readonly><br>
+          Reply to (i.e. current logged in user): <input ng-model="replyTo" readonly><br>
+          -->
+          Subject: <input name="title" ng-model="title" size="100"><br>
+          Message: <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="Content" cols="30" rows="10" required></textarea>
         </div>
-        <div class="form-group">
-          <label for="content">Content</label>
-          <textarea name="content" ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="replyTo">Reply To</label>
-          <textarea name="replyTo" ng-model="replyTo" id="replyTo" class="form-control" cols="30" rows="10" placeholder="ReplyTo"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="offeringId">OfferingId</label>
-          <textarea name="offeringId" ng-model="offeringId" id="offeringId" class="form-control" cols="30" rows="10" placeholder="OfferingId"></textarea>
-        </div>
-        <div class="form-group">
-          <input type="submit" class="btn btn-default">
-        </div>
-        <div ng-show="error" class="text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-      </fieldset>
-    </form>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" ng-click="createMail(postingForm)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
   </div>
 </section>
