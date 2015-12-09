@@ -18,11 +18,35 @@ var OfferingSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  expiry: {
+    type: Date,
+    default: function() { return +new Date() + 28*24*60*60*1000; } // default expiry + ~1 month
+  },
   description: {
     type: String,
     default: '',
     trim: true,
     required: 'Description cannot be blank'
+  },
+  descriptionLanguage: {
+    type: String,
+    default: 'English',
+    trim: true
+  },
+  descriptionEnglish: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  descriptionDetails: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  descriptionDetailsEnglish: {
+    type: String,
+    default: '',
+    trim: true
   },
   city: {
     type: String,
@@ -38,7 +62,11 @@ var OfferingSchema = new Schema({
   },
   offerType: {
     type: Number,
-    default: 0     // 0 for request, 1 for offering
+    default: 0 // 0 for request, 1 for offering, 2 for expired request, 3 for expired offering
+  },
+  numOffered: {
+    type: Number,
+    default: 1
   },
   user: {
     type: Schema.ObjectId,
@@ -55,5 +83,8 @@ var OfferingSchema = new Schema({
 // Create index on geo location, matching is done first by
 // proximity to request, then filtered further by other fields.
 OfferingSchema.index({ loc: '2dsphere' });
+// Create a second index for the userId field, this can be used when
+// a user wants to list all of their offerings
+OfferingSchema.index({ userId: 1 });
 
 mongoose.model('Offering', OfferingSchema);

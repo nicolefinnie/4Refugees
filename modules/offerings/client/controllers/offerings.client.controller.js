@@ -16,7 +16,18 @@ function geoSetupCityList($scope) {
 // array of category strings
 function getCategoryArray(cat, defaultSetting) {
   if (cat && cat.length !== 0) {
-    return Object.keys(cat);
+    var myArray = [];
+    var anyFound = false;
+    Object.keys(cat).forEach(function(category) {
+      if (cat[category] === true) {
+        myArray.push(category);
+        anyFound = true;
+      }
+    });
+    if (anyFound === false) {
+      myArray.push(defaultSetting);
+    }
+    return myArray;
   } else {
     return [defaultSetting];
   }
@@ -300,7 +311,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         description: this.description,
         city: this.city,
              // mapping JSON array category from checkbox on webpage to String
-        category: getCategoryArray(this.category, 'Other'),
+        category: getCategoryArray(this.category, 'others'),
         longitude: $scope.longitude,
         latitude: $scope.latitude,
         offerType: this.offerType 
