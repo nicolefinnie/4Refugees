@@ -1,20 +1,17 @@
 <!-- According to Mean.JS design, external scripts have to be included in header, see the example here:
 https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!-- we don't need this font for the new design -->
-<!--  <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Sansita+One"> -->
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-
 <div ng-controller="HeaderController">
-  <nav class="ibm-header-color">
+  <nav class="ibm-header">
     <div class="nav-wrapper container ">
       <span>
-        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="logo-header left">4Refuge.es</a>
+        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
       </span>
     
       <!-- Dropdown container -->
-      <div class="dropdown-container">
+      <div class="ibm-dropdown-container">
         
         <!-- Dropdown for unauthenticated users -->
         <ul class="right hide-on-med-and-down" ng-hide="authentication.user">

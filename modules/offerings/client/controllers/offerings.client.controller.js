@@ -3,6 +3,15 @@
 
 //TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
 
+function geoSetupCityList($scope) {
+  $scope.citylist = [
+    { name: 'Stuttgart', latitude: 2, longitude: 3 },
+    { name: 'Kön', latitude: 2, longitude: 3 },
+    { name: 'Hamburg', latitude: 2, longitude: 3 },
+    { name: 'Berlin', latitude: 2, longitude: 3 },
+  ];
+}
+
 // Converts the category selections from the input form into an
 // array of category strings
 function getCategoryArray(cat, defaultSetting) {
@@ -52,17 +61,19 @@ function geoUpdateLocation(position, scope) {
     } else {
       scope.city = city + ', ' + country;
     }
+    scope.geoManual = false;
     scope.$apply();
   });
 }
 
 function geoUpdateLocationError(error, scope) {
   console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
-  scope.city = 'Google geo error, try again later.';
+  //scope.city = 'Google geo error, try again later.';
+  scope.geoManual = true;
+  geoSetupCityList(scope);
   scope.$apply();
 }
 
-// Offerings controller available for un-authenticated users
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
@@ -77,6 +88,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.showTitle = 'Find help';
       $scope.createRequest = !$scope.createRequest;
     }
+
+    geoSetupCityList($scope);
 
     // get current location using Google GeoLocation services
     if (navigator.geolocation) {
@@ -111,6 +124,13 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         return false;
       }
 
+      // only if google geo is not reachable or user does not allow it
+      if (this.where)
+      {
+        $scope.longitude = $scope.where.longitude;
+        $scope.latitude = $scope.where.latitude;
+      }
+
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
@@ -143,6 +163,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
     if (!Authentication.user) {
       $location.path('/');
     }
+
+    geoSetupCityList($scope);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -214,10 +236,12 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
 ]);
 
 //Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Postings', 'Socket',
-  function ($scope, $stateParams, $location, Authentication, Offerings, Postings, Socket) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
+  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
+    geoSetupCityList($scope);
+
     // Refugee mode: determine the title to show, this mode create request OR search offer
     if ($scope.offerType === 'request') {
       $scope.showTitle = 'Need help';
@@ -252,11 +276,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
 
     $scope.messages = [];
 
-    // If user is not signed in then redirect back home
-//    if (!Authentication.user) {
-//      $location.path('/');
-//    }
-
     // Create new Offering
     $scope.create = function (isValid) {
       $scope.error = null;
@@ -265,6 +284,13 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         $scope.$broadcast('show-errors-check-validity', 'offeringForm');
 
         return false;
+      }
+
+      // only if google geo is not reachable or user does not allow it
+      if (this.where)
+      {
+        $scope.longitude = $scope.where.longitude;
+        $scope.latitude = $scope.where.latitude;
       }
     
       // Create new Offering object
@@ -348,48 +374,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
     $scope.findOne = function () {
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
-      });
-    };
-
-    // ask about offering
-    $scope.askAboutOffering = function (offering) {
-      $scope.offering = offering;
-      $scope.authentication = Authentication;
-      if (!Authentication.user) {
-        $location.path('authentication/signin');
-      }
-      else {
-        $('#modalAskAboutOffering').openModal();
-      }
-    };
-
-    $scope.createMail = function(postingForm, offering) {
-
-      $scope.authentication = Authentication;
-
-      console.log('My offering is ' + JSON.stringify(offering));
-      // Create new Posting object
-      var posting = new Postings({
-        title: this.title,
-        content: this.content,
-        unread: true,
-        recipient: offering.user,
-        replyTo: this.replyTo,
-        offeringId: offering._id,
-      });
-
-      // Emit a 'postingMessage' message event with the JSON posting object
-      var message = {
-        content: posting
-      };
-
-      // Redirect after save
-      posting.$save(function (response) {
-        Socket.emit('postingMessage', message);
-        $location.path('postings/createFromOfferSuccess');
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-        $scope.authentication = Authentication;
       });
     };
   }

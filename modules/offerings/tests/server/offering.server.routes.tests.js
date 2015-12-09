@@ -191,34 +191,54 @@ describe('Offering CRUD tests', function () {
   });
 
   it('should be able to get a list of offerings if not signed in', function (done) {
-    // Create new offering model instance
-    var offeringObj = new Offering(offering);
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
 
-    // Save the offering
-    offeringObj.save(function () {
-      // Request offerings
-      request(app).get('/api/offerings')
-        .end(function (req, res) {
-          // Set assertion
-          res.body.should.be.instanceof(Array).and.have.lengthOf(1);
+        // Create new offering model instance
+        var offeringObj = new Offering(offering);
+        offeringObj.user = user;
+        offeringObj.userId = user.id;
+        offeringObj.description = 'test';
+        offeringObj.loc.type = 'Point';
+        offeringObj.loc.coordinates = [ 10,20 ];
 
-          // Call the assertion callback
-          done();
+        // Save the offering
+        offeringObj.save(function (err) {
+          //console.log('save err ' + JSON.stringify(err));
+          agent.post('/api/auth/signout')
+            .end(function (signoutErr, signinRes) {
+
+              // Request offerings
+              request(app).get('/api/offerings')
+                .end(function (req, res) {
+                  // Set assertion
+                  res.body.should.be.instanceof(Array).and.have.lengthOf(1);
+
+                  // Call the assertion callback
+                  done();
+                });
+            });
         });
-
-    });
+      });
   });
 
   it('should be able to get a single offering if not signed in', function (done) {
     // Create new offering model instance
     var offeringObj = new Offering(offering);
+    offeringObj.user = user;
+    offeringObj.userId = user.id;
+    offeringObj.description = 'test';
+    offeringObj.loc.type = 'Point';
+    offeringObj.loc.coordinates = [ 10,20 ];
 
     // Save the offering
     offeringObj.save(function () {
       request(app).get('/api/offerings/' + offeringObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('description', offering.description);
+          res.body.should.be.instanceof(Object).and.have.property('description', offeringObj.description);
 
           // Call the assertion callback
           done();
@@ -299,6 +319,11 @@ describe('Offering CRUD tests', function () {
 
     // Create new offering model instance
     var offeringObj = new Offering(offering);
+    offeringObj.user = user;
+    offeringObj.userId = user.id;
+    offeringObj.description = 'test';
+    offeringObj.loc.type = 'Point';
+    offeringObj.loc.coordinates = [ 10,20 ];
 
     // Save the offering
     offeringObj.save(function () {
