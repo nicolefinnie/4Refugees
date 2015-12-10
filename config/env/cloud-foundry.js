@@ -4,12 +4,12 @@ var cfenv = require('cfenv'),
   appEnv = cfenv.getAppEnv(),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
   appEnv.getService('mean-mongo').credentials.url : undefined;
-
 // Fallback in case they are trying to use the Mongolab service,
 // which uses ...credentials.uri
 if ((cfMongoUrl === undefined) && appEnv.getService('mean-mongo').credentials.uri) {
   cfMongoUrl = appEnv.getService('mean-mongo').credentials.uri;
 }
+
 
 var getCred = function (serviceName, credProp) {
   return appEnv.getService(serviceName) ?
@@ -23,13 +23,10 @@ module.exports = {
     options: {
       user: '',
       pass: ''
-    }
+    },
+ 
   },
-//  translation: {
-//    uri: getCred('watson-translation', 'uri'),
-//    apiKey : getCred('watson-translation', 'apiKey'),
-//    password : 
-//  },
+
   log: {
     // Can specify one of 'combined', 'common', 'dev', 'short', 'tiny'
     format: 'combined',
@@ -43,8 +40,8 @@ module.exports = {
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: getCred('mean-twitter', 'key') || 'CONSUMER_KEY',
-    clientSecret: getCred('mean-twitter', 'secret') || 'CONSUMER_SECRET',
+    clientID: getCred('mean-twitter', 'key') || '1EuGddIJblLFLniCty9fOaZ51',
+    clientSecret: getCred('mean-twitter', 'secret') || 'OKFhbkGf3IhwlZFDM6Hn2ghL3TFJUZH6IaaX2L9BwJsUUI7Nvu',
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {

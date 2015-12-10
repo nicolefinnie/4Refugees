@@ -1,3 +1,4 @@
+/* indent: 0 */
 'use strict';
 
 function mapOfferTypeStringToNumber(offerType) {
@@ -37,8 +38,44 @@ function mapOfferTypeNumberToString(offerType) {
 var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
+  watson = require('watson-developer-cloud'),
+  config = require(path.resolve('./config/config')),
+  extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
+//Get the local username & password if running locally.
+
+ var languageCredentials = extend({
+    version: 'v2',
+    username: '<username>',
+    password: '<password>'
+  }, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
+
+
+ var language_translation = watson.language_translation(languageCredentials); // User language translation service
+
+/*var language_translation = watson.language_translation({
+  username: '0771b667-54c2-4010-8dcd-9eed53194136',
+  password: 'IeBtcoZy6hgH',
+  version: 'v2'
+});
+*/
+// Translation method
+
+function doTranslate(text_translate,trans_result)
+{
+    language_translation.translate({
+      text: text_translate, source : 'ar', target: 'en' },
+      function (err, result) {
+        if (err) {
+          console.log('error:', err);
+        }
+        else {
+          trans_result(result.translations[0].translation);  
+          console.log('The JSON value is' + result.translations[0].translation);  
+        }
+      }); 
+}
 /**
  * Create a offering
  */
@@ -51,11 +88,11 @@ exports.create = function (req, res) {
   //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
   offering.expiry = req.body.expiry;
-  offering.description = req.body.description;
+  //offering.description = req.body.description;
   // TODO: Need to call the translation services to convert from the
   // input language to English
-  offering.descriptionLanguage = 'English';
-  offering.descriptionEnglish = req.body.description;
+  offering.descriptionLanguage = 'en';
+  offering.description= req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.descriptionDetailsEnglish = req.body.descriptionDetailsEnglish;
   offering.city = req.body.city;
@@ -65,18 +102,22 @@ exports.create = function (req, res) {
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
-
-  offering.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      //console.log('Liam post2: ' + offering.when);
-      //console.log('Liam post3: ' + JSON.stringify(offering));
-      res.json(offering);
-    }
+  doTranslate(req.body.description,function(trans_offering){
+    console.log('The trans_offering is '+trans_offering);
+    offering.descriptionEnglish = trans_offering;
+    offering.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        //console.log('Liam post2: ' + offering.when);
+        //console.log('Liam post3: ' + JSON.stringify(offering));
+        res.json(offering);
+      }
+    });
   });
+  
 };
 
 /**
@@ -176,7 +217,7 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   tmpRes.when = rawDoc.when;
   tmpRes.updated = rawDoc.updated;
   tmpRes.category = rawDoc.category;
-  tmpRes.description = rawDoc.description;
+  tmpRes.description = rawDoc.descriptionEnglish;
   tmpRes.numOffered = rawDoc.numOffered;
   tmpRes.expiry = rawDoc.expiry;
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);

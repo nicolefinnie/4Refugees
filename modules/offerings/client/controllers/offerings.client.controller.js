@@ -1,5 +1,6 @@
 'use strict';
 
+
 //TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
 
 function geoSetupCityList($scope) {
@@ -302,7 +303,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         $scope.longitude = $scope.where.longitude;
         $scope.latitude = $scope.where.latitude;
       }
-
+    
       // Create new Offering object
       var offering = new Offerings({
         when: this.when,
