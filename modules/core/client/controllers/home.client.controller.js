@@ -73,7 +73,7 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
     $scope.helpOthersButton = HELPOTHERS_EN;
     
     
-    if ( $rootScope.currentLanguage === 'ar') {
+    if ($rootScope.currentLanguage === 'ar') {
       $scope.headline = HEADLINE_AR;
       $scope.subheadline = SUBHEADLINE_AR;
 
@@ -89,7 +89,7 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
       $scope.findHelpButton = FINDHELP_AR;
       $scope.helpOthersButton = HELPOTHERS_AR;
   
-    } else if ( $rootScope.currentLanguage === 'en') {
+    } else if ($rootScope.currentLanguage === 'en') {
       $scope.headline = HEADLINE_EN;
       $scope.subheadline = SUBHEADLINE_EN;
  
@@ -105,7 +105,7 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
       $scope.findHelpButton = FINDHELP_EN;
       $scope.helpOthersButton = HELPOTHERS_EN;
     
-    } else if ( $rootScope.currentLanguage  === 'de') {
+    } else if ($rootScope.currentLanguage === 'de') {
       $scope.headline = HEADLINE_DE;
       $scope.subheadline = SUBHEADLINE_DE;
       

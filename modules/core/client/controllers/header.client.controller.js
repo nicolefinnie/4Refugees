@@ -135,8 +135,8 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     };
 
     // get home URL + current language setup
-    $scope.getHomeURLWithCurrentLanguage = function() {
-      return $state.href('home', {language: homeLanguage}); 
+    $scope.getHomeURLWithCurrentLanguage = function() { 
+      return $state.href('home', { language: homeLanguage }); 
     };
     
     // Toggle the menu items

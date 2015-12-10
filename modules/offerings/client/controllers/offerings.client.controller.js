@@ -1,7 +1,15 @@
 'use strict';
 
+//English
+var FIND_HELP_EN = 'Find Help';
+var NEED_HELP_EN = 'Need Help';
 
-//TODO we need a language translation map in another file that maps text variables to context, e.g. $scope.showTitle = 'Suchen' in German and 'Search' in English
+var OFFER_HELP_EN = 'Offer Help';
+var SEARCH_NEED_EN = 'Search Needs';
+
+//German
+
+//Arabic
 
 function geoSetupCityList($scope) {
   $scope.citylist = [
@@ -85,8 +93,8 @@ function geoUpdateLocationError(error, scope) {
   scope.$apply();
 }
 
-angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
     //Volunteer mode: determine the title to show, this mode search needs or create offer
