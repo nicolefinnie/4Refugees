@@ -1,24 +1,15 @@
 ---
 declared-services:
   mean-mongo:
-<<<<<<< HEAD
-    label: mean-mongo
+    label: mongodb-2.4
     plan: 100
   language_translation:
     label: language_translation
     plan: standard   
 applications:
-- name: 4Refugees-pradeep
-  host: 4Refugees-pradeep
-  memory: 128M
-=======
-    label: mongodb-2.4
-    plan: 100
-applications:
 - name: 4Refugees
   host: 4Refugees
   memory: 512M
->>>>>>> master
   services:
     - mean-mongo
     - language_translation	

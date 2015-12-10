@@ -44,15 +44,14 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 //Get the local username & password if running locally.
+var languageCredentials = extend({
+  version: 'v2',
+  username: '<username>',
+  password: '<password>'
+}, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
 
- var languageCredentials = extend({
-    version: 'v2',
-    username: '<username>',
-    password: '<password>'
-  }, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
 
-
- var language_translation = watson.language_translation(languageCredentials); // User language translation service
+var language_translation = watson.language_translation(languageCredentials); // User language translation service
 
 /*var language_translation = watson.language_translation({
   username: '0771b667-54c2-4010-8dcd-9eed53194136',
@@ -64,18 +63,20 @@ var path = require('path'),
 
 function doTranslate(text_translate,trans_result)
 {
-    language_translation.translate({
-      text: text_translate, source : 'ar', target: 'en' },
-      function (err, result) {
-        if (err) {
-          console.log('error:', err);
-        }
-        else {
-          trans_result(result.translations[0].translation);  
-          console.log('The JSON value is' + result.translations[0].translation);  
-        }
-      }); 
+  language_translation.translate({
+    text: text_translate, source : 'ar', target: 'en' },
+    function (err, result) {
+      if (err) {
+        console.log('error:', err);
+      }
+      else {
+        trans_result(result.translations[0].translation);  
+        console.log('The JSON value is' + result.translations[0].translation);  
+      }
+    }
+  ); 
 }
+
 /**
  * Create a offering
  */
