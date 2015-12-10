@@ -8,8 +8,8 @@
         <img src="modules/core/client/img/brand/logo.svg" class="left"/>  
     </div>
     <div class="col s8 m2">
-      <h1>Welcome to Germany</h1>
-      <h2>Hi there, how can we help you today?</h2>
+      <h1>{{headline}}</h1>
+      <h2>{{subheadline}}</h2>
     </div>
     </div>
     <div class="row">
@@ -30,11 +30,11 @@
                   C56.49,22.108,58,26.877,58,32s-1.51,9.892-4.078,13.922L46.572,38.572z"/>
               </svg>
             </h1>
-            <h2 class="center">Germany in a nutshell</h2>
-            <p class="center">Register in the city hall, open a bank account, get health care, learn languages, find schools for your kids</p>
+            <h2 class="center">{{quickHelpTitle}}</h2>
+            <p class="center">{{quickHelpSubtitle}}</p>
             <br>
             <p class="center"><a href="#" id="quickHelp" class="btn-large waves-effect waves-light">
-                Quick Help</a>
+                {{quickHelpButton}}</a>
             </p>
             <br>
           </div>
@@ -54,11 +54,11 @@
               </g>
               </svg>
             </h1>
-            <h2 class="center">Coordinating help</h2>
-            <p class="center">We take your geo location into account to make it easy to find nearby offers and requests.</p>
+            <h2 class="center">{{findHelpTitle}}</h2>
+            <p class="center">{{findHelpSubtitle}}</p>
             <br>
             <p class="center"><a href="offerings/search?offerType=offer" id="findHelp" class="btn-large waves-effect waves-light">
-                Find Help</a>
+                {{findHelpButton}}</a>
             </p>
             <br>
           </div>
@@ -81,11 +81,11 @@
               </g>
               </svg>
             </h1>
-            <h2 class="center">You are One of Us</h2>
-            <p class="center">You're not alone. We try to connect refugees who need help and people who want to offer help.</p>
+            <h2 class="center">{{helpOthersTitle}}</h2>
+            <p class="center">{{helpOthersSubtitle}}</p>
             <br>
             <p class="center"> <a href="offerings/create?offerType=offer" id="helpOthers" class="btn-large waves-effect waves-light">
-                Help Others</a> 
+                {{helpOthersButton}}</a> 
             </p>
             <br>
           </div>

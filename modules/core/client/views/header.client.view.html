@@ -7,21 +7,20 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
   <nav class="ibm-header">
     <div class="nav-wrapper container ">
       <span>
-        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
+        <a ng-href="{{getHomeURLWithCurrentLanguage()}}" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
       </span>
     
       <!-- Dropdown container -->
-      <div class="ibm-dropdown-container">
-        
+      <div class="ibm-dropdown-container" >
+      
         <!-- Dropdown for unauthenticated users -->
-        <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
+        <ul class="right hide-on-med-and-down"  ng-hide="authentication.user">
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signin">Sign In</a>
+            <a ui-sref="authentication.signin">{{signIn}}</a>
             </li>
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signup">Register</a>
+            <a ui-sref="authentication.signup">{{register}}</a>
             </li>
-            <li class="divider-vertical"></li>
         </ul>
 
         <!-- Dropdown for authenticated users -->
@@ -34,24 +33,24 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 </a>
                 <ul id="dropdownAuth" class="dropdown-content">
                     <li ui-sref-active="active">
-                    <a ui-sref="offerings.listMine">List My Offerings</a>
+                    <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
                     </li>
                     <li class="divider"></li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
+                    <a ui-sref="settings.profile" font-size="1.0rem">{{editProfile}}</a>
                     </li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.picture">Change Profile Picture</a>
+                    <a ui-sref="settings.picture">{{changeProfilePicture}}</a>
                     </li>
                     <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-                    <a ui-sref="settings.password">Change Password</a>
+                    <a ui-sref="settings.password">{{changePassword}}</a>
                     </li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.accounts">Manage Social Accounts</a>
+                    <a ui-sref="settings.accounts">{{manageSocialAccounts}}</a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                    <a href="/api/auth/signout" target="_self">Signout</a>
+                    <a href="/api/auth/signout" target="_self">{{signOut}}</a>
                     </li>
                 </ul>
             </li>
@@ -62,7 +61,6 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
             <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
             {{::item.title}}&nbsp;
-            <!-- defect 4263 this postingBadge accidentally creates a space between header and content -->
               <span class="new badge" ng-if="hasPostingBadge"></span>
             </a>
             <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
@@ -80,7 +78,26 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </ul>
             <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
             </li>
-        </ul>
+        </ul>            
+
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a class="dropdown-button" href="#" data-activates="dropdownLanguage" dropdown>
+                    {{currentLanguage}}
+                </a>
+                <ul id="dropdownLanguage" class="dropdown-content">
+                    <li ui-sref-active="active" ng-show="showArabic">
+                    <a ui-sref="home({language: 'ar'})" ng-click="changeLanguage('ar')">العربية</a>
+                    </li>
+                    <li ui-sref-active="active" ng-show="showEnglish">
+                    <a ui-sref="home({language: 'en'})" ng-click="changeLanguage('en')">English</a>
+                    </li>
+                    <li ui-sref-active="active" ng-show="showDeutsch">
+                    <a ui-sref="home({language: 'de'})" ng-click="changeLanguage('de')">Deutsch</a>
+                    </li>
+                </ul>
+            </li>        
+        </ul>     
       </div> <!-- end of dropdown-container for designer's look -->
     </div>
   </nav>
