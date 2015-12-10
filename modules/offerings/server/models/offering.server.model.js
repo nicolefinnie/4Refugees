@@ -30,7 +30,7 @@ var OfferingSchema = new Schema({
   },
   descriptionLanguage: {
     type: String,
-    default: 'English',
+    default: 'en',
     trim: true
   },
   descriptionEnglish: {

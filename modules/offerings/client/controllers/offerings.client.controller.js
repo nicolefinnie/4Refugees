@@ -255,8 +255,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
 ]);
 
 //Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
-  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
+  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
     geoSetupCityList($scope);
@@ -317,6 +317,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$state
         when: this.when,
         updated: Date.now,
         description: this.description,
+        descriptionLanguage: $rootScope.currentLanguage,
         city: this.city,
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, 'others'),

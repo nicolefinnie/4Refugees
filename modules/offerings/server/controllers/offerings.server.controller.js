@@ -59,22 +59,25 @@ var language_translation = watson.language_translation(languageCredentials); // 
   version: 'v2'
 });
 */
-// Translation method
 
-function doTranslate(text_translate,trans_result)
+// Translation method
+function doTranslate(textLanguage, textTranslate, transResult)
 {
-  language_translation.translate({
-    text: text_translate, source : 'ar', target: 'en' },
-    function (err, result) {
-      if (err) {
-        console.log('error:', err);
+  if (textLanguage === 'en') {
+    transResult(textTranslate);
+  } else {    
+    language_translation.translate({
+      text: textTranslate, source : textLanguage, target: 'en' },
+      function (err, result) {
+        if (err) {
+          console.log('language_translate error:', err);
+        }
+        else {
+          transResult(result.translations[0].translation);  
+        }
       }
-      else {
-        trans_result(result.translations[0].translation);  
-        console.log('The JSON value is' + result.translations[0].translation);  
-      }
-    }
-  ); 
+    ); 
+  }
 }
 
 /**
@@ -92,7 +95,8 @@ exports.create = function (req, res) {
   //offering.description = req.body.description;
   // TODO: Need to call the translation services to convert from the
   // input language to English
-  offering.descriptionLanguage = 'en';
+  offering.descriptionLanguage = req.body.descriptionLanguage;
+  console.log('LIAM: My language is: ' + offering.descriptionLanguage);
   offering.description= req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.descriptionDetailsEnglish = req.body.descriptionDetailsEnglish;
@@ -103,7 +107,7 @@ exports.create = function (req, res) {
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
-  doTranslate(req.body.description,function(trans_offering){
+  doTranslate(req.body.descriptionLanguage,req.body.description,function(trans_offering){
     console.log('The trans_offering is '+trans_offering);
     offering.descriptionEnglish = trans_offering;
     offering.save(function (err) {
