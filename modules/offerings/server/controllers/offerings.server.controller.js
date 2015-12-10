@@ -102,7 +102,6 @@ exports.create = function (req, res) {
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
-  offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
   doTranslate(req.body.description,function(trans_offering){
     console.log('The trans_offering is '+trans_offering);
     offering.descriptionEnglish = trans_offering;
@@ -218,7 +217,7 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   tmpRes.when = rawDoc.when;
   tmpRes.updated = rawDoc.updated;
   tmpRes.category = rawDoc.category;
-  tmpRes.description = rawDoc.description;
+  tmpRes.description = rawDoc.descriptionEnglish;
   tmpRes.numOffered = rawDoc.numOffered;
   tmpRes.expiry = rawDoc.expiry;
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
