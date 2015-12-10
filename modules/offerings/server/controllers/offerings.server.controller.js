@@ -91,8 +91,8 @@ exports.create = function (req, res) {
   //offering.description = req.body.description;
   // TODO: Need to call the translation services to convert from the
   // input language to English
-  offering.descriptionLanguage = 'English';
-  offering.descriptionEnglish = req.body.description;
+  offering.descriptionLanguage = 'en';
+  offering.description= req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.descriptionDetailsEnglish = req.body.descriptionDetailsEnglish;
   offering.city = req.body.city;
@@ -105,7 +105,7 @@ exports.create = function (req, res) {
   offering.offerType = mapOfferTypeToBoolean(req.body.offerType);
   doTranslate(req.body.description,function(trans_offering){
     console.log('The trans_offering is '+trans_offering);
-    offering.description = trans_offering;
+    offering.descriptionEnglish = trans_offering;
     offering.save(function (err) {
       if (err) {
         return res.status(400).send({
