@@ -3,13 +3,52 @@
 //English
 var FIND_HELP_EN = 'Find Help';
 var NEED_HELP_EN = 'Need Help';
-
 var OFFER_HELP_EN = 'Offer Help';
 var SEARCH_NEED_EN = 'Search Needs';
 
+var CATEGORY_EN = 'Category';
+var JOB_TRAINING_EN = 'Job Training';
+var LANGUAGE_COURSES_EN = 'Language Courses';
+var MEDICAL_ASSISTANCE_EN = 'Medical Assistance';
+var CHILDCARE_EN = 'Childcare';
+var OTHERS_EN = 'Others';
+
+var ADD_EN = 'Add';
+var SEARCH_EN = 'Search';
+
 //German
+var FIND_HELP_DE = 'Angebote Suchen';
+var NEED_HELP_DE = 'Hilfe Brauchen';
+var OFFER_HELP_DE = 'Hilfe Anbieten';
+var SEARCH_NEED_DE = 'Bedürfnissen Suchen';
+
+var CATEGORY_DE = 'Kategorie';
+var JOB_TRAINING_DE = 'Berufsausbildung';
+var LANGUAGE_COURSES_DE = 'Sprachkurs';
+var MEDICAL_ASSISTANCE_DE = 'Medizinische Versorgung';
+var CHILDCARE_DE = 'Kinderbetreuung';
+var OTHERS_DE = 'Sonstiges';
+
+var ADD_DE = 'Hinzufügen';
+var SEARCH_DE = 'Suchen';
 
 //Arabic
+var FIND_HELP_AR = 'البحث عن مساعدة';
+var NEED_HELP_AR = 'احتاج مساعدة';
+
+var OFFER_HELP_AR = 'عرض المساعدة';
+var SEARCH_NEED_AR = 'احتياجات البحث';
+
+var CATEGORY_AR = 'فئة';
+var JOB_TRAINING_AR = 'التدريب المهني';
+var LANGUAGE_COURSES_AR = 'دورات اللغة';
+var MEDICAL_ASSISTANCE_AR = 'المساعدة الطبية';
+var CHILDCARE_AR = 'رعاية الأطفال';
+var OTHERS_AR = 'آخرون';
+
+var ADD_AR = 'أدخل';
+var SEARCH_AR = 'البحث عن';
+
 
 function geoSetupCityList($scope) {
   $scope.citylist = [
@@ -93,21 +132,98 @@ function geoUpdateLocationError(error, scope) {
   scope.$apply();
 }
 
+function setCommonAttributes($scope, $rootScope) {
+  if ($rootScope.currentLanguage === 'en'){
+    
+    $scope.search = SEARCH_EN;
+    $scope.add = ADD_EN;
+    $scope.categoryTitle = CATEGORY_EN;
+    $scope.jobTraining = JOB_TRAINING_EN;
+    $scope.languageCourses = LANGUAGE_COURSES_EN;
+    $scope.medicalAssistance = MEDICAL_ASSISTANCE_EN;
+    $scope.childCare = CHILDCARE_EN;
+    $scope.others = OTHERS_EN;
+
+  } else if ($rootScope.currentLanguage === 'de'){
+    $scope.search = SEARCH_DE;
+    $scope.add = ADD_DE;
+    $scope.categoryTitle = CATEGORY_DE;
+    $scope.jobTraining = JOB_TRAINING_DE;
+    $scope.languageCourses = LANGUAGE_COURSES_DE;
+    $scope.medicalAssistance = MEDICAL_ASSISTANCE_DE;
+    $scope.childCare = CHILDCARE_DE;
+    $scope.others = OTHERS_DE;
+  } else if ($rootScope.currentLanguage === 'ar'){
+    $scope.search = SEARCH_AR;
+    $scope.add = ADD_AR;
+    $scope.categoryTitle = CATEGORY_AR;
+    $scope.jobTraining = JOB_TRAINING_AR;
+    $scope.languageCourses = LANGUAGE_COURSES_AR;
+    $scope.medicalAssistance = MEDICAL_ASSISTANCE_AR;
+    $scope.childCare = CHILDCARE_AR;
+    $scope.others = OTHERS_AR;
+  }
+}
+
+function setSearchOrAdd($scope, $rootScope, displayMode) {
+  
+  var searchNeedInCurrentLanguage = SEARCH_NEED_EN;
+  var findHelpInCurrentLanguage = FIND_HELP_EN;
+  var offerHelpInCurrentLanguage = OFFER_HELP_EN;
+  var needHelpInCurrentLanguage = NEED_HELP_EN;
+  
+  
+  if ($rootScope.currentLanguage === 'en'){
+    searchNeedInCurrentLanguage = SEARCH_NEED_EN;
+    findHelpInCurrentLanguage = FIND_HELP_EN;
+    offerHelpInCurrentLanguage = OFFER_HELP_EN;
+    needHelpInCurrentLanguage = NEED_HELP_EN;
+  }
+  else if ($rootScope.currentLanguage === 'de'){
+    searchNeedInCurrentLanguage = SEARCH_NEED_DE;
+    findHelpInCurrentLanguage = FIND_HELP_DE;
+    offerHelpInCurrentLanguage = OFFER_HELP_DE;
+    needHelpInCurrentLanguage = NEED_HELP_DE;
+    
+  } else if ($rootScope.currentLanguage === 'ar'){
+    searchNeedInCurrentLanguage = SEARCH_NEED_AR;
+    findHelpInCurrentLanguage = FIND_HELP_AR;
+    offerHelpInCurrentLanguage = OFFER_HELP_AR;
+    needHelpInCurrentLanguage = NEED_HELP_AR;
+  }
+  
+  //Volunteer mode: determine the title to show, this mode search needs or create offer
+  if ($scope.offerType === 'request' && displayMode === 'search') {
+    $scope.showTitle = searchNeedInCurrentLanguage;
+    $scope.createOffer = !$scope.createOffer;
+  
+  // Refugee mode: determine the title to show, this mode search help OR create request
+  } 
+  
+  else if ($scope.offerType === 'offer' && displayMode === 'search'){
+    $scope.showTitle = findHelpInCurrentLanguage;
+    $scope.createRequest = !$scope.createRequest;
+  }
+  
+  // Refugee mode: determine the title to show, this mode create request OR search offer
+  else if ($scope.offerType === 'request' && displayMode === 'add') { 
+    $scope.showTitle = needHelpInCurrentLanguage;
+    $scope.searchOffer = !$scope.searchOffer;
+   
+  // volunteer mode: determine the title to show, this mode create offer OR search request
+  } else if ($scope.offerType === 'offer' && displayMode === 'add'){
+    $scope.showTitle = offerHelpInCurrentLanguage;
+    $scope.searchRequest = !$scope.searchRequest;
+  }
+}
+
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
-    //Volunteer mode: determine the title to show, this mode search needs or create offer
-    if ($scope.offerType === 'request') {
-      $scope.showTitle = 'Search needs';
-      $scope.createOffer = !$scope.createOffer;
+    setCommonAttributes($scope, $rootScope);
+    setSearchOrAdd($scope, $rootScope, 'search');
     
-    // Refugee mode: determine the title to show, this mode search help OR create request
-    } else if ($scope.offerType === 'offer'){
-      $scope.showTitle = 'Find help';
-      $scope.createRequest = !$scope.createRequest;
-    }
-
     geoSetupCityList($scope);
 
     // get current location using Google GeoLocation services
@@ -261,17 +377,10 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     
     geoSetupCityList($scope);
 
-    // Refugee mode: determine the title to show, this mode create request OR search offer
-    if ($scope.offerType === 'request') {
-      $scope.showTitle = 'Need help';
-      $scope.searchOffer = !$scope.searchOffer;
-     
-    // volunteer mode: determine the title to show, this mode create offer OR search request
-    } else if ($scope.offerType === 'offer'){
-      $scope.showTitle = 'Offer help';
-      $scope.searchRequest = !$scope.searchRequest;
-    }
-
+    setCommonAttributes($scope, $rootScope);
+    setSearchOrAdd($scope, $rootScope, 'add');
+    
+    
     // get current location using Google GeoLocation services
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {

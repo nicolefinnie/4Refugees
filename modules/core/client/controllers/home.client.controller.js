@@ -31,7 +31,7 @@ var FINDHELP_SUBTITLE_DE = 'Wir nehmen Ihre Geographische Lage und berechnen die
 var HELPOTHERS_SUBTITLE_DE = 'Du bist nicht allein. Wir versuchen die Flüchtlinge, die Hilfe brauchen, mit den Leuten, die Hilfe anbieten zu verbinden';
 
 var QUICKHELP_DE = 'Erste Hilfe';
-var FINDHELP_DE = 'Hilfe Suchen';
+var FINDHELP_DE = 'Hilfe Brauchen';
 var HELPOTHERS_DE = 'Anderen Helfen';
 
 //Arabic
