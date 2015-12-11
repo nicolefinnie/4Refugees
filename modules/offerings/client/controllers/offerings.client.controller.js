@@ -1,6 +1,8 @@
 'use strict';
 
-//English
+
+/** English Text.
+ */
 var FIND_HELP_EN = 'Find Help';
 var NEED_HELP_EN = 'Need Help';
 var OFFER_HELP_EN = 'Offer Help';
@@ -13,14 +15,25 @@ var MEDICAL_ASSISTANCE_EN = 'Medical Assistance';
 var CHILDCARE_EN = 'Childcare';
 var OTHERS_EN = 'Others';
 
+var DESCRIPTION_EN = 'description';
+var CITY_EN = 'city';
+var SEARCH_RADIUS_EN = 'Search radius in ? km';
+var WHEN_EN = 'when';
+var OFFER_OTHERS_HELP_TEXT_EN = 'Or offer others your help!';
+var TELL_OTHERS_NEEDS_TEXT_EN = 'Or tell others your needs!';
+var FIND_OFFERS_TEXT_EN = 'Or find what offers are out there!';
+var FIND_REQUESTS_TEXT_EN = 'Or find what helps are needed!';
+
 var ADD_EN = 'Add';
 var SEARCH_EN = 'Search';
 
-//German
+
+/** German Text.
+ */
 var FIND_HELP_DE = 'Angebote Suchen';
 var NEED_HELP_DE = 'Hilfe Brauchen';
 var OFFER_HELP_DE = 'Hilfe Anbieten';
-var SEARCH_NEED_DE = 'Bedürfnissen Suchen';
+var SEARCH_NEED_DE = 'Bedürfnisse Suchen';
 
 var CATEGORY_DE = 'Kategorie';
 var JOB_TRAINING_DE = 'Berufsausbildung';
@@ -29,10 +42,22 @@ var MEDICAL_ASSISTANCE_DE = 'Medizinische Versorgung';
 var CHILDCARE_DE = 'Kinderbetreuung';
 var OTHERS_DE = 'Sonstiges';
 
+var DESCRIPTION_DE = 'Beschreibung';
+var CITY_DE = 'Stadt';
+var SEARCH_RADIUS_DE = 'Suchumkreis in ? km';
+var WHEN_DE = 'Wann';
+
+var OFFER_OTHERS_HELP_TEXT_DE = 'Oder den Anderen Hilfe anbieten!';
+var TELL_OTHERS_NEEDS_TEXT_DE = 'Oder den Anderen Ihre Bedürfnisse mitteilen!';
+var FIND_OFFERS_TEXT_DE = 'Oder Angebote von den Anderen suchen!';
+var FIND_REQUESTS_TEXT_DE = 'Oder Bedürfnisse von den Anderen suchen!';
+
 var ADD_DE = 'Hinzufügen';
 var SEARCH_DE = 'Suchen';
 
-//Arabic
+
+/** Arabic Text.
+ */
 var FIND_HELP_AR = 'البحث عن مساعدة';
 var NEED_HELP_AR = 'احتاج مساعدة';
 
@@ -45,6 +70,16 @@ var LANGUAGE_COURSES_AR = 'دورات اللغة';
 var MEDICAL_ASSISTANCE_AR = 'المساعدة الطبية';
 var CHILDCARE_AR = 'رعاية الأطفال';
 var OTHERS_AR = 'آخرون';
+
+var DESCRIPTION_AR = 'الوصف';
+var CITY_AR = 'مدينة';
+var SEARCH_RADIUS_AR = 'دائرة نصف قطرها ? كم البحث في';
+var WHEN_AR = 'متى';
+
+var OFFER_OTHERS_HELP_TEXT_AR = 'أو تقديم الآخرين لمساعدتكم!';
+var TELL_OTHERS_NEEDS_TEXT_AR = 'أو تقول للآخرين الاحتياجات الخاصة بك!';
+var FIND_OFFERS_TEXT_AR = 'أو تجد العروض هي هناك!';
+var FIND_REQUESTS_TEXT_AR = 'أو البحث إذا كان يحتاج مساعدة الآخرين';
 
 var ADD_AR = 'أدخل';
 var SEARCH_AR = 'البحث عن';
@@ -134,34 +169,76 @@ function geoUpdateLocationError(error, scope) {
 
 function setCommonAttributes($scope, $rootScope) {
   if ($rootScope.currentLanguage === 'en'){
-    
+    //buttons
     $scope.search = SEARCH_EN;
     $scope.add = ADD_EN;
+    
+    //categories
     $scope.categoryTitle = CATEGORY_EN;
     $scope.jobTraining = JOB_TRAINING_EN;
     $scope.languageCourses = LANGUAGE_COURSES_EN;
     $scope.medicalAssistance = MEDICAL_ASSISTANCE_EN;
     $scope.childCare = CHILDCARE_EN;
     $scope.others = OTHERS_EN;
-
-  } else if ($rootScope.currentLanguage === 'de'){
+    
+    //text
+    $scope.description = DESCRIPTION_EN;
+    $scope.city = CITY_EN;
+    $scope.searchRadius = SEARCH_RADIUS_EN;
+    $scope.when = WHEN_EN;
+    
+    $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_EN;
+    $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_EN;
+    $scope.findOtherOffersText = FIND_OFFERS_TEXT_EN;
+    $scope.findOtherNeedsText = FIND_REQUESTS_TEXT_EN;
+  } 
+  else if ($rootScope.currentLanguage === 'de'){
+    //buttons
     $scope.search = SEARCH_DE;
     $scope.add = ADD_DE;
+    
+    //categories
     $scope.categoryTitle = CATEGORY_DE;
     $scope.jobTraining = JOB_TRAINING_DE;
     $scope.languageCourses = LANGUAGE_COURSES_DE;
     $scope.medicalAssistance = MEDICAL_ASSISTANCE_DE;
     $scope.childCare = CHILDCARE_DE;
     $scope.others = OTHERS_DE;
-  } else if ($rootScope.currentLanguage === 'ar'){
+    
+    //text
+    $scope.description = DESCRIPTION_DE;
+    $scope.city = CITY_DE;
+    $scope.searchRadius = SEARCH_RADIUS_DE;
+    $scope.when = WHEN_DE;
+    
+    $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_DE;
+    $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_DE;
+    $scope.findOtherOffersText = FIND_OFFERS_TEXT_DE;
+    $scope.findOtherNeedsText = FIND_REQUESTS_TEXT_DE;
+  } 
+  else if ($rootScope.currentLanguage === 'ar'){
+    //buttons
     $scope.search = SEARCH_AR;
     $scope.add = ADD_AR;
+    
+    //categories
     $scope.categoryTitle = CATEGORY_AR;
     $scope.jobTraining = JOB_TRAINING_AR;
     $scope.languageCourses = LANGUAGE_COURSES_AR;
     $scope.medicalAssistance = MEDICAL_ASSISTANCE_AR;
     $scope.childCare = CHILDCARE_AR;
     $scope.others = OTHERS_AR;
+
+    //text
+    $scope.description = DESCRIPTION_AR;
+    $scope.city = CITY_AR;
+    $scope.searchRadius = SEARCH_RADIUS_AR;
+    $scope.when = WHEN_AR;
+    
+    $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_AR;
+    $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_AR;
+    $scope.findOtherOffersText = FIND_OFFERS_TEXT_AR;
+    $scope.findOtherNeedsText = FIND_REQUESTS_TEXT_AR;
   }
 }
 

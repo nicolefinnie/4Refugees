@@ -38,7 +38,61 @@ var CHANGE_PASSWORD_AR = 'تغيير كلمة المرور';
 var MANAGE_SOCIAL_ACCOUNTS_AR = 'إدارة الحسابات الاجتماعية';
 
 
-//TODO ugly quick prototype, don't use $rootScope
+function refreshHeaderInCurrentLanguage($scope, language){
+  if (language === 'ar') {
+    $scope.currentLanguageShownInHeader = ARABIC;
+    $scope.signIn = SIGNIN_AR;
+    $scope.register = REGISTER_AR;
+    $scope.signOut = SIGNOUT_AR;
+    $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
+    $scope.editProfile = EDIT_PROFILE_AR;
+    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_AR;
+    $scope.changePassword = CHANGE_PASSWORD_AR;
+    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_AR;
+  } 
+  else if (language === 'en') {
+    $scope.currentLanguageShownInHeader = ENGLISH;
+    $scope.signIn = SIGNIN_EN;
+    $scope.register = REGISTER_EN;
+    $scope.signOut = SIGNOUT_EN;
+    $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
+    $scope.editProfile = EDIT_PROFILE_EN;
+    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
+    $scope.changePassword = CHANGE_PASSWORD_EN;
+    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_EN;
+  } 
+  else if (language === 'de') {
+    $scope.currentLanguageShownInHeader = GERMAN;
+    $scope.signIn = SIGNIN_DE;
+    $scope.register = REGISTER_DE;
+    $scope.signOut = SIGNOUT_DE;
+    $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
+    $scope.editProfile = EDIT_PROFILE_DE;
+    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_DE;
+    $scope.changePassword = CHANGE_PASSWORD_DE;
+    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_DE;
+  }
+}
+
+
+function refreshLanguageDropdownMenu($scope, $rootScope){
+  if ($rootScope.currentLanguage === 'ar') {
+    $scope.showArabic = false;
+    $scope.showEnglish = true;
+    $scope.showDeutsch = true;
+  } 
+  else if ($rootScope.currentLanguage === 'en') {
+    $scope.showArabic = true;
+    $scope.showEnglish = false;
+    $scope.showDeutsch = true;
+  } 
+  else if ($rootScope.currentLanguage === 'de') {
+    $scope.showArabic = true;
+    $scope.showEnglish = true;
+    $scope.showDeutsch = false;
+  }  
+}
+
 angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
   function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
     // default language
@@ -49,22 +103,25 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
- 
-    // initial setup
-    $scope.currentLanguage = ENGLISH;
-    $scope.showArabic = true;
-    $scope.showDeutsch = true;
-    $scope.showEnglish = false;
-    $scope.signIn = SIGNIN_EN;
-    $scope.register = REGISTER_EN;
-    $scope.signOut = SIGNOUT_EN;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
-    $scope.editProfile = EDIT_PROFILE_EN;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
-    $scope.changePassword = CHANGE_PASSWORD_EN;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_EN;
-   
+
+    // initialize the header language
+    $scope.currentLanguageShownInHeader = ENGLISH;
     
+    // language change clicked, change language
+    $scope.changeLanguage = function (language) {
+      $rootScope.currentLanguage = language;
+      refreshHeaderInCurrentLanguage($scope, language);
+    };
+
+    // refresh the dropdown menu if the language changes
+    refreshLanguageDropdownMenu($scope, $rootScope);
+
+    // get home URL + current language setup to persist the language even after redirecting pages
+    homeLanguage = $rootScope.currentLanguage;
+    $scope.getHomeURLWithCurrentLanguage = function() { 
+      return $state.href('home', { language: homeLanguage }); 
+    };
+
     // Get the topbar menu
     $scope.menu = Menus.getMenu('topbar');
 
@@ -81,59 +138,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       });
     }
 
-    $scope.changeLanguage = function (language) {
-      homeLanguage = language;
-      $rootScope.currentLanguage = language;
-      if (language === 'ar') {
-        $scope.currentLanguage = ARABIC;
-        $scope.showArabic = false;
-        $scope.showEnglish = true;
-        $scope.showDeutsch = true;
-        $scope.signIn = SIGNIN_AR;
-        $scope.register = REGISTER_AR;
-        $scope.signOut = SIGNOUT_AR;
-        $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
-        $scope.editProfile = EDIT_PROFILE_AR;
-        $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_AR;
-        $scope.changePassword = CHANGE_PASSWORD_AR;
-        $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_AR;
-       
-      } else if (language === 'en') {
-        $scope.currentLanguage = ENGLISH;
-        $scope.showArabic = true;
-        $scope.showEnglish = false;
-        $scope.showDeutsch = true;
-        $scope.signIn = SIGNIN_EN;
-        $scope.register = REGISTER_EN;
-        $scope.signOut = SIGNOUT_EN;
-        $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
-        $scope.editProfile = EDIT_PROFILE_EN;
-        $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
-        $scope.changePassword = CHANGE_PASSWORD_EN;
-        $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_EN;
-       
-
-      } else if (language === 'de') {
-        $scope.currentLanguage = GERMAN;
-        $scope.showArabic = true;
-        $scope.showEnglish = true;
-        $scope.showDeutsch = false;
-        $scope.signIn = SIGNIN_DE;
-        $scope.register = REGISTER_DE;
-        $scope.signOut = SIGNOUT_DE;
-        $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
-        $scope.editProfile = EDIT_PROFILE_DE;
-        $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_DE;
-        $scope.changePassword = CHANGE_PASSWORD_DE;
-        $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_DE;
-      }
-    };
-
-    // get home URL + current language setup
-    $scope.getHomeURLWithCurrentLanguage = function() { 
-      return $state.href('home', { language: homeLanguage }); 
-    };
-    
+        
     // Toggle the menu items
     $scope.isCollapsed = false;
     $scope.toggleCollapsibleMenu = function () {
