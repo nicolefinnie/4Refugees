@@ -269,6 +269,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
+        descriptionLanguage: $rootScope.currentLanguage,
         city: this.city,
         longitude: this.longitude,
         latitude: this.latitude,

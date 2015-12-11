@@ -63,21 +63,68 @@ var language_translation = watson.language_translation(languageCredentials); // 
 // Translation method
 function doTranslate(textLanguage, textTranslate, transResult)
 {
-  if (textLanguage === 'en') {
-    transResult(textTranslate);
-  } else {    
+  // TODO: Watson does not support german translation yet.  When they
+  // do, we should translate into all 3 languages, to avoid having
+  // to translate each time we query the results.  For now, only do
+  // translation between arabic and english.
+  if (languageCredentials.username === '<username>') {
+    console.log('Translation support not available locally!');
+    transResult(textTranslate, textTranslate);
+  }
+  else if (textLanguage === 'en') {
     language_translation.translate({
-      text: textTranslate, source : textLanguage, target: 'en' },
+      text: textTranslate, source: 'en', target: 'ar' },
       function (err, result) {
         if (err) {
           console.log('language_translate error:', err);
+          transResult(textTranslate, textTranslate);
         }
         else {
-          transResult(result.translations[0].translation);  
+          transResult(textTranslate, result.translations[0].translation);  
+        }
+      }
+    );
+  } else if (textLanguage === 'de') {
+    transResult(textTranslate, textTranslate);
+  } else {    
+    language_translation.translate({
+      text: textTranslate, source: textLanguage, target: 'en' },
+      function (err, result) {
+        if (err) {
+          console.log('language_translate error:', err);
+          transResult(textTranslate, textTranslate);
+        }
+        else {
+          transResult(result.translations[0].translation, result.translations[0].translation);  
         }
       }
     ); 
   }
+}
+
+function translateAllOfferings(offerings, desiredLanguage)
+{
+  offerings.forEach(function(offering) {
+    if (desiredLanguage === offering.descriptionLanguage) {
+      // no-op, offering.description is already in the correct language
+    } else if (desiredLanguage === 'en') {
+      // Use the copy we have already translated to english
+      if (offering.descriptionEnglish) {
+        offering.description = offering.descriptionEnglish;
+      }
+      // else, must have been created before translations, return un-translated
+    } else {
+      // if it's not english, and not the source language, must be the
+      // 'other' language.  This only works with 3 supported languages.
+      // If we need to support more languages, we may need to translate
+      // on the fly for queries....
+      if (offering.descriptionOther) {
+        offering.description = offering.descriptionOther;
+      }
+      // else, must have been created before translations, return un-translated
+    }
+  });
+  return offerings;
 }
 
 /**
@@ -87,19 +134,13 @@ exports.create = function (req, res) {
   var offering = new Offering();
   offering.user = req.user;
   offering.userId = req.user._id;
-  //console.log('Liam pre: ' + req.body.when);
   offering.when = new Date(req.body.when);
-  //console.log('Liam post1: ' + offering.when);
   offering.updated = new Date();
   offering.expiry = req.body.expiry;
-  //offering.description = req.body.description;
-  // TODO: Need to call the translation services to convert from the
-  // input language to English
   offering.descriptionLanguage = req.body.descriptionLanguage;
   console.log('LIAM: My language is: ' + offering.descriptionLanguage);
   offering.description= req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
-  offering.descriptionDetailsEnglish = req.body.descriptionDetailsEnglish;
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
@@ -107,17 +148,16 @@ exports.create = function (req, res) {
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
-  doTranslate(req.body.descriptionLanguage,req.body.description,function(trans_offering){
-    console.log('The trans_offering is '+trans_offering);
-    offering.descriptionEnglish = trans_offering;
+  doTranslate(req.body.descriptionLanguage, req.body.description, function(transEnglish, transOther){
+    console.log('The english translation of the offering is ' + transEnglish);
+    offering.descriptionEnglish = transEnglish;
+    offering.descriptionOther = transOther;
     offering.save(function (err) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        //console.log('Liam post2: ' + offering.when);
-        //console.log('Liam post3: ' + JSON.stringify(offering));
         res.json(offering);
       }
     });
@@ -222,7 +262,10 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   tmpRes.when = rawDoc.when;
   tmpRes.updated = rawDoc.updated;
   tmpRes.category = rawDoc.category;
-  tmpRes.description = rawDoc.descriptionEnglish;
+  tmpRes.description = rawDoc.description;
+  tmpRes.descriptionLanguage = rawDoc.descriptionLanguage;
+  tmpRes.descriptionEnglish = rawDoc.descriptionEnglish;
+  tmpRes.descriptionOther = rawDoc.descriptionOther;
   tmpRes.numOffered = rawDoc.numOffered;
   tmpRes.expiry = rawDoc.expiry;
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
@@ -274,8 +317,8 @@ exports.listMine = function (req, res) {
             // restrict results to only public-viewable fields
             var publicResults = filterInternalOfferingFields(docs, false, true);
             //console.log('RETURNING: ' + JSON.stringify(publicResults));
-            // TODO: Need to implement translation services, so description
-            // matches the language desired by the user.
+            // Translate results into the desired language
+            publicResults = translateAllOfferings(publicResults, req.query.descriptionLanguage);
             res.json(publicResults);
           }
         });
