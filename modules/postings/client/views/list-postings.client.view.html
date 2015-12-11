@@ -28,6 +28,13 @@
         <div class="l10 col">
           <h5>Details</h5>
           <label>Content</label> {{posting.content}} <br/>
+          <br>
+          <label>Main Offering Category</label> {{posting.offeringId.category[0]}} <br/>
+          <label>Offering Description</label> {{posting.offeringId.description}} <br/>
+          <label>Offering Date</label> {{posting.offeringId.when}} <br/>
+          <label>Offering City</label> {{posting.offeringId.location}} <br/>
+          <label>Offering Location</label> {{posting.offeringId.location}} <br/>
+          <label>Offering expires</label> {{posting.offeringId.expiry}} <br/>
         </div>
       </div>
       <div class="modal-footer">
@@ -39,7 +46,7 @@
       </div>
     </div>
   </div>
-  <div id="modalReply" class="modal">
+  <div id="modalReply" class="modal" ng-controller="NewPostingsController">
     <div class="modal-content">
       <form name="postingForm" class="my-form" novalidate>
         <div class="row">

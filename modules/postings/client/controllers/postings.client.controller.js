@@ -1,69 +1,6 @@
 'use strict';
 
-// Controller to create a posting/mail to the offering owner, from an offering contact request
-angular.module('postings').controller('PostingsCreateController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
-  function ($scope, $http, $stateParams, $location, Authentication, Postings, Socket) {
-    $scope.authentication = Authentication;
-
-    if ($stateParams.offeringId) {
-      $scope.showTitle = 'Contact Offering Owner';
-    } else {
-      $scope.showTitle = 'Send new mail';
-    }
-
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    // Create new Posting
-    $scope.createMail = function (isValid) {
-      $scope.error = null;
-
-      // TODO: Need better validation of input fields.
-      // TODO: Right now, user gets back 'success' message, even if some
-      // TODO: fields are blank, i.e. they refreshed the page before sending.
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'postingForm');
-        return false;
-      }
-
-      // Create new Posting object
-      var posting = new Postings({
-        title: this.title,
-        content: this.content,
-        unread: true,
-        recipient: this.recipientId,
-        replyTo: this.replyTo,
-        offeringId: this.offeringId,
-      });
-
-      // Emit a 'postingMessage' message event with the JSON posting object
-      var message = {
-        content: posting
-      };
-
-      // Redirect after save
-      posting.$save(function (response) {
-        Socket.emit('postingMessage', message);
-        $location.path('postings/createFromOfferSuccess');
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
-    // Fill in form based on input offering, user just has to click 'Send'
-    $scope.prefillForm = function () {
-      $scope.title = 'RE Your 4Refuge.es offering: ' + $stateParams.offeringDescription;
-      $scope.replyTo = Authentication.user.email;
-      $scope.content = 'Hello,\nI am interested in your offering.  Please e-mail me to discuss further.\n\nThank you,\n' + Authentication.user.displayName;
-      $('#modalAskAboutOffering').openModal();
-    };
-  }
-]);
-
-
-// Postings controller
+// Postings controller - handles listing and replies etc.
 angular.module('postings').controller('PostingsController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Postings', 'Socket',
   function ($scope, $http, $stateParams, $location, Authentication, Postings, Socket) {
     $scope.authentication = Authentication;
@@ -77,67 +14,6 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
     if (!Socket.socket) {
       Socket.connect();
     }
-
-    // Create new Posting
-    $scope.create = function (isValid, recipient) {
-      $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'postingForm');
-
-        return false;
-      }
-
-      var recipient_id, reload_on_save;
-
-      if (this.recipient && this.recipient[0]) {
-        console.log('posting for ' + JSON.stringify(this.recipient[0]));
-        recipient_id = this.recipient[0]._id;
-        reload_on_save = true;
-      }
-      else {
-        console.log('reply to ' + JSON.stringify(recipient));
-        recipient_id = recipient._id;
-        reload_on_save = false;
-      }
-
-      // Create new Posting object
-      var posting = new Postings({
-        title: this.title,
-        content: this.content,
-        unread: true,
-        recipient: recipient_id,
-        replyTo: this.replyTo,
-        offeringId: this.offeringId,
-      });
-
-      // Emit a 'postingMessage' message event with the JSON posting object
-      var message = {
-        content: posting
-      };
-      //Socket.emit('postingMessage', message);
-
-      console.log('posting is ' + JSON.stringify(posting));
-
-      // Redirect after save
-      posting.$save(function (response) {
-        Socket.emit('postingMessage', message);
-
-        if (reload_on_save) {
-          $location.path('postings/' + response._id);
-          // Clear form fields
-          $scope.replyTo = '';
-          $scope.offeringId = '';
-          $scope.recipient = {};
-        }
-        $scope.title = '';
-        $scope.content = '';
-        $scope.authentication = Authentication;
-
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
 
     // Remove existing Posting
     $scope.removePosting = function (posting) {
@@ -195,7 +71,7 @@ angular.module('postings').controller('PostingsController', ['$scope', '$http', 
         }
       });
 
-      // Emit a 'postingMessage' message event with an empty JSON posting object
+      // Emit a 'postingMessage' message event with an empty JSON posting object to erase the new banner
       var message = {
         content : {
           recipient : Authentication.user._id

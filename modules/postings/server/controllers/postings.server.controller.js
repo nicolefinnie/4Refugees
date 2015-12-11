@@ -20,7 +20,7 @@ exports.create = function (req, res) {
   posting.title = req.body.title;
   posting.content = req.body.content;
   posting.recipient = req.body.recipient;
-  console.log('recipient is: ' + JSON.stringify(req.body));
+  console.log('recipient is: ' + JSON.stringify(req.body.recipient));
   posting.offeringId = req.body.offeringId;
   posting.replyTo = req.body.postingId;
 
@@ -92,7 +92,7 @@ exports.delete = function (req, res) {
 exports.listall = function (req, res) {
   var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'recipient' : req.user._id };
 
-  Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+  Posting.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, postings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -137,7 +137,8 @@ exports.list = function (req, res) {
   console.log('list: query is ' + JSON.stringify(query));
   //console.log('list: body is ' + JSON.stringify(req.body));
 
-  Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+  //Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+  Posting.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, postings) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
