@@ -75,18 +75,18 @@ function refreshHeaderInCurrentLanguage($scope, language){
 }
 
 
-function refreshLanguageDropdownMenu($scope, $rootScope){
-  if ($rootScope.currentLanguage === 'ar') {
+function refreshLanguageDropdownMenu($scope, language){
+  if (language === 'ar') {
     $scope.showArabic = false;
     $scope.showEnglish = true;
     $scope.showDeutsch = true;
   } 
-  else if ($rootScope.currentLanguage === 'en') {
+  else if (language === 'en') {
     $scope.showArabic = true;
     $scope.showEnglish = false;
     $scope.showDeutsch = true;
   } 
-  else if ($rootScope.currentLanguage === 'de') {
+  else if (language === 'de') {
     $scope.showArabic = true;
     $scope.showEnglish = true;
     $scope.showDeutsch = false;
@@ -104,17 +104,20 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    // initialize the header language
-    $scope.currentLanguageShownInHeader = ENGLISH;
+    // initialize the header language and dropdown menu in English
+    refreshHeaderInCurrentLanguage($scope, $rootScope.currentLanguage);
+    refreshLanguageDropdownMenu($scope, $rootScope.currentLanguage);
     
-    // language change clicked, change language
+    // language change clicked
     $scope.changeLanguage = function (language) {
       $rootScope.currentLanguage = language;
+      // refresh header
       refreshHeaderInCurrentLanguage($scope, language);
+      // refresh the dropdown menu if the language changes
+      refreshLanguageDropdownMenu($scope, language);
+
     };
 
-    // refresh the dropdown menu if the language changes
-    refreshLanguageDropdownMenu($scope, $rootScope);
 
     // get home URL + current language setup to persist the language even after redirecting pages
     homeLanguage = $rootScope.currentLanguage;
