@@ -5,24 +5,24 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <div ng-controller="HeaderController">
   <nav class="ibm-header">
-    <div class="nav-wrapper container ">
+    <div class="nav-wrapper container">
       <span>
-        <a ng-href="{{getHomeURLWithCurrentLanguage()}}" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
+        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
       </span>
     
       <!-- Dropdown container -->
       <div class="ibm-dropdown-container" >
-      
+       
         <!-- Dropdown for unauthenticated users -->
         <ul class="right hide-on-med-and-down"  ng-hide="authentication.user">
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signin">{{signIn}}</a>
+                <a ui-sref="authentication.signin">{{signIn}}</a>
             </li>
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signup">{{register}}</a>
+                <a ui-sref="authentication.signup">{{register}}</a>
             </li>
         </ul>
-
+       
         <!-- Dropdown for authenticated users -->
         <ul class="right hide-on-med-and-down" ng-show="authentication.user">
             <li>
@@ -31,7 +31,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 {{authentication.user.displayName}}
                 <i class="material-icons right">arrow_drop_down</i>
                 </a>
-                <ul id="dropdownAuth" class="dropdown-content">
+                <ul id="dropdownAuth" class="dropdown-content ibm-dropdown-component">
                     <li ui-sref-active="active">
                     <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
                     </li>
@@ -57,21 +57,23 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         </ul>
 
         <!-- TODO merge into the single drop-down - Dropdown InMail for authenticated users -->
-        <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
+        <ul class="right hide-on-med-and-down " ng-if="menu.shouldRender(authentication.user);">
             <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
             <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
             {{::item.title}}&nbsp;
               <span class="new badge" ng-if="hasPostingBadge"></span>
             </a>
-            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
+            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content ibm-dropdown-component">
                 <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
                 <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
                 </li>
             </ul>
+            <!-- 
             <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>
             {{::item.title}}&nbsp;
             </a>
-            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
+            -->
+            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content ibm-dropdown-component">
                 <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
                 <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
                 </li>
@@ -80,20 +82,29 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </li>
         </ul>            
 
+
         <ul class="right hide-on-med-and-down">
           <li>
             <a class="dropdown-button" href="#" data-activates="dropdownLanguage" dropdown>
                     {{currentLanguageShownInHeader}}
+                <i class="material-icons right">language</i>
                 </a>
-                <ul id="dropdownLanguage" class="dropdown-content">
-                    <li ui-sref-active="active" ng-show="showArabic">
-                    <a ui-sref="home({language: 'ar'})" ng-click="changeLanguage('ar')">العربية</a>
+                
+                <ul id="dropdownLanguage" class="dropdown-content ibm-dropdown-component" >
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('ar')" >العربية
+                    <i class="material-icons right" ng-show="arabicSelected">done</i>
+                    </a>
                     </li>
-                    <li ui-sref-active="active" ng-show="showEnglish">
-                    <a ui-sref="home({language: 'en'})" ng-click="changeLanguage('en')">English</a>
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('en')">English
+                    <i class="material-icons right" ng-show="englishSelected">done</i>
+                    </a>
                     </li>
-                    <li ui-sref-active="active" ng-show="showDeutsch">
-                    <a ui-sref="home({language: 'de'})" ng-click="changeLanguage('de')">Deutsch</a>
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('de')">Deutsch
+                    <i class="material-icons right" ng-show="germanSelected">done</i>
+                    </a>
                     </li>
                 </ul>
             </li>        
@@ -104,3 +115,4 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 </div>
 
 <section ng-controller="HeaderNewOfferingsController"></section>
+

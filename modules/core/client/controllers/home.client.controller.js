@@ -50,20 +50,32 @@ var QUICKHELP_AR = 'تعليمات سريعة';
 var FINDHELP_AR = 'البحث عن مساعدة';
 var HELPOTHERS_AR = 'ساعد الاخرين';
 
+function refreshHomeInCurrentLanguage($scope, language){
+  
+  if (language === 'ar') {
+    $scope.headline = HEADLINE_AR;
+    $scope.subheadline = SUBHEADLINE_AR;
 
-angular.module('core').controller('HomeController', ['$scope', '$rootScope','Authentication',
-  function ($scope, $rootScope, Authentication) {
-    // This provides Authentication context.
-    $scope.authentication = Authentication;
+    $scope.quickHelpTitle = QUICKHELP_TITLE_AR;
+    $scope.findHelpTitle = FINDHELP_TITLE_AR;
+    $scope.helpOthersTitle = HELPOTHERS_TITLE_AR;
+
+    $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_AR;
+    $scope.findHelpSubtitle = FINDHELP_SUBTITLE_AR;
+    $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_AR;
     
-    //initial setup
+    $scope.quickHelpButton = QUICKHELP_AR;
+    $scope.findHelpButton = FINDHELP_AR;
+    $scope.helpOthersButton = HELPOTHERS_AR;
+  } 
+  else if (language === 'en') {
     $scope.headline = HEADLINE_EN;
     $scope.subheadline = SUBHEADLINE_EN;
-    
+
     $scope.quickHelpTitle = QUICKHELP_TITLE_EN;
     $scope.findHelpTitle = FINDHELP_TITLE_EN;
     $scope.helpOthersTitle = HELPOTHERS_TITLE_EN;
- 
+    
     $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_EN;
     $scope.findHelpSubtitle = FINDHELP_SUBTITLE_EN;
     $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_EN;
@@ -71,58 +83,53 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
     $scope.quickHelpButton = QUICKHELP_EN;
     $scope.findHelpButton = FINDHELP_EN;
     $scope.helpOthersButton = HELPOTHERS_EN;
+  } 
+  else if (language === 'de') {
+    $scope.headline = HEADLINE_DE;
+    $scope.subheadline = SUBHEADLINE_DE;
     
+    $scope.quickHelpTitle = QUICKHELP_TITLE_DE;
+    $scope.findHelpTitle = FINDHELP_TITLE_DE;
+    $scope.helpOthersTitle = HELPOTHERS_TITLE_DE;
+ 
+    $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_DE;
+    $scope.findHelpSubtitle = FINDHELP_SUBTITLE_DE;
+    $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_DE;
     
-    if ($rootScope.currentLanguage === 'ar') {
-      $scope.headline = HEADLINE_AR;
-      $scope.subheadline = SUBHEADLINE_AR;
-
-      $scope.quickHelpTitle = QUICKHELP_TITLE_AR;
-      $scope.findHelpTitle = FINDHELP_TITLE_AR;
-      $scope.helpOthersTitle = HELPOTHERS_TITLE_AR;
-
-      $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_AR;
-      $scope.findHelpSubtitle = FINDHELP_SUBTITLE_AR;
-      $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_AR;
-      
-      $scope.quickHelpButton = QUICKHELP_AR;
-      $scope.findHelpButton = FINDHELP_AR;
-      $scope.helpOthersButton = HELPOTHERS_AR;
+    $scope.quickHelpButton = QUICKHELP_DE;
+    $scope.findHelpButton = FINDHELP_DE;
+    $scope.helpOthersButton = HELPOTHERS_DE;
+  }
   
-    } else if ($rootScope.currentLanguage === 'en') {
-      $scope.headline = HEADLINE_EN;
-      $scope.subheadline = SUBHEADLINE_EN;
- 
-      $scope.quickHelpTitle = QUICKHELP_TITLE_EN;
-      $scope.findHelpTitle = FINDHELP_TITLE_EN;
-      $scope.helpOthersTitle = HELPOTHERS_TITLE_EN;
-      
-      $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_EN;
-      $scope.findHelpSubtitle = FINDHELP_SUBTITLE_EN;
-      $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_EN;
-      
-      $scope.quickHelpButton = QUICKHELP_EN;
-      $scope.findHelpButton = FINDHELP_EN;
-      $scope.helpOthersButton = HELPOTHERS_EN;
+}
+
+angular.module('core').controller('HomeController', ['$scope', '$rootScope','Authentication',
+  function ($scope, $rootScope, Authentication) {
+    // This provides Authentication context.
+    $scope.authentication = Authentication;
     
-    } else if ($rootScope.currentLanguage === 'de') {
-      $scope.headline = HEADLINE_DE;
-      $scope.subheadline = SUBHEADLINE_DE;
-      
-      $scope.quickHelpTitle = QUICKHELP_TITLE_DE;
-      $scope.findHelpTitle = FINDHELP_TITLE_DE;
-      $scope.helpOthersTitle = HELPOTHERS_TITLE_DE;
+    //initial setup
+//    $scope.headline = HEADLINE_EN;
+//    $scope.subheadline = SUBHEADLINE_EN;
+//    
+//    $scope.quickHelpTitle = QUICKHELP_TITLE_EN;
+//    $scope.findHelpTitle = FINDHELP_TITLE_EN;
+//    $scope.helpOthersTitle = HELPOTHERS_TITLE_EN;
+// 
+//    $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_EN;
+//    $scope.findHelpSubtitle = FINDHELP_SUBTITLE_EN;
+//    $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_EN;
+//    
+//    $scope.quickHelpButton = QUICKHELP_EN;
+//    $scope.findHelpButton = FINDHELP_EN;
+//    $scope.helpOthersButton = HELPOTHERS_EN;
    
-      $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_DE;
-      $scope.findHelpSubtitle = FINDHELP_SUBTITLE_DE;
-      $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_DE;
-      
-      $scope.quickHelpButton = QUICKHELP_DE;
-      $scope.findHelpButton = FINDHELP_DE;
-      $scope.helpOthersButton = HELPOTHERS_DE;
+    refreshHomeInCurrentLanguage($scope, $rootScope.currentLanguage);
+    // language change clicked
+    $rootScope.$on('tellHomeToChangeLanguage', function(){
+      refreshHomeInCurrentLanguage($scope, $rootScope.currentLanguage);
+    });
     
-    }
- 
   }
 ]);
 

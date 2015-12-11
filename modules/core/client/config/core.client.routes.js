@@ -15,13 +15,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
     .state('home', {
       url: '/',
-      params: {
-        language: null
-      },
-      templateUrl: 'modules/core/client/views/home.client.view.html',
-      controller: function($scope, $stateParams) {
-        $scope.language = $stateParams.language;
-      }
+      templateUrl: 'modules/core/client/views/home.client.view.html'
     })
     
     .state('not-found', {

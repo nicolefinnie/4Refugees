@@ -26,14 +26,47 @@ nav {
   margin-right: 20px;
   padding: 0;
   background-repeat: no-repeat;
-  width: 12%;
-  height: 12%;
+  width: 15%;
+  height: 15%;
   border: 3px solid white;
   background-color: white;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 50%; }
 
-/* dropdown container needs space to the right */
+/* dropdown - for each menu */
+.ibm-dropdown-container {
+  /* override materialize dropdown hover color because red is ugly :P */ }
+  .ibm-dropdown-container li:hover {
+    /* menu background color when it's hovered*/
+    background: #e0e0e0;
+    /* text color when it's hovered*/ }
+    .ibm-dropdown-container li:hover a:hover {
+      color: #323232; }
+  .ibm-dropdown-container li.active {
+    background: #323232;
+    /* text color when it's hovered and active*/ }
+    .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
+      color: #fff; }
+
+/* dropdown - for each component inside the menu*/
+.ibm-dropdown-component {
+  /* the first menu item starts below the header bar*/
+  margin-top: 62px;
+  background: #323232;
+  /* li: menu component */ }
+  .ibm-dropdown-component li a {
+    /* menu text */
+    color: #fff;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    /* icon */ }
+    .ibm-dropdown-component li a i {
+      font-size: 16px; }
+  .ibm-dropdown-component li a:hover {
+    /* menu text */
+    color: #323232; }
+
 /** Cover picture - no gap between the picture and its neighbours **/
 .ibm-cover-container {
   overflow: hidden;
