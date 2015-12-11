@@ -9,7 +9,7 @@ var QUICKHELP_TITLE_EN = 'Germany in a nutshell';
 var FINDHELP_TITLE_EN = 'Coordinating Help';
 var HELPOTHERS_TITLE_EN = 'You are one of us';
 
-var QUICKHELP_SUBTITLE_EN = 'Register in the city hall, open a bank account, get health care, learn languages, find schools for your kids';
+var QUICKHELP_SUBTITLE_EN = 'Register in the city hall, open a bank account, get health care, learn languages, find schools';
 var FINDHELP_SUBTITLE_EN = 'We take your geo location into account to make it easy to find nearby offers and requests';
 var HELPOTHERS_SUBTITLE_EN = 'You are not alone. We try to connect refugees who need help and people who want to offer help';
 
@@ -42,8 +42,8 @@ var QUICKHELP_TITLE_AR = 'ألمانيا باختصار';
 var FINDHELP_TITLE_AR = 'تنسيق المساعدة';
 var HELPOTHERS_TITLE_AR = 'كنت واحدا منا';
 
-var QUICKHELP_SUBTITLE_AR = 'التسجيل في قاعة المدينة، وفتح حسابات مصرفية، والحصول على الرعاية الصحية، تعلم لغات، والعثور على المدارس';
-var FINDHELP_SUBTITLE_AR = 'نحن نأخذ الموقع الجغرافي الخاص بك في الاعتبار أن تجعل من السهل العثور على العروض المجاورة وطلبات';
+var QUICKHELP_SUBTITLE_AR = 'التسجيل، فتح حساب مصرفي، والحصول على الرعاية الصحية، تعلم اللغات، والعثور على المدارس';
+var FINDHELP_SUBTITLE_AR = 'نحن نأخذ الموقع الجغرافي الخاص بك في الاعتبار أن تجعل من السهل العثور على العروض المجاورة وطلبات ';
 var HELPOTHERS_SUBTITLE_AR = 'انت لست وحدك. نحن نحاول ربط اللاجئين الذين يحتاجون المساعدة والأشخاص الذين يرغبون في تقديم المساعدة';
 
 var QUICKHELP_AR = 'تعليمات سريعة';
