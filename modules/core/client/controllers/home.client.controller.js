@@ -19,20 +19,20 @@ var HELPOTHERS_EN = 'Help Others';
 
 
 //German
-var HEADLINE_DE = 'Wilkommen Deutschland';
-var SUBHEADLINE_DE = 'Guten Tag, wie können wir Ihnen hilfen?';
+var HEADLINE_DE = 'Wilkommen in Deutschland';
+var SUBHEADLINE_DE = 'Wie können wir Ihnen weiter hilfen?';
 
 var QUICKHELP_TITLE_DE = 'Deutschland auf einen Blick';
 var FINDHELP_TITLE_DE = 'Koordinierende Hilfe';
 var HELPOTHERS_TITLE_DE = 'Du bist einer von uns';
 
-var QUICKHELP_SUBTITLE_DE = 'Beim Rathaus anmelden, ein Bankkonto eröffnen, Krankenversicherung abschliessen, Sprachen lernen, Schule für Kinder suchen';
-var FINDHELP_SUBTITLE_DE = 'Wir nehmen Ihre Geographische Lage und berechnen die Entfernung um Angebote und Suche möglichst in der Nähe zu finden';
+var QUICKHELP_SUBTITLE_DE = 'Beim Rathaus anmelden, ein Bankkonto eröffnen, Krankenversicherung abschließen, Sprachen lernen, Schule für Kinder suchen';
+var FINDHELP_SUBTITLE_DE = 'Wir nehmen Ihre geographische Lage und berechnen die Entfernung um Angebote und Suche möglichst in der Nähe zu finden';
 var HELPOTHERS_SUBTITLE_DE = 'Du bist nicht allein. Wir versuchen die Flüchtlinge, die Hilfe brauchen, mit den Leuten, die Hilfe anbieten zu verbinden';
 
-var QUICKHELP_DE = 'Erste Hilfe';
-var FINDHELP_DE = 'Hilfe Brauchen';
-var HELPOTHERS_DE = 'Anderen Helfen';
+var QUICKHELP_DE = 'Erste Schritte';
+var FINDHELP_DE = 'Hilfe erhalten';
+var HELPOTHERS_DE = 'Anderen helfen';
 
 //Arabic
 var HEADLINE_AR = 'أهلا بكم في ألمانيا';
