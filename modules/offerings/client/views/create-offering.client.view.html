@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="input-field col m6 s12">
                     <i class="material-icons prefix">description</i>
-                    <input name="description" type="text" id="description" class="form-control" required>
+                    <input name="description" type="text" ng-model="description" id="description" class="form-control" required>
                     <label for="description">{{description}}</label>
                     <div ng-messages="offeringForm.description.$error" role="alert">
                     <p class="help-block error-text" ng-message="required">Offering description is required.</p>
@@ -67,7 +67,7 @@
                 <div class="input-field col s7">
                     <i class="material-icons prefix">schedule</i>
                     <label for="when">{{when}}</label>
-                    <input id="when" type="date" name="date" class="datepicker">
+                    <input id="when" type="date" ng-model="when" name="date" class="datepicker">
                 </div>
             </div>
 
