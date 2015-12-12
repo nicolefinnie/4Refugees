@@ -182,7 +182,7 @@ exports.read = function (req, res) {
  * Update a offering
  */
 exports.update = function (req, res) {
-  Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id)  }, function (err, offering){
+  Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id) }, function (err, offering){
     offering.user = req.user;
     offering.userId = req.user._id;
     offering.when = new Date(req.body.when);

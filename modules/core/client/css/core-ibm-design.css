@@ -34,19 +34,18 @@ nav {
   border-radius: 50%; }
 
 /* dropdown - for each menu */
-.ibm-dropdown-container {
-  /* override materialize dropdown hover color because red is ugly :P */ }
-  .ibm-dropdown-container li:hover {
-    /* menu background color when it's hovered*/
-    background: #e0e0e0;
-    /* text color when it's hovered*/ }
-    .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover {
-      color: #323232; }
-  .ibm-dropdown-container li.active {
-    background: #323232;
-    /* text color when it's hovered and active*/ }
-    .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
-      color: #fff; }
+/* override materialize dropdown hover color because red is ugly :P */
+.ibm-dropdown-container li:hover {
+  /* menu background color when it's hovered*/
+  background: #e0e0e0;
+  /* text color when it's hovered*/ }
+  .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover {
+    color: #323232; }
+.ibm-dropdown-container li.active {
+  background: #323232;
+  /* text color when it's hovered and active*/ }
+  .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
+    color: #fff; }
 
 /* dropdown - for each component inside the menu*/
 .ibm-dropdown-component {

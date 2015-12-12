@@ -41,8 +41,8 @@ nav {
 }
 
 /* dropdown - for each menu */
+/* override materialize dropdown hover color because red is ugly :P */
 .ibm-dropdown-container{
-    /* override materialize dropdown hover color because red is ugly :P */
     li:hover{
         /* menu background color when it's hovered*/
         background: color('gray', 10);
