@@ -109,22 +109,8 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
     $scope.authentication = Authentication;
     
     //initial setup
-//    $scope.headline = HEADLINE_EN;
-//    $scope.subheadline = SUBHEADLINE_EN;
-//    
-//    $scope.quickHelpTitle = QUICKHELP_TITLE_EN;
-//    $scope.findHelpTitle = FINDHELP_TITLE_EN;
-//    $scope.helpOthersTitle = HELPOTHERS_TITLE_EN;
-// 
-//    $scope.quickHelpSubtitle = QUICKHELP_SUBTITLE_EN;
-//    $scope.findHelpSubtitle = FINDHELP_SUBTITLE_EN;
-//    $scope.helpOthersSubtitle = HELPOTHERS_SUBTITLE_EN;
-//    
-//    $scope.quickHelpButton = QUICKHELP_EN;
-//    $scope.findHelpButton = FINDHELP_EN;
-//    $scope.helpOthersButton = HELPOTHERS_EN;
-   
     refreshHomeInCurrentLanguage($scope, $rootScope.currentLanguage);
+
     // language change clicked
     $rootScope.$on('tellHomeToChangeLanguage', function(){
       refreshHomeInCurrentLanguage($scope, $rootScope.currentLanguage);
