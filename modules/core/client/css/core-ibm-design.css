@@ -40,7 +40,7 @@ nav {
     /* menu background color when it's hovered*/
     background: #e0e0e0;
     /* text color when it's hovered*/ }
-    .ibm-dropdown-container li:hover a:hover {
+    .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover {
       color: #323232; }
   .ibm-dropdown-container li.active {
     background: #323232;

@@ -42,14 +42,13 @@ nav {
 
 /* dropdown - for each menu */
 .ibm-dropdown-container{
-
     /* override materialize dropdown hover color because red is ugly :P */
     li:hover{
         /* menu background color when it's hovered*/
         background: color('gray', 10);
      
         /* text color when it's hovered*/
-        a:hover{
+        a.active, a:hover{
             color: color('gray', 80);    
         }
     }
@@ -87,7 +86,6 @@ nav {
             color: color('gray', 80);
          }
      }   
-
 }
 /** Cover picture - no gap between the picture and its neighbours **/
 .ibm-cover-container {
