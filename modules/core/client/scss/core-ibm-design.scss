@@ -15,39 +15,78 @@ nav {
 
 /** The header that controls the entire bar color/text/font **/
 .ibm-header{
+     
     background: color('gray', 80);
     /* text color */
     color: color('white', core);
      /* a: title */
     a{
         font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-     }    
+     }
 }
 
 /** The logo in the header bar */
 .ibm-header-logo{
   display: inline-block;
   margin-top: 10px;
-  // design change will be made
-  //margin-left: 100px;
   margin-right: 20px;
   padding: 0;
   background-repeat: no-repeat;
-  width: 12%;
-  height: 12%;
+  width: 15%;
+  height: 15%;
   border: 3px solid white;
   background-color:rgb(255,255,255); 
   background-color:rgba(255,255,255,0.7);
   border-radius: 50%;  
 }
 
-/* dropdown container needs space to the right */
+/* dropdown - for each menu */
 .ibm-dropdown-container{
-
-  // design change will be made
-// margin-right:100px;
+    /* override materialize dropdown hover color because red is ugly :P */
+    li:hover{
+        /* menu background color when it's hovered*/
+        background: color('gray', 10);
+     
+        /* text color when it's hovered*/
+        a.active, a:hover{
+            color: color('gray', 80);    
+        }
+    }
+    li.active{
+        background: color('gray', 80);
+        
+        /* text color when it's hovered and active*/
+        a.active, a:hover{
+            color: color('white', core);    
+        }
+    }
+    
 }
 
+
+/* dropdown - for each component inside the menu*/
+.ibm-dropdown-component{
+    /* the first menu item starts below the header bar*/
+    margin-top: 62px;
+    background: color('gray', 80);
+    /* li: menu component */
+    li{
+        a{
+            /* menu text */
+            color: color('white', core);
+            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+            
+            /* icon */
+            i{
+                font-size: 16px;
+            }
+         } 
+         a:hover {
+            /* menu text */
+            color: color('gray', 80);
+         }
+     }   
+}
 /** Cover picture - no gap between the picture and its neighbours **/
 .ibm-cover-container {
   overflow: hidden;

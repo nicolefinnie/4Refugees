@@ -77,19 +77,19 @@ function refreshHeaderInCurrentLanguage($scope, language){
 
 function refreshLanguageDropdownMenu($scope, language){
   if (language === 'ar') {
-    $scope.showArabic = false;
-    $scope.showEnglish = true;
-    $scope.showDeutsch = true;
+    $scope.arabicSelected = true;
+    $scope.englishSelected = false;
+    $scope.germanSelected = false;
   } 
   else if (language === 'en') {
-    $scope.showArabic = true;
-    $scope.showEnglish = false;
-    $scope.showDeutsch = true;
+    $scope.arabicSelected = false;
+    $scope.englishSelected = true;
+    $scope.germanSelected = false;
   } 
   else if (language === 'de') {
-    $scope.showArabic = true;
-    $scope.showEnglish = true;
-    $scope.showDeutsch = false;
+    $scope.arabicSelected = false;
+    $scope.englishSelected = false;
+    $scope.germanSelected = true;
   }  
 }
 
@@ -97,8 +97,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
   function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
     // default language
     $rootScope.currentLanguage = 'en';
-    // local variable to store the current language used by the home URL 
-    var homeLanguage = $rootScope.currentLanguage;
     
     // Expose view variables 
     $scope.$state = $state;
@@ -110,19 +108,15 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     
     // language change clicked
     $scope.changeLanguage = function (language) {
+
       $rootScope.currentLanguage = language;
       // refresh header
       refreshHeaderInCurrentLanguage($scope, language);
       // refresh the dropdown menu if the language changes
       refreshLanguageDropdownMenu($scope, language);
+      // broadcast this language change to HomeController to refresh
+      $rootScope.$broadcast('tellHomeToChangeLanguage');
 
-    };
-
-
-    // get home URL + current language setup to persist the language even after redirecting pages
-    homeLanguage = $rootScope.currentLanguage;
-    $scope.getHomeURLWithCurrentLanguage = function() { 
-      return $state.href('home', { language: homeLanguage }); 
     };
 
     // Get the topbar menu
