@@ -102,6 +102,25 @@ function doTranslate(textLanguage, textTranslate, transResult)
   }
 }
 
+// Helper function to translate, save, and return an offering
+function doTranslateOfferingAndSave(offering, res)
+{
+  doTranslate(offering.descriptionLanguage, offering.description, function(transEnglish, transOther){
+    offering.descriptionEnglish = transEnglish;
+    offering.descriptionOther = transOther;
+    offering.save(function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        var filteredOffering = filterSingleInternalOfferingFields(offering, true, false);
+        res.json(filteredOffering);
+      }
+    });
+  });
+}
+
 function translateAllOfferings(offerings, desiredLanguage)
 {
   offerings.forEach(function(offering) {
@@ -139,7 +158,7 @@ exports.create = function (req, res) {
   offering.expiry = req.body.expiry;
   offering.descriptionLanguage = req.body.descriptionLanguage;
   console.log('LIAM: My language is: ' + offering.descriptionLanguage);
-  offering.description= req.body.description;
+  offering.description = req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.city = req.body.city;
   offering.category = req.body.category;
@@ -148,21 +167,8 @@ exports.create = function (req, res) {
                                Number(req.body.latitude) ];
   offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
-  doTranslate(req.body.descriptionLanguage, req.body.description, function(transEnglish, transOther){
-    console.log('The english translation of the offering is ' + transEnglish);
-    offering.descriptionEnglish = transEnglish;
-    offering.descriptionOther = transOther;
-    offering.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.json(offering);
-      }
-    });
-  });
-  
+  doTranslateOfferingAndSave(offering, res);
+
 };
 
 /**
@@ -176,26 +182,21 @@ exports.read = function (req, res) {
  * Update a offering
  */
 exports.update = function (req, res) {
-  var offering = req.offering;
+  Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id)  }, function (err, offering){
+    offering.user = req.user;
+    offering.userId = req.user._id;
+    offering.when = new Date(req.body.when);
+    offering.updated = new Date();
+    offering.description = req.body.description;
+    // TODO: remove this!
+    offering.descriptionLanguage = 'en';
+    offering.city = req.body.city;
+    offering.category = req.body.category;
+    offering.loc.type = 'Point';
+    offering.loc.coordinates = [ Number(req.body.longitude),
+                                 Number(req.body.latitude) ];
 
-  offering.when = new Date(req.body.when);
-  offering.updated = new Date();
-  offering.description = req.body.description;
-  offering.city = req.body.city;
-  offering.category = req.body.category;
-  offering.loc.type = 'Point';
-  offering.loc.coordinates = [ Number(req.body.longitude),
-                               Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
-
-  offering.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(offering);
-    }
+    doTranslateOfferingAndSave(offering, res);
   });
 };
 
@@ -203,15 +204,13 @@ exports.update = function (req, res) {
  * Delete an offering
  */
 exports.delete = function (req, res) {
-  var offering = req.offering;
-
-  offering.remove(function (err) {
+  Offering.remove({ _id: mongoose.Types.ObjectId(req.offering._id) }, function(err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(offering);
+      res.json(req.offering);
     }
   });
 };
@@ -375,14 +374,7 @@ exports.offeringByID = function (req, res, next, id) {
         message: 'No offering with that identifier has been found'
       });
     }
-    // TODO: The filtering here seems to cause a 'Forbidden' error when trying
-    // to edit your own offering.  Comment out for now, until this 'Forbidden'
-    // error is fixed.  Alternatively, if there's no easy way to fix that, we
-    // can return the un-filtered offering if it matches the current user, and
-    // only filter when other users are searching for matching offers (that
-    // feature already works with this filtering enabled).
-    // req.offering = filterSingleInternalOfferingFields(offering, (req.user && req.user._id === offering.userId), false);
-    req.offering = offering;
+    req.offering = filterSingleInternalOfferingFields(offering, (req.user && req.user._id === offering.userId), false);
     next();
   });
 };

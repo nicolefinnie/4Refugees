@@ -7,6 +7,8 @@ var FIND_HELP_EN = 'Find Help';
 var NEED_HELP_EN = 'Need Help';
 var OFFER_HELP_EN = 'Offer Help';
 var SEARCH_NEED_EN = 'Search Needs';
+var EDIT_OFFER_HELP_EN = 'Edit Offer';
+var EDIT_NEED_HELP_EN = 'Edit Request';
 
 var CATEGORY_EN = 'Category';
 var JOB_TRAINING_EN = 'Job Training';
@@ -26,6 +28,9 @@ var FIND_REQUESTS_TEXT_EN = 'Or find what helps are needed!';
 
 var ADD_EN = 'Add';
 var SEARCH_EN = 'Search';
+var UPDATE_EN = 'Update';
+var DELETE_EN = 'Delete';
+var CONTACT_EN = 'Contact';
 
 
 /** German Text.
@@ -34,6 +39,8 @@ var FIND_HELP_DE = 'Angebote Suchen';
 var NEED_HELP_DE = 'Hilfe Brauchen';
 var OFFER_HELP_DE = 'Hilfe Anbieten';
 var SEARCH_NEED_DE = 'Bedürfnisse Suchen';
+var EDIT_OFFER_HELP_DE = 'Angebot ändern';
+var EDIT_NEED_HELP_DE = 'Bedürfnis ändern';
 
 var CATEGORY_DE = 'Kategorie';
 var JOB_TRAINING_DE = 'Berufsausbildung';
@@ -54,6 +61,9 @@ var FIND_REQUESTS_TEXT_DE = 'Oder Bedürfnisse von den Anderen suchen!';
 
 var ADD_DE = 'Hinzufügen';
 var SEARCH_DE = 'Suchen';
+var UPDATE_DE = 'Aktualisieren';
+var DELETE_DE = 'Löschen';
+var CONTACT_DE = 'Kontakt';
 
 
 /** Arabic Text.
@@ -63,6 +73,9 @@ var NEED_HELP_AR = 'احتاج مساعدة';
 
 var OFFER_HELP_AR = 'عرض المساعدة';
 var SEARCH_NEED_AR = 'احتياجات البحث';
+
+var EDIT_OFFER_HELP_AR = 'تحرير عرض';
+var EDIT_NEED_HELP_AR = 'تحرير طلب';
 
 var CATEGORY_AR = 'فئة';
 var JOB_TRAINING_AR = 'التدريب المهني';
@@ -83,6 +96,9 @@ var FIND_REQUESTS_TEXT_AR = 'أو البحث إذا كان يحتاج مساعد
 
 var ADD_AR = 'أدخل';
 var SEARCH_AR = 'البحث عن';
+var UPDATE_AR = 'تحديث';
+var DELETE_AR = 'حذف';
+var CONTACT_AR = 'اتصال';
 
 
 function geoSetupCityList($scope) {
@@ -114,7 +130,39 @@ function getCategoryArray(cat, defaultSetting) {
     return [defaultSetting];
   }
 }
-   
+
+// Convert category string as returned by server back into
+// the same format used when selecting categories
+function convertEnglishCategory(categories, lang, scope)
+{
+  var converted = '';
+  var addComma = false;
+  var catArray = categories.toString().split(',');
+  catArray.forEach(function(cat) {
+    if (addComma) {
+      if (lang === 'ar') {
+        converted = converted + '، ';
+      } else {
+        converted = converted + ', ';
+      }
+    } else {
+      addComma = true;
+    }
+    if (cat === 'training') {
+      converted = converted + scope.jobTraining;
+    } else if (cat === 'courses') {
+      converted = converted + scope.languageCourses;
+    } else if (cat === 'medical') {
+      converted = converted + scope.medicalAssistance;
+    } else if (cat === 'childcare') {
+      converted = converted + scope.childCare;
+    } else if (cat === 'others') {
+      converted = converted + scope.others;
+    }
+  });
+  return converted;
+}
+
 function geoUpdateLocation(position, scope) {
   var geocoder = new google.maps.Geocoder();
   var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -161,10 +209,43 @@ function geoUpdateLocation(position, scope) {
 
 function geoUpdateLocationError(error, scope) {
   console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
-  //scope.city = 'Google geo error, try again later.';
   scope.geoManual = true;
   geoSetupCityList(scope);
   scope.$apply();
+}
+
+// Main geo locator entry, calls into google geo APIs to retrieve current
+// location.  If geo-services are not available, allows for fallback of a
+// drop-down list of pre-set cities to choose from with pre-set co-ordinates.
+// TODO: Can this be turned into a service provided by a separate module???
+function geoGetCurrentLocation(navigator, scope) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      geoUpdateLocation(position, scope);
+    },
+    function errorCallback(error) {
+      geoUpdateLocationError(error, scope);
+    },
+      {
+        // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
+        // that causes 'google not defined' errors when re-loading pages.
+        timeout:10000        // 10-second timeout
+      }
+    );
+  }
+}
+
+// Validate a suitable geoLocation was specified
+function geoValidateLocation(scope) {
+  var isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
+  // if google geo is not reachable or user does not allow it
+  if (!isValid && scope.where)
+  {
+    isValid = true;
+    scope.longitude = scope.where.longitude;
+    scope.latitude = scope.where.latitude;
+  }
+  return isValid;
 }
 
 function setCommonAttributes($scope, $rootScope) {
@@ -172,6 +253,9 @@ function setCommonAttributes($scope, $rootScope) {
     //buttons
     $scope.search = SEARCH_EN;
     $scope.add = ADD_EN;
+    $scope.updateButton = UPDATE_EN;
+    $scope.deleteButton = DELETE_EN;
+    $scope.contact = CONTACT_EN;
     
     //categories
     $scope.categoryTitle = CATEGORY_EN;
@@ -196,6 +280,9 @@ function setCommonAttributes($scope, $rootScope) {
     //buttons
     $scope.search = SEARCH_DE;
     $scope.add = ADD_DE;
+    $scope.updateButton = UPDATE_DE;
+    $scope.deleteButton = DELETE_DE;
+    $scope.contact = CONTACT_DE;
     
     //categories
     $scope.categoryTitle = CATEGORY_DE;
@@ -220,6 +307,9 @@ function setCommonAttributes($scope, $rootScope) {
     //buttons
     $scope.search = SEARCH_AR;
     $scope.add = ADD_AR;
+    $scope.updateButton = UPDATE_AR;
+    $scope.deleteButton = DELETE_AR;
+    $scope.contact = CONTACT_AR;
     
     //categories
     $scope.categoryTitle = CATEGORY_AR;
@@ -242,12 +332,14 @@ function setCommonAttributes($scope, $rootScope) {
   }
 }
 
-function setSearchOrAdd($scope, $rootScope, displayMode) {
+function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
   
   var searchNeedInCurrentLanguage = SEARCH_NEED_EN;
   var findHelpInCurrentLanguage = FIND_HELP_EN;
   var offerHelpInCurrentLanguage = OFFER_HELP_EN;
   var needHelpInCurrentLanguage = NEED_HELP_EN;
+  var editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_EN;
+  var editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_EN;
   
   
   if ($rootScope.currentLanguage === 'en'){
@@ -255,18 +347,24 @@ function setSearchOrAdd($scope, $rootScope, displayMode) {
     findHelpInCurrentLanguage = FIND_HELP_EN;
     offerHelpInCurrentLanguage = OFFER_HELP_EN;
     needHelpInCurrentLanguage = NEED_HELP_EN;
+    editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_EN;
+    editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_EN;
   }
   else if ($rootScope.currentLanguage === 'de'){
     searchNeedInCurrentLanguage = SEARCH_NEED_DE;
     findHelpInCurrentLanguage = FIND_HELP_DE;
     offerHelpInCurrentLanguage = OFFER_HELP_DE;
     needHelpInCurrentLanguage = NEED_HELP_DE;
+    editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_DE;
+    editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_DE;
     
   } else if ($rootScope.currentLanguage === 'ar'){
     searchNeedInCurrentLanguage = SEARCH_NEED_AR;
     findHelpInCurrentLanguage = FIND_HELP_AR;
     offerHelpInCurrentLanguage = OFFER_HELP_AR;
     needHelpInCurrentLanguage = NEED_HELP_AR;
+    editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_AR;
+    editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_AR;
   }
   
   //Volunteer mode: determine the title to show, this mode search needs or create offer
@@ -292,6 +390,17 @@ function setSearchOrAdd($scope, $rootScope, displayMode) {
     $scope.showTitle = offerHelpInCurrentLanguage;
     $scope.searchRequest = !$scope.searchRequest;
   }
+
+  // Refugee mode: determine the title to show, this mode create request OR search offer
+  else if ($scope.offerType === 'request' && displayMode === 'edit') { 
+    $scope.showTitle = editNeedHelpInCurrentLanguage;
+    $scope.editOffer = !$scope.editOffer;
+   
+  // volunteer mode: determine the title to show, this mode create offer OR search request
+  } else if ($scope.offerType === 'offer' && displayMode === 'edit'){
+    $scope.showTitle = editOfferHelpInCurrentLanguage;
+    $scope.editRequest = !$scope.editRequest;
+  }
 }
 
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
@@ -299,25 +408,9 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     $scope.authentication = Authentication;
     
     setCommonAttributes($scope, $rootScope);
-    setSearchOrAdd($scope, $rootScope, 'search');
+    setSearchOrAddOrEdit($scope, $rootScope, 'search');
     
-    geoSetupCityList($scope);
-
-    // get current location using Google GeoLocation services
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        geoUpdateLocation(position, $scope);
-      },
-      function errorCallback(error) {
-        geoUpdateLocationError(error, $scope);
-      },
-        {
-          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
-          // that causes 'google not defined' errors when re-loading pages.
-          timeout:10000        // 10-second timeout
-        }
-      );
-    }
+    geoGetCurrentLocation(navigator, $scope);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -336,11 +429,11 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         return false;
       }
 
-      // only if google geo is not reachable or user does not allow it
-      if (this.where)
-      {
-        $scope.longitude = $scope.where.longitude;
-        $scope.latitude = $scope.where.latitude;
+      var geoIsValid = geoValidateLocation($scope);
+      if (!geoIsValid) {
+        console.log('Failed to determine Geo location.');
+        // TODO: Cannot search without geo location, how to display error?
+        return false;
       }
 
       // TODO: Should we re-direct to a new page? or render a new page?
@@ -355,6 +448,10 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, ''),
         offerType: this.offerType 
+      }, function () {
+        $scope.offerings.forEach(function(offering) {
+          offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+        });
       });
     };
 
@@ -369,15 +466,11 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 ]);
 
 //Edit controller only available for authenticated users
-angular.module('offerings').controller('OfferingsEditController', ['$scope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $stateParams, $location, Authentication, Offerings, Socket) {
-    
-    // If user is not signed in then redirect back home
-    if (!Authentication.user) {
-      $location.path('/');
-    }
+angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
 
-    geoSetupCityList($scope);
+    setCommonAttributes($scope, $rootScope);
+    setSearchOrAddOrEdit($scope, $rootScope, 'edit');
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -389,21 +482,7 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
     
     $scope.authentication = Authentication;
  
-    // get current location using Google GeoLocation services
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        geoUpdateLocation(position, $scope);
-      },
-      function errorCallback(error) {
-        geoUpdateLocationError(error, $scope);
-      },
-        {
-          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
-          // that causes 'google not defined' errors when re-loading pages.
-          timeout:10000        // 10-second timeout
-        }
-      );
-    }
+    geoGetCurrentLocation(navigator, $scope);
 
     // Update existing Offering
     $scope.update = function (isValid) {
@@ -414,7 +493,18 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
         return false;
       }
 
+      var geoIsValid = geoValidateLocation($scope);
+      if (!geoIsValid) {
+        console.log('Failed to determine Geo location.');
+        // TODO: Cannot search without geo location, how to display error?
+        return false;
+      }
+
       var offering = $scope.offering;
+      offering.category = getCategoryArray(this.category, 'others');
+      offering.longitude = $scope.longitude;
+      offering.latitude = $scope.latitude;
+      offering.descriptionLanguage = $rootScope.currentLanguage;
 
       offering.$update(function () {
         $location.path('offerings/' + offering._id);
@@ -429,13 +519,9 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
       $scope.offering = Offerings.get({ 
         offeringId: $stateParams.offeringId 
       }, function () {
-        //determine if it's edit request or offer
-        if ($scope.offering.offerType === 0){
-          $scope.showTitle = 'Edit Offer';
-        } else {
-          $scope.showTitle = 'Edit Request';
-        }
-       
+        $scope.offerType = $scope.offering.offerType;
+        setSearchOrAddOrEdit($scope, $rootScope, 'edit');
+
         // set selected category checkbox of the to-edit-request/offer 
         var selectedCategory = {};
         $scope.offering.category.forEach(function(eachCategory) {
@@ -452,28 +538,11 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$s
 angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
   function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
-    
-    geoSetupCityList($scope);
 
     setCommonAttributes($scope, $rootScope);
-    setSearchOrAdd($scope, $rootScope, 'add');
-    
-    
-    // get current location using Google GeoLocation services
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        geoUpdateLocation(position, $scope);
-      },
-      function errorCallback(error) {
-        geoUpdateLocationError(error, $scope);
-      },
-        {
-          // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
-          // that causes 'google not defined' errors when re-loading pages.
-          timeout:10000        // 10-second timeout
-        }
-      );
-    }
+    setSearchOrAddOrEdit($scope, $rootScope, 'add');
+
+    geoGetCurrentLocation(navigator, $scope);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -492,11 +561,11 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         return false;
       }
 
-      // only if google geo is not reachable or user does not allow it
-      if (this.where)
-      {
-        $scope.longitude = $scope.where.longitude;
-        $scope.latitude = $scope.where.latitude;
+      var geoIsValid = geoValidateLocation($scope);
+      if (!geoIsValid) {
+        console.log('Failed to determine Geo location.');
+        // TODO: Cannot search without geo location, how to display error?
+        return false;
       }
     
       // Create new Offering object
@@ -554,33 +623,22 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       }
     };
 
-    // Update existing Offering
-    $scope.update = function (isValid) {
-      $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
-        return false;
-      }
-
-      var offering = $scope.offering;
-
-      offering.$update(function () {
-        $location.path('offerings/' + offering._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
     // Find a list of Offerings
     $scope.find = function () {
-      $scope.offerings = Offerings.query();
+      $scope.offerings = Offerings.query({
+      }, function () {
+        $scope.offerings.forEach(function(offering) {
+          offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+        });
+      });
     };
 
     // Find existing Offering
     $scope.findOne = function () {
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
+      }, function () {
+        $scope.offering.category = convertEnglishCategory($scope.offering.category, $rootScope.currentLanguage, $scope);
       });
     };
   }

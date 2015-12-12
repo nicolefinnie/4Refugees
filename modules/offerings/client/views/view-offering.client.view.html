@@ -4,14 +4,15 @@
   </div>
   <div class="pull-right" ng-show="authentication.user._id == offering.user._id">
     <a class="waves-effect waves-light btn" ui-sref="offerings.edit({offeringId: offering._id})">
-      <i class="material-icons right ">mode_edit</i> Edit </a>
+      <i class="material-icons right ">mode_edit</i> {{updateButton}}
+    </a>
     <a class="btn waves-effect waves-light red darken-1" ng-click="remove();">
-      <i class="material-icons right ">delete</i> Delete
+      <i class="material-icons right ">delete</i> {{deleteButton}}
     </a>
   </div>
   <div class="pull-right" ng-show="authentication.user._id != offering.user._id">
     <a class="waves-effect waves-light btn" ui-sref="postings.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
-      <i class="material-icons right ">email</i> Contact
+      <i class="material-icons right ">email</i> {{contact}}
     </a>
   </div>
   <small>
