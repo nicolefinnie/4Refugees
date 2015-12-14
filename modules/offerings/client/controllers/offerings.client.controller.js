@@ -101,13 +101,10 @@ var DELETE_AR = 'حذف';
 var CONTACT_AR = 'اتصال';
 
 
-function geoSetupCityList($scope) {
-  $scope.citylist = [
-    { name: 'Stuttgart', latitude: 2, longitude: 3 },
-    { name: 'Kön', latitude: 2, longitude: 3 },
-    { name: 'Hamburg', latitude: 2, longitude: 3 },
-    { name: 'Berlin', latitude: 2, longitude: 3 },
-  ];
+function geoSetupCityList($scope,$http) {
+  return $http.get('/api/locations',{ cache: true }).then(function(response) {
+    $scope.citylist = response.data;
+  });
 }
 
 // Converts the category selections from the input form into an
@@ -207,10 +204,10 @@ function geoUpdateLocation(position, scope) {
   });
 }
 
-function geoUpdateLocationError(error, scope) {
+function geoUpdateLocationError(error, scope, http) {
   console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
   scope.geoManual = true;
-  geoSetupCityList(scope);
+  geoSetupCityList(scope, http);
   scope.$apply();
 }
 
@@ -218,13 +215,13 @@ function geoUpdateLocationError(error, scope) {
 // location.  If geo-services are not available, allows for fallback of a
 // drop-down list of pre-set cities to choose from with pre-set co-ordinates.
 // TODO: Can this be turned into a service provided by a separate module???
-function geoGetCurrentLocation(navigator, scope) {
+function geoGetCurrentLocation(navigator, scope, http) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       geoUpdateLocation(position, scope);
     },
     function errorCallback(error) {
-      geoUpdateLocationError(error, scope);
+      geoUpdateLocationError(error, scope, http);
     },
       {
         // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
@@ -403,14 +400,14 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
   }
 }
 
-angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $rootScope, $stateParams, $location, $http, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
     setCommonAttributes($scope, $rootScope);
     setSearchOrAddOrEdit($scope, $rootScope, 'search');
     
-    geoGetCurrentLocation(navigator, $scope);
+    geoGetCurrentLocation(navigator, $scope, $http);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -466,8 +463,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 ]);
 
 //Edit controller only available for authenticated users
-angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket) {
 
     setCommonAttributes($scope, $rootScope);
     setSearchOrAddOrEdit($scope, $rootScope, 'edit');
@@ -482,7 +479,7 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
     
     $scope.authentication = Authentication;
  
-    geoGetCurrentLocation(navigator, $scope);
+    geoGetCurrentLocation(navigator, $scope, $http);
 
     // Update existing Offering
     $scope.update = function (isValid) {
@@ -535,14 +532,14 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
 ]);
 
 //Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
-  function ($scope, $rootScope, $stateParams, $location, Authentication, Offerings, Socket) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
 
     setCommonAttributes($scope, $rootScope);
     setSearchOrAddOrEdit($scope, $rootScope, 'add');
 
-    geoGetCurrentLocation(navigator, $scope);
+    geoGetCurrentLocation(navigator, $scope, $http);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {

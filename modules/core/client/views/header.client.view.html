@@ -80,7 +80,10 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 <a ui-sref="chat"><i class="right large material-icons">chat</i>{{chat}}</a>
             </li>
             <li>
-                <a ui-sref="postings.list"><i class="right large material-icons">email</i>{{showAllMails}}</a>
+                <a ui-sref="postings.list">
+                  <i class="right large material-icons" ng-if="!hasPostingBadge">email</i>
+                  <i class="right large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>{{showAllMails}}
+                </a>
 
             </li>
 <!--
