@@ -162,6 +162,14 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       });
     }
 
+    $scope.checkAdminRole = function() {
+      if (Authentication) {
+        if (Authentication.user) {
+          return (Authentication.user.roles.indexOf('admin') > -1);
+        }
+      }
+      return false;
+    };
         
     // Toggle the menu items
     $scope.isCollapsed = false;
