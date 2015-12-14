@@ -77,8 +77,13 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <!-- InMail dropdown TODO admin would have more submenu items -->
         <ul class="right hide-on-med-and-down" ng-show="authentication.user">
             <li>
-                <a ui-sref="chat">{{chat}}</a>
+                <a ui-sref="chat"><i class="right large material-icons">chat</i>{{chat}}</a>
             </li>
+            <li>
+                <a ui-sref="postings.list"><i class="right large material-icons">email</i>{{showAllMails}}</a>
+
+            </li>
+<!--
             <li>
                 <a class="dropdown-button" href="#" data-activates="dropdownInMail" dropdown>
                 {{inMail}}
@@ -92,6 +97,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                     </li>
                 </ul>
             </li>
+-->
         </ul>
       
         <!-- TODO for translation's sake, we should use static menu- Menu Service/dynamically added menu items for authenticated users -->

@@ -1,21 +1,67 @@
-<section>
+<section ng-controller="UserListController">
   <div class="page-header">
     <div class="row">
       <div class="col-md-4">
-        <h1>Users</h1>
+        <h5>Users Page: {{currentPage}}</h5>
       </div>
       <div class="col-md-4" style="margin-top: 2em">
         <input class="form-control col-md-4" type="text" ng-model="search" placeholder="Search" ng-change="figureOutItemsToDisplay()" />
       </div>
     </div>
   </div>
+<!-- 
   <div class="list-group">
     <a ng-repeat="user in pagedItems" ui-sref="admin.user({userId: user._id})" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="user.username"></h4>
       <p class="list-group-item-text pull-right small" ng-bind="user.roles"></p>
       <p class="list-group-item-text" ng-bind="user.email"></p>
+      <a href="#!" ng-click="sendMail(user)" class="modal-action waves-effect waves-green">Send mail to {{user.username}}</a>
     </a>
   </div>
+-->
+  <div>
+    <table>
+      <tr dir-paginate="user in users | itemsPerPage: usersPerPage" total-items="totalUsers" current-page="pagination.current">
+        <td>
+          <a ui-sref="admin.user({userId: user._id})">{{user.username }}
+       </td>
+        <td>{{user.roles}}</td>
+        <td>
+          <a href="#!" ng-click="sendMail(user)" class="modal-action waves-effect waves-green">Send mail to {{user.username}}</a>
+        </td>
+      </tr>
+    </table>
 
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <ul>
+        <li dir-paginate="meal in meals | filter:q | itemsPerPage: pageSize" current-page="currentPage">{{ meal }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="modalSendMail" class="modal" ng-controller="NewPostingsController">
+    <div class="modal-content">
+      <form name="postingForm" class="my-form" novalidate>
+        <div class="row">
+          <p>Send mail to {{user.displayName}}</p>
+          <input id="titleid" name="title" ng-model="title">
+          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="Content" cols="30" rows="10" required>Hier</textarea>
+          <hr>
+          <!-- <label>Content</label> {{posting.content}} <br/> -->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" ng-click="create(postingForm, user)" class="modall-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
+
+
+<!--
   <pagination boundary-links="true" max-size="8" items-per-page="itemsPerPage" total-items="filterLength" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+-->
 </section>

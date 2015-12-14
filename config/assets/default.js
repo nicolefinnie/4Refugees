@@ -21,7 +21,8 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         'public/lib/materialize/dist/js/materialize.js',
         'public/lib/angular-materialize/src/angular-materialize.js',
-        'public/lib/ng-tags-input/ng-tags-input.js'
+        'public/lib/ng-tags-input/ng-tags-input.js',
+        'public/lib/angularUtils-pagination/dirPagination.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },

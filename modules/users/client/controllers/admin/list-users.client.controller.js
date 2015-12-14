@@ -12,6 +12,9 @@ angular.module('users.admin').controller('UserListController', ['$scope', '$filt
       $scope.itemsPerPage = 15;
       $scope.currentPage = 1;
       $scope.figureOutItemsToDisplay();
+      $scope.pagination = {
+        current: 1
+      };
     };
 
     $scope.figureOutItemsToDisplay = function () {
@@ -26,6 +29,17 @@ angular.module('users.admin').controller('UserListController', ['$scope', '$filt
 
     $scope.pageChanged = function () {
       $scope.figureOutItemsToDisplay();
+    };
+
+
+    $scope.pageChangeHandler = function(num) {
+      console.log('meals page changed to ' + num);
+    };
+
+    // Send mail to user
+    $scope.sendMail = function (user) {
+      $scope.user = user;
+      $('#modalSendMail').openModal();
     };
   }
 ]);
