@@ -101,11 +101,6 @@ var DELETE_AR = 'حذف';
 var CONTACT_AR = 'اتصال';
 
 
-function geoSetupCityList($scope,$http) {
-  return $http.get('/api/locations',{ cache: true }).then(function(response) {
-    $scope.citylist = response.data;
-  });
-}
 
 // Converts the category selections from the input form into an
 // array of category strings
@@ -204,10 +199,10 @@ function geoUpdateLocation(position, scope) {
   });
 }
 
-function geoUpdateLocationError(error, scope, http) {
+function geoUpdateLocationError(error, scope) {
   console.log('Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
   scope.geoManual = true;
-  geoSetupCityList(scope, http);
+  scope.geoSetupCityList();
   scope.$apply();
 }
 
@@ -215,13 +210,13 @@ function geoUpdateLocationError(error, scope, http) {
 // location.  If geo-services are not available, allows for fallback of a
 // drop-down list of pre-set cities to choose from with pre-set co-ordinates.
 // TODO: Can this be turned into a service provided by a separate module???
-function geoGetCurrentLocation(navigator, scope, http) {
+function geoGetCurrentLocation(navigator, scope) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       geoUpdateLocation(position, scope);
     },
     function errorCallback(error) {
-      geoUpdateLocationError(error, scope, http);
+      geoUpdateLocationError(error, scope);
     },
       {
         // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
@@ -266,7 +261,7 @@ function setCommonAttributes($scope, $rootScope) {
     $scope.description = DESCRIPTION_EN;
     $scope.city = CITY_EN;
     $scope.searchRadius = SEARCH_RADIUS_EN;
-    $scope.when = WHEN_EN;
+    //$scope.when = WHEN_EN;
     
     $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_EN;
     $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_EN;
@@ -293,7 +288,7 @@ function setCommonAttributes($scope, $rootScope) {
     $scope.description = DESCRIPTION_DE;
     $scope.city = CITY_DE;
     $scope.searchRadius = SEARCH_RADIUS_DE;
-    $scope.when = WHEN_DE;
+    //$scope.when = WHEN_DE;
     
     $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_DE;
     $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_DE;
@@ -320,7 +315,7 @@ function setCommonAttributes($scope, $rootScope) {
     $scope.description = DESCRIPTION_AR;
     $scope.city = CITY_AR;
     $scope.searchRadius = SEARCH_RADIUS_AR;
-    $scope.when = WHEN_AR;
+    //$scope.when = WHEN_AR;
     
     $scope.offerOthersHelpText = OFFER_OTHERS_HELP_TEXT_AR;
     $scope.tellOthersNeedsText = TELL_OTHERS_NEEDS_TEXT_AR;
@@ -401,13 +396,13 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
 }
 
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
-  function ($scope, $rootScope, $stateParams, $location, $http, Authentication, Offerings, Socket) {
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
     
     setCommonAttributes($scope, $rootScope);
     setSearchOrAddOrEdit($scope, $rootScope, 'search');
     
-    geoGetCurrentLocation(navigator, $scope, $http);
+    geoGetCurrentLocation(navigator, $scope);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -459,6 +454,11 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       });
     };
 
+    $scope.geoSetupCityList = function() {
+      return $http.get('/api/locations',{ cache: true }).then(function(response) {
+        $scope.citylist = response.data;
+      });
+    };
   }
 ]);
 
@@ -479,7 +479,7 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
     
     $scope.authentication = Authentication;
  
-    geoGetCurrentLocation(navigator, $scope, $http);
+    geoGetCurrentLocation(navigator, $scope);
 
     // Update existing Offering
     $scope.update = function (isValid) {
@@ -528,6 +528,11 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
       });
     };
 
+    $scope.geoSetupCityList = function() {
+      return $http.get('/api/locations',{ cache: true }).then(function(response) {
+        $scope.citylist = response.data;
+      });
+    };
   }
 ]);
 
@@ -539,7 +544,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     setCommonAttributes($scope, $rootScope);
     setSearchOrAddOrEdit($scope, $rootScope, 'add');
 
-    geoGetCurrentLocation(navigator, $scope, $http);
+    geoGetCurrentLocation(navigator, $scope);
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -636,6 +641,12 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         offeringId: $stateParams.offeringId
       }, function () {
         $scope.offering.category = convertEnglishCategory($scope.offering.category, $rootScope.currentLanguage, $scope);
+      });
+    };
+
+    $scope.geoSetupCityList = function() {
+      return $http.get('/api/locations',{ cache: true }).then(function(response) {
+        $scope.citylist = response.data;
       });
     };
   }
