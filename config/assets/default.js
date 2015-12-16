@@ -4,9 +4,9 @@ module.exports = {
   client: {
     lib: {
       css: [
-        'public/lib/materialize/dist/css/materialize.css',
         'public/lib/angular-materialize/css/style.css',
-        'public/lib/ng-tags-input/ng-tags-input.css'
+        'public/lib/ng-tags-input/ng-tags-input.css',
+        'public/lib/materialize/dist/css/materialize.css'
       ],
       js: [
         'public/lib/jquery/dist/jquery.js',
