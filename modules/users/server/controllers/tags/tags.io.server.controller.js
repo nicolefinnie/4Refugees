@@ -13,8 +13,20 @@ var _ = require('lodash'),
   Tags = mongoose.model('Tags');
 
 /**
- * Send tags
+ * Get tags from DB
  */
 exports.get = function (req, res) {
-  res.json(req.tags || null);
+  console.log("DEBUG API '/api/tags' was called");
+  res.json(Tags || null);
+  console.log("DEBUG : return is : " + res.json);
+  console.log("DEBUG : return is : " + req.tags);
 };
+
+exports.put = function (req, res) {
+  Tags.save(function(err){
+    if(err)
+      console.log(err);
+    else
+      console.log(Tags);
+  });
+}

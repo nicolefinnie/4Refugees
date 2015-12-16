@@ -7,4 +7,10 @@ angular.module('core').factory('Tags', ['$resource',
       method: 'GET'
     });
   }
+
+  function ($resource) {
+    return $resource('api/tags/save', {
+      method: 'PUT'
+    });
+  }
 ]);
