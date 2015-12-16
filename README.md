@@ -238,57 +238,56 @@ your changes to Bluemix.
 
 ### Setting up your local development environment in a docker container
 
-#Start your docker container (as local root)
-# download latest image - here ubuntu:wily - and run /bin/bash interactively
-docker run -i -t --net=host ubuntu:15.10 /bin/bash
+Start your docker container (as local root) with the latest ubuntu image - I've been using ubuntu:wily and run /bin/bash interactively with
+`docker run -i -t --net=host ubuntu:15.10 /bin/bash`
 
 
-# now you're 'root' in the container - run (and respond 'Y' to every question)
-apt-get updatej
-apt-get upgrade
-apt-get install nodejs Dialog git ssh passwd gitk vim lsof rsyslog couchdb x11-apps npm nodejs-legacy ruby sass
+now you're 'root' in the container - in this environment run installation (and respond 'Y' to questions)
+`apt-get update`
+`apt-get upgrade`
+`apt-get install nodejs Dialog git ssh passwd gitk vim lsof rsyslog couchdb x11-apps npm nodejs-legacy ruby sass`
 
-mkdir /home/<User Name>
-chown <User Name> /home/<User Name>
-useradd <User Name> -d /home/<User Name> -p <Password> -s /bin/bash
+create a non root user
+`mkdir /home/<User Name>`
+`chown <User Name> /home/<User Name>`
+`useradd <User Name> -d /home/<User Name> -p <Password> -s /bin/bash`
 
-# edit sshd config, /etc/ssh/sshd_config
-comment out #UsePAM
+and edit /etc/ssh/sshd_config and comment out `UsePAM` to allow non root access to the container without setting up PAM in the container
 
-# start sshd
-/usr/sbin/sshd
+then start sshd with `/usr/sbin/sshd`
 
-#edit /etc/init.d/couchdb to add the following two lines
-COUCHDB_USER=couchdb
-COUCHDB_OPTIONS="-e /var/log/couchdb/couchdb.stderr -o /var/log/couchdb/couchdb.stdout"
-
-#start couchdb
-service start couchdb
-
-#install grunt-cli
-npm install grunt-cli
-
-===== as local root - outside of the container in a separate shell ====
-#find the docker container id used to commit your container
-docker ps
-
-#commit your container in order not to lose your work
-docker commit <docker container id> wily:node
-
-=======
+last step as root is to install the grunt-cli used for dev/test with `npm install grunt-cli`
 
 
-# as user !!
+Now save your work as local root - outside of the container in a separate shell
+find the docker container id used to commit your container with `docker ps`
 
-#clone the repository
-git clone https://hub.jazz.net/git/nicolefinnie/4Refugees
+and commit your container to disk with `docker commit <docker container id> wily:node` where <docker container id> is the result of the docker ps command
 
+Now logon to the container as user with `ssh <User Name>@localhost`
 
-#cd into directory and run npm install to install supporting modules
+and clone the repository
+`git clone https://hub.jazz.net/git/nicolefinnie/4Refugees`
 
-cp 4Refugees
-npm install
-grunt
+then cd into 4Refugees directory and run npm install to install supporting modules
+
+`cp 4Refugees;npm install`
+
+then edit ./config/env/local.js to configure mongodb access - example
+`'use strict';
+
+module.exports = {
+  db: {
+    uri: 'mongodb://172.17.93.10:3661/mean-dev',
+    options: {
+      user: '',
+      pass: ''
+    }
+  }
+};
+`
+
+now run `grunt` to start up the server. Done.
 
 
 ## Credits
