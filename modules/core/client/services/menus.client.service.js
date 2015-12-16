@@ -166,7 +166,7 @@ angular.module('core').service('Menus', [
       return this.menus[menuId];
     };
 
-    //Adding the topbar menu
+    //Adding the topbar menu - NF: only for dynamically added menu items that are not required dynamic translation
     this.addMenu('topbar', {
       roles: ['*']
     });

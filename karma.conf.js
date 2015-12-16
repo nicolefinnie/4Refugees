@@ -39,7 +39,7 @@ module.exports = function (karmaConfig) {
     },
 
     // List of files / patterns to load in the browser
-    files: _.union(defaultAssets.client.lib.js, defaultAssets.client.lib.tests, defaultAssets.client.js, testAssets.tests.client, defaultAssets.client.views),
+    files: _.union(['node_modules/phantomjs-polyfill/bind-polyfill.js'],defaultAssets.client.lib.js, defaultAssets.client.lib.tests, defaultAssets.client.js, testAssets.tests.client, defaultAssets.client.views),
 
     // Test results reporter to use
     // Possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -82,6 +82,7 @@ module.exports = function (karmaConfig) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: ['PhantomJS'],
+    //browsers: ['Firefox'],
 
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,

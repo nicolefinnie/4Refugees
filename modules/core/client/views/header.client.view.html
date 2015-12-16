@@ -5,85 +5,161 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <div ng-controller="HeaderController">
   <nav class="ibm-header">
-    <div class="nav-wrapper container ">
+    <div class="nav-wrapper container">
       <span>
         <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
       </span>
     
       <!-- Dropdown container -->
-      <div class="ibm-dropdown-container">
-        
+      <div class="ibm-dropdown-container" >
+
         <!-- Dropdown for unauthenticated users -->
-        <ul class="right hide-on-med-and-down" ng-hide="authentication.user">
+        <ul class="right hide-on-med-and-down"  ng-hide="authentication.user">
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signin">Sign In</a>
+                <a ui-sref="authentication.signin">{{signIn}}</a>
             </li>
             <li ui-sref-active="active">
-            <a ui-sref="authentication.signup">Register</a>
+                <a ui-sref="authentication.signup">{{register}}</a>
             </li>
-            <li class="divider-vertical"></li>
         </ul>
 
         <!-- Dropdown for authenticated users -->
         <ul class="right hide-on-med-and-down" ng-show="authentication.user">
             <li>
-                <a class="dropdown-button badge" href="#" data-activates="dropdownAuth" dropdown>
+                <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>
                 <img ng-src="{{authentication.user.profileImageURL}}" class="header-profile-image" />
                 {{authentication.user.displayName}}
                 <i class="material-icons right">arrow_drop_down</i>
                 </a>
-                <ul id="dropdownAuth" class="dropdown-content">
+                <ul id="dropdownAuth" class="dropdown-content ibm-dropdown-component">
                     <li ui-sref-active="active">
-                    <a ui-sref="offerings.listMine">List My Offerings</a>
+                    <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
                     </li>
                     <li class="divider"></li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.profile" font-size="1.0rem">Edit Profile</a>
+                    <a ui-sref="settings.profile" font-size="1.0rem">{{editProfile}}</a>
                     </li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.picture">Change Profile Picture</a>
+                    <a ui-sref="settings.picture">{{changeProfilePicture}}</a>
                     </li>
                     <li ui-sref-active="active" ng-show="authentication.user.provider === 'local'">
-                    <a ui-sref="settings.password">Change Password</a>
+                    <a ui-sref="settings.password">{{changePassword}}</a>
                     </li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.accounts">Manage Social Accounts</a>
+                    <a ui-sref="settings.accounts">{{manageSocialAccounts}}</a>
                     </li>
                     <li class="divider"></li>
                     <li>
-                    <a href="/api/auth/signout" target="_self">Signout</a>
+                    <a href="/api/auth/signout" target="_self">{{signOut}}</a>
                     </li>
                 </ul>
             </li>
         </ul>
 
-        <!-- TODO merge into the single drop-down - Dropdown InMail for authenticated users -->
-        <ul class="right hide-on-med-and-down" ng-if="menu.shouldRender(authentication.user);">
+        <!-- Dropdown for admins -->
+        <ul class="right hide-on-med-and-down" ng-show="checkAdminRole()">
+            <li>
+                <a class="dropdown-button" href="#" data-activates="dropdownAdmin" dropdown>
+                <i class="large material-icons">supervisor_account arrow_drop_down</i>
+                </a>
+                <ul id="dropdownAdmin" class="dropdown-content ibm-dropdown-component">
+                    <li ui-sref-active="active">
+                    <a ui-sref="admin.users">Manage Users</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="postings.createadmin">Send Mail to User</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- InMail dropdown TODO admin would have more submenu items -->
+        <ul class="right hide-on-med-and-down" ng-show="authentication.user">
+            <li>
+                <a ui-sref="chat"><i class="right large material-icons">chat</i>{{chat}}</a>
+            </li>
+            <li>
+                <a ui-sref="postings.list">
+                  <i class="right large material-icons" ng-if="!hasPostingBadge">email</i>
+                  <i class="right large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>{{showAllMails}}
+                </a>
+
+            </li>
+<!--
+            <li>
+                <a class="dropdown-button" href="#" data-activates="dropdownInMail" dropdown>
+                {{inMail}}
+                </a>
+                <ul id="dropdownInMail" class="dropdown-content ibm-dropdown-component">
+                    <li ui-sref-active="active">
+                    <a ui-sref="postings.listnew">{{showNewMails}}</a>
+                    </li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="postings.list">{{showAllMails}}</a>
+                    </li>
+                </ul>
+            </li>
+-->
+        </ul>
+      
+        <!-- TODO for translation's sake, we should use static menu- Menu Service/dynamically added menu items for authenticated users -->
+        <ul class="right hide-on-med-and-down " ng-if="menu.shouldRender(authentication.user);">
             <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
             <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
             {{::item.title}}&nbsp;
-            <!-- defect 4263 this postingBadge accidentally creates a space between header and content -->
               <span class="new badge" ng-if="hasPostingBadge"></span>
             </a>
-            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content">
+            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content ibm-dropdown-component">
                 <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
                 <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
                 </li>
             </ul>
+            <!-- 
             <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>
             {{::item.title}}&nbsp;
             </a>
-            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content">
+            -->
+            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content ibm-dropdown-component">
                 <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
                 <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
                 </li>
             </ul>
             <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
             </li>
-        </ul>
+        </ul>            
+
+
+        <ul class="right hide-on-med-and-down">
+          <li>
+            <a class="dropdown-button" href="#" data-activates="dropdownLanguage" dropdown>
+                    {{currentLanguageShownInHeader}}
+                <i class="material-icons right">language</i>
+                </a>
+                
+                <ul id="dropdownLanguage" class="dropdown-content ibm-dropdown-component" >
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('ar')" >العربية
+                    <i class="material-icons right" ng-show="arabicSelected">done</i>
+                    </a>
+                    </li>
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('en')">English
+                    <i class="material-icons right" ng-show="englishSelected">done</i>
+                    </a>
+                    </li>
+                    <li ui-sref-active="active">
+                    <a ng-click="changeLanguage('de')">Deutsch
+                    <i class="material-icons right" ng-show="germanSelected">done</i>
+                    </a>
+                    </li>
+                </ul>
+            </li>        
+        </ul>     
       </div> <!-- end of dropdown-container for designer's look -->
     </div>
   </nav>
 </div>
 
 <section ng-controller="HeaderNewOfferingsController"></section>
+

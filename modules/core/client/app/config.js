@@ -5,7 +5,7 @@ var ApplicationConfiguration = (function () {
   // Init module configuration options
   var applicationModuleName = 'mean';
   // replaced ui.bootstrap with ui.materialize
-  var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ui.materialize', 'ui.router', 'ui.utils', 'angularFileUpload', 'ngTagsInput'];
+  var applicationModuleVendorDependencies = ['ngResource', 'ngAnimate', 'ngMessages', 'ui.materialize', 'ui.router', 'ui.utils', 'angularFileUpload', 'ngTagsInput', 'angularUtils.directives.dirPagination'];
 
   // Add a new vertical module
   var registerModule = function (moduleName, dependencies) {

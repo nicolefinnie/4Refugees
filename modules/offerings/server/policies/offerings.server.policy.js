@@ -49,7 +49,12 @@ exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an offering is being processed and the current user created it then allow any manipulation
-  if (req.offering && req.user && req.offering.user.id === req.user.id) {
+  // Note - use toString() instead of direct '===' comparison, since the
+  // offering coming in may be filtered/reconstructed, and no longer the
+  // native mongodb 'ObjectId' type.
+  if (req.offering && req.offering.user && req.offering.user._id &&
+      req.user && req.user._id &&
+      req.offering.user._id.toString() === req.user._id.toString()) {
     return next();
   }
 

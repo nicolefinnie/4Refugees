@@ -47,7 +47,25 @@ var getGlobbedPaths = function (globPatterns, excludes) {
 
   return output;
 };
-
+/**
+ * Get Bluemix Service Credentials
+ */
+var getServiceCreds = function(name) {
+  if (process.env.VCAP_SERVICES) {
+    var services = JSON.parse(process.env.VCAP_SERVICES);
+    for (var service_name in services) {
+      if (service_name.indexOf(name) === 0) {
+        var service = services[service_name][0];
+        return {
+          url: service.credentials.url,
+          username: service.credentials.username,
+          password: service.credentials.password
+        };
+      }
+    }
+  }
+  return {};
+};
 /**
  * Validate NODE_ENV existence
  */
@@ -209,7 +227,8 @@ var initGlobalConfig = function () {
   // Expose configuration utilities
   config.utils = {
     getGlobbedPaths: getGlobbedPaths,
-    validateSessionSecret: validateSessionSecret
+    validateSessionSecret: validateSessionSecret,
+    getServiceCreds: getServiceCreds,
   };
 
   return config;

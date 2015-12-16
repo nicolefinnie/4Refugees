@@ -3,11 +3,15 @@ declared-services:
   mean-mongo:
     label: mongodb-2.4
     plan: 100
+  language_translation:
+    label: language_translation
+    plan: standard   
 applications:
 - name: 4Refugees
   host: 4Refugees
   memory: 512M
   services:
     - mean-mongo
+    - language_translation	
   env:
     NODE_ENV: cloud-foundry

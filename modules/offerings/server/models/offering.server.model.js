@@ -30,10 +30,17 @@ var OfferingSchema = new Schema({
   },
   descriptionLanguage: {
     type: String,
-    default: 'English',
+    default: 'en',
     trim: true
   },
   descriptionEnglish: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  // We only support 3 languages, 'descriptionOther' will store the non-English and
+  // non-descriptionLanguage version.
+  descriptionOther: {
     type: String,
     default: '',
     trim: true,
@@ -44,6 +51,11 @@ var OfferingSchema = new Schema({
     trim: true
   },
   descriptionDetailsEnglish: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  descriptionDetailsOther: {
     type: String,
     default: '',
     trim: true

@@ -236,6 +236,60 @@ in Bluemix complete with a pre-configured build and deploy pipeline.  Just clone
 commit them back.  Once your changes are committed, the build and deploy pipeline will run automatically deploying
 your changes to Bluemix.
 
+### Setting up your local development environment in a docker container
+
+Start your docker container (as local root) with the latest ubuntu image - I've been using ubuntu:wily and run /bin/bash interactively with
+`docker run -i -t --net=host ubuntu:15.10 /bin/bash`
+
+
+now you're 'root' in the container - in this environment run installation (and respond 'Y' to questions)
+`apt-get update`
+`apt-get upgrade`
+`apt-get install nodejs Dialog git ssh passwd gitk vim lsof rsyslog couchdb x11-apps npm nodejs-legacy ruby sass`
+
+create a non root user
+`mkdir /home/<User Name>`
+`chown <User Name> /home/<User Name>`
+`useradd <User Name> -d /home/<User Name> -p <Password> -s /bin/bash`
+
+and edit /etc/ssh/sshd_config and comment out `UsePAM` to allow non root access to the container without setting up PAM in the container
+
+then start sshd with `/usr/sbin/sshd`
+
+last step as root is to install the grunt-cli used for dev/test with `npm install grunt-cli`
+
+
+Now save your work as local root - outside of the container in a separate shell
+find the docker container id used to commit your container with `docker ps`
+
+and commit your container to disk with `docker commit <docker container id> wily:node` where <docker container id> is the result of the docker ps command
+
+Now logon to the container as user with `ssh <User Name>@localhost`
+
+and clone the repository
+`git clone https://hub.jazz.net/git/nicolefinnie/4Refugees`
+
+then cd into 4Refugees directory and run npm install to install supporting modules
+
+`cp 4Refugees;npm install`
+
+then edit ./config/env/local.js to configure mongodb access - example
+`'use strict';
+
+module.exports = {
+  db: {
+    uri: 'mongodb://172.17.93.10:3661/mean-dev',
+    options: {
+      user: '',
+      pass: ''
+    }
+  }
+};
+`
+
+now run `grunt` to start up the server. Done.
+
+
 ## Credits
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/)
 The MEAN name was coined by [Valeri Karpov](http://blog.mongodb.org/post/49262866911/the-mean-stack-mongodb-expressjs-angularjs-and)
