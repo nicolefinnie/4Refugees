@@ -16,10 +16,10 @@ var _ = require('lodash'),
  * Get tags from DB
  */
 exports.get = function (req, res) {
-  console.log("DEBUG API '/api/tags' was called");
+  console.log('DEBUG API \"/api/tags\" was called');
   res.json(Tags || null);
-  console.log("DEBUG : return is : " + res.json);
-  console.log("DEBUG : return is : " + req.tags);
+  console.log('DEBUG : return is : ' + res.json);
+  console.log('DEBUG : return is : ' + req.tags);
 };
 
 exports.put = function (req, res) {
@@ -29,4 +29,4 @@ exports.put = function (req, res) {
     else
       console.log(Tags);
   });
-}
+};
