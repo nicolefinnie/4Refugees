@@ -54,23 +54,19 @@ var path = require('path'),
 
 
 exports.listlocations = function (req, res) {
-  var Query = (req.user) ? { userId: req.user._id } : {};
-  console.log('RAW RESULTS: ');
-
-  // restrict to german places for now
-  Location.find({ 'countrycode':'DE' }, {}, { 'sort' : 'name' }, function(err,locations) {
-    if (err | !Object.keys(locations).length) {
-      var locs = filesys.readFileSync('./scripts/cities15000.json');
-      var jsonlocs = JSON.parse(locs.replace(/\bNaN\b/g, "null"));
-      Location.insertMany(jsonlocs);
-      console.log('Importing city data');
+  filesys.readFile('./scripts/cities_de.json', 'utf8', function (err, data) {
+    if (err) {
+      console.log('cities import did not work');
       return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-    } else {
-      //console.log('RAW RESULTS: ' + JSON.stringify(locations));
-      // restrict results to only public-viewable fields
-      res.json(locations);
+    }
+    else {
+      res.json(JSON.parse(data));
     }
   });
+};
+
+
+exports.insert = function (req, res) {
 };
 
 exports.create = function (req, res) {
