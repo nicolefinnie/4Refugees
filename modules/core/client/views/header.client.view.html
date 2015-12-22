@@ -5,16 +5,18 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <div ng-controller="HeaderController">
   <nav class="ibm-header">
-    <div class="nav-wrapper container">
-      <span>
-        <a ui-sref="home" class="brand-logo"><img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo left">4Refuge.es</a>
-      </span>
+    <div class="nav-wrapper">
+    <span>
+        <a ui-sref="home" class="ibm-brand-logo" ng-class="{left:!arabicSelected, right:arabicSelected}">
+        <img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo" ng-class="{left:!arabicSelected, right:arabicSelected}">
+        4Refuge.es</a>
+    </span>
     
       <!-- Dropdown container -->
       <div class="ibm-dropdown-container" >
 
         <!-- Dropdown for unauthenticated users -->
-        <ul class="right hide-on-med-and-down"  ng-hide="authentication.user">
+        <ul class="right"  ng-hide="authentication.user">
             <li ui-sref-active="active">
                 <a ui-sref="authentication.signin">{{signIn}}</a>
             </li>
@@ -24,7 +26,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         </ul>
 
         <!-- Dropdown for authenticated users -->
-        <ul class="right hide-on-med-and-down" ng-show="authentication.user">
+        <ul ng-class="{right:!arabicSelected, left:arabicSelected}" ng-show="authentication.user">
             <li>
                 <a class="dropdown-button" href="#" data-activates="dropdownAuth" dropdown>
                 <img ng-src="{{authentication.user.profileImageURL}}" class="header-profile-image" />
@@ -33,12 +35,19 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 </a>
                 <ul id="dropdownAuth" class="dropdown-content ibm-dropdown-component">
                     <li ui-sref-active="active">
-                    <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
+                    <a ui-sref="postings.list">
+                        <i class="large material-icons" ng-if="!hasPostingBadge">email</i>
+                        <i class="large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>
+                    </a>
                     </li>
                     <li class="divider"></li>
                     <li ui-sref-active="active">
-                    <a ui-sref="settings.profile" font-size="1.0rem">{{editProfile}}</a>
+                    <a ui-sref="settings.profile" font-size="1.0rem">{{profile}}</a>
                     </li>
+                    <li ui-sref-active="active">
+                    <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
+                    </li>
+                    <!-- 
                     <li ui-sref-active="active">
                     <a ui-sref="settings.picture">{{changeProfilePicture}}</a>
                     </li>
@@ -48,6 +57,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                     <li ui-sref-active="active">
                     <a ui-sref="settings.accounts">{{manageSocialAccounts}}</a>
                     </li>
+                    -->
                     <li class="divider"></li>
                     <li>
                     <a href="/api/auth/signout" target="_self">{{signOut}}</a>
@@ -57,7 +67,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         </ul>
 
         <!-- Dropdown for admins -->
-        <ul class="right hide-on-med-and-down" ng-show="checkAdminRole()">
+        <ul class="right" ng-show="checkAdminRole()">
             <li>
                 <a class="dropdown-button" href="#" data-activates="dropdownAdmin" dropdown>
                 <i class="large material-icons">supervisor_account arrow_drop_down</i>
@@ -74,63 +84,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </li>
         </ul>
 
-        <!-- InMail dropdown TODO admin would have more submenu items -->
-        <ul class="right hide-on-med-and-down" ng-show="authentication.user">
-            <li>
-                <a ui-sref="chat"><i class="right large material-icons">chat</i>{{chat}}</a>
-            </li>
-            <li>
-                <a ui-sref="postings.list">
-                  <i class="right large material-icons" ng-if="!hasPostingBadge">email</i>
-                  <i class="right large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>{{showAllMails}}
-                </a>
-
-            </li>
-<!--
-            <li>
-                <a class="dropdown-button" href="#" data-activates="dropdownInMail" dropdown>
-                {{inMail}}
-                </a>
-                <ul id="dropdownInMail" class="dropdown-content ibm-dropdown-component">
-                    <li ui-sref-active="active">
-                    <a ui-sref="postings.listnew">{{showNewMails}}</a>
-                    </li>
-                    <li ui-sref-active="active">
-                    <a ui-sref="postings.list">{{showAllMails}}</a>
-                    </li>
-                </ul>
-            </li>
--->
-        </ul>
-      
-        <!-- TODO for translation's sake, we should use static menu- Menu Service/dynamically added menu items for authenticated users -->
-        <ul class="right hide-on-med-and-down " ng-if="menu.shouldRender(authentication.user);">
-            <li ng-repeat="item in menu.items | orderBy: 'position'" ng-if="item.shouldRender(authentication.user);" ng-switch="item.type">
-            <a ng-switch-when="inmail" class="dropdown-button" href="#" data-activates="Postings" dropdown>
-            {{::item.title}}&nbsp;
-              <span class="new badge" ng-if="hasPostingBadge"></span>
-            </a>
-            <ul ng-switch-when="inmail" id="Postings" class="dropdown-content ibm-dropdown-component">
-                <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
-                <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
-                </li>
-            </ul>
-            <!-- 
-            <a ng-switch-when="dropdown" class="dropdown-button" href="#" data-activates="{{item.title}}" dropdown>
-            {{::item.title}}&nbsp;
-            </a>
-            -->
-            <ul ng-switch-when="dropdown" id="{{item.title}}" class="dropdown-content ibm-dropdown-component">
-                <li ng-repeat="subitem in item.items | orderBy: 'position'" ng-if="subitem.shouldRender(authentication.user);" ui-sref-active="active">
-                <a ui-sref="{{subitem.state}}" ng-bind="subitem.title"></a>
-                </li>
-            </ul>
-            <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
-            </li>
-        </ul>            
-
-
-        <ul class="right hide-on-med-and-down">
+        <ul ng-class="{right:!arabicSelected, left:arabicSelected}">
           <li>
             <a class="dropdown-button" href="#" data-activates="dropdownLanguage" dropdown>
                     {{currentLanguageShownInHeader}}
@@ -155,7 +109,8 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                     </li>
                 </ul>
             </li>        
-        </ul>     
+        </ul>  
+        
       </div> <!-- end of dropdown-container for designer's look -->
     </div>
   </nav>

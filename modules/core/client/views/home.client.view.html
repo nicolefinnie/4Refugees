@@ -1,20 +1,20 @@
 <section ng-controller="HomeController">
-  <div class="container ibm-cover-container">
+  <div class="ibm-cover-container">
       <img src="modules/core/client/img/startpage/cover.jpg">
   </div>
-  <div class="container">
-    <div class="col s12 m4 ibm-welcome-bar">
-    <div class="col s4 m2">
-        <img src="modules/core/client/img/brand/logo.svg" class="left"/>  
+  <div>
+    <div class="ibm-welcome-bar">
+    <div>
+        <img src="modules/core/client/img/brand/logo.svg" ng-class="{left:!arabicSelected, right:arabicSelected}"/>  
     </div>
-    <div class="col s8 m2">
+    <div>
       <h1>{{headline}}</h1>
       <h2>{{subheadline}}</h2>
-    </div>
+    </div> 
     </div>
     <div class="row">
         <div class="col s12 m4">
-          <div class="container ibm-help-bar">
+          <div class="ibm-help-bar">
             <h1 class="center">
               <svg version="1.1" id="help_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col s12 m4">
-          <div class="container ibm-help-bar">
+          <div class="ibm-help-bar">
             <h1 class="center">
               <svg version="1.1" id="location_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
@@ -65,7 +65,7 @@
         </div>
 
         <div class="col s12 m4">
-          <div class="container ibm-help-bar">
+          <div class="ibm-help-bar">
             <h1 class="center">
               <svg version="1.1" id="group_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">

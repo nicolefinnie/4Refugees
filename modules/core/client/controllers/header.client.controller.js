@@ -9,12 +9,10 @@ var GERMAN = 'Deutsch';
 var SIGNIN_EN = 'Sign in';
 var REGISTER_EN = 'Register';
 var SIGNOUT_EN = 'Sign out';
-var CHAT_EN = 'Chat';
-var INMAIL_EN = 'InMail';
-var SHOW_NEW_MAILS_EN = 'Show New Mails';
-var SHOW_ALL_MAILS_EN = 'Show All Mails';
 
-var LIST_MY_OFFERINGS_EN = 'List My Offerings';
+
+var LIST_MY_OFFERINGS_EN = 'Offerings';
+var PROFILE_EN = 'Profile';
 var EDIT_PROFILE_EN = 'Edit Profile';
 var CHANGE_PROFILE_PICTURE_EN = 'Change Profile Picture';
 var CHANGE_PASSWORD_EN = 'Change Password';
@@ -24,12 +22,9 @@ var MANAGE_SOCIAL_ACCOUNTS_EN = 'Manage Social Accounts';
 var SIGNIN_DE = 'Anmelden';
 var REGISTER_DE = 'Registieren';
 var SIGNOUT_DE = 'Abmelden';
-var CHAT_DE = 'Chat';
-var INMAIL_DE = 'Post';
-var SHOW_NEW_MAILS_DE = 'Neue Mails anzeigen';
-var SHOW_ALL_MAILS_DE = 'Alle Mails anzeigen';
 
-var LIST_MY_OFFERINGS_DE = 'Meine Angebote Anzeigen';
+var LIST_MY_OFFERINGS_DE = 'Angebote';
+var PROFILE_DE = 'Profil';
 var EDIT_PROFILE_DE = 'Profil Editieren';
 var CHANGE_PROFILE_PICTURE_DE = 'Profilbild Ändern';
 var CHANGE_PASSWORD_DE = 'Passwort Ändern';
@@ -40,13 +35,10 @@ var MANAGE_SOCIAL_ACCOUNTS_DE = 'Sozialkonten verwalten';
 var SIGNIN_AR = 'تسجيل الدخول';
 var REGISTER_AR = 'سجل';
 var SIGNOUT_AR = 'تسجيل الخروج';
-var CHAT_AR = 'دردشة';
-var INMAIL_AR = 'رسائل';
-var SHOW_NEW_MAILS_AR = 'تظهر رسائل جديدة';
-var SHOW_ALL_MAILS_AR = 'عرض كل الرسائل';
 
 
-var LIST_MY_OFFERINGS_AR = 'قائمة العروض بلدي';
+var LIST_MY_OFFERINGS_AR = 'عروض';
+var PROFILE_AR = 'مظهر جانبي';
 var EDIT_PROFILE_AR = 'تعديل الملف الشخصي';
 var CHANGE_PROFILE_PICTURE_AR = 'تغيير الصورة الشخصية';
 var CHANGE_PASSWORD_AR = 'تغيير كلمة المرور';
@@ -59,11 +51,8 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_AR;
     $scope.register = REGISTER_AR;
     $scope.signOut = SIGNOUT_AR;
-    $scope.chat = CHAT_AR;
-    $scope.inMail = INMAIL_AR;
-    $scope.showNewMails = SHOW_NEW_MAILS_AR;
-    $scope.showAllMails = SHOW_ALL_MAILS_AR;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
+    $scope.profile = PROFILE_AR;
     $scope.editProfile = EDIT_PROFILE_AR;
     $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_AR;
     $scope.changePassword = CHANGE_PASSWORD_AR;
@@ -74,11 +63,8 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_EN;
     $scope.register = REGISTER_EN;
     $scope.signOut = SIGNOUT_EN;
-    $scope.chat = CHAT_EN;
-    $scope.inMail = INMAIL_EN;
-    $scope.showNewMails = SHOW_NEW_MAILS_EN;
-    $scope.showAllMails = SHOW_ALL_MAILS_EN;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
+    $scope.profile = PROFILE_EN;
     $scope.editProfile = EDIT_PROFILE_EN;
     $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
     $scope.changePassword = CHANGE_PASSWORD_EN;
@@ -89,11 +75,8 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_DE;
     $scope.register = REGISTER_DE;
     $scope.signOut = SIGNOUT_DE;
-    $scope.chat = CHAT_DE;
-    $scope.inMail = INMAIL_DE;
-    $scope.showNewMails = SHOW_NEW_MAILS_DE;
-    $scope.showAllMails = SHOW_ALL_MAILS_DE;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
+    $scope.profile = PROFILE_DE;
     $scope.editProfile = EDIT_PROFILE_DE;
     $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_DE;
     $scope.changePassword = CHANGE_PASSWORD_DE;

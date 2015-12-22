@@ -36,7 +36,7 @@ var HELPOTHERS_DE = 'Anderen helfen';
 
 //Arabic
 var HEADLINE_AR = 'أهلا بكم في ألمانيا';
-var SUBHEADLINE_AR = 'مرحبا، كيف يمكننا مساعدتك اليوم?';
+var SUBHEADLINE_AR = '?مرحبا، كيف يمكننا مساعدتك اليوم';
 
 var QUICKHELP_TITLE_AR = 'ألمانيا باختصار';
 var FINDHELP_TITLE_AR = 'تنسيق المساعدة';
@@ -53,6 +53,8 @@ var HELPOTHERS_AR = 'ساعد الاخرين';
 function refreshHomeInCurrentLanguage($scope, language){
   
   if (language === 'ar') {
+    $scope.arabicSelected = true;
+    
     $scope.headline = HEADLINE_AR;
     $scope.subheadline = SUBHEADLINE_AR;
 
@@ -69,6 +71,8 @@ function refreshHomeInCurrentLanguage($scope, language){
     $scope.helpOthersButton = HELPOTHERS_AR;
   } 
   else if (language === 'en') {
+    $scope.arabicSelected = false;
+    
     $scope.headline = HEADLINE_EN;
     $scope.subheadline = SUBHEADLINE_EN;
 
@@ -85,6 +89,8 @@ function refreshHomeInCurrentLanguage($scope, language){
     $scope.helpOthersButton = HELPOTHERS_EN;
   } 
   else if (language === 'de') {
+    $scope.arabicSelected = false;
+    
     $scope.headline = HEADLINE_DE;
     $scope.subheadline = SUBHEADLINE_DE;
     
@@ -107,6 +113,7 @@ angular.module('core').controller('HomeController', ['$scope', '$rootScope','Aut
   function ($scope, $rootScope, Authentication) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
+    $scope.arabicSelected = false;
     
     //initial setup
     refreshHomeInCurrentLanguage($scope, $rootScope.currentLanguage);
