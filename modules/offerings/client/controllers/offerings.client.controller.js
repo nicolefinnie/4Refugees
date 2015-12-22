@@ -395,6 +395,19 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
   }
 }
 
+// Converts UTC date strings returned by server into locale Date objects
+function convertServerOfferingUTCDateToLocal(offering) {
+  offering.when = new Date(offering.when);
+  offering.expiry = new Date(offering.expiry);
+  offering.updated = new Date(offering.updated);
+}
+
+// Converts server offering JSON into client offering, for integration with views.
+function convertServerOfferingToClientViewOffering($rootScope, $scope, offering) {
+  offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+  convertServerOfferingUTCDateToLocal(offering);
+}
+
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings','Socket',
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket) {
     $scope.authentication = Authentication;
@@ -442,17 +455,17 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         offerType: this.offerType 
       }, function () {
         $scope.offerings.forEach(function(offering) {
-          offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+          convertServerOfferingToClientViewOffering($rootScope, $scope, offering);
         });
       });
     };
 
     // Find existing Offering
-    $scope.findOne = function () {
-      $scope.offering = Offerings.get({
-        offeringId: $stateParams.offeringId
-      });
-    };
+//    $scope.findOne = function () {
+//      $scope.offering = Offerings.get({
+//        offeringId: $stateParams.offeringId
+//      });
+//    };
 
     $scope.geoSetupCityList = function() {
       return $http.get('/api/locations',{ cache: true }).then(function(response) {
@@ -501,7 +514,13 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
       offering.category = getCategoryArray(this.category, 'others');
       offering.longitude = $scope.longitude;
       offering.latitude = $scope.latitude;
-      offering.descriptionLanguage = $rootScope.currentLanguage;
+      offering.descriptionLanguage = $rootScope.currentLanguage; 
+      var now = new Date(); 
+      var whenDate = offering.when ? new Date(offering.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
+      var newExpiry = new Date(whenDate);
+      newExpiry.setMonth(newExpiry.getMonth()+1);
+      offering.when = whenDate.toUTCString();
+      offering.expiry = newExpiry.toUTCString();
 
       offering.$update(function () {
         $location.path('offerings/' + offering._id);
@@ -525,6 +544,9 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
           selectedCategory[eachCategory] = true;
         });
         $scope.category = selectedCategory;
+        convertServerOfferingUTCDateToLocal($scope.offering);
+        // Convert to nicer date string for display
+        $scope.offering.when = $scope.offering.when.toDateString();
       });
     };
 
@@ -569,11 +591,15 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         // TODO: Cannot search without geo location, how to display error?
         return false;
       }
-    
+
       // Create new Offering object
+      var now = new Date(); 
+      var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
+      var newExpiry = new Date(whenDate);
+      newExpiry.setMonth(newExpiry.getMonth()+1);
       var offering = new Offerings({
-        when: this.when,
-        updated: Date.now,
+        when: whenDate.toUTCString(),
+        expiry: newExpiry.toUTCString(),
         description: this.description,
         descriptionLanguage: $rootScope.currentLanguage,
         city: this.city,
@@ -596,6 +622,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
         // Clear form fields
         $scope.when = '';
+        $scope.expiry = '';
         $scope.updated = '';
         $scope.description = '';
         $scope.city = '';
@@ -630,7 +657,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offerings = Offerings.query({
       }, function () {
         $scope.offerings.forEach(function(offering) {
-          offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+          convertServerOfferingToClientViewOffering($rootScope, $scope, offering);
         });
       });
     };
@@ -640,7 +667,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
       }, function () {
-        $scope.offering.category = convertEnglishCategory($scope.offering.category, $rootScope.currentLanguage, $scope);
+        convertServerOfferingToClientViewOffering($rootScope, $scope, $scope.offering);
       });
     };
 

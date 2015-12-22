@@ -36,7 +36,7 @@ var HELPOTHERS_DE = 'Anderen helfen';
 
 //Arabic
 var HEADLINE_AR = 'أهلا بكم في ألمانيا';
-var SUBHEADLINE_AR = '?مرحبا، كيف يمكننا مساعدتك اليوم';
+var SUBHEADLINE_AR = '⸮مرحبا، كيف يمكننا مساعدتك اليوم';
 
 var QUICKHELP_TITLE_AR = 'ألمانيا باختصار';
 var FINDHELP_TITLE_AR = 'تنسيق المساعدة';

@@ -154,10 +154,10 @@ exports.create = function (req, res) {
   offering.user = req.user;
   offering.userId = req.user._id;
   offering.when = new Date(req.body.when);
-  offering.updated = new Date();
-  offering.expiry = req.body.expiry;
+  var now = new Date(); 
+  offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  offering.expiry = new Date(req.body.expiry);
   offering.descriptionLanguage = req.body.descriptionLanguage;
-  console.log('LIAM: My language is: ' + offering.descriptionLanguage);
   offering.description = req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.city = req.body.city;
@@ -186,10 +186,11 @@ exports.update = function (req, res) {
     offering.user = req.user;
     offering.userId = req.user._id;
     offering.when = new Date(req.body.when);
-    offering.updated = new Date();
+    var now = new Date(); 
+    offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    offering.expiry = new Date(req.body.expiry);
     offering.description = req.body.description;
-    // TODO: remove this!
-    offering.descriptionLanguage = 'en';
+    offering.descriptionLanguage = req.body.descriptionLanguage;
     offering.city = req.body.city;
     offering.category = req.body.category;
     offering.loc.type = 'Point';
@@ -258,15 +259,15 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
     tmpRes.user = { _id : rawDoc.user._id,
                     displayName : rawDoc.user.displayName };
   }
-  tmpRes.when = rawDoc.when;
-  tmpRes.updated = rawDoc.updated;
+  tmpRes.when = rawDoc.when.toUTCString();
+  tmpRes.updated = rawDoc.updated.toUTCString();
   tmpRes.category = rawDoc.category;
   tmpRes.description = rawDoc.description;
   tmpRes.descriptionLanguage = rawDoc.descriptionLanguage;
   tmpRes.descriptionEnglish = rawDoc.descriptionEnglish;
   tmpRes.descriptionOther = rawDoc.descriptionOther;
   tmpRes.numOffered = rawDoc.numOffered;
-  tmpRes.expiry = rawDoc.expiry;
+  tmpRes.expiry = new Date(rawDoc.expiry).toUTCString();
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
   if (myOwnDoc === true) {
     // this is my own document, we can show exact co-ordinates in results

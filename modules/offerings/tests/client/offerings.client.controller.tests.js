@@ -11,6 +11,7 @@
       $location,
       Authentication,
       Offerings,
+      Socket,
       mockOffering;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -23,8 +24,10 @@
         toEqualData: function (util, customEqualityTesters) {
           return {
             compare: function (actual, expected) {
+              // TODO: Match more values?
+              var myPass = (actual.description === expected.description);
               return {
-                pass: angular.equals(actual, expected)
+                pass: myPass
               };
             }
           };
@@ -38,9 +41,10 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_) {
       // Set a new global scope
       scope = $rootScope.$new();
+      $rootScope.currentLanguage = 'en';
 
       // Point global variables to injected services
       $stateParams = _$stateParams_;
@@ -48,13 +52,17 @@
       $location = _$location_;
       Authentication = _Authentication_;
       Offerings = _Offerings_;
+      Socket = _Socket_;
 
       // create mock offering
       mockOffering = new Offerings({
         _id: '525a8422f6d0f87f0e407a33',
         description: 'A MEAN Offering',
+        descriptionLanguage: 'en',
+        offerType: 'offer',
         city: 'Stuttgart',
-        loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] }
+        loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
+        category: ['others']
       });
 
       // Mock logged in user
@@ -65,6 +73,16 @@
       // Initialize the Offerings controller.
       OfferingsController = $controller('OfferingsController', {
         $scope: scope
+      });
+
+      // Make sure the Socket is connected
+      if (!Socket.socket) {
+        Socket.connect();
+      }
+
+      // Add an event listener to the 'offeringMessage' event and toast logged in users
+      Socket.on('offeringMessage', function (message) {
+        var toastContent = '<span>new dummy';
       });
     }));
 
@@ -114,9 +132,12 @@
         sampleOfferingPostData = new Offerings({
           _id: '525a8422f6d0f87f0e407a33',
           description: 'A MEAN Offering',
+          descriptionLanguage: 'en',
           city: 'Stuttgart',
           loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
-          user: sampleUserPostData
+          user: sampleUserPostData,
+          offerType: 'offer',
+          category: ['others']
         });
 
         // Fixture mock form input values
@@ -131,6 +152,10 @@
         $httpBackend.expectPOST('api/offerings', sampleOfferingPostData).respond(mockOffering);
 
         // Run controller functionality
+        scope.description = mockOffering.description;
+        scope.city = mockOffering.city;
+        scope.longitude = mockOffering.loc.coordinates[0];
+        scope.latitude = mockOffering.loc.coordinates[1];
         scope.create(true);
         $httpBackend.flush();
 
@@ -148,6 +173,8 @@
           message: errorMessage
         });
 
+        scope.longitude = mockOffering.loc.coordinates[0];
+        scope.latitude = mockOffering.loc.coordinates[1];
         scope.create(true);
         $httpBackend.flush();
 

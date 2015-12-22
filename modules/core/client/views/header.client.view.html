@@ -16,7 +16,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
       <div class="ibm-dropdown-container" >
 
         <!-- Dropdown for unauthenticated users -->
-        <ul class="right"  ng-hide="authentication.user">
+        <ul ng-class="{right:!arabicSelected, left:arabicSelected}" ng-hide="authentication.user">
             <li ui-sref-active="active">
                 <a ui-sref="authentication.signin">{{signIn}}</a>
             </li>
