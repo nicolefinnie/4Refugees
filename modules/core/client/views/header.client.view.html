@@ -4,16 +4,62 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
 
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 <div ng-controller="HeaderController">
-  <nav class="ibm-header">
-    <div class="nav-wrapper">
-    <span>
+  <nav>
+    <div class="nav-wrapper ibm-header" ng-class="{large:!isMobileMode, small:isMobileMode}">
+        <img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo" ng-class="{left:!arabicSelected, right:arabicSelected, 
+        small:isMobileMode}">
         <a ui-sref="home" class="ibm-brand-logo" ng-class="{left:!arabicSelected, right:arabicSelected}">
-        <img src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo" ng-class="{left:!arabicSelected, right:arabicSelected}">
         4Refuge.es</a>
-    </span>
+        <a href="#" data-activates="mobile-navigator" class="button-collapse" ng-class="{right:!arabicSelected, left:arabicSelected}"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="language-mobile-navigator" class="button-collapse" ng-class="{right:!arabicSelected, left:arabicSelected}"><i class="material-icons">language</i></a>
+        <!-- mobile menu -->
+        <ul class="side-nav" id="language-mobile-navigator">
+            <li ui-sref-active="active">
+                <a ng-click="changeLanguage('ar')" >العربية
+                    <i class="material-icons right" ng-show="arabicSelected">done</i>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ng-click="changeLanguage('en')">English
+                    <i class="material-icons right" ng-show="englishSelected">done</i>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ng-click="changeLanguage('de')">Deutsch
+                    <i class="material-icons right" ng-show="germanSelected">done</i>
+                </a>
+            </li>
+        </ul>
+        <ul class="side-nav" id="mobile-navigator">
+            <ul ng-hide="authentication.user">
+                <li ui-sref-active="active" >
+                    <a ui-sref="authentication.signin">{{signIn}}</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="authentication.signup">{{register}}</a>
+                </li>
+            </ul>
+            <ul ng-show="authentication.user">
+                <li ui-sref-active="active">
+                    <a ui-sref="postings.list">
+                        <i class="large material-icons" ng-if="!hasPostingBadge">email</i>
+                        <i class="large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="settings.profile" font-size="1.0rem">{{profile}}</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="offerings.listMine">{{listMyOfferings}}</a>
+                </li>
+                <li>
+                    <a href="/api/auth/signout" target="_self">{{signOut}}</a>
+                </li>
+            </ul>   
+        </ul> <!-- end of mobile menu -->
     
-      <!-- Dropdown container -->
-      <div class="ibm-dropdown-container" >
+      <!-- Menu for big screen e.g. computer - ibm dropdown container -->
+      <div class="ibm-dropdown-container hide-on-med-and-down" >
 
         <!-- Dropdown for unauthenticated users -->
         <ul ng-class="{right:!arabicSelected, left:arabicSelected}" ng-hide="authentication.user">
@@ -111,7 +157,8 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </li>        
         </ul>  
         
-      </div> <!-- end of dropdown-container for designer's look -->
+      </div> <!-- end of big screen menu IBM dropdown-container -->
+    
     </div>
   </nav>
 </div>

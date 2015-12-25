@@ -14,10 +14,8 @@ nav {
 }
    
 /** The header that controls the entire bar color/text/font **/
-/** padding top right bottom left*/
 .ibm-header{
-    padding: 0 200px 0 200px;
-    background: color('gray', 80);
+   background: color('gray', 80);
     /* text color */
     color: color('white', core);
      /* a: title */
@@ -25,42 +23,56 @@ nav {
         font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
      }
 }
-.ibm-brand-logo{
+/* on a big screen */
+.ibm-header.large{
+    padding: 0 200px 0 200px;
+}
+/* on a small screen */
+.ibm-header.small{
+    padding: 0 10px 0 10px;
+
+}
+
+.ibm-brand-logo.left{
+    font-size: 25px;
+}
+
+/* for Arabic, the logo is on the right side*/
+.ibm-brand-logo.right{
     font-size: 25px;
 }
 
 
-/** The logo in the header bar in Latin languages*/
-.ibm-header-logo.left{
+.ibm-header-logo{
   display: inline-block;
-  margin-top: 7px;
-  margin-right: 20px;
-  padding: 0;
+  margin-top: 10px;
   background-repeat: no-repeat;
-  width: 20%;
+  width: 3%;
   border: 3px solid white;
   background-color:rgb(255,255,255); 
   background-color:rgba(255,255,255,0.7);
   border-radius: 50%;  
+}
+
+/** The logo in the header bar in Latin languages*/
+.ibm-header-logo.left{
+  margin-right: 20px;
 }
 
 /** The logo in the header bar in Arabic*/
 .ibm-header-logo.right{
-  display: inline-block;
-  margin-top: 7px;
-  margin-left: -35px;
-  background-repeat: no-repeat;
-  width: 25%;
-  border: 3px solid white;
-  background-color:rgb(255,255,255); 
-  background-color:rgba(255,255,255,0.7);
-  border-radius: 50%;  
+  margin-left: 20px;
 }
+
+/** The logo in the header bar for small screen such as mobile */
+.ibm-header-logo.small{
+  width: 10%;
+}   
 
 /* dropdown - for each menu */
 /* override materialize dropdown hover color because red is ugly :P */
 .ibm-dropdown-container{
-    li:hover{
+    li:h    over{
         /* menu background color when it's hovered*/
         background: color('gray', 10);
      
@@ -79,6 +91,7 @@ nav {
     }
     
 }
+
 
 
 /* dropdown - for each component inside the menu*/
@@ -112,11 +125,11 @@ nav {
 .ibm-cover-container {
   overflow: hidden;
   display: block;
-  
+
   /* img: cover picture */
   img {
     width: 100%;
-    positoin: relative;
+    height: 100%;
     margin-bottom: -10px;
   }
 }

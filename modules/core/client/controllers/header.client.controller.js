@@ -104,11 +104,25 @@ function refreshLanguageDropdownMenu($scope, language){
   }  
 }
 
+function isMobile(){
+  return navigator.userAgent.match(/Android/i) ||
+  navigator.userAgent.match(/BlackBerry/i) ||
+  navigator.userAgent.match(/iPhone|iPad|iPod/i) ||
+  navigator.userAgent.match(/Opera Mini/i) ||
+  navigator.userAgent.match(/IEMobile/i);
+}
+
 angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
   function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
     // default language
     $rootScope.currentLanguage = 'en';
+  
+    // detect if it's on a mobile
+    $scope.isMobileMode = isMobile();
     
+    // initialize mobile side navigation
+    $('.button-collapse').sideNav();
+
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
