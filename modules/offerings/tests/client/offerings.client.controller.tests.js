@@ -13,6 +13,7 @@
       Authentication,
       Offerings,
       Socket,
+      GeoService,
       mockOffering;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -43,7 +44,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoService_) {
       // Set a new global scope
       scope = $rootScope.$new();
       $rootScope.currentLanguage = 'en';
@@ -55,6 +56,10 @@
       Authentication = _Authentication_;
       Offerings = _Offerings_;
       Socket = _Socket_;
+      GeoService = _GeoService_;
+
+      // Setup the mock Geo-services environment.
+      GeoService.setupTestEnvironment();
 
       // create mock offering
       mockOffering = new Offerings({
@@ -91,6 +96,7 @@
         var toastContent = message.content.category;
         console.log('new stuff ' + toastContent);
       });
+
     }));
 
     it('$scope.find() should create an array with at least one offering object fetched from XHR', inject(function (Offerings) {

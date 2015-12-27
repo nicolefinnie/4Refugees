@@ -10,3 +10,4 @@ app/tests/coverage/
 .idea/ 
 .git/
 public/img/unused/
+scripts/geo
