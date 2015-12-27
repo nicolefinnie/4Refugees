@@ -58,7 +58,7 @@ nav {
 
   /* welcome to Germany bar for bigger screens*/
   .ibm-welcome-bar.arabic h1, .ibm-welcome-bar.arabic h2 {
-    margin-left: 70%; } }
+    margin-left: 60%; } }
 /** The logo in the header bar for small screen such as mobile */
 /* dropdown - for each menu */
 /* override materialize dropdown hover color because red is ugly :P */
