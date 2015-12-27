@@ -111,6 +111,13 @@ function refreshHomeInCurrentLanguage($scope, language){
 
 angular.module('core').controller('HomeController', ['$scope', '$rootScope','Authentication',
   function ($scope, $rootScope, Authentication) {
+    //default language
+    //TODO: This current language is duplicated in header.client.controller.js as well,
+    //to resolve timing issues where sometimes the initial digest invokes the HomeController
+    //before the HeaderController.  The ideal solution is to move language support into
+    //its own module and provide the current language as a service.
+    $rootScope.currentLanguage = 'en';
+
     // This provides Authentication context.
     $scope.authentication = Authentication;
     $scope.arabicSelected = false;
