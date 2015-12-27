@@ -10,7 +10,7 @@ var SIGNIN_EN = 'Sign in';
 var REGISTER_EN = 'Register';
 var SIGNOUT_EN = 'Sign out';
 
-
+var MAIL_EN = 'Mail';
 var LIST_MY_OFFERINGS_EN = 'Offerings';
 var PROFILE_EN = 'Profile';
 var EDIT_PROFILE_EN = 'Edit Profile';
@@ -23,6 +23,7 @@ var SIGNIN_DE = 'Anmelden';
 var REGISTER_DE = 'Registieren';
 var SIGNOUT_DE = 'Abmelden';
 
+var MAIL_DE = 'Post';
 var LIST_MY_OFFERINGS_DE = 'Angebote';
 var PROFILE_DE = 'Profil';
 var EDIT_PROFILE_DE = 'Profil Editieren';
@@ -36,7 +37,7 @@ var SIGNIN_AR = 'تسجيل الدخول';
 var REGISTER_AR = 'سجل';
 var SIGNOUT_AR = 'تسجيل الخروج';
 
-
+var MAIL_AR = 'بريد';
 var LIST_MY_OFFERINGS_AR = 'عروض';
 var PROFILE_AR = 'مظهر جانبي';
 var EDIT_PROFILE_AR = 'تعديل الملف الشخصي';
@@ -51,6 +52,7 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_AR;
     $scope.register = REGISTER_AR;
     $scope.signOut = SIGNOUT_AR;
+    $scope.mail = MAIL_AR;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
     $scope.profile = PROFILE_AR;
     $scope.editProfile = EDIT_PROFILE_AR;
@@ -63,6 +65,7 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_EN;
     $scope.register = REGISTER_EN;
     $scope.signOut = SIGNOUT_EN;
+    $scope.mail = MAIL_EN;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
     $scope.profile = PROFILE_EN;
     $scope.editProfile = EDIT_PROFILE_EN;
@@ -75,6 +78,7 @@ function refreshHeaderInCurrentLanguage($scope, language){
     $scope.signIn = SIGNIN_DE;
     $scope.register = REGISTER_DE;
     $scope.signOut = SIGNOUT_DE;
+    $scope.mail = MAIL_DE;
     $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
     $scope.profile = PROFILE_DE;
     $scope.editProfile = EDIT_PROFILE_DE;
@@ -104,22 +108,11 @@ function refreshLanguageDropdownMenu($scope, language){
   }  
 }
 
-function isMobile(){
-  return navigator.userAgent.match(/Android/i) ||
-  navigator.userAgent.match(/BlackBerry/i) ||
-  navigator.userAgent.match(/iPhone|iPad|iPod/i) ||
-  navigator.userAgent.match(/Opera Mini/i) ||
-  navigator.userAgent.match(/IEMobile/i);
-}
-
 angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
   function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
     // default language
     $rootScope.currentLanguage = 'en';
   
-    // detect if it's on a mobile
-    $scope.isMobileMode = isMobile();
-    
     // initialize mobile side navigation
     $('.button-collapse').sideNav();
 

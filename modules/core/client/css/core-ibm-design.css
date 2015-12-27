@@ -19,26 +19,14 @@ nav {
     font-weight: 300;
     font-stretch: normal; }
 
-/* on a big screen */
-.ibm-header.large {
-  padding: 0 200px 0 200px; }
-
-/* on a small screen */
-.ibm-header.small {
-  padding: 0 10px 0 10px; }
-
-.ibm-brand-logo.left {
-  font-size: 25px; }
-
-/* for Arabic, the logo is on the right side*/
-.ibm-brand-logo.right {
+.ibm-brand-logo {
   font-size: 25px; }
 
 .ibm-header-logo {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 8px;
   background-repeat: no-repeat;
-  width: 3%;
+  width: 50px;
   border: 3px solid white;
   background-color: white;
   background-color: rgba(255, 255, 255, 0.7);
@@ -52,80 +40,120 @@ nav {
 .ibm-header-logo.right {
   margin-left: 20px; }
 
-/** The logo in the header bar for small screen such as mobile */
-.ibm-header-logo.small {
-  width: 10%; }
+@media screen and (max-width: 500px) {
+  /* smaller screens */
+  .ibm-header {
+    padding: 0 10px 0 10px; }
 
+  .ibm-header-logo {
+    width: 40px; }
+
+  /* welcome to Germany bar for smaller screens, logo to the right needs space*/
+  .ibm-welcome-bar.arabic img {
+    margin-right: 10%; } }
+@media screen and (min-width: 960px) {
+  /* bigger screens */
+  .ibm-header {
+    padding: 0 200px 0 200px; }
+
+  /* welcome to Germany bar for bigger screens*/
+  .ibm-welcome-bar.arabic h1, .ibm-welcome-bar.arabic h2 {
+    margin-left: 70%; } }
+/** The logo in the header bar for small screen such as mobile */
 /* dropdown - for each menu */
 /* override materialize dropdown hover color because red is ugly :P */
-.ibm-dropdown-container li:h over {
+.ibm-dropdown-container li:hover, .ibm-dropdown-container li.active {
   /* menu background color when it's hovered*/
   background: #e0e0e0;
-  /* text color when it's hovered*/ }
-  .ibm-dropdown-container li:h over a.active, .ibm-dropdown-container li:h over a:hover {
+  /* text color when the header menu is active or hovered*/ }
+  .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover, .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
     color: #323232; }
-.ibm-dropdown-container li.active {
-  background: #323232;
-  /* text color when it's hovered and active*/ }
-  .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
-    color: #fff; }
 
 /* dropdown - for each component inside the menu*/
 .ibm-dropdown-component {
   /* the first menu item starts below the header bar*/
-  margin-top: 62px;
+  margin-top: 64px;
   background: #323232;
-  /* li: menu component */ }
+  /* li: menu component */
+  /* the menu component being currently selected is highlighted in a light color, so the text should be dark*/ }
   .ibm-dropdown-component li a {
     /* menu text */
     color: #fff;
     font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
     font-weight: 300;
     font-stretch: normal;
-    /* icon */
-    /* icon large */ }
-    .ibm-dropdown-component li a i {
+    /* small material icon for language check marks */
+    /* large material icon for the rest of icons if it's not an IBM design icon */
+    /* svg IBM design icons*/ }
+    .ibm-dropdown-component li a i.small {
       font-size: 16px; }
     .ibm-dropdown-component li a i.large {
       font-size: 26px; }
-  .ibm-dropdown-component li a:hover {
+    .ibm-dropdown-component li a svg {
+      fill: #fff;
+      margin: 0 20px 20px 0; }
+  .ibm-dropdown-component li a:hover, .ibm-dropdown-component li a.active, .ibm-dropdown-component li a:hover svg, .ibm-dropdown-component li a.active svg {
+    /* menu component text e.g. mail, profile */
+    color: #323232;
+    /* svg icons of menu components*/
+    fill: #323232; }
+  .ibm-dropdown-component li.active a, .ibm-dropdown-component li.active a svg {
+    /* menu component text e.g. mail, profile */
+    color: #323232;
+    /* svg icons of menu components*/
+    fill: #323232; }
+
+/* mobile menu */
+.ibm-mobile-menu {
+  background: #323232;
+  /* li: menu component */ }
+  .ibm-mobile-menu li a {
+    /* menu text */
+    color: #fff;
+    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: 300;
+    font-stretch: normal;
+    /* small material icon for language check marks */
+    /* large material icon for the rest*/
+    /* svg IBM design icons*/ }
+    .ibm-mobile-menu li a i.small {
+      margin-top: 20px;
+      font-size: 16px; }
+    .ibm-mobile-menu li a i.large {
+      padding: 15px 0 0 0;
+      font-size: 36px; }
+    .ibm-mobile-menu li a svg {
+      fill: #fff;
+      margin: 15px 20px 0 0; }
+  .ibm-mobile-menu li a:hover {
     /* menu text */
     color: #323232; }
+  .ibm-mobile-menu li a:hover svg {
+    fill: #323232; }
 
-/** Cover picture - no gap between the picture and its neighbours **/
+/** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
-  overflow: hidden;
-  display: block;
+  margin-bottom: -10px;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   /* img: cover picture */ }
   .ibm-cover-container img {
     width: 100%;
-    height: 100%;
-    margin-bottom: -10px; }
+    overflow: hidden;
+    display: block; }
 
 /** welcome bar - between the header and the footer */
 .ibm-welcome-bar {
-  padding: 20px;
   background: #5596e6;
   /* text color */
   color: #fff;
   /* img: logo in Latin languages */
-  /* img: logo in Arabic languages */
   /* h1: headline */
   /* h2: sub-headline */ }
-  .ibm-welcome-bar img.left {
+  .ibm-welcome-bar img {
+    margin: 20px 0 20px 0;
     display: block;
     height: 100px;
-    padding: 0;
-    margin: 10px 20px 20px 50px;
-    border: 4px solid white;
-    background-color: white;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 100px; }
-  .ibm-welcome-bar img.right {
-    display: block;
-    height: 100px;
-    padding: 0;
-    margin: 10px 50px 20px 20px;
     border: 4px solid white;
     background-color: white;
     background-color: rgba(255, 255, 255, 0.7);
@@ -134,19 +162,17 @@ nav {
     font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
     font-weight: 300;
     font-stretch: normal;
-    font-size: 32px;
-    margin: 20px; }
+    font-size: 32px; }
   .ibm-welcome-bar h2 {
     font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
     font-weight: 500;
     font-stretch: normal;
-    font-size: 16px;
-    margin: 20px; }
+    font-size: 16px; }
 
 /* Help bar/footer */
 .ibm-help-bar {
   background: #f9f9fb;
-  padding: 10px 10px 10px;
+  padding: 10px 10px 0 10px;
   margin-top: 20px;
   /* h1: icon */
   /* h2: headline */
