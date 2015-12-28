@@ -15,6 +15,7 @@ nav {
    
 /** The header that controls the entire bar color/text/font **/
 .ibm-header{
+   padding: 0 10% 0 10%;
    background: color('gray', 80);
     /* text color */
     color: color('white', core);
@@ -24,61 +25,35 @@ nav {
      }
 }
 
+
+/** The brand logo 4Refuge.es common setup for bigger screens as well as smaller screens*/
 .ibm-brand-logo{
     font-size: 25px;
 }
 
+
+/** The header logo icon common setup for screens over the min size defined below*/
 .ibm-header-logo{
   display: inline-block;
-  margin-top: 8px;
-  background-repeat: no-repeat;
+  margin-top: 0.6%;
   width: 50px;
+  background-repeat: no-repeat;
   border: 3px solid white;
   background-color:rgb(255,255,255); 
   background-color:rgba(255,255,255,0.7);
   border-radius: 50%;  
 }
 
-/** The logo in the header bar in Latin languages*/
+/** The header logo needs some space to the brand name in Latin languages*/
 .ibm-header-logo.left{
-  margin-right: 20px;
+  margin-right: 2%;
 }
-
-/** The logo in the header bar in Arabic*/
-.ibm-header-logo.right{
-  margin-left: 20px;
-}
-
-@media screen and (max-width:500px) {
-  /* smaller screens */
-  .ibm-header{
-    padding: 0 10px 0 10px;
-  }   
-  .ibm-header-logo{
-    width: 40px;
-  }
-   /* welcome to Germany bar for smaller screens, logo to the right needs space*/   
-  .ibm-welcome-bar.arabic{
-        img{
-            margin-right: 10%;
-        }
-    }
-}
-
-@media screen and (min-width:960px) {
-  /* bigger screens */
-  .ibm-header{
-    padding: 0 200px 0 200px;
-   }
   
-   /* welcome to Germany bar for bigger screens*/   
-  .ibm-welcome-bar.arabic{
-        h1,h2{
-            margin-left: 60%;
-        }
-    }
+/** The header logo needs some space to the brand name in the header bar in Arabic*/
+.ibm-header-logo.right{
+  margin-left: 2%;
 }
-
+  
 /** The logo in the header bar for small screen such as mobile */
 
 /* dropdown - for each menu */
@@ -97,9 +72,9 @@ nav {
 }
 
 
-/* dropdown - for each component inside the menu*/
+/* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component{
-    /* the first menu item starts below the header bar*/
+    /* the first menu item starts below the header bar, fixed size because the header height doesn't change by the screen size*/
     margin-top: 64px;
     background: color('gray', 80);
     /* li: menu component */
@@ -120,7 +95,7 @@ nav {
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 0 20px 20px 0;
+                margin: 0 10% 10% 0;
             }
          } 
          a:hover, a.active, a:hover svg, a.active svg {
@@ -154,10 +129,10 @@ nav {
             
             /* small material icon for language check marks */
             i.small{
-                margin-top: 20px;
+                margin-top: 12%;
                 font-size: 16px;
             }
-            /* large material icon for the rest*/
+            /* large material icon - only for materialize read mail icon, should be removed because we should use IBM icons instead*/
             i.large{
                 padding: 15px 0 0 0;
                 font-size: 36px;
@@ -166,9 +141,8 @@ nav {
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 15px 20px 0 0;
+                margin: 10% 15% 0 0;
             }
-            
         } 
         a:hover {
             /* menu text */
@@ -177,13 +151,11 @@ nav {
         a:hover svg{
             fill: color('gray', 80);
         }
-         
-         
      }   
 }
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
-  margin-bottom: -10px;
+  margin-bottom: -10%;
   padding-left: 0 !important;
   padding-right: 0 !important;
 
@@ -203,10 +175,9 @@ nav {
     /* text color */
     color: color('white', core);
     
-    /* img: logo in Latin languages */
-    
+    /* img: logo in fixed size in Latin languages */
     img {
-        margin: 20px 0 20px 0;
+        margin: 10% 0 10% 0;
         display: block;
         height: 100px;
         border: 4px solid white;
@@ -228,13 +199,12 @@ nav {
     }
 }
 
-
 /* Help bar/footer */
 
 .ibm-help-bar{
     background: color('cool-white', 20);
-    padding: 10px 10px 0 10px;
-    margin-top: 20px;
+    padding: 5% 5% 0 5%;
+    margin-top: 5%;
     /* h1: icon */
     h1 svg{
         fill: color('blue', 40);
@@ -263,7 +233,34 @@ nav {
     
 }
 
+/* smaller screens */    
+@media screen and (max-width:500px) {
+   /* The header bar needs padding to its left and right so the logo and menu are located more in the middle*/
+  .ibm-header{
+    padding: 0 2% 0 2%;
+  }   
+  /* On smaller screens, logo width has a fixed size so its size won't gradually change with the screen size*/
+  .ibm-header-logo{
+    margin-top: 2%;
+    width: 40px;
+  }
+   /* welcome to Germany bar for smaller screens, logo to the right needs space*/   
+  .ibm-welcome-bar.arabic{
+        img{
+            margin-right: 10%;
+        }
+    }
+}
 
+/* bigger screens based on materialize css definition */    
+@media screen and (min-width:992px) {
+ /* welcome to Germany bar in Arabic */   
+    .ibm-welcome-bar.arabic{
+        h1,h2{
+            margin-left: 60%;
+        }
+    }
+}
 /** This design below comes with Mean.JS **/
 .undecorated-link:hover {
   text-decoration: none;
