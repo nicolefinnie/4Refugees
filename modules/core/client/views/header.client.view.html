@@ -42,7 +42,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         C20.273,9.661,18.215,9,16,9c-2.215,0-4.273,0.661-6,1.788V9z M16,29c-4.971,0-9-4.029-9-9s4.029-9,9-9s9,4.029,9,9
                         S20.971,29,16,29z"/>
                         </svg>
-                        {{signIn}}
+                        {{properties.signIn}}
                     </a>
                 </li>
                 <li ui-sref-active="active">
@@ -54,7 +54,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         s3,1.346,3,3S17.654,19,16,19z"/>
                         <path d="M12,23c-1.104,0-2,0.896-2,2v2h12v-2c0-1.104-0.896-2-2-2H12z"/>
                         </svg>
-                    {{register}}
+                    {{properties.register}}
                     </a>
                 </li>
             </ul>
@@ -66,7 +66,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                         </svg> 
                         <i class="large material-icons" ng-if="hasPostingBadge" ng-class="{left:!properties.arabicSelected, right:properties.arabicSelected}">markunread_mailbox</i>
-                        {{mail}}
+                        {{properties.mail}}
                     </a>
                 </li>
                 <li ui-sref-active="active">
@@ -77,7 +77,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         s-8-3.589-8-8S11.589,3,16,3z"/>
                         <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
                         </svg>    
-                    {{profile}}
+                    {{properties.profile}}
                     </a>
                 </li>
                 <li ui-sref-active="active">
@@ -89,7 +89,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         <rect x="12" y="11" width="8" height="1"/>
                         <polygon points="19,22 13,22 13,21 12,21 12,22 12,23 13,23 19,23 20,23 20,22 20,21 19,21    "/>
                         </svg>  
-                    {{listMyOfferings}}</a>
+                    {{properties.listMyOfferings}}</a>
                 </li>
                 <li>
                     <a href="/api/auth/signout" target="_self">
@@ -101,7 +101,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                         C20.209,1.895,18.209,1,16,1c-4.419,0-8,3.582-8,8v3.467C6.145,14.436,5,17.082,5,20c0,6.074,4.926,11,11,11
                         c6.076,0,11-4.926,11-11S22.076,9,16,9z M16,29c-4.971,0-9-4.029-9-9s4.029-9,9-9c4.971,0,9,4.029,9,9S20.971,29,16,29z"/>
                         </svg>
-                    {{propertiessignOut}}
+                    {{properties.signOut}}
                     </a> 
                 </li>
             </ul>   
