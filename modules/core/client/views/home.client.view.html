@@ -3,19 +3,19 @@
         <div class="col s12 m12 ibm-cover-container">
             <img src="modules/core/client/img/startpage/cover.jpg">
         </div>
-        <div class="col s12 m12 ibm-welcome-bar" ng-if="!arabicSelected">
+        <div class="col s12 m12 ibm-welcome-bar" ng-if="!properties.arabicSelected">
             <div class="col s5 m2 left">
                 <img src="modules/core/client/img/brand/logo.svg"/> 
             </div>
             <div class="col s7 m8">
-                <h1>{{headline}}</h1>
-                <h2>{{subheadline}}</h2>
+                <h1>{{properties.headline}}</h1>
+                <h2>{{properties.subheadline}}</h2>
             </div>
         </div>
-        <div class="col s12 m12 ibm-welcome-bar arabic" ng-if="arabicSelected">
+        <div class="col s12 m12 ibm-welcome-bar arabic" ng-if="properties.arabicSelected">
             <div class="col s7 m10">
-                <h1>{{headline}}</h1>
-                <h2>{{subheadline}}</h2>
+                <h1>{{properties.headline}}</h1>
+                <h2>{{properties.subheadline}}</h2>
             </div>
             <div class="col s5 m2 right">
                 <img src="modules/core/client/img/brand/logo.svg"/> 
@@ -38,11 +38,11 @@
                   C56.49,22.108,58,26.877,58,32s-1.51,9.892-4.078,13.922L46.572,38.572z"/>
               </svg>
             </h1>
-            <h2 class="center">{{quickHelpTitle}}</h2>
-            <p class="center">{{quickHelpSubtitle}}</p>
+            <h2 class="center">{{properties.quickHelpTitle}}</h2>
+            <p class="center">{{properties.quickHelpSubtitle}}</p>
             <br>
             <p class="center"><a href="#" id="quickHelp" class="btn-large waves-effect waves-light">
-                {{quickHelpButton}}</a>
+                {{properties.quickHelpButton}}</a>
             </p>
             <br>
           </div>
@@ -60,11 +60,11 @@
                 <circle cx="32" cy="26" r="8"/>
               </svg>
             </h1>
-            <h2 class="center">{{findHelpTitle}}</h2>
-            <p class="center">{{findHelpSubtitle}}</p>
+            <h2 class="center">{{properties.findHelpTitle}}</h2>
+            <p class="center">{{properties.findHelpSubtitle}}</p>
             <br>
             <p class="center"><a href="offerings/search?offerType=offer" id="findHelp" class="btn-large waves-effect waves-light">
-                {{findHelpButton}}</a>
+                {{properties.findHelpButton}}</a>
             </p>
             <br>
           </div>
@@ -85,11 +85,11 @@
                   <path d="M56,50H40c-2.209,0-4,1.791-4,4v6h24v-6C60,51.791,58.209,50,56,50z"/>
               </svg>
             </h1>
-            <h2 class="center">{{helpOthersTitle}}</h2>
-            <p class="center">{{helpOthersSubtitle}}</p>
+            <h2 class="center">{{properties.helpOthersTitle}}</h2>
+            <p class="center">{{properties.helpOthersSubtitle}}</p>
             <br>
             <p class="center"> <a href="offerings/create?offerType=offer" id="helpOthers" class="btn-large waves-effect waves-light">
-                {{helpOthersButton}}</a> 
+                {{properties.helpOthersButton}}</a> 
             </p>
             <br>
           </div>

@@ -109,8 +109,8 @@ var ERROR_NO_CITY_AR = 'موقع غير صالح المقدمة، يرجى تح�
 var ERROR_NO_RESULTS_AR = 'لا توجد نتائج، يرجى تعديل بحثك وحاول مرة أخرى';
 
 
-function setCommonAttributes($scope, $rootScope) {
-  if ($rootScope.currentLanguage === 'en'){
+function setCommonAttributes($scope, language) {
+  if (language === 'en'){
     //buttons
     $scope.search = SEARCH_EN;
     $scope.add = ADD_EN;
@@ -141,7 +141,7 @@ function setCommonAttributes($scope, $rootScope) {
     $scope.errorNoCity = ERROR_NO_CITY_EN;
     $scope.errorNoResults = ERROR_NO_RESULTS_EN;
   } 
-  else if ($rootScope.currentLanguage === 'de'){
+  else if (language === 'de'){
     //buttons
     $scope.search = SEARCH_DE;
     $scope.add = ADD_DE;
@@ -172,7 +172,7 @@ function setCommonAttributes($scope, $rootScope) {
     $scope.errorNoCity = ERROR_NO_CITY_DE;
     $scope.errorNoResults = ERROR_NO_RESULTS_DE;
   } 
-  else if ($rootScope.currentLanguage === 'ar'){
+  else if (language === 'ar'){
     //buttons
     $scope.search = SEARCH_AR;
     $scope.add = ADD_AR;
@@ -205,7 +205,7 @@ function setCommonAttributes($scope, $rootScope) {
   }
 }
 
-function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
+function setSearchOrAddOrEdit($scope, language, displayMode) {
   
   var searchNeedInCurrentLanguage = SEARCH_NEED_EN;
   var findHelpInCurrentLanguage = FIND_HELP_EN;
@@ -214,8 +214,7 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
   var editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_EN;
   var editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_EN;
   
-  
-  if ($rootScope.currentLanguage === 'en'){
+  if (language === 'en'){
     searchNeedInCurrentLanguage = SEARCH_NEED_EN;
     findHelpInCurrentLanguage = FIND_HELP_EN;
     offerHelpInCurrentLanguage = OFFER_HELP_EN;
@@ -223,7 +222,7 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
     editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_EN;
     editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_EN;
   }
-  else if ($rootScope.currentLanguage === 'de'){
+  else if (language === 'de'){
     searchNeedInCurrentLanguage = SEARCH_NEED_DE;
     findHelpInCurrentLanguage = FIND_HELP_DE;
     offerHelpInCurrentLanguage = OFFER_HELP_DE;
@@ -231,7 +230,7 @@ function setSearchOrAddOrEdit($scope, $rootScope, displayMode) {
     editOfferHelpInCurrentLanguage = EDIT_OFFER_HELP_DE;
     editNeedHelpInCurrentLanguage = EDIT_NEED_HELP_DE;
     
-  } else if ($rootScope.currentLanguage === 'ar'){
+  } else if (language === 'ar'){
     searchNeedInCurrentLanguage = SEARCH_NEED_AR;
     findHelpInCurrentLanguage = FIND_HELP_AR;
     offerHelpInCurrentLanguage = OFFER_HELP_AR;
@@ -336,8 +335,8 @@ function convertServerOfferingUTCDateToLocal(offering) {
 }
 
 // Converts server offering JSON into client offering, for integration with views.
-function convertServerOfferingToClientViewOffering($rootScope, $scope, offering) {
-  offering.category = convertEnglishCategory(offering.category, $rootScope.currentLanguage, $scope);
+function convertServerOfferingToClientViewOffering(language, $scope, offering) {
+  offering.category = convertEnglishCategory(offering.category, language, $scope);
   convertServerOfferingUTCDateToLocal(offering);
 }
 
@@ -384,12 +383,13 @@ function geoValidateLocation(scope) {
 }
 
 // Controller handling offering searches
-angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket', 'GeoService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService) {
+angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$http', '$stateParams', '$location', 
+                                                                     'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
+  function ($scope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
     $scope.authentication = Authentication;
     
-    setCommonAttributes($scope, $rootScope);
-    setSearchOrAddOrEdit($scope, $rootScope, 'search');
+    setCommonAttributes($scope, LanguageService.getCurrentLanguage());
+    setSearchOrAddOrEdit($scope, LanguageService.getCurrentLanguage(), 'search');
     
     // Ask for our current city+coordinates from Geo services
     geoGetCurrentLocation(GeoService, $scope, $http);
@@ -416,7 +416,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
-        descriptionLanguage: $rootScope.currentLanguage,
+        descriptionLanguage: LanguageService.getCurrentLanguage(),
         city: this.city,
         longitude: this.longitude,
         latitude: this.latitude,
@@ -430,7 +430,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
           $scope.error = $scope.errorNoResults;
         } else {
           $scope.offerings.forEach(function(offering) {
-            convertServerOfferingToClientViewOffering($rootScope, $scope, offering);
+            convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
           });
         }
       });
@@ -439,11 +439,12 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 ]);
 
 //Edit controller only available for authenticated users
-angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket', 'GeoService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService) {
+angular.module('offerings').controller('OfferingsEditController', ['$scope', '$http', '$stateParams', '$location', 
+                                                                   'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
+  function ($scope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
 
-    setCommonAttributes($scope, $rootScope);
-    setSearchOrAddOrEdit($scope, $rootScope, 'edit');
+    setCommonAttributes($scope, LanguageService.getCurrentLanguage());
+    setSearchOrAddOrEdit($scope, LanguageService.getCurrentLanguage(), 'edit');
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -473,7 +474,7 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
       offering.category = getCategoryArray(this.category, 'others');
       offering.longitude = $scope.longitude;
       offering.latitude = $scope.latitude;
-      offering.descriptionLanguage = $rootScope.currentLanguage; 
+      offering.descriptionLanguage = LanguageService.getCurrentLanguage(); 
       var now = new Date(); 
       var whenDate = offering.when ? new Date(offering.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
       var newExpiry = new Date(whenDate);
@@ -495,7 +496,7 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
         offeringId: $stateParams.offeringId 
       }, function () {
         $scope.offerType = $scope.offering.offerType;
-        setSearchOrAddOrEdit($scope, $rootScope, 'edit');
+        setSearchOrAddOrEdit($scope, LanguageService.getCurrentLanguage(), 'edit');
 
         // set selected category checkbox of the to-edit-request/offer 
         var selectedCategory = {};
@@ -513,12 +514,13 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
 ]);
 
 //Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication', 'Offerings', 'Socket', 'GeoService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService) {
+angular.module('offerings').controller('OfferingsController', ['$scope', '$http', '$stateParams', '$location', 
+                                                               'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
+  function ($scope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
-    setCommonAttributes($scope, $rootScope);
-    setSearchOrAddOrEdit($scope, $rootScope, 'add');
+    setCommonAttributes($scope, LanguageService.getCurrentLanguage());
+    setSearchOrAddOrEdit($scope, LanguageService.getCurrentLanguage(), 'add');
 
     // Ask for our current city+coordinates from Geo services
     geoGetCurrentLocation(GeoService, $scope, $http);
@@ -551,7 +553,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         when: whenDate.toUTCString(),
         expiry: newExpiry.toUTCString(),
         description: this.description,
-        descriptionLanguage: $rootScope.currentLanguage,
+        descriptionLanguage: LanguageService.getCurrentLanguage(),
         city: this.city,
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, 'others'),
@@ -607,7 +609,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offerings = Offerings.query({
       }, function () {
         $scope.offerings.forEach(function(offering) {
-          convertServerOfferingToClientViewOffering($rootScope, $scope, offering);
+          convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
         });
       });
     };
@@ -617,7 +619,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
       }, function () {
-        convertServerOfferingToClientViewOffering($rootScope, $scope, $scope.offering);
+        convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, $scope.offering);
       });
     };
 

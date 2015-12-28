@@ -1,0 +1,24 @@
+[{"viewName":"header", "currentLanguageShownInHeader":"English",
+"signIn":"Sign In", 
+"register":"Register",
+"mail":"Mail",
+"listMyOfferings":"Offerings",
+"profile":"Profile",
+"signOut":"Sign Out",
+"englishSelected":true
+}, 
+
+{"viewName":"home",
+"headline":"Welcome to Germany",
+"subheadline":"Hi there, how can we help you today?",
+"quickHelpTitle":"Germany in a nutshell",
+"findHelpTitle":"Coordinating Help",
+"helpOthersTitle":"You are one of us",
+"quickHelpSubtitle":"Register in the city hall, open a bank account, get health care, learn languages, find schools",
+"findHelpSubtitle":"We take your geo location into account to make it easy to find nearby offers and requests",
+"helpOthersSubtitle":"You are not alone. We try to connect refugees who need help and people who want to offer help",
+"quickHelpButton":"Quick Help",
+"findHelpButton":"Find Help",
+"helpOthersButton":"Help Others"
+}
+]
