@@ -14,6 +14,7 @@
       Offerings,
       Socket,
       GeoService,
+      LanguageService,
       mockOffering;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -44,7 +45,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoService_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoService_, _LanguageService_) {
       // Set a new global scope
       scope = $rootScope.$new();
       $rootScope.currentLanguage = 'en';
@@ -57,9 +58,11 @@
       Offerings = _Offerings_;
       Socket = _Socket_;
       GeoService = _GeoService_;
+      LanguageService = _LanguageService_;
 
-      // Setup the mock Geo-services environment.
+      // Setup the mock GeoService and LanguageService environment.
       GeoService.setupTestEnvironment();
+      LanguageService.setupTestEnvironment();
 
       // create mock offering
       mockOffering = new Offerings({
@@ -105,6 +108,14 @@
 
       // Set GET response
       $httpBackend.expectGET('api/offerings').respond(sampleOfferings);
+
+      // Setup dummy view properties needed by the controller, normally
+      // setup by loading all language-specific properties using LanguageService.
+      // The mockOffering used above is in the category 'others', so we need to
+      // provide a translation from the server-side 'others' to the client-side
+      // 'language-specific' display.
+      var properties = { 'others': 'Other' };
+      scope.properties = properties;
 
       // Run controller functionality
       scope.find();

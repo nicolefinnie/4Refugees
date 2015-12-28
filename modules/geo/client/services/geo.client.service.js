@@ -1,8 +1,41 @@
 'use strict';
 
-// Geo location service, calls into google geo APIs to retrieve current
-// location.  If geo-services are not available, caller can ask to retrieve
-// a list of pre-set cities to choose from with pre-set coordinates.
+/**
+ * Global geo service, it provides APIs defined below. 
+ * 
+ * To use this global service, make sure to include GeoService in your controller.
+ * 
+ * For example, to query your current location coordinates and fall-back on letting
+ * the user select a city from a list if Google maps geo-location services are not
+ * available, use the following code in your controller:
+ * 
+ * @code 
+  angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
+                                                                     'Authentication', 'Offerings', 'GeoService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService) {
+
+    GeoService.getCurrentLocation(function(myLocation, digestInProgress) {
+      if (myLocation.available) {
+        $scope.city = myLocation.city;
+        $scope.latitude = myLocation.latitude;
+        $scope.longitude = myLocation.longitude;
+      } else {
+        GeoService.getCityList($http, function(cityList, digestInProgress) {
+          $scope.citylist = cityList;
+        });
+      }
+    });
+  }];
+ * @endcode
+ * 
+ * The APIs currently offered are:
+ * 
+ * getCurrentLocation(callback(myLocation, digestInProgress)); 
+ * getCityList($http, callback(cityList, digestInProgress));
+ * //fake geolocation support for unit tests
+ * setupTestEnvironment();
+ * 
+ **/
 angular.module('geo').service('GeoService', [ function () {
 
   // Define the current location object

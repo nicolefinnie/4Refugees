@@ -3,7 +3,7 @@
         <div class="col s12 m12 ibm-cover-container">
             <img src="modules/core/client/img/startpage/cover.jpg">
         </div>
-        <div class="col s12 m12 ibm-welcome-bar" ng-if="!properties.arabicSelected">
+        <div class="col s12 m12 ibm-welcome-bar" ng-if="!properties.rightToLeft">
             <div class="col s5 m2 left">
                 <img src="modules/core/client/img/brand/logo.svg"/> 
             </div>
@@ -12,7 +12,7 @@
                 <h2>{{properties.subheadline}}</h2>
             </div>
         </div>
-        <div class="col s12 m12 ibm-welcome-bar arabic" ng-if="properties.arabicSelected">
+        <div class="col s12 m12 ibm-welcome-bar arabic" ng-if="properties.rightToLeft">
             <div class="col s7 m10">
                 <h1>{{properties.headline}}</h1>
                 <h2>{{properties.subheadline}}</h2>

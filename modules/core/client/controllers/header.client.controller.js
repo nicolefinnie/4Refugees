@@ -12,11 +12,6 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    // initialize all properties in the view (html)
-    LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
-      $scope.properties = translationList;
-    });
-
     // language change clicked
     $scope.changeLanguage = function (language) {
       // set the current language in the language service
@@ -24,11 +19,14 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       // refresh view properties in the current language 
       LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
         $scope.properties = translationList;
+        // broadcast this language change to HomeController to refresh
+        $rootScope.$broadcast('tellAllControllersToChangeLanguage');
       });
-      // broadcast this language change to HomeController to refresh
-      $rootScope.$broadcast('tellAllControllersToChangeLanguage');
     };
-    
+
+    // Set the initial language to English
+    $scope.changeLanguage('en');
+
     //TODO remove the code below, if we don't have different icons for this 
     $scope.hasPostingBadge = false;
 

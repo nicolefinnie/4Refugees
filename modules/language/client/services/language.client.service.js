@@ -29,14 +29,25 @@
  * //only header needs to set it because the language is changed in header
  * setCurrentLanguage(language); 
  * getCurrentLanguage();
+ * //only home needs to check this to avoid race conditions, since the home page
+ * //is the only case when two controllers may be initializing at the same time 
+ * isLanguageLoadInProgress();
  * getPropertiesByViewName();
+ * //only needed for unit tests
+ * setupTestEnvironment();
  * 
  **/
 angular.module('language').service('LanguageService', [function () {
   this.globalCurrentLanguage = 'en';
   this.translations = { 'en':[], 'de':[], 'ar':[] };
+  this.languageLoadInProgress = false;
+
   this.getCurrentLanguage = function() {
     return this.globalCurrentLanguage;
+  };
+  
+  this.isLanguageLoadInProgress = function() {
+    return this.languageLoadInProgress;
   };
   
   this.setCurrentLanguage = function(newLanguage){
@@ -54,6 +65,7 @@ angular.module('language').service('LanguageService', [function () {
     }
     
     if (self.translations[self.globalCurrentLanguage].length === 0) {
+      self.languageLoadInProgress = true;
       $http({
         method: 'GET',
         url: url
@@ -63,7 +75,8 @@ angular.module('language').service('LanguageService', [function () {
       // to transform the data received directly into an array of JSON objects.
         console.log('LanguageService: initially loaded ' + self.globalCurrentLanguage + ' language with status ' + response.status + ' to cache');
         try {
-          self.translations[self.globalCurrentLanguage] = eval(response.data);        
+          self.translations[self.globalCurrentLanguage] = eval(response.data);
+          self.languageLoadInProgress = false;
           
           self.translations[self.globalCurrentLanguage].forEach(function(translation) {
             if (translation.viewName === viewName) {
@@ -71,10 +84,12 @@ angular.module('language').service('LanguageService', [function () {
             }
           });
         } catch(e) {
+          self.languageLoadInProgress = false;
           console.log('LanguageService: Error parsing view property list in \'public/'+ url + '\'.  Exception: ' + e);
           //TODO throw exception
         }
       }, function errorCallback(response) {
+        self.languageLoadInProgress = false;
         console.log('LanguageService: Error \'' + response.status + '\' loading view property list in \'public/'+ url+ '\'.');
         //TODO throw exception
       });    
@@ -86,6 +101,12 @@ angular.module('language').service('LanguageService', [function () {
       });
     }
   };
-  
+
+  // For unit tests, setup fake/sample language data
+  this.setupTestEnvironment = function() {
+    console.log('LanguageService: Creating test environment.');
+    var testTranslations = [{ 'viewName':'unitTest' }];
+    this.translations[this.globalCurrentLanguage] = testTranslations;
+  };
 }
 ]);

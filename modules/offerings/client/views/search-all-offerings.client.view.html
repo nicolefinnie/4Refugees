@@ -3,35 +3,36 @@
   
   <div class="col s12">
     <div class="page-header">
-      <h3>{{showTitle}}</h3>
-    </div>   
+      <h3 ng-show="offerType=='request'">{{properties.searchNeedInCurrentLanguage}}</h3>
+      <h3 ng-show="offerType=='offer'">{{properties.findHelpInCurrentLanguage}}</h3>
+    </div>
   
     <form name="offeringFormSearch" class="form-horizontal" ng-submit="searchAll(offeringFormSearch.$valid)" novalidate>
       <div class="form-group" show-errors>
         <br>
         <div id="labels">
-            <p>{{categoryTitle}}</p>
+            <p>{{properties.categoryTitle}}</p>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
-                <label for="training" class="category-checkbox">{{jobTraining}}</label>   
+                <label for="training" class="category-checkbox">{{properties.jobTraining}}</label>   
 
                 <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
-                <label for="courses" class="category-checkbox">{{languageCourses}}</label> 
+                <label for="courses" class="category-checkbox">{{properties.languageCourses}}</label> 
 
                 <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
-                <label for="medical" class="category-checkbox">{{medicalAssistance}}</label> 
+                <label for="medical" class="category-checkbox">{{properties.medicalAssistance}}</label> 
 
                 <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
-                <label for="childcare" class="category-checkbox">{{childCare}}</label> 
+                <label for="childcare" class="category-checkbox">{{properties.childCare}}</label> 
 
                 <input type="checkbox" id="others" name="others" ng-model="category.others">
-                <label for="others" class="category-checkbox">{{others}}</label>           
+                <label for="others" class="category-checkbox">{{properties.others}}</label>           
         </div>
         <br><br>
 
         <div class="row"> 
             <div class="input-field col s7" ng-hide="geoManual">
                 <i class="material-icons prefix">room</i>
-                <input id="city" type="text" class="validate" placeholder="{{city}}" ng-model="city">
+                <input id="city" type="text" class="validate" placeholder="{{properties.city}}" ng-model="city">
             </div>
             <div class="input-field col s7" ng-show="geoManual">
                 <i class="material-icons prefix">room</i>
@@ -50,14 +51,14 @@
         <div class="row">
             <div class="input-field col s7">
                 <i class="material-icons prefix">explore</i>
-                <input name="radius" type="text" ng-model="radius" id="radius" class="form-control" placeholder="{{searchRadius}}">
+                <input name="radius" type="text" ng-model="radius" id="radius" class="form-control" placeholder="{{properties.searchRadius}}">
             </div>
         </div>
 
         <div class="row">
             <div class="input-field col s7">
                 <i class="material-icons prefix">schedule</i>
-                <label for="when">{{when}}</label>
+                <label for="when">{{properties.when}}</label>
                 <input id="when" type="date" ng-model="when" name="date" class="datepicker">
             </div>
         </div>
@@ -73,15 +74,13 @@
       
       <div class="row">  
         <div class="form-group col s4">
-          <button type="submit" id="searchButton" class="btn waves-effect waves-light">{{search}}
+          <button type="submit" id="searchButton" class="btn waves-effect waves-light">{{properties.search}}
               <i class="material-icons right">search</i>
           </button>
         </div>
-        <div class="col s4" ng-show="createOffer">
-            <a href="offerings/create?offerType=offer" id="createOffer">{{offerOthersHelpText}}</a>
-        </div>
-        <div class="col s4" ng-show="createRequest">
-            <a href="offerings/create?offerType=request" id="createRequest">{{tellOthersNeedsText}}</a>
+        <div class="col s4">
+            <a href="offerings/create?offerType=offer" ng-show="offerType=='request'">{{properties.offerOthersHelpText}}</a>
+            <a href="offerings/create?offerType=request" ng-show="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
         </div>
       </div>
       

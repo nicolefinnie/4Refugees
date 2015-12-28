@@ -5,7 +5,8 @@
 "listMyOfferings":"عروض",
 "profile":"مظهر جانبي",
 "signOut":"تسجيل الخروج",
-"arabicSelected":true
+"arabicSelected":true,
+"rightToLeft":true
 },
 
 {"viewName":"home",
@@ -20,8 +21,49 @@
 "quickHelpButton":"تعليمات سريعة",
 "findHelpButton":"البحث عن مساعدة",
 "helpOthersButton":"ساعد الاخرين",
-"arabicSelected":true
+"rightToLeft":true
+},
+
+{"viewName":"offering",
+"search":"البحث عن",
+"add":"أدخل",
+"updateButton":"تحديث",
+"deleteButton":"حذف",
+"contact":"اتصال",
+"categoryTitle":"فئة",
+"jobTraining":"التدريب المهني",
+"languageCourses":"دورات اللغة",
+"medicalAssistance":"المساعدة الطبية",
+"childCare":"رعاية الأطفال",
+"others":"آخرون",
+"description":"الوصف",
+"city":"مدينة",
+"searchRadius":"دائرة نصف قطرها ? كم البحث في",
+"when":"متى",
+"offerOthersHelpText":"أو تقديم الآخرين لمساعدتكم",
+"tellOthersNeedsText":"أو تقول للآخرين الاحتياجات الخاصة بك",
+"findOtherOffersText":"أو تجد العروض هي هناك",
+"findOtherNeedsText":"أو البحث إذا كان يحتاج مساعدة الآخرين",
+"searchNeedInCurrentLanguage":"احتياجات البحث",
+"findHelpInCurrentLanguage":"البحث عن مساعدة",
+"offerHelpInCurrentLanguage":"عرض المساعدة",
+"needHelpInCurrentLanguage":"احتاج مساعدة",
+"editOfferHelpInCurrentLanguage":"تحرير عرض",
+"editNeedHelpInCurrentLanguage":"تحرير طلب",
+"myOfferings":"بلدي عروض",
+"offeredBy":"التي تتيحها",
+"availableOn":"، متاح على",
+"lastUpdatedOn":"، آخر تحديث لل",
+"createFirstOffering":"لا عروض حتى الآن، لماذا لا تقوم بإنشاء واحد؟",
+"postedOn":"نشر على",
+"by":"بواسطة",
+"expiresOn":"تنتهي صلاحيته في",
+"numOffered":":عدد عرضت",
+"offer":"عرض",
+"request":"طلب",
+"offerExpired":"عرض منتهية الصلاحية",
+"requestExpired":"طلب منتهية الصلاحية",
+"errorNoCity":"موقع غير صالح المقدمة، يرجى تحديد أقرب مدينتك وحاول مرة أخرى",
+"errorNoResults":"لا توجد نتائج، يرجى تعديل بحثك وحاول مرة أخرى"
 }
 ]
-
-
