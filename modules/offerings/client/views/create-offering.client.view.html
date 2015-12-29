@@ -1,13 +1,13 @@
 
 <section ng-controller="OfferingsController">
 <div class="row">
-    <div class="col s12">
+    <div class="col m12 s12">
         <div class="page-header">
             <h3 ng-show="offerType=='request'">{{properties.needHelpInCurrentLanguage}}</h3>
             <h3 ng-show="offerType=='offer'">{{properties.offerHelpInCurrentLanguage}}</h3>
         </div>
   
-        <form name="offeringForm" class="col s12" ng-submit="create(offeringForm.$valid)" novalidate>
+        <form name="offeringForm" ng-submit="create(offeringForm.$valid)" novalidate>
           <div class="form-group" show-errors>
             <br>
             <div id="labels">
@@ -30,7 +30,7 @@
             <br><br>
         
             <div class="row">
-                <div class="input-field col m6 s12">
+                <div class="input-field col m6 s11">
                     <i class="material-icons prefix">description</i>
                     <input name="description" type="text" ng-model="description" id="description" class="form-control" required>
                     <label for="description">{{properties.description}}</label>
@@ -41,11 +41,11 @@
             </div>
       
             <div class="row">
-              <div class="input-field col s7" ng-hide="geoManual">
+              <div class="input-field col m6 s11" ng-hide="geoManual">
                 <i class="material-icons prefix">room</i>
                 <input id="city" type="text" class="validate" placeholder="{{properties.city}}" ng-model="city">
               </div>
-              <div class="input-field col s7" ng-show="geoManual">
+              <div class="input-field col m6 s11" ng-show="geoManual">
                 <i class="material-icons prefix">room</i>
                 <select name="repeatSelect" id="where" ng-model="where" 
                   ng-options="option.name for option in citylist">
@@ -65,7 +65,7 @@
 
 
             <div class="row">
-                <div class="input-field col s7">
+                <div class="input-field col m6 s11">
                     <i class="material-icons prefix">schedule</i>
                     <label for="when">{{properties.when}}</label>
                     <input id="when" type="date" ng-model="when" name="date" class="datepicker">
@@ -80,12 +80,12 @@
         </script>
 
             <div class="row">
-                <div class="form-group col s4">
+                <div class="form-group col s6 m4">
                     <button type="submit" id="createButton" class="btn waves-effect waves-light">{{properties.add}}
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
-                <div class="col s4">
+                <div class="col s6 m4">
                   <a href="offerings/search?offerType=offer" ng-show="offerType=='request'">{{properties.findOtherOffersText}}</a>
                   <a href="offerings/search?offerType=request" ng-show="offerType=='offer'">{{properties.findOtherNeedsText}}</a>
                 </div>

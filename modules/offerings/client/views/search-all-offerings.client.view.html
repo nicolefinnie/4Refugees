@@ -1,7 +1,7 @@
 <section ng-controller="OfferingsPublicController">
 <div class="row">
   
-  <div class="col s12">
+  <div class="col m12 s12">
     <div class="page-header">
       <h3 ng-show="offerType=='request'">{{properties.searchNeedInCurrentLanguage}}</h3>
       <h3 ng-show="offerType=='offer'">{{properties.findHelpInCurrentLanguage}}</h3>
@@ -30,11 +30,11 @@
         <br><br>
 
         <div class="row"> 
-            <div class="input-field col s7" ng-hide="geoManual">
-                <i class="material-icons prefix">room</i>
+            <div class="input-field col m6 s11" ng-hide="geoManual">
+                <i class="material-icons">room</i>
                 <input id="city" type="text" class="validate" placeholder="{{properties.city}}" ng-model="city">
             </div>
-            <div class="input-field col s7" ng-show="geoManual">
+            <div class="input-field col m6 s11" ng-show="geoManual">
                 <i class="material-icons prefix">room</i>
                 <select name="repeatSelect" id="where" ng-model="where" 
                   ng-options="option.name for option in citylist">
@@ -49,14 +49,14 @@
 
         
         <div class="row">
-            <div class="input-field col s7">
+            <div class="input-field col m6 s11">
                 <i class="material-icons prefix">explore</i>
                 <input name="radius" type="text" ng-model="radius" id="radius" class="form-control" placeholder="{{properties.searchRadius}}">
             </div>
         </div>
 
         <div class="row">
-            <div class="input-field col s7">
+            <div class="input-field col m6 s11">
                 <i class="material-icons prefix">schedule</i>
                 <label for="when">{{properties.when}}</label>
                 <input id="when" type="date" ng-model="when" name="date" class="datepicker">
@@ -73,12 +73,12 @@
       </div>  <!-- end of the main form-group -->
       
       <div class="row">  
-        <div class="form-group col s4">
+        <div class="form-group col s6 m4">
           <button type="submit" id="searchButton" class="btn waves-effect waves-light">{{properties.search}}
               <i class="material-icons right">search</i>
           </button>
         </div>
-        <div class="col s4">
+        <div class="col s6 m4">
             <a href="offerings/create?offerType=offer" ng-show="offerType=='request'">{{properties.offerOthersHelpText}}</a>
             <a href="offerings/create?offerType=request" ng-show="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
         </div>

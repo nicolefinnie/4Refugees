@@ -63,5 +63,19 @@
 "requestExpired":"request (expired)",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again",
 "errorNoResults":"No results found, please modify your search and try again"
+}, 
+
+{"viewName":"authentication",
+"or":"or",
+"signInWithYourAccount":"Or sign in with your account",
+"registerWithYourEmail":"Or register using your email", 
+"firstName":"First Name",
+"lastName":"Last Name",
+"email":"email",
+"username":"username",
+"password":"Password",
+"signIn":"Sign In",
+"register":"Register",
+"forgetPassword":"Forgot your password?"
 }
 ]

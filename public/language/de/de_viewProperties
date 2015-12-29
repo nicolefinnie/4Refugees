@@ -63,5 +63,20 @@
 "requestExpired":"Bedürfnis (abgelaufen)",
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut",
 "errorNoResults":"Keine Ergebnisse gefunden, bitte Such ändern und versuchen Sie es erneut"
+},
+
+
+{"viewName":"authentication",
+"or":"oder",
+"signInWithYourAccount":"Oder mit Ihrem Account anmelden",
+"registerWithYourEmail":"Oder mit Ihrer Email registieren", 
+"firstName":"Vorname",
+"lastName":"Namename",
+"email":"Email",
+"username":"Benutzername",
+"password":"Passwort",
+"signIn":"Anmelden",
+"register":"Registieren",
+"forgetPassword":"Ihr Passwort vergessen?"
 }
 ]
