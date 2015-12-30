@@ -61,6 +61,7 @@
 "request":"request",
 "offerExpired":"offer (expired)",
 "requestExpired":"request (expired)",
+"errorNoDescription":"Invalid description, please enter a valid description and try again",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again",
 "errorNoResults":"No results found, please modify your search and try again"
 }, 

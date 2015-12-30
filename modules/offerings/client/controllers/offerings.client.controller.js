@@ -71,9 +71,9 @@ function convertEnglishOfferType(offerEnglish, scope)
 
 // Converts UTC date strings returned by server into locale Date objects
 function convertServerOfferingUTCDateToLocal(offering) {
-  offering.when = new Date(offering.when);
-  offering.expiry = new Date(offering.expiry);
-  offering.updated = new Date(offering.updated);
+  offering.when = new Date(offering.whenString);
+  offering.expiry = new Date(offering.expiryString);
+  offering.updated = new Date(offering.updatedString);
 }
 
 // Converts server offering JSON into client offering, for integration with views.
@@ -109,7 +109,7 @@ function geoGetCurrentLocation(GeoService, $scope, $http) {
 }
 
 // Validate a suitable geoLocation was specified
-function geoValidateLocation(scope) {
+function validateGeoLocation(scope) {
   var isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
   // if google geo is not reachable or user does not allow it
   if (!isValid && scope.where)
@@ -123,6 +123,23 @@ function geoValidateLocation(scope) {
     scope.error = scope.properties.errorNoCity;
     throw new Error('Offering: Invalid location');
   }
+}
+
+function validateOfferingDescription(scope, offering) {
+  var isValid = (offering.description !== undefined && offering.description.length > 0);
+  if (!isValid) {
+    scope.error = scope.properties.errorNoDescription;
+    throw new Error('Offering: Invalid description');
+  }
+}
+
+function validateOfferingInput(scope, offering) {
+  validateOfferingDescription(scope, offering);
+  validateGeoLocation(scope);
+}
+
+function validateOfferingSearch(scope) {
+  validateGeoLocation(scope);
 }
 
 // Controller handling offering searches
@@ -154,17 +171,14 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     $scope.messages = [];
 
     // Search all offerings for the input criteria
-    $scope.searchAll = function (isValid) {
+    $scope.searchAll = function () {
         
       $scope.error = null;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringFormSearch');
-        return false;
-      }
+      validateOfferingSearch($scope);
 
-      geoValidateLocation($scope);
-
+      var now = new Date(); 
+      var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
@@ -173,7 +187,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         longitude: this.longitude,
         latitude: this.latitude,
         radius: this.radius? this.radius:10,
-        when: this.when,
+        whenString: whenDate.toUTCString(),
              // mapping JSON array category from checkbox on webpage to String
         category: getCategoryArray(this.category, ''),
         offerType: this.offerType 
@@ -221,17 +235,12 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
     geoGetCurrentLocation(GeoService, $scope, $http);
 
     // Update existing Offering
-    $scope.update = function (isValid) {
+    $scope.update = function () {
       $scope.error = null;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
-        return false;
-      }
-
-      geoValidateLocation($scope);
-
       var offering = $scope.offering;
+      validateOfferingInput($scope, offering);
+
       offering.category = getCategoryArray(this.category, 'others');
       offering.longitude = $scope.longitude;
       offering.latitude = $scope.latitude;
@@ -240,8 +249,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
       var whenDate = offering.when ? new Date(offering.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
       var newExpiry = new Date(whenDate);
       newExpiry.setMonth(newExpiry.getMonth()+1);
-      offering.when = whenDate.toUTCString();
-      offering.expiry = newExpiry.toUTCString();
+      offering.whenString = whenDate.toUTCString();
+      offering.expiryString = newExpiry.toUTCString();
 
       offering.$update(function () {
         $location.path('offerings/' + offering._id);
@@ -265,6 +274,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
         $scope.category = selectedCategory;
         convertServerOfferingUTCDateToLocal($scope.offering);
         // Convert to nicer date string for display
+        // Note that in the create+edit forms, 'when' is a 'text' form field,
+        // instead of 'date', so that it shows up nicely on all browsers.
         $scope.offering.when = $scope.offering.when.toDateString();
       });
     };
@@ -301,16 +312,10 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.messages = [];
 
     // Create new Offering
-    $scope.create = function (isValid) {
+    $scope.create = function () {
       $scope.error = null;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'offeringForm');
-
-        return false;
-      }
-
-      geoValidateLocation($scope);
+      validateOfferingInput($scope, $scope);
 
       // Create new Offering object
       var now = new Date(); 
@@ -318,8 +323,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       var newExpiry = new Date(whenDate);
       newExpiry.setMonth(newExpiry.getMonth()+1);
       var offering = new Offerings({
-        when: whenDate.toUTCString(),
-        expiry: newExpiry.toUTCString(),
+        whenString: whenDate.toUTCString(),
+        expiryString: newExpiry.toUTCString(),
         description: this.description,
         descriptionLanguage: LanguageService.getCurrentLanguage(),
         city: this.city,
@@ -329,7 +334,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         latitude: $scope.latitude,
         offerType: this.offerType 
       });
-      
+
       // Emit a 'offeringMessage' message event with the JSON offering object
       var message = {
         content: offering
@@ -349,7 +354,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         $scope.category = '';
         $scope.longitude = '';
         $scope.latitude = '';
-        $scope.offerType = '';
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

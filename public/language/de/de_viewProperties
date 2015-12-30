@@ -61,6 +61,7 @@
 "request":"Bedürfnis",
 "offerExpired":"Angebot (abgelaufen)",
 "requestExpired":"Bedürfnis (abgelaufen)",
+"errorNoDescription":"Ungültige Beschreibung, bitte geben Sie eine gültige Beschreibung und versuchen Sie es erneut",
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut",
 "errorNoResults":"Keine Ergebnisse gefunden, bitte Such ändern und versuchen Sie es erneut"
 },

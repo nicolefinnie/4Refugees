@@ -183,8 +183,8 @@
         //$httpBackend.expectPOST('api/offerings', sampleOfferingPostData).respond(mockOffering);
         $httpBackend.expectPOST('api/offerings', function(reqHandler) {
           var rh = JSON.parse(reqHandler);
-          delete rh.when;
-          delete rh.expiry;
+          delete rh.whenString;
+          delete rh.expiryString;
           return angular.equals(rh, sampleOfferingPostData);
         }).respond(mockOffering);
 
@@ -221,8 +221,8 @@
         var errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/offerings', function(reqHandler) {
           var rh = JSON.parse(reqHandler);
-          delete rh.when;
-          delete rh.expiry;
+          delete rh.whenString;
+          delete rh.expiryString;
           return angular.equals(rh, sampleOfferingPostData);
         }).respond(400, {
           message: errorMessage

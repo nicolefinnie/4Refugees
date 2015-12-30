@@ -6,8 +6,8 @@
           <h3 ng-show="offerType=='request'">{{properties.editNeedHelpInCurrentLanguage}}</h3>
           <h3 ng-show="offerType=='offer'">{{properties.editOfferHelpInCurrentLanguage}}</h3>
       </div>
-      <form name="offeringForm" class="form-horizontal" ng-submit="update(offeringForm.$valid)" novalidate>
-        <div class="form-group" show-errors>
+      <form name="offeringForm" class="form-horizontal" ng-submit="update()" novalidate>
+        <div class="form-group">
           <br>
           <div id="labels">
             <p>{{properties.categoryTitle}}</p>
@@ -31,32 +31,22 @@
           <div class="row">
               <div class="input-field col s7">
                   <i class="material-icons prefix">description</i>
-                    <input name="description" type="text" ng-model="offering.description" id="description" class="form-control" required>
+                    <input name="description" type="text" ng-model="offering.description" id="description">
                     <label for="description">{{properties.description}}</label>
-                    <div ng-messages="offeringForm.description.$error" role="alert">
-                      <p class="help-block error-text" ng-message="required">Offering description is required.</p>
-                    </div>
               </div>
           </div>
   
-          <!-- TODO  make those required, also change ng-model names in this file -->
           <div class="row">
               <div class="input-field col s7" ng-hide="geoManual">
                 <i class="material-icons prefix">room</i>
                 <label for="city">{{properties.city}}</label>
-                <input id="city" type="text" class="validate" placeholder="{{properties.city}}" ng-model="offering.city">
+                <input id="city" type="text" placeholder="{{properties.city}}" ng-model="offering.city">
               </div>
               <div class="input-field col s7" ng-show="geoManual">
                 <i class="material-icons prefix">room</i>
                 <select name="repeatSelect" id="where" ng-model="where" 
                   ng-options="option.name for option in citylist">
-<!--
-                  <option value="" disabled selected>Choose your city</option>
-                  <option ng-repeat="option in citylist" value="{{option.name}}">{{option.name}}</option>
--->
                 </select>
-                <hr>
-                <i>current selection = {{where.name}}</i><br/>
               </div>
               <style>
               select { display: flex; margin-left: 3rem; width: 93%}
@@ -67,7 +57,7 @@
               <div class="input-field col s7">
                   <i class="material-icons prefix">schedule</i>
                   <label for="when">{{properties.when}}</label>
-                  <input id="when" type="date" ng-model="offering.when" name="date" class="datepicker">
+                  <input id="when" type="text" ng-model="offering.when" name="date" class="datepicker">
               </div>
           </div>
   
