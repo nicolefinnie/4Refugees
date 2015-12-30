@@ -1,154 +1,33 @@
 'use strict';
 /* global Materialize:false */
 
-var ARABIC = 'العربية';
-var ENGLISH = 'English';
-var GERMAN = 'Deutsch';
-
-//English
-var SIGNIN_EN = 'Sign in';
-var REGISTER_EN = 'Register';
-var SIGNOUT_EN = 'Sign out';
-var CHAT_EN = 'Chat';
-var INMAIL_EN = 'InMail';
-var SHOW_NEW_MAILS_EN = 'Show New Mails';
-var SHOW_ALL_MAILS_EN = 'Show All Mails';
-
-var LIST_MY_OFFERINGS_EN = 'List My Offerings';
-var EDIT_PROFILE_EN = 'Edit Profile';
-var CHANGE_PROFILE_PICTURE_EN = 'Change Profile Picture';
-var CHANGE_PASSWORD_EN = 'Change Password';
-var MANAGE_SOCIAL_ACCOUNTS_EN = 'Manage Social Accounts';
-
-//German
-var SIGNIN_DE = 'Anmelden';
-var REGISTER_DE = 'Registieren';
-var SIGNOUT_DE = 'Abmelden';
-var CHAT_DE = 'Chat';
-var INMAIL_DE = 'Post';
-var SHOW_NEW_MAILS_DE = 'Neue Mails anzeigen';
-var SHOW_ALL_MAILS_DE = 'Alle Mails anzeigen';
-
-var LIST_MY_OFFERINGS_DE = 'Meine Angebote Anzeigen';
-var EDIT_PROFILE_DE = 'Profil Editieren';
-var CHANGE_PROFILE_PICTURE_DE = 'Profilbild Ändern';
-var CHANGE_PASSWORD_DE = 'Passwort Ändern';
-var MANAGE_SOCIAL_ACCOUNTS_DE = 'Sozialkonten verwalten';
-
-
-//Arabic
-var SIGNIN_AR = 'تسجيل الدخول';
-var REGISTER_AR = 'سجل';
-var SIGNOUT_AR = 'تسجيل الخروج';
-var CHAT_AR = 'دردشة';
-var INMAIL_AR = 'رسائل';
-var SHOW_NEW_MAILS_AR = 'تظهر رسائل جديدة';
-var SHOW_ALL_MAILS_AR = 'عرض كل الرسائل';
-
-
-var LIST_MY_OFFERINGS_AR = 'قائمة العروض بلدي';
-var EDIT_PROFILE_AR = 'تعديل الملف الشخصي';
-var CHANGE_PROFILE_PICTURE_AR = 'تغيير الصورة الشخصية';
-var CHANGE_PASSWORD_AR = 'تغيير كلمة المرور';
-var MANAGE_SOCIAL_ACCOUNTS_AR = 'إدارة الحسابات الاجتماعية';
-
-
-function refreshHeaderInCurrentLanguage($scope, language){
-  if (language === 'ar') {
-    $scope.currentLanguageShownInHeader = ARABIC;
-    $scope.signIn = SIGNIN_AR;
-    $scope.register = REGISTER_AR;
-    $scope.signOut = SIGNOUT_AR;
-    $scope.chat = CHAT_AR;
-    $scope.inMail = INMAIL_AR;
-    $scope.showNewMails = SHOW_NEW_MAILS_AR;
-    $scope.showAllMails = SHOW_ALL_MAILS_AR;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
-    $scope.editProfile = EDIT_PROFILE_AR;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_AR;
-    $scope.changePassword = CHANGE_PASSWORD_AR;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_AR;
-  } 
-  else if (language === 'en') {
-    $scope.currentLanguageShownInHeader = ENGLISH;
-    $scope.signIn = SIGNIN_EN;
-    $scope.register = REGISTER_EN;
-    $scope.signOut = SIGNOUT_EN;
-    $scope.chat = CHAT_EN;
-    $scope.inMail = INMAIL_EN;
-    $scope.showNewMails = SHOW_NEW_MAILS_EN;
-    $scope.showAllMails = SHOW_ALL_MAILS_EN;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
-    $scope.editProfile = EDIT_PROFILE_EN;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
-    $scope.changePassword = CHANGE_PASSWORD_EN;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_EN;
-  } 
-  else if (language === 'de') {
-    $scope.currentLanguageShownInHeader = GERMAN;
-    $scope.signIn = SIGNIN_DE;
-    $scope.register = REGISTER_DE;
-    $scope.signOut = SIGNOUT_DE;
-    $scope.chat = CHAT_DE;
-    $scope.inMail = INMAIL_DE;
-    $scope.showNewMails = SHOW_NEW_MAILS_DE;
-    $scope.showAllMails = SHOW_ALL_MAILS_DE;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
-    $scope.editProfile = EDIT_PROFILE_DE;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_DE;
-    $scope.changePassword = CHANGE_PASSWORD_DE;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_DE;
-  }
-}
-
-
-function refreshLanguageDropdownMenu($scope, language){
-  if (language === 'ar') {
-    $scope.arabicSelected = true;
-    $scope.englishSelected = false;
-    $scope.germanSelected = false;
-
-  } 
-  else if (language === 'en') {
-    $scope.arabicSelected = false;
-    $scope.englishSelected = true;
-    $scope.germanSelected = false;
-  } 
-  else if (language === 'de') {
-    $scope.arabicSelected = false;
-    $scope.englishSelected = false;
-    $scope.germanSelected = true;
-  }  
-}
-
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
-  function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket', 'LanguageService',
+  function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket, LanguageService) {
     // default language
-    $rootScope.currentLanguage = 'en';
     
+    // initialize mobile side navigation
+    $('.button-collapse').sideNav();
+
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    // initialize the header language and dropdown menu in English
-    refreshHeaderInCurrentLanguage($scope, $rootScope.currentLanguage);
-    refreshLanguageDropdownMenu($scope, $rootScope.currentLanguage);
-    
     // language change clicked
     $scope.changeLanguage = function (language) {
-
-      $rootScope.currentLanguage = language;
-      // refresh header
-      refreshHeaderInCurrentLanguage($scope, language);
-      // refresh the dropdown menu if the language changes
-      refreshLanguageDropdownMenu($scope, language);
-      // broadcast this language change to HomeController to refresh
-      $rootScope.$broadcast('tellHomeToChangeLanguage');
-      
+      // set the current language in the language service
+      LanguageService.setCurrentLanguage(language);
+      // refresh view properties in the current language 
+      LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
+        $scope.properties = translationList;
+        // broadcast this language change to HomeController to refresh
+        $rootScope.$broadcast('tellAllControllersToChangeLanguage');
+      });
     };
 
-    //TODO remove the dynamically added menu 
-    //$scope.menu = Menus.getMenu('topbar');
+    // Set the initial language to English
+    $scope.changeLanguage('en');
+
+    //TODO remove the code below, if we don't have different icons for this 
     $scope.hasPostingBadge = false;
 
     // set 'new' badge to InMail if there is unread mail for me
@@ -210,6 +89,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
   }
 ]);
 
+/*TODO please describe how this controller does*/
 angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Authentication', 'Socket',
   function ($scope, Authentication, Socket) {
     $scope.authentication = Authentication;

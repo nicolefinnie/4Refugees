@@ -1,64 +1,132 @@
 
 <div ng-controller="AuthenticationController">
     
-  <h6 class="col-md-12 text-center rf-brand-text">Or sign up using your email</h6>
+  <h6 class="col-md-12 text-center rf-brand-text">{{properties.registerWithYourEmail}}</h6>
   <br><br>
   
   <div class="row">
-   <div class="col s4">
+   <div class="col m6 s11">
     <form name="userForm" ng-submit="signup(userForm.$valid)" class="signin" novalidate autocomplete="off">
-        <div class="input-field form-group" show-errors>
-          <i class="material-icons prefix">perm_identity</i>
-          <input type="text" id="firstName" name="firstName" class="validate" ng-model="credentials.firstName" placeholder="First Name" required>
-          <div ng-messages="userForm.firstName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">First name is required.</p>
+    <!-- first name input field -->
+        <div class="input-field form-group ibm-input-field" show-errors>
+          <div class="row">
+            <div class="col m1 s2">
+                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+            </div>
+            <div class="col m11 s10">
+                <input type="text" id="firstName" name="firstName" class="validate" ng-model="credentials.firstName" placeholder="{{properties.firstName}}" required>
+                <div ng-messages="userForm.firstName.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">First name is required.</p>
+            </div>
           </div>
-        </div>
-        <div class="input-field form-group" show-errors>
-        <i class="material-icons prefix">perm_identity</i>
-          <input type="text" id="lastName" name="lastName" class="validate" ng-model="credentials.lastName" placeholder="Last Name" required>
-          <div ng-messages="userForm.lastName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Last name is required.</p>
+         </div> <!-- end of row -->
+        </div> 
+        
+        <!-- last name input field -->
+        <div class="input-field form-group ibm-input-field" show-errors>
+          <div class="row">
+            <div class="col m1 s2">
+                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+            </div>
+            <div class="col m11 s10">
+                <input type="text" id="lastName" name="lastName" class="validate" ng-model="credentials.lastName" placeholder="{{properties.lastName}}" required>
+                <div ng-messages="userForm.lastName.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Last name is required.</p>
+            </div>
           </div>
+         </div> <!-- end of row -->
         </div>
-        <div class="input-field form-group" show-errors>
-          <i class="material-icons prefix">email</i>
-          <input type="email" id="email" name="email" class="validate" ng-model="credentials.email" placeholder="Email" lowercase required>
-          <div ng-messages="userForm.email.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Email address is required.</p>
-            <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
-          </div>
-        </div>
-        <div class="input-field form-group" show-errors>
-          <i class="material-icons prefix">account_circle</i>
-          <input type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="Username" lowercase required>
-          <div ng-messages="userForm.username.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Username is required.</p>
-          </div>
-        </div>
-        <div class="input-field form-group" show-errors>
-         <i class="material-icons prefix">lock_open</i>
-         <input type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="Password" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
-          <div ng-messages="userForm.password.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Password is required.</p>
-            <div ng-repeat="passwordError in passwordErrors">
-              <p class="help-block error-text" ng-show="userForm.password.$error.requirements">{{passwordError}}</p>
+        <!-- email input field -->
+        <div class="input-field form-group ibm-input-field" show-errors>
+          <div class="row">
+            <div class="col m1 s2">
+                <svg ng-if="!hasPostingBadge" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                </svg> 
+            </div>
+            <div class="col m11 s10">
+                <input type="email" id="email" name="email" class="validate" ng-model="credentials.email" placeholder="{{properties.email}}" lowercase required>
+                <div ng-messages="userForm.email.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">Email address is required.</p>
+                    <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
+                </div>
             </div>
           </div>
         </div>
+        <!-- username input field -->
+        <div class="input-field form-group ibm-input-field" show-errors>
+          <div class="row">
+            <div class="col m1 s2">
+                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+            </div>
+            <div class="col m11 s10">
+                <input type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="{{properties.username}}" lowercase required>
+                <div ng-messages="userForm.username.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Username is required.</p>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- password input field -->
+        <div class="input-field form-group ibm-input-field" show-errors>
+          <div class="row">
+            <div class="col m1 s2">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M25,1L12.611,13.388C11.785,13.138,10.908,13,10,13c-4.971,0-9,4.029-9,9s4.029,9,9,9s9-4.029,9-9
+                    c0-0.909-0.138-1.785-0.389-2.612L21,17v-2h2l8-8V1H25z M29,6.171L22.172,13H21h-2v2v1.171l-1.803,1.802l-0.848,0.848l0.348,1.147
+                    C16.898,20.63,17,21.313,17,22c0,3.86-3.141,7-7,7s-7-3.14-7-7s3.141-7,7-7c0.686,0,1.37,0.102,2.031,0.302l1.146,0.348
+                    l0.848-0.848L25.828,3H29V6.171z"/>
+                    <circle cx="8" cy="24" r="2"/>
+                    <rect x="19.757" y="7.5" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 46.6274 -3.3137)" width="8.485" height="1"/>
+                </svg>
+            </div>
+              <div class="col m11 s10">
+                <input type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="{{properties.password}}" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
+                <div ng-messages="userForm.password.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Password is required.</p>
+                <div ng-repeat="passwordError in passwordErrors">
+                  <p class="help-block error-text" ng-show="userForm.password.$error.requirements">{{passwordError}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <div class="form-group" ng-show="!userForm.password.$error.required">
           <label>Password Requirements</label>
           <progressbar value="requirementsProgress" type="{{requirementsColor}}"><span style="color:white; white-space:nowrap;">{{requirementsProgress}}%</span></progressbar>
         </div>
-       <br><br> 
         <div class="text-center form-group">
-        	<button type="submit" class="btn waves-effect waves-light rf-brand-bg">Sign up
-         	</button>
-          &nbsp; or&nbsp;
-          	<a ui-sref="authentication.signin" class="show-signup">Sign in</a>
-        </div>
-        <div ng-show="error" class="text-center text-danger">
-          <strong ng-bind="error"></strong>
+          <div class="row">
+            <div class="col m6 s6">
+        	   <button type="submit" class="btn waves-effect waves-light ibm-button">{{properties.register}}
+         	  </button>
+            </div>
+            <div class="col m6 s6">
+                 &nbsp;{{properties.or}}&nbsp;
+                 <a ui-sref="authentication.signin" class="show-signup">{{properties.signIn}}</a>
+                <div ng-show="error" class="text-center text-danger">
+                <strong ng-bind="error"></strong>
+                </div>
+            </div> 
+          </div>
         </div>
     </form>
    </div>

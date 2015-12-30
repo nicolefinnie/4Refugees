@@ -12,11 +12,11 @@ header, main, footer {
 nav {
     overflow: visible;
 }
-
+   
 /** The header that controls the entire bar color/text/font **/
 .ibm-header{
-     
-    background: color('gray', 80);
+   padding: 0 10% 0 10%;
+   background: color('gray', 80);
     /* text color */
     color: color('white', core);
      /* a: title */
@@ -25,113 +25,177 @@ nav {
      }
 }
 
-/** The logo in the header bar */
+
+/** The brand logo 4Refuge.es common setup for bigger screens as well as smaller screens*/
+.ibm-brand-logo{
+    font-size: 25px;
+}
+
+
+/** The header logo icon common setup for screens over the min size defined below*/
 .ibm-header-logo{
   display: inline-block;
-  margin-top: 10px;
-  margin-right: 20px;
-  padding: 0;
+  margin-top: 0.6%;
+  width: 50px;
   background-repeat: no-repeat;
-  width: 15%;
-  height: 15%;
   border: 3px solid white;
   background-color:rgb(255,255,255); 
   background-color:rgba(255,255,255,0.7);
   border-radius: 50%;  
 }
 
+/** The header logo needs some space to the brand name in Latin languages*/
+.ibm-header-logo.left{
+  margin-right: 2%;
+}
+  
+/** The header logo needs some space to the brand name in the header bar in Arabic*/
+.ibm-header-logo.right{
+  margin-left: 2%;
+}
+  
+/** The logo in the header bar for small screen such as mobile */
+
 /* dropdown - for each menu */
 /* override materialize dropdown hover color because red is ugly :P */
 .ibm-dropdown-container{
-    li:hover{
+    li:hover, li.active{
         /* menu background color when it's hovered*/
         background: color('gray', 10);
      
-        /* text color when it's hovered*/
+        /* text color when the header menu is active or hovered*/
         a.active, a:hover{
             color: color('gray', 80);    
-        }
-    }
-    li.active{
-        background: color('gray', 80);
-        
-        /* text color when it's hovered and active*/
-        a.active, a:hover{
-            color: color('white', core);    
         }
     }
     
 }
 
 
-/* dropdown - for each component inside the menu*/
+/* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component{
-    /* the first menu item starts below the header bar*/
-    margin-top: 62px;
+    /* the first menu item starts below the header bar, fixed size because the header height doesn't change by the screen size*/
+    margin-top: 64px;
     background: color('gray', 80);
     /* li: menu component */
     li{
+        a{  
+            /* menu text */
+            color: color('white', core);
+            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
+            
+            /* small material icon for language check marks */
+            i.small{
+                font-size: 16px;
+            }
+            /* large material icon for the rest of icons if it's not an IBM design icon */
+            i.large{
+                font-size: 26px;
+            }
+            /* svg IBM design icons*/
+            svg{
+                fill: color('white', core);
+                margin: 0 10% 10% 0;
+            }
+         } 
+         a:hover, a.active, a:hover svg, a.active svg {
+            /* menu component text e.g. mail, profile */
+            color: color('gray', 80);
+            /* svg icons of menu components*/
+            fill: color('gray', 80);
+         }
+     }
+     /* the menu component being currently selected is highlighted in a light color, so the text should be dark*/
+     li.active{
+        a, a svg {
+            /* menu component text e.g. mail, profile */
+            color: color('gray', 80);
+            /* svg icons of menu components*/
+            fill: color('gray', 80);
+        }
+     }   
+}
+
+/* mobile menu */
+.ibm-mobile-menu{
+    background: color('gray', 80);
+    /* li: menu component */
+    li{
+        
         a{
             /* menu text */
             color: color('white', core);
             font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
             
-            /* icon */
-            i{
+            /* small material icon for language check marks */
+            i.small{
+                margin-top: 12%;
                 font-size: 16px;
             }
-         } 
-         a:hover {
+            /* large material icon - only for materialize read mail icon, should be removed because we should use IBM icons instead*/
+            i.large{
+                padding: 15px 0 0 0;
+                font-size: 36px;
+            }
+           
+            /* svg IBM design icons*/
+            svg{
+                fill: color('white', core);
+                margin: 10% 15% 0 0;
+            }
+        } 
+        a:hover {
             /* menu text */
             color: color('gray', 80);
-         }
+        }
+        a:hover svg{
+            fill: color('gray', 80);
+        }
      }   
 }
-/** Cover picture - no gap between the picture and its neighbours **/
+/** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
-  overflow: hidden;
-  display: block;
-  
+  margin-bottom: -10%;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
   /* img: cover picture */
   img {
     width: 100%;
-    positoin: relative;
-    margin-bottom: -10px;
+    overflow: hidden;
+    display: block;
   }
 }
 
 
 /** welcome bar - between the header and the footer */
 .ibm-welcome-bar{
-    padding: 20px;
     background: color('blue', 40);
+    
     /* text color */
     color: color('white', core);
     
-    /* img: logo */
+    /* img: logo in fixed size in Latin languages */
     img {
+        margin: 10% 0 10% 0;
         display: block;
         height: 100px;
-        padding: 0;
-        margin: 10px 20px 20px 50px;
         border: 4px solid white;
         background-color:rgb(255,255,255); 
         background-color:rgba(255,255,255,0.7);
         border-radius: 100px;  
     }   
-     
+      
     /* h1: headline */
     h1 {
         font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 32px;
-        margin: 20px;
     }
     
     /* h2: sub-headline */
     h2 {
         font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:500; font-stretch:normal;
         font-size: 16px;
-        margin: 20px;
     }
 }
 
@@ -139,9 +203,8 @@ nav {
 
 .ibm-help-bar{
     background: color('cool-white', 20);
-    padding: 10px 10px 10px;
-     margin-top: 20px;
- 
+    padding: 5% 5% 0 5%;
+    margin-top: 5%;
     /* h1: icon */
     h1 svg{
         fill: color('blue', 40);
@@ -170,7 +233,34 @@ nav {
     
 }
 
+/* smaller screens */    
+@media screen and (max-width:500px) {
+   /* The header bar needs padding to its left and right so the logo and menu are located more in the middle*/
+  .ibm-header{
+    padding: 0 2% 0 2%;
+  }   
+  /* On smaller screens, logo width has a fixed size so its size won't gradually change with the screen size*/
+  .ibm-header-logo{
+    margin-top: 2%;
+    width: 40px;
+  }
+   /* welcome to Germany bar for smaller screens, logo to the right needs space*/   
+  .ibm-welcome-bar.arabic{
+        img{
+            margin-right: 10%;
+        }
+    }
+}
 
+/* bigger screens based on materialize css definition */    
+@media screen and (min-width:992px) {
+ /* welcome to Germany bar in Arabic */   
+    .ibm-welcome-bar.arabic{
+        h1,h2{
+            margin-left: 60%;
+        }
+    }
+}
 /** This design below comes with Mean.JS **/
 .undecorated-link:hover {
   text-decoration: none;
