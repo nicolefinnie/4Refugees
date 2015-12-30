@@ -3,14 +3,12 @@
 
 angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket', 'LanguageService',
   function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket, LanguageService) {
-    // default language
-    
-    // initialize mobile side navigation
-    $('.button-collapse').sideNav();
-
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
+
+    // initialize mobile side navigation
+    $('.button-collapse').sideNav();
 
     // language change clicked
     $scope.changeLanguage = function (language) {
@@ -24,6 +22,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       });
     };
 
+  
     // Set the initial language to English
     $scope.changeLanguage('en');
 

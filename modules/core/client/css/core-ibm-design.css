@@ -97,12 +97,14 @@ nav {
     font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
     font-weight: 300;
     font-stretch: normal;
-    /* small material icon for language check marks */
+    /* small material icon for language check marks, materialize.css doesn't work for icon size for whatever reason, we override the size and line-height 
+     * line-height is 400% of the current font size. 
+     */
     /* large material icon - only for materialize read mail icon, should be removed because we should use IBM icons instead*/
     /* svg IBM design icons*/ }
     .ibm-mobile-menu li a i.small {
-      margin-top: 12%;
-      font-size: 16px; }
+      font-size: 1rem;
+      line-height: 400%; }
     .ibm-mobile-menu li a i.large {
       padding: 15px 0 0 0;
       font-size: 36px; }

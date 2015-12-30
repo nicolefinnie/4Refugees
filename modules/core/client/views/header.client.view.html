@@ -9,10 +9,14 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <img ui-sref="home" src="modules/core/client/img/brand/logo.svg" class="ibm-header-logo" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">
         <a ui-sref="home" class="ibm-brand-logo" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">
         4Refuge.es</a>
-        <a href="#" data-activates="mobile-navigator" class="button-collapse" ng-class="{right:!properties.rightToLeft, left:properties.rightToLeft}"><i class="material-icons">menu</i></a>
-        <a href="#" data-activates="language-mobile-navigator" class="button-collapse" ng-class="{right:!properties.rightToLeft, left:properties.rightToLeft}"><i class="material-icons">language</i></a>
+        <!-- mobile hamburger menus for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi -->
+        <a href="#" data-activates="mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <!-- mobile language menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
+        <a href="#" data-activates="language-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">language</i></a>
+        <a href="#" data-activates="language-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">language</i></a>
 
-        <!-- mobile menu -->
+        <!-- mobile menu for languages -->
         <ul class="side-nav ibm-mobile-menu" id="language-mobile-navigator">
             <li ui-sref-active="active">
                 <a ng-click="changeLanguage('ar')" >العربية
@@ -30,6 +34,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 </a>
             </li>
         </ul>
+        <!-- mobile user menu -->
         <ul class="side-nav ibm-mobile-menu" id="mobile-navigator">
             <ul ng-hide="authentication.user">
                 <li ui-sref-active="active" >
@@ -106,7 +111,6 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 </li>
             </ul>   
         </ul> <!-- end of mobile menu -->
-
       <!-- Menu for big screen e.g. computer - ibm dropdown container -->
       <div class="ibm-dropdown-container hide-on-med-and-down" >
         <!-- Dropdown for unauthenticated users -->
