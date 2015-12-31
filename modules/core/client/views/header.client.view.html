@@ -66,11 +66,11 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             <ul ng-show="authentication.user">
                 <li ui-sref-active="active">
                     <a ui-sref="postings.list"> 
-                        <svg ng-if="!hasPostingBadge" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg ng-if="!hasUnreadMail" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                         </svg> 
-                        <i class="large material-icons" ng-if="hasPostingBadge" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">markunread_mailbox</i>
+                        <i class="large material-icons" ng-if="hasUnreadMail" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">markunread_mailbox</i>
                         {{properties.mail}}
                     </a>
                 </li>
@@ -137,11 +137,11 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 <ul id="dropdownAuth" class="dropdown-content ibm-dropdown-component">
                     <li ui-sref-active="active">
                     <a ui-sref="postings.list">
-                        <svg ng-if="!hasPostingBadge" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg ng-if="!hasUnreadMail" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                         </svg>
-                        <i class="large material-icons" ng-if="hasPostingBadge">markunread_mailbox</i>
+                        <i class="large material-icons" ng-if="hasUnreadMail">markunread_mailbox</i>
                         {{properties.mail}}
                     </a>
                     </li>
@@ -233,6 +233,4 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
     </div>
   </nav>
 </div>
-
-<section ng-controller="HeaderNewOfferingsController"></section>
 

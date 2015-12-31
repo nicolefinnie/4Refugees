@@ -134,30 +134,42 @@ exports.list = function (req, res) {
     delete query.reset;
   }
 
-  console.log('list: query is ' + JSON.stringify(query));
-  //console.log('list: body is ' + JSON.stringify(req.body));
-
-  //Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
-  Posting.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, postings) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      // mark mails read - even for admins only for their specific id
-      //if (!query.recipient) {
-      //  query.recipient = req.user._id;
-      //}
-      res.json(postings);
-      //console.log('mail result: ' + JSON.stringify(postings));
-
-      if (reset) {
-        Posting.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
-          console.log('mark mail read result: ' + JSON.stringify(res));
+  if (query.countOnly === 'true') {
+    // Client just wanted a count, to avoid cost of populating and sending all docs
+    delete query.countOnly;
+    Posting.count(query, function (err, count) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
         });
+      } else {
+        var result = [{ numResults: count }];
+        res.json(result);
       }
-    }
-  });
+    });
+  } else {
+    //Posting.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, postings) {
+    Posting.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, postings) {
+      if (err) {
+        return res.status(400).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        // mark mails read - even for admins only for their specific id
+        //if (!query.recipient) {
+        //  query.recipient = req.user._id;
+        //}
+        res.json(postings);
+        //console.log('mail result: ' + JSON.stringify(postings));
+  
+        if (reset) {
+          Posting.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
+            console.log('mark mail read result: ' + JSON.stringify(res));
+          });
+        }
+      }
+    });
+  }
       
 };
 

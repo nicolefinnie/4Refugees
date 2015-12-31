@@ -1,8 +1,8 @@
 'use strict';
 /* global Materialize:false */
 
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket', 'LanguageService',
-  function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket, LanguageService) {
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService',
+  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService) {
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -26,25 +26,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     // Set the initial language to English
     $scope.changeLanguage('en');
 
-    //TODO remove the code below, if we don't have different icons for this 
-    $scope.hasPostingBadge = false;
-
-    // set 'new' badge to InMail if there is unread mail for me
-    if (Authentication.user) {
-      $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
-        var postings;
-        if (response.statusCode >= 200 || response.statusCode <= 299) {
-          postings = response.data;
-          if (postings.length > -1) $scope.hasPostingBadge = true;
-        }
-      });
-    }
+    // TODO Find better way of alerting the user of new mail using IBM icons
+    $scope.hasUnreadMail = false;
 
     $scope.checkAdminRole = function() {
-      if (Authentication) {
-        if (Authentication.user) {
-          return (Authentication.user.roles.indexOf('admin') > -1);
-        }
+      if (Authentication && Authentication.user) {
+        return (Authentication.user.roles.indexOf('admin') > -1);
       }
       return false;
     };
@@ -60,68 +47,57 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       $scope.isCollapsed = false;
     });
 
-    // Make sure the Socket is connected
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    // Add an event listener to the 'postingMessage' event and show new inMails for logged in users
-    Socket.on('postingMessage', function (message) {
-
-      // TODO - do not check against the SENDER userName
-      if (message.content.recipient === Authentication.user._id) {
-        if (message.content.title) {
-          console.log('Received new email');
-          $scope.hasPostingBadge = true;
-        }
-        else {
-          console.log('Received remove email');
-          $scope.hasPostingBadge = false;
-        }
-      }
-      else
-      {
-        console.log('Somebody else received email');
-      }
-
-    });
-  }
-]);
-
-/*TODO please describe how this controller does*/
-angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Authentication', 'Socket',
-  function ($scope, Authentication, Socket) {
-    $scope.authentication = Authentication;
-
-    // Make sure the Socket is connected
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    // Add an event listener to the 'offeringMessage' event and toast logged in users
-    Socket.on('offeringMessage', function (message) {
-      var toastContent = '<span>new ' + message.content.category;
-
-      if (message.content.offerType === 0) {
-        toastContent = toastContent + ' request: ';
-      } else {
-        toastContent = toastContent + ' offering: ';
-      }
-
-      toastContent = toastContent + 
-        message.content.description.substr(0,10) + ' - posted by user ' + message.username.substr(0,20);
-
-      console.log('new stuff ' + toastContent);
-
-      // only post users logged in
+    // Set of all tasks that should be performed periodically
+    $scope.runIntervalTasks = function() {
       if (Authentication.user) {
-        Materialize.toast(toastContent, 5000);
+        // Check for unread mail, set flag to alert user if they have new mail.
+        MailService.checkForUnreadMail($http, function(unreadMailCount) {
+          $scope.hasUnreadMail = (unreadMailCount > 0);
+        });
       }
-    });
+    };
 
-    // Remove the event listener when the controller instance is destroyed
-    $scope.$on('$destroy', function () {
-      Socket.removeListener('offeringMessage');
+    // Polling interval is more frequent until we are authenticated.
+    // Before authentication, polling is a no-op.  This way, we can
+    // refresh quickly as soon as we authenticate, and then slow down
+    // to reduce load on the server.
+    $scope.getPollingInterval = function() {
+      var pollingInterval = 5000;
+      if (Authentication.user) {
+        pollingInterval = 60000;
+      }
+      return pollingInterval;
+    };
+
+    var polling; // promise, set when we start intervals, used to cancel intervals.
+    var pollingInterval = $scope.getPollingInterval();
+    $scope.startPolling = function() {
+      polling = $interval(function() {
+        $scope.runIntervalTasks();
+        var newPollingInterval = $scope.getPollingInterval();
+        // Check if our polling interval needs to change - i.e. we just Authenticated.
+        if (newPollingInterval !== pollingInterval) {
+          $scope.stopPolling();
+          pollingInterval = newPollingInterval;
+          $scope.startPolling();
+        }
+      }, pollingInterval);
+    };
+
+    $scope.stopPolling = function() {
+      if (angular.isDefined(polling)) {
+        $interval.cancel(polling);
+        polling = undefined;
+      }
+    };
+
+    // And now start our polling
+    $scope.runIntervalTasks();
+    $scope.startPolling();
+
+    $scope.$on('$destroy', function() {
+      $scope.stopPolling();
     });
   }
 ]);
+

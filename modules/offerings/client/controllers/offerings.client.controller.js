@@ -144,8 +144,8 @@ function validateOfferingSearch(scope) {
 
 // Controller handling offering searches
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                                     'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
+                                                                     'Authentication', 'Offerings', 'GeoService', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
     // initialize all properties in the view (html)
@@ -162,13 +162,6 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     
     // Ask for our current city+coordinates from Geo services
     geoGetCurrentLocation(GeoService, $scope, $http);
-
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
 
     // Search all offerings for the input criteria
     $scope.searchAll = function () {
@@ -206,8 +199,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
 //Edit controller only available for authenticated users
 angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                                   'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
+                                                                   'Authentication', 'Offerings', 'GeoService', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
 
     // initialize all properties in the view (html)
     LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
@@ -221,12 +214,6 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
       });
     });
 
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
     $scope.category = {};
     
     $scope.authentication = Authentication;
@@ -285,8 +272,8 @@ angular.module('offerings').controller('OfferingsEditController', ['$scope', '$r
 
 //Offerings controller only available for authenticated users
 angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                               'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
+                                                               'Authentication', 'Offerings', 'GeoService', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
     // initialize all properties in the view (html)
@@ -303,13 +290,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     // Ask for our current city+coordinates from Geo services
     geoGetCurrentLocation(GeoService, $scope, $http);
-
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
 
     // Create new Offering
     $scope.create = function () {
@@ -334,12 +314,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
         latitude: $scope.latitude,
         offerType: this.offerType 
       });
-
-      // Emit a 'offeringMessage' message event with the JSON offering object
-      var message = {
-        content: offering
-      };
-      Socket.emit('offeringMessage', message);
 
       // Redirect after save
       offering.$save(function (response) {
