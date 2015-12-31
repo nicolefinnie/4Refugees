@@ -69,17 +69,18 @@
 },
 
 {"viewName":"authentication",
-"or":"أو",
 "signInWithYourAccount":"أو تسجيل الدخول باستخدام حسابك",
-"signUpWithYourEmail":"أو قم بالتسجيل باستخدام البريد الإلكتروني الخاص بك", 
+"registerWithYourEmail":"أو قم بالتسجيل باستخدام البريد الإلكتروني الخاص بك", 
 "firstName":"الاسم الأول",
 "lastName":"الاسم الاخير",
 "email":"بريد الالكتروني",
 "username":"اسم المستخدم",
 "password":"الرمز السري",
 "signIn":"تسجيل الدخول",
-"register":"سجل",
-"forgetPassword":"هل نسيت كلمة المرور؟",
+"orSignIn":"أو تسجيل الدخول؟",
+"orRegister":"أو تسجيل؟",
+"register":"تسجيل",
+"forgetPassword":"أو نسيت كلمة السر الخاصة بك؟",
 "rightToLeft":true
 }
 ]

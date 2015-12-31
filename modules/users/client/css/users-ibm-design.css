@@ -1,8 +1,47 @@
+/** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg {
   margin-top: 50%; }
+
+/** hover over IBM design icons to make it look materialize css style */
 .ibm-input-field :hover svg {
   transition: fill 1s;
   fill: #008571; }
+
+/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field input.right-align {
+  direction: rtl; }
+
+/* override placeholder colors for different browsers using IBM design color*/
+::-webkit-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+:-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 18- */
+  color: #777677; }
+
+::-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 19+ */
+  color: #777677; }
+
+:-ms-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+.a .h1 .h2 .h3 .h4 .h5 .h6 {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal; }
 
 /* button */
 .ibm-button {

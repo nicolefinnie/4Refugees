@@ -68,7 +68,6 @@
 
 
 {"viewName":"authentication",
-"or":"oder",
 "signInWithYourAccount":"Oder mit Ihrem Account anmelden",
 "registerWithYourEmail":"Oder mit Ihrer Email registieren", 
 "firstName":"Vorname",
@@ -77,7 +76,9 @@
 "username":"Benutzername",
 "password":"Passwort",
 "signIn":"Anmelden",
+"orSignIn":"Oder Anmelden?",
 "register":"Registieren",
-"forgetPassword":"Ihr Passwort vergessen?"
+"orRegister":"Oder Registieren?",
+"forgetPassword":"Oder Ihr Passwort vergessen?"
 }
 ]

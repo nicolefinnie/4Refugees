@@ -67,7 +67,6 @@
 }, 
 
 {"viewName":"authentication",
-"or":"or",
 "signInWithYourAccount":"Or sign in with your account",
 "registerWithYourEmail":"Or register using your email", 
 "firstName":"First Name",
@@ -76,7 +75,9 @@
 "username":"username",
 "password":"Password",
 "signIn":"Sign In",
+"orSignIn":"Or Sign In?",
 "register":"Register",
-"forgetPassword":"Forgot your password?"
+"orRegister":"Or Register?",
+"forgetPassword":"or Forgot your password?"
 }
 ]

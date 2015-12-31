@@ -1,25 +1,24 @@
 
 <div ng-controller="AuthenticationController">
-    
-  <h6 class="col-md-12 text-center rf-brand-text">{{properties.registerWithYourEmail}}</h6>
-  <br><br>
   
   <div class="row">
-   <div class="col m6 s11">
+    <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+    <h6 ng-class="properties.rightToLeft ? 'right':'left'">{{properties.registerWithYourEmail}}</h6>
+    <br><br>
     <form name="userForm" ng-submit="signup(userForm.$valid)" class="signin" novalidate autocomplete="off">
     <!-- first name input field -->
         <div class="input-field form-group ibm-input-field" show-errors>
           <div class="row">
-            <div class="col m1 s2">
-                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                 <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
                 s-8-3.589-8-8S11.589,3,16,3z"/>
                 <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
                 </svg>
             </div>
-            <div class="col m11 s10">
-                <input type="text" id="firstName" name="firstName" class="validate" ng-model="credentials.firstName" placeholder="{{properties.firstName}}" required>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="text" id="firstName" name="firstName" class="validate" ng-model="credentials.firstName" placeholder="{{properties.firstName}}" required>
                 <div ng-messages="userForm.firstName.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">First name is required.</p>
             </div>
@@ -30,16 +29,16 @@
         <!-- last name input field -->
         <div class="input-field form-group ibm-input-field" show-errors>
           <div class="row">
-            <div class="col m1 s2">
-                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                 <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
                 s-8-3.589-8-8S11.589,3,16,3z"/>
                 <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
                 </svg>
             </div>
-            <div class="col m11 s10">
-                <input type="text" id="lastName" name="lastName" class="validate" ng-model="credentials.lastName" placeholder="{{properties.lastName}}" required>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="text" id="lastName" name="lastName" class="validate" ng-model="credentials.lastName" placeholder="{{properties.lastName}}" required>
                 <div ng-messages="userForm.lastName.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">Last name is required.</p>
             </div>
@@ -49,14 +48,14 @@
         <!-- email input field -->
         <div class="input-field form-group ibm-input-field" show-errors>
           <div class="row">
-            <div class="col m1 s2">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                 <svg ng-if="!hasPostingBadge" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                     <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                 </svg> 
             </div>
-            <div class="col m11 s10">
-                <input type="email" id="email" name="email" class="validate" ng-model="credentials.email" placeholder="{{properties.email}}" lowercase required>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="email" id="email" name="email" class="validate" ng-model="credentials.email" placeholder="{{properties.email}}" lowercase required>
                 <div ng-messages="userForm.email.$error" role="alert">
                     <p class="help-block error-text" ng-message="required">Email address is required.</p>
                     <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
@@ -67,7 +66,7 @@
         <!-- username input field -->
         <div class="input-field form-group ibm-input-field" show-errors>
           <div class="row">
-            <div class="col m1 s2">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                 <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                 <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
@@ -75,8 +74,8 @@
                 <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
                 </svg>
             </div>
-            <div class="col m11 s10">
-                <input type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="{{properties.username}}" lowercase required>
+              <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="{{properties.username}}" lowercase required>
                 <div ng-messages="userForm.username.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">Username is required.</p>
                 </div>
@@ -86,7 +85,7 @@
         <!-- password input field -->
         <div class="input-field form-group ibm-input-field" show-errors>
           <div class="row">
-            <div class="col m1 s2">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                     <path d="M25,1L12.611,13.388C11.785,13.138,10.908,13,10,13c-4.971,0-9,4.029-9,9s4.029,9,9,9s9-4.029,9-9
@@ -97,8 +96,8 @@
                     <rect x="19.757" y="7.5" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 46.6274 -3.3137)" width="8.485" height="1"/>
                 </svg>
             </div>
-              <div class="col m11 s10">
-                <input type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="{{properties.password}}" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="{{properties.password}}" popover="{{popoverMsg}}" popover-trigger="focus" password-validator required>
                 <div ng-messages="userForm.password.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">Password is required.</p>
                 <div ng-repeat="passwordError in passwordErrors">
@@ -115,13 +114,13 @@
         </div>
         <div class="text-center form-group">
           <div class="row">
-            <div class="col m6 s6">
-        	   <button type="submit" class="btn waves-effect waves-light ibm-button">{{properties.register}}
-         	  </button>
+           <div class="col m12 s12">
+                <button type="submit" class="btn waves-effect waves-light ibm-button" ng-class="properties.rightToLeft ? 'right':'left'">{{properties.register}}
+                </button>
             </div>
-            <div class="col m6 s6">
-                 &nbsp;{{properties.or}}&nbsp;
-                 <a ui-sref="authentication.signin" class="show-signup">{{properties.signIn}}</a>
+            <br><br>
+            <div class="col m12 s12">
+                 <a  ng-class="properties.rightToLeft ? 'right':'left'" ui-sref="authentication.signin" class="show-signup">{{properties.orSignIn}}</a>
                 <div ng-show="error" class="text-center text-danger">
                 <strong ng-bind="error"></strong>
                 </div>
