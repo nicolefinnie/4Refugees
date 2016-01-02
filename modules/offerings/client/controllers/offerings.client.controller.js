@@ -110,9 +110,14 @@ function geoGetCurrentLocation(GeoService, $scope, $http) {
 
 // Validate a suitable geoLocation was specified
 function validateGeoLocation(scope) {
-  var isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
-  // if google geo is not reachable or user does not allow it
-  if (!isValid && scope.where)
+  var isValid = false;
+  
+  // google geo is available
+  if (scope.geoManual === false){
+    isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
+  }
+  // google geo is not reachable or user does not allow it
+  else if (scope.where !== undefined)
   {
     isValid = true;
     scope.city = scope.where.name;
@@ -148,6 +153,12 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
+    // initialize datepicker
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10 // Creates a dropdown of 15 years to control year
+    });
+    
     // initialize all properties in the view (html)
     LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
       $scope.properties = translationList;
@@ -165,9 +176,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     // Search all offerings for the input criteria
     $scope.searchAll = function () {
-        
       $scope.error = null;
-
       validateOfferingSearch($scope);
 
       var now = new Date(); 
@@ -276,6 +285,13 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
+    // initialize datepicker
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10 // Creates a dropdown of 15 years to control year
+    });
+    
+    
     // initialize all properties in the view (html)
     LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
       $scope.properties = translationList;
@@ -293,8 +309,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     // Create new Offering
     $scope.create = function () {
-      $scope.error = null;
-
+      $scope.error = null;     
       validateOfferingInput($scope, $scope);
 
       // Create new Offering object

@@ -36,11 +36,13 @@ nav {
   border-radius: 50%; }
 
 /** The header logo needs some space to the brand name in Latin languages*/
-.ibm-header-logo.left {
+.ibm-header-logo.latin {
+  float: left;
   margin-right: 2%; }
 
 /** The header logo needs some space to the brand name in the header bar in Arabic*/
-.ibm-header-logo.right {
+.ibm-header-logo.arabic {
+  float: right;
   margin-left: 2%; }
 
 /** The logo in the header bar for small screen such as mobile */
@@ -74,8 +76,7 @@ nav {
     .ibm-dropdown-component li a i.large {
       font-size: 26px; }
     .ibm-dropdown-component li a svg {
-      fill: #fff;
-      margin: 0 10% 10% 0; }
+      fill: #fff; }
   .ibm-dropdown-component li a:hover, .ibm-dropdown-component li a.active, .ibm-dropdown-component li a:hover svg, .ibm-dropdown-component li a.active svg {
     /* menu component text e.g. mail, profile */
     color: #323232;
@@ -86,6 +87,14 @@ nav {
     color: #323232;
     /* svg icons of menu components*/
     fill: #323232; }
+
+.ibm-dropdown-component.latin li a svg {
+  margin: 0 15% 10% 0;
+  float: left; }
+
+.ibm-dropdown-component.arabic li a svg {
+  margin: 0 0 10% 0;
+  float: right; }
 
 /* mobile menu */
 .ibm-mobile-menu {
@@ -109,13 +118,20 @@ nav {
       padding: 15px 0 0 0;
       font-size: 36px; }
     .ibm-mobile-menu li a svg {
-      fill: #fff;
-      margin: 10% 15% 0 0; }
+      fill: #fff; }
   .ibm-mobile-menu li a:hover {
     /* menu text */
     color: #323232; }
   .ibm-mobile-menu li a:hover svg {
     fill: #323232; }
+
+.ibm-mobile-menu.latin li a svg {
+  margin: 10% 15% 0 0;
+  float: left; }
+
+.ibm-mobile-menu.arabic li a svg {
+  margin: 10% 0 0 0;
+  float: right; }
 
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {

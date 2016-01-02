@@ -1,0 +1,103 @@
+.ibm-category-checkbox.latin label {
+  margin-right: 3%; }
+
+.ibm-category-checkbox.arabic input, .ibm-category-checkbox.arabic label {
+  margin-left: 3%;
+  float: right; }
+
+/** make IBM design icons more aligned to the input field and hover over IBM design icons to make it look materialize css style */
+/** TODO: this CSS is defined in the uesr module already, but for now, we have the same css for offering module
+to fulfill the vertical MVC concept of Mean.JS framework, later, we might want to consolidate them together to remove duplicate code */
+.ibm-input-field svg {
+  margin-top: 50%; }
+.ibm-input-field :hover svg {
+  transition: fill 1s;
+  fill: #008571; }
+
+/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field input.right-align {
+  direction: rtl; }
+
+/* geo location when there's no geo service, a drow down select city list is shown*/
+.ibm-input-field select {
+  display: inline-flex;
+  background: #f9f9fb;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-top: 2%;
+  height: 36px;
+  overflow: hidden; }
+  .ibm-input-field select option {
+    background: #323232;
+    color: #fff;
+    border: 0; }
+
+/* button */
+.ibm-button, .ibm-submit-area button {
+  background: #008571;
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 16px;
+  text-transform: capitalize;
+  /* override materialize style, use IBM design icons in a button */ }
+  .ibm-button svg, .ibm-submit-area button svg {
+    margin-top: 1px;
+    height: 24px;
+    width: 24px;
+    margin-left: 5px;
+    vertical-align: middle;
+    fill: #fff; }
+
+/* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
+.ibm-submit-area :hover button svg {
+  fill: #fff; }
+.ibm-submit-area strong {
+  color: #e71d32; }
+
+.ibm-submit-area.latin button, .ibm-submit-area.latin a, .ibm-submit-area.latin strong {
+  float: left; }
+
+.ibm-submit-area.arabic button, .ibm-submit-area.arabic a, .ibm-submit-area.arabic strong {
+  float: right; }
+.ibm-submit-area.arabic button svg {
+  margin-top: 5px;
+  margin-right: 5px;
+  float: left;
+  transform: rotate(90deg); }
+
+/* override placeholder colors for different browsers using IBM design color*/
+::-webkit-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+:-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 18- */
+  color: #777677; }
+
+::-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 19+ */
+  color: #777677; }
+
+:-ms-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+.a .h1 .h2 .h3 .h4 .h5 .h6 {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal; }
+
+/*# sourceMappingURL=offerings-ibm-design.css.map */

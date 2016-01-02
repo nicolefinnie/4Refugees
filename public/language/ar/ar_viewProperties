@@ -30,7 +30,6 @@
 "updateButton":"تحديث",
 "deleteButton":"حذف",
 "contact":"اتصال",
-"categoryTitle":"فئة",
 "jobTraining":"التدريب المهني",
 "languageCourses":"دورات اللغة",
 "medicalAssistance":"المساعدة الطبية",
@@ -65,7 +64,8 @@
 "requestExpired":"طلب منتهية الصلاحية",
 "errorNoDescription":"وصف صالح، يرجى إدخال وصف صالح وحاول مرة أخرى",
 "errorNoCity":"موقع غير صالح المقدمة، يرجى تحديد أقرب مدينتك وحاول مرة أخرى",
-"errorNoResults":"لا توجد نتائج، يرجى تعديل بحثك وحاول مرة أخرى"
+"errorNoResults":"لا توجد نتائج، يرجى تعديل بحثك وحاول مرة أخرى",
+"rightToLeft":true
 },
 
 {"viewName":"authentication",

@@ -1,0 +1,88 @@
+
+<section ng-controller="OfferingsController">
+<div class="row">
+    <div class="col m12 s11">
+            <h3 ng-show="offerType=='request'">{{properties.needHelpInCurrentLanguage}}</h3>
+            <h3 ng-show="offerType=='offer'">{{properties.offerHelpInCurrentLanguage}}</h3>
+        <form name="offeringForm" ng-submit="create()" novalidate>
+          <div class="form-group">
+            <br>
+            <div id="labels">
+                <p>{{properties.categoryTitle}}</p>
+                <input type="checkbox" id="training" name="training" ng-model="category.training">
+                <label for="training" class="ibm-category-checkbox">{{properties.jobTraining}}</label>   
+      
+                <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
+                <label for="courses" class="ibm-category-checkbox">{{properties.languageCourses}}</label> 
+      
+                <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
+                <label for="medical" class="ibm-category-checkbox">{{properties.medicalAssistance}}</label> 
+      
+                <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
+                <label for="childcare" class="ibm-category-checkbox">{{properties.childCare}}</label> 
+                  
+                <input type="checkbox" id="others" name="others" ng-model="category.others">
+                <label for="others" class="ibm-category-checkbox">{{properties.others}}</label> 
+            </div>
+            <br><br>
+        
+            <div class="row">
+                <div class="input-field col m6 s11">
+                    <i class="material-icons prefix">description</i>
+                    <input name="description" type="text" ng-model="description" id="description">
+                    <label for="description">{{properties.description}}</label>
+                </div>
+            </div>
+      
+            <div class="row">
+              <div class="input-field col m6 s11" ng-hide="geoManual">
+                <i class="material-icons prefix">room</i>
+                <input id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+              </div>
+              <div class="input-field col m6 s11" ng-show="geoManual">
+                <i class="material-icons prefix">room</i>
+                <select name="repeatSelect" id="where" ng-model="where" 
+                  ng-options="option.name for option in citylist">
+                </select>
+              </div>
+              <style>
+              select { display: flex; margin-left: 3rem; width: 93%}
+              </style>
+            </div>
+
+            <div class="row">
+                <div class="input-field col m6 s11">
+                    <i class="material-icons prefix">schedule</i>
+                    <label for="when">{{properties.when}}</label>
+                    <input id="when" type="text" ng-model="when" name="date" class="datepicker">
+                </div>
+            </div>
+
+        <script>
+          $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 10 // Creates a dropdown of 15 years to control year
+          });
+        </script>
+
+            <div class="row">
+                <div class="form-group col s6 m4">
+                    <button type="submit" id="createButton" class="btn waves-effect waves-light ibm-button">{{properties.add}}
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <div class="col s6 m4">
+                  <a href="offerings/search?offerType=offer" ng-show="offerType=='request'">{{properties.findOtherOffersText}}</a>
+                  <a href="offerings/search?offerType=request" ng-show="offerType=='offer'">{{properties.findOtherNeedsText}}</a>
+                </div>
+              </div>
+            
+            <div ng-show="error" class="text-danger">
+                <strong ng-bind="error"></strong>
+            </div>
+
+        </div> <!-- end of main form-group -->
+    </form>
+  </div> <!-- end of main class col s8 -->
+</div>
+</section>

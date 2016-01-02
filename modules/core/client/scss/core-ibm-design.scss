@@ -45,12 +45,14 @@ nav {
 }
 
 /** The header logo needs some space to the brand name in Latin languages*/
-.ibm-header-logo.left{
+.ibm-header-logo.latin{
+  float: left;
   margin-right: 2%;
 }
   
 /** The header logo needs some space to the brand name in the header bar in Arabic*/
-.ibm-header-logo.right{
+.ibm-header-logo.arabic{
+  float: right;
   margin-left: 2%;
 }
   
@@ -68,9 +70,7 @@ nav {
             color: color('gray', 80);    
         }
     }
-    
 }
-
 
 /* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component{
@@ -95,7 +95,6 @@ nav {
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 0 10% 10% 0;
             }
          } 
          a:hover, a.active, a:hover svg, a.active svg {
@@ -116,6 +115,20 @@ nav {
      }   
 }
 
+.ibm-dropdown-component.latin{
+    li a svg{    
+        margin: 0 15% 10% 0;
+        float: left; 
+    }
+    
+}
+
+.ibm-dropdown-component.arabic{
+    li a svg{
+        margin: 0 0 10% 0;
+        float: right;
+    }
+}
 /* mobile menu */
 .ibm-mobile-menu{
     background: color('gray', 80);
@@ -143,7 +156,6 @@ nav {
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 10% 15% 0 0;
             }
         } 
         a:hover {
@@ -154,6 +166,19 @@ nav {
             fill: color('gray', 80);
         }
      }   
+}
+
+.ibm-mobile-menu.latin {
+    li a svg{
+        margin: 10% 15% 0 0;
+        float: left;
+    }
+}
+.ibm-mobile-menu.arabic {
+    li a svg{
+        margin: 10% 0 0 0;
+        float: right;
+     }
 }
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {

@@ -195,10 +195,9 @@
         });
 
         // Run controller functionality
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
         scope.description = mockOffering.description;
-        scope.city = mockOffering.city;
-        scope.longitude = mockOffering.loc.coordinates[0];
-        scope.latitude = mockOffering.loc.coordinates[1];
 
         scope.create(true);
         $httpBackend.flush();
@@ -228,8 +227,10 @@
           message: errorMessage
         });
 
-        scope.longitude = mockOffering.loc.coordinates[0];
-        scope.latitude = mockOffering.loc.coordinates[1];
+        // invalid create without a description
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+      
         scope.create(true);
         $httpBackend.flush();
 
@@ -250,9 +251,9 @@
           console.log('new stuff ' + toastContent);
         });
 
-        // Fixture mock form input values
-        scope.longitude = Number(8.8); // take geolocation into account
-        scope.latitude = Number(9.9);
+        // test update an offer with the new city JSON
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
 
         // Set PUT response
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond();
@@ -272,9 +273,9 @@
           console.log('new stuff ' + toastContent);
         });
 
-        // Fixture mock form input values
-        scope.longitude = Number(8.8); // take geolocation into account
-        scope.latitude = Number(9.9);
+        // test updating a city JSON without name
+        var city = { 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
 
         var errorMessage = 'error';
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond(400, {

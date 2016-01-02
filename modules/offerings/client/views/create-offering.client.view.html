@@ -1,91 +1,113 @@
-
 <section ng-controller="OfferingsController">
 <div class="row">
-    <div class="col m12 s12">
-        <div class="page-header">
-            <h3 ng-show="offerType=='request'">{{properties.needHelpInCurrentLanguage}}</h3>
-            <h3 ng-show="offerType=='offer'">{{properties.offerHelpInCurrentLanguage}}</h3>
-        </div>
-  
-        <form name="offeringForm" ng-submit="create()" novalidate>
-          <div class="form-group">
-            <br>
-            <div id="labels">
-                <p>{{properties.categoryTitle}}</p>
+<!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
+  <div class="col m12 s11">
+    <br>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request'">{{properties.needHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer'">{{properties.offerHelpInCurrentLanguage}}</h4>
+    <form name="offeringForm" ng-submit="create()" novalidate>
+        <!-- start of category section -->
+        <div id="category" class="col s12 ibm-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <br><br>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
-                <label for="training" class="category-checkbox">{{properties.jobTraining}}</label>   
-      
+                <label for="training">{{properties.jobTraining}}</label>   
+
                 <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
-                <label for="courses" class="category-checkbox">{{properties.languageCourses}}</label> 
-      
+                <label for="courses">{{properties.languageCourses}}</label> 
+
                 <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
-                <label for="medical" class="category-checkbox">{{properties.medicalAssistance}}</label> 
-      
+                <label for="medical">{{properties.medicalAssistance}}</label> 
+
                 <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
-                <label for="childcare" class="category-checkbox">{{properties.childCare}}</label> 
-                  
+                <label for="childcare">{{properties.childCare}}</label> 
+
                 <input type="checkbox" id="others" name="others" ng-model="category.others">
-                <label for="others" class="category-checkbox">{{properties.others}}</label> 
-            </div>
-            <br><br>
         
-            <div class="row">
-                <div class="input-field col m6 s11">
-                    <i class="material-icons prefix">description</i>
-                    <input name="description" type="text" ng-model="description" id="description">
-                    <label for="description">{{properties.description}}</label>
+                <label for="others">{{properties.others}}</label>    
+        <br><br>       
+        </div> <!-- end of category section -->
+        
+        <!-- start with the middle section without category for a different grid layout -->    
+        <div class="row">
+          <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+            <div class="input-field ibm-input-field">
+                <div class="row">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1c-3.314,0-6.314,1.343-8.484,3.515C5.344,6.687,4,9.686,4,13
+                            c0,3.508,1.344,6.685,3.516,8.984L16,31l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z
+                            M23.028,20.613L16,28.081L8.969,20.61C7.055,18.583,6,15.881,6,13c0-2.671,1.04-5.182,2.93-7.071C10.818,4.04,13.329,3,16,3
+                            c2.671,0,5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.028,20.613z"/>
+                        <circle cx="16" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                        <input ng-if="!geoManual" ng-class="properties.rightToLeft ? 'right-align':'left-align'" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
+                          but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
+                          load the city list when geo location is blocked or not available -->
+                        <select ng-show="geoManual" name="repeatSelect" id="where" ng-model="where" 
+                            ng-options="option.name for option in citylist">
+                        </select>
+                    </div>
                 </div>
-            </div>
-      
-            <div class="row">
-              <div class="input-field col m6 s11" ng-hide="geoManual">
-                <i class="material-icons prefix">room</i>
-                <input id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
-              </div>
-              <div class="input-field col m6 s11" ng-show="geoManual">
-                <i class="material-icons prefix">room</i>
-                <select name="repeatSelect" id="where" ng-model="where" 
-                  ng-options="option.name for option in citylist">
-                </select>
-              </div>
-              <style>
-              select { display: flex; margin-left: 3rem; width: 93%}
-              </style>
-            </div>
-
-            <div class="row">
-                <div class="input-field col m6 s11">
-                    <i class="material-icons prefix">schedule</i>
-                    <label for="when">{{properties.when}}</label>
-                    <input id="when" type="text" ng-model="when" name="date" class="datepicker">
+                <div class="row">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                            <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
+                            <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
+                            <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
+                        </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" name="description" type="text" ng-model="description" id="description"
+                        placeholder = "{{properties.description}}">
+                    </div>
                 </div>
-            </div>
-
-        <script>
-          $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 10 // Creates a dropdown of 15 years to control year
-          });
-        </script>
-
-            <div class="row">
-                <div class="form-group col s6 m4">
-                    <button type="submit" id="createButton" class="btn waves-effect waves-light">{{properties.add}}
-                        <i class="material-icons right">send</i>
-                    </button>
+                <div class="row">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                        S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                        <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                        17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                        </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'"  id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                    </div>          
                 </div>
-                <div class="col s6 m4">
-                  <a href="offerings/search?offerType=offer" ng-show="offerType=='request'">{{properties.findOtherOffersText}}</a>
-                  <a href="offerings/search?offerType=request" ng-show="offerType=='offer'">{{properties.findOtherNeedsText}}</a>
-                </div>
-              </div>
-            
-            <div ng-show="error" class="text-danger">
-                <strong ng-bind="error"></strong>
-            </div>
-
-        </div> <!-- end of main form-group -->
-    </form>
-  </div> <!-- end of main class col s8 -->
+                <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                  <div class="row">
+                    <div class="col m12 s12">
+                        <button type="submit" id="createButton" class="btn waves-effect waves-light">
+                        {{properties.add}}
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <polygon points="17,9 15,9 15,15 9,15 9,17 15,17 15,23 17,23 17,17 23,17 23,15 17,15    "/>
+                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                        s12,5.383,12,12S22.617,28,16,28z"/>
+                        </svg>
+                        </button>
+                    </div>
+                    <br><br>
+                    <div class="col m12 s12">
+                        <a href="offerings/search?offerType=offer" ng-if="offerType=='request'">{{properties.findOtherOffersText}}</a>
+                        <a href="offerings/search?offerType=request" ng-if="offerType=='offer'">{{properties.findOtherNeedsText}}</a>
+                    </div>
+                    <!-- TODO should be a pop-up and it can be closed -->
+                    <div class="col m12 s12" ng-show="error">
+                        <strong ng-bind="error"></strong>
+                    </div>
+                  </div> <!-- end of row -->
+                </div> <!-- end of ibm-submit-area -->
+            </div> <!-- end of input-field ibm-input-field -->
+          </div> <!-- end of grid col m6 s11 -->
+        </div> <!-- end of middle section without category -->
+    </form>       
+  </div>
 </div>
 </section>
