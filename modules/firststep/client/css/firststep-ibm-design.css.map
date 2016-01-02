@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,kCAAmC;EACjC,KAAK,EAAE,KAAK;EACZ,SAAS,EAAE,UAAU",
+"sources": ["../scss/firststep-ibm-design.scss"],
+"names": [],
+"file": "firststep-ibm-design.css"
+}

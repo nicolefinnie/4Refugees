@@ -82,5 +82,23 @@
 "register":"تسجيل",
 "forgetPassword":"أو نسيت كلمة السر الخاصة بك؟",
 "rightToLeft":true
+},
+
+{"viewName":"firststep",
+"welcomeTitle":"أهلا بكم في ألمانيا",
+"welcomeDescription":"إذا كنت تشعر قليلا فقدت، والروابط أدناه لديها معلومات قيمة لمساعدتك في الحصول على تسوية", 
+"searchForHelp":"عندما تكون مستعدا، والعثور على مساعدة من المتطوعين قريب في ألمانيا",
+"findHelpButton":"البحث عن مساعدة",
+"generalHeader":"معلومات عامة",
+"generalDescription":"الأسئلة والأجوبة الشائعة. متوفر باللغة الألمانية فقط",
+"asylumHeader":"معلومات اللجوء",
+"asylumDescription":"يصف هذا الكتيب إجراءات اللجوء في ألمانيا",
+"asylumLink":"http://www.bamf.de/SharedDocs/Anlagen/DE/Publikationen/Flyer/infoblatt-erstorientierung-asylsuchende_arabisch.pdf?__blob=publicationFile",
+"integrationHeader":"دورات الاندماج",
+"integrationDescription":"العثور على معلومات حول دورات الاندماج في ألمانيا. متاحة باللغة الإنجليزية فقط",
+"integrationLink":"http://www.bamf.de/EN/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
+"projectsHeader":"مشاريع للاجئين",
+"projectsDescription":"ألمانيا لديها العديد من المشاريع في مختلف المناطق لمساعدة اللاجئين. العثور على مزيد من المعلومات عن مشاريع في منطقتك. متوفر باللغة الألمانية فقط",
+"rightToLeft":true
 }
 ]

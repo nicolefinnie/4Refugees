@@ -78,5 +78,22 @@
 "register":"Register",
 "orRegister":"Or Register?",
 "forgetPassword":"or Forgot your password?"
+},
+
+{"viewName":"firststep",
+"welcomeTitle":"Welcome to Germany!",
+"welcomeDescription":"If you feel a little lost, the links below have valuable information to help you get settled.", 
+"searchForHelp":"When you are ready, find help from nearby volunteers in Germany.",
+"findHelpButton":"Find Help",
+"generalHeader":"General Information",
+"generalDescription":"Common questions and answers. Available in German only.",
+"asylumHeader":"Asylum Information",
+"asylumDescription":"This brochure describes the asylum procedures in Germany",
+"asylumLink":"http://www.bamf.de/SharedDocs/Anlagen/EN/Publikationen/Flyer/infoblatt-erstorientierung-asylsuchende.pdf?__blob=publicationFile",
+"integrationHeader":"Integration Courses",
+"integrationDescription":"Find information on integration courses in Germany",
+"integrationLink":"http://www.bamf.de/EN/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
+"projectsHeader":"Refugee Projects",
+"projectsDescription":"Germany has many projects in different regions to help refugees. Find more info on projects in your area. Available in German only."
 }
 ]

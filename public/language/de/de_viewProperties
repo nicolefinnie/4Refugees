@@ -79,5 +79,22 @@
 "register":"Registieren",
 "orRegister":"Oder Registieren?",
 "forgetPassword":"Oder Ihr Passwort vergessen?"
+},
+
+{"viewName":"firststep",
+"welcomeTitle":"Wilkommen in Deutschland!",
+"welcomeDescription":"Wenn Sie ein wenig verloren fühlen, die Verbindungen unten, wertvolle Informationen, die Ihnen einzuleben.", 
+"searchForHelp":"Sobald Sie bereit sind, finden Sie Hilfe in der Nähe von Freiwilligen in Deutschland.",
+"findHelpButton":"Hilfe erhalten",
+"generalHeader":"Allgemeine Information",
+"generalDescription":"Häufige Fragen und Antworten",
+"asylumHeader":"Asylum Informationen",
+"asylumDescription":"Diese Broschüre beschreibt die Asylverfahren in Deutschland",
+"asylumLink":"http://www.bamf.de/SharedDocs/Anlagen/DE/Publikationen/Flyer/infoblatt-erstorientierung-asylsuchende.pdf?__blob=publicationFile",
+"integrationHeader":"Integrationskurse",
+"integrationDescription":"Finden Sie Informationen über Integrationskurse in Deutschland",
+"integrationLink":"http://www.bamf.de/DE/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
+"projectsHeader":"Flüchtlingsprojekte",
+"projectsDescription":"Deutschland hat viele Projekte in verschiedenen Regionen, um Flüchtlingen zu helfen. Mehr Info auf Projekte in Ihrer Nähe."
 }
 ]
