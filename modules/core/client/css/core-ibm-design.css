@@ -13,12 +13,7 @@ nav {
   padding: 0 10% 0 10%;
   background: #323232;
   /* text color */
-  color: #fff;
-  /* a: title */ }
-  .ibm-header a {
-    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal; }
+  color: #fff; }
 
 /** The brand logo 4Refuge.es common setup for bigger screens as well as smaller screens*/
 .ibm-brand-logo {
@@ -65,9 +60,6 @@ nav {
   .ibm-dropdown-component li a {
     /* menu text */
     color: #fff;
-    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     /* small material icon for language check marks */
     /* large material icon for the rest of icons if it's not an IBM design icon */
     /* svg IBM design icons*/ }
@@ -103,9 +95,6 @@ nav {
   .ibm-mobile-menu li a {
     /* menu text */
     color: #fff;
-    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     /* small material icon for language check marks, materialize.css doesn't work for icon size for whatever reason, we override the size and line-height 
      * line-height is 400% of the current font size. 
      */
@@ -161,14 +150,8 @@ nav {
     background-color: rgba(255, 255, 255, 0.7);
     border-radius: 100px; }
   .ibm-welcome-bar h1 {
-    font-family: "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     font-size: 32px; }
   .ibm-welcome-bar h2 {
-    font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 500;
-    font-stretch: normal;
     font-size: 16px; }
 
 /* Help bar/footer */
@@ -184,21 +167,12 @@ nav {
     fill: #5596e6; }
   .ibm-help-bar h2 {
     color: #5596e6;
-    font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     font-size: 20px; }
   .ibm-help-bar p {
     color: #30393b;
-    font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     font-size: 11px; }
   .ibm-help-bar a {
     background: #008571;
-    font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
-    font-weight: 300;
-    font-stretch: normal;
     font-size: 16px;
     text-transform: capitalize; }
 

@@ -1,55 +1,7 @@
-@import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
-
-/** make IBM design icons more aligned to the input field*/
-.ibm-input-field svg{
-        margin-top: 50%;
-}
-
-/** hover over IBM design icons to make it look materialize css style */
-.ibm-input-field :hover svg{
-       transition: fill 1s;
-       fill:color('teal', core);
-}
-
-/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
-.ibm-input-field input.right-align{
-        direction: rtl;
-}
-
-/* override placeholder colors for different browsers using IBM design color*/
-::-webkit-input-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  color: color('gray', 50); 
-}
-
-:-moz-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  /* Firefox 18- */
-  color: color('gray', 50); 
-}
-
-::-moz-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  /* Firefox 19+ */
-  color: color('gray', 50); 
-}
-
-:-ms-input-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  color: color('gray', 50); 
-}
-
-.a .h1 .h2 .h3 .h4 .h5 .h6 {
- font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;       
+/* the offset of margin-top is the same as .ibm-dropdown-component defined in core-ibm-design.scss */
+.ibm-profile-navigator{
+    margin-top: 64px;
 }    
-/* button */
-.ibm-button{
-        background: color('teal', core);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-        font-size: 16px;
-        text-transform: capitalize;
-}
-    
 
 /* Defined in Mean.JS framework */
 @media (min-width: 992px) {

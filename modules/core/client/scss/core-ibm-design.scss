@@ -19,10 +19,6 @@ nav {
    background: color('gray', 80);
     /* text color */
     color: color('white', core);
-     /* a: title */
-    a{
-        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-     }
 }
 
 
@@ -82,7 +78,6 @@ nav {
         a{  
             /* menu text */
             color: color('white', core);
-            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
             
             /* small material icon for language check marks */
             i.small{
@@ -138,7 +133,6 @@ nav {
         a{
             /* menu text */
             color: color('white', core);
-            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
              
             /* small material icon for language check marks, materialize.css doesn't work for icon size for whatever reason, we override the size and line-height 
              * line-height is 400% of the current font size. 
@@ -215,13 +209,11 @@ nav {
       
     /* h1: headline */
     h1 {
-        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 32px;
     }
     
     /* h2: sub-headline */
     h2 {
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:500; font-stretch:normal;
         font-size: 16px;
     }
 }
@@ -239,21 +231,18 @@ nav {
     /* h2: headline */
     h2{
         color: color('blue', 40);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 20px;
         
     }  
     /* p: text */
     p{
         color: #30393b;
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 11px;
         
     }
     /* a: button */
     a{
         background: color('teal', core);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 16px;
         text-transform: capitalize;
     }

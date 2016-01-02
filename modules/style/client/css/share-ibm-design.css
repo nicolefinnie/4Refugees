@@ -1,29 +1,16 @@
-.ibm-category-checkbox.latin label {
-  margin-right: 3%; }
+/** CSS styles shared by all modules **/
+/** make IBM design icons more aligned to the input field*/
+.ibm-input-field svg {
+  margin-top: 50%; }
 
-.ibm-category-checkbox.arabic input, .ibm-category-checkbox.arabic label {
-  margin-left: 3%;
-  float: right; }
+/** hover over IBM design icons to make it look materialize css style */
+.ibm-input-field :hover svg {
+  transition: fill 1s;
+  fill: #008571; }
 
 /* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
 .ibm-input-field input.right-align {
   direction: rtl; }
-
-/* geo location when there's no geo service, a drow down select city list is shown*/
-.ibm-input-field select {
-  display: inline-flex;
-  background: #f9f9fb;
-  border: none;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-  margin-top: 2%;
-  height: 36px;
-  overflow: hidden; }
-  .ibm-input-field select option {
-    background: #323232;
-    color: #fff;
-    border: 0; }
 
 /* button */
 .ibm-button, .ibm-submit-area button {
@@ -48,9 +35,11 @@
 .ibm-submit-area strong {
   color: #e71d32; }
 
+/* submit-area with button and error message in Latin languages - from left to right*/
 .ibm-submit-area.latin button, .ibm-submit-area.latin a, .ibm-submit-area.latin strong {
   float: left; }
 
+/* submit-area with button and error message in Arabic languages - from right to left */
 .ibm-submit-area.arabic button, .ibm-submit-area.arabic a, .ibm-submit-area.arabic strong {
   float: right; }
 .ibm-submit-area.arabic button svg {
@@ -59,7 +48,7 @@
   float: left;
   transform: rotate(90deg); }
 
-/* override placeholder colors for different browsers using IBM design color*/
+/** Override placeholder colors for different browsers using IBM design color*/
 ::-webkit-input-placeholder {
   font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
@@ -86,9 +75,10 @@
   font-stretch: normal;
   color: #777677; }
 
+/** Define font of all text */
 .a .h1 .h2 .h3 .h4 .h5 .h6 {
   font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
   font-stretch: normal; }
 
-/*# sourceMappingURL=offerings-ibm-design.css.map */
+/*# sourceMappingURL=share-ibm-design.css.map */
