@@ -1,4 +1,7 @@
-/** CSS styles shared by all modules **/
+/** CSS styles shared by all modules 
+* @notice if you need to change the existing css styles in this file, you have to talk to the GUI team for all modules :D
+*
+**/
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg {
   margin-top: 50%; }
