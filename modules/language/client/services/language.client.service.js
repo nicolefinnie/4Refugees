@@ -70,12 +70,9 @@ angular.module('language').service('LanguageService', [function () {
         method: 'GET',
         url: url
       }).then(function successCallback(response) {
-      /*jshint evil:true */
-      // Note - the above jshint directive allows us to use the 'eval' function below,
-      // to transform the data received directly into an array of JSON objects.
         console.log('LanguageService: initially loaded ' + self.globalCurrentLanguage + ' language with status ' + response.status + ' to cache');
         try {
-          self.translations[self.globalCurrentLanguage] = eval(response.data);
+          self.translations[self.globalCurrentLanguage] = response.data;
           self.languageLoadInProgress = false;
           
           self.translations[self.globalCurrentLanguage].forEach(function(translation) {
