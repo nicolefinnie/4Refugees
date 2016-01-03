@@ -153,11 +153,11 @@ exports.create = function (req, res) {
   var offering = new Offering();
   offering.user = req.user;
   offering.userId = req.user._id;
-  offering.when = new Date(req.body.when);
-  offering.updated = new Date();
-  offering.expiry = req.body.expiry;
+  offering.when = new Date(req.body.whenString);
+  var now = new Date(); 
+  offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  offering.expiry = new Date(req.body.expiryString);
   offering.descriptionLanguage = req.body.descriptionLanguage;
-  console.log('LIAM: My language is: ' + offering.descriptionLanguage);
   offering.description = req.body.description;
   offering.descriptionDetails = req.body.descriptionDetails;
   offering.city = req.body.city;
@@ -185,11 +185,12 @@ exports.update = function (req, res) {
   Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id) }, function (err, offering){
     offering.user = req.user;
     offering.userId = req.user._id;
-    offering.when = new Date(req.body.when);
-    offering.updated = new Date();
+    offering.when = new Date(req.body.whenString);
+    var now = new Date(); 
+    offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+    offering.expiry = new Date(req.body.expiryString);
     offering.description = req.body.description;
-    // TODO: remove this!
-    offering.descriptionLanguage = 'en';
+    offering.descriptionLanguage = req.body.descriptionLanguage;
     offering.city = req.body.city;
     offering.category = req.body.category;
     offering.loc.type = 'Point';
@@ -219,7 +220,7 @@ function buildGeoNearAggregateRestriction(req) {
   var restrictQuery = {};
   // TODO: The additional fields that can/should be used for the query are:
   // req.body.description -- description of the offering the user is searching for
-  // req.body.when -- date the user is interested in receiving offers for
+  // req.body.whenString -- UTC date string the user is interested in receiving offers for
   // req.body.city -- open question, should we allow searching by city when no coords are provided???
   restrictQuery.maxDistance = req.query.radius*1000;
   restrictQuery.spherical = true;
@@ -258,15 +259,15 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
     tmpRes.user = { _id : rawDoc.user._id,
                     displayName : rawDoc.user.displayName };
   }
-  tmpRes.when = rawDoc.when;
-  tmpRes.updated = rawDoc.updated;
+  tmpRes.whenString = rawDoc.when.toUTCString();
+  tmpRes.updatedString = rawDoc.updated.toUTCString();
   tmpRes.category = rawDoc.category;
   tmpRes.description = rawDoc.description;
   tmpRes.descriptionLanguage = rawDoc.descriptionLanguage;
   tmpRes.descriptionEnglish = rawDoc.descriptionEnglish;
   tmpRes.descriptionOther = rawDoc.descriptionOther;
   tmpRes.numOffered = rawDoc.numOffered;
-  tmpRes.expiry = rawDoc.expiry;
+  tmpRes.expiryString = new Date(rawDoc.expiry).toUTCString();
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
   if (myOwnDoc === true) {
     // this is my own document, we can show exact co-ordinates in results

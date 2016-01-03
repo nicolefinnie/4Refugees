@@ -1,172 +1,37 @@
 'use strict';
 /* global Materialize:false */
 
-var ARABIC = 'العربية';
-var ENGLISH = 'English';
-var GERMAN = 'Deutsch';
-
-//English
-var SIGNIN_EN = 'Sign in';
-var REGISTER_EN = 'Register';
-var SIGNOUT_EN = 'Sign out';
-var CHAT_EN = 'Chat';
-var INMAIL_EN = 'InMail';
-var SHOW_NEW_MAILS_EN = 'Show New Mails';
-var SHOW_ALL_MAILS_EN = 'Show All Mails';
-
-var LIST_MY_OFFERINGS_EN = 'List My Offerings';
-var EDIT_PROFILE_EN = 'Edit Profile';
-var CHANGE_PROFILE_PICTURE_EN = 'Change Profile Picture';
-var CHANGE_PASSWORD_EN = 'Change Password';
-var MANAGE_SOCIAL_ACCOUNTS_EN = 'Manage Social Accounts';
-
-//German
-var SIGNIN_DE = 'Anmelden';
-var REGISTER_DE = 'Registieren';
-var SIGNOUT_DE = 'Abmelden';
-var CHAT_DE = 'Chat';
-var INMAIL_DE = 'Post';
-var SHOW_NEW_MAILS_DE = 'Neue Mails anzeigen';
-var SHOW_ALL_MAILS_DE = 'Alle Mails anzeigen';
-
-var LIST_MY_OFFERINGS_DE = 'Meine Angebote Anzeigen';
-var EDIT_PROFILE_DE = 'Profil Editieren';
-var CHANGE_PROFILE_PICTURE_DE = 'Profilbild Ändern';
-var CHANGE_PASSWORD_DE = 'Passwort Ändern';
-var MANAGE_SOCIAL_ACCOUNTS_DE = 'Sozialkonten verwalten';
-
-
-//Arabic
-var SIGNIN_AR = 'تسجيل الدخول';
-var REGISTER_AR = 'سجل';
-var SIGNOUT_AR = 'تسجيل الخروج';
-var CHAT_AR = 'دردشة';
-var INMAIL_AR = 'رسائل';
-var SHOW_NEW_MAILS_AR = 'تظهر رسائل جديدة';
-var SHOW_ALL_MAILS_AR = 'عرض كل الرسائل';
-
-
-var LIST_MY_OFFERINGS_AR = 'قائمة العروض بلدي';
-var EDIT_PROFILE_AR = 'تعديل الملف الشخصي';
-var CHANGE_PROFILE_PICTURE_AR = 'تغيير الصورة الشخصية';
-var CHANGE_PASSWORD_AR = 'تغيير كلمة المرور';
-var MANAGE_SOCIAL_ACCOUNTS_AR = 'إدارة الحسابات الاجتماعية';
-
-
-function refreshHeaderInCurrentLanguage($scope, language){
-  if (language === 'ar') {
-    $scope.currentLanguageShownInHeader = ARABIC;
-    $scope.signIn = SIGNIN_AR;
-    $scope.register = REGISTER_AR;
-    $scope.signOut = SIGNOUT_AR;
-    $scope.chat = CHAT_AR;
-    $scope.inMail = INMAIL_AR;
-    $scope.showNewMails = SHOW_NEW_MAILS_AR;
-    $scope.showAllMails = SHOW_ALL_MAILS_AR;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_AR;
-    $scope.editProfile = EDIT_PROFILE_AR;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_AR;
-    $scope.changePassword = CHANGE_PASSWORD_AR;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_AR;
-  } 
-  else if (language === 'en') {
-    $scope.currentLanguageShownInHeader = ENGLISH;
-    $scope.signIn = SIGNIN_EN;
-    $scope.register = REGISTER_EN;
-    $scope.signOut = SIGNOUT_EN;
-    $scope.chat = CHAT_EN;
-    $scope.inMail = INMAIL_EN;
-    $scope.showNewMails = SHOW_NEW_MAILS_EN;
-    $scope.showAllMails = SHOW_ALL_MAILS_EN;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_EN;
-    $scope.editProfile = EDIT_PROFILE_EN;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_EN;
-    $scope.changePassword = CHANGE_PASSWORD_EN;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_EN;
-  } 
-  else if (language === 'de') {
-    $scope.currentLanguageShownInHeader = GERMAN;
-    $scope.signIn = SIGNIN_DE;
-    $scope.register = REGISTER_DE;
-    $scope.signOut = SIGNOUT_DE;
-    $scope.chat = CHAT_DE;
-    $scope.inMail = INMAIL_DE;
-    $scope.showNewMails = SHOW_NEW_MAILS_DE;
-    $scope.showAllMails = SHOW_ALL_MAILS_DE;
-    $scope.listMyOfferings = LIST_MY_OFFERINGS_DE;
-    $scope.editProfile = EDIT_PROFILE_DE;
-    $scope.changeProfilePicture = CHANGE_PROFILE_PICTURE_DE;
-    $scope.changePassword = CHANGE_PASSWORD_DE;
-    $scope.manageSocialAccounts = MANAGE_SOCIAL_ACCOUNTS_DE;
-  }
-}
-
-
-function refreshLanguageDropdownMenu($scope, language){
-  if (language === 'ar') {
-    $scope.arabicSelected = true;
-    $scope.englishSelected = false;
-    $scope.germanSelected = false;
-
-  } 
-  else if (language === 'en') {
-    $scope.arabicSelected = false;
-    $scope.englishSelected = true;
-    $scope.germanSelected = false;
-  } 
-  else if (language === 'de') {
-    $scope.arabicSelected = false;
-    $scope.englishSelected = false;
-    $scope.germanSelected = true;
-  }  
-}
-
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', 'Authentication', 'Menus', 'Socket',
-  function ($scope, $rootScope, $state, $http, Authentication, Menus, Socket) {
-    // default language
-    $rootScope.currentLanguage = 'en';
-    
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService',
+  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService) {
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
 
-    // initialize the header language and dropdown menu in English
-    refreshHeaderInCurrentLanguage($scope, $rootScope.currentLanguage);
-    refreshLanguageDropdownMenu($scope, $rootScope.currentLanguage);
-    
+    // initialize mobile side navigation
+    $('.button-collapse').sideNav();
+
     // language change clicked
     $scope.changeLanguage = function (language) {
-
-      $rootScope.currentLanguage = language;
-      // refresh header
-      refreshHeaderInCurrentLanguage($scope, language);
-      // refresh the dropdown menu if the language changes
-      refreshLanguageDropdownMenu($scope, language);
-      // broadcast this language change to HomeController to refresh
-      $rootScope.$broadcast('tellHomeToChangeLanguage');
-      
+      // set the current language in the language service
+      LanguageService.setCurrentLanguage(language);
+      // refresh view properties in the current language 
+      LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
+        $scope.properties = translationList;
+        // broadcast this language change to HomeController to refresh
+        $rootScope.$broadcast('tellAllControllersToChangeLanguage');
+      });
     };
 
-    //TODO remove the dynamically added menu 
-    //$scope.menu = Menus.getMenu('topbar');
-    $scope.hasPostingBadge = false;
+  
+    // Set the initial language to English
+    $scope.changeLanguage('en');
 
-    // set 'new' badge to InMail if there is unread mail for me
-    if (Authentication.user) {
-      $http.get('/api/postings?unread=true',{ cache: true }).then(function(response) {
-        var postings;
-        if (response.statusCode >= 200 || response.statusCode <= 299) {
-          postings = response.data;
-          if (postings.length > -1) $scope.hasPostingBadge = true;
-        }
-      });
-    }
+    // TODO Find better way of alerting the user of new mail using IBM icons
+    $scope.hasUnreadMail = false;
 
     $scope.checkAdminRole = function() {
-      if (Authentication) {
-        if (Authentication.user) {
-          return (Authentication.user.roles.indexOf('admin') > -1);
-        }
+      if (Authentication && Authentication.user) {
+        return (Authentication.user.roles.indexOf('admin') > -1);
       }
       return false;
     };
@@ -182,67 +47,57 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       $scope.isCollapsed = false;
     });
 
-    // Make sure the Socket is connected
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    // Add an event listener to the 'postingMessage' event and show new inMails for logged in users
-    Socket.on('postingMessage', function (message) {
-
-      // TODO - do not check against the SENDER userName
-      if (message.content.recipient === Authentication.user._id) {
-        if (message.content.title) {
-          console.log('Received new email');
-          $scope.hasPostingBadge = true;
-        }
-        else {
-          console.log('Received remove email');
-          $scope.hasPostingBadge = false;
-        }
-      }
-      else
-      {
-        console.log('Somebody else received email');
-      }
-
-    });
-  }
-]);
-
-angular.module('core').controller('HeaderNewOfferingsController', ['$scope', 'Authentication', 'Socket',
-  function ($scope, Authentication, Socket) {
-    $scope.authentication = Authentication;
-
-    // Make sure the Socket is connected
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    // Add an event listener to the 'offeringMessage' event and toast logged in users
-    Socket.on('offeringMessage', function (message) {
-      var toastContent = '<span>new ' + message.content.category;
-
-      if (message.content.offerType === 0) {
-        toastContent = toastContent + ' request: ';
-      } else {
-        toastContent = toastContent + ' offering: ';
-      }
-
-      toastContent = toastContent + 
-        message.content.description.substr(0,10) + ' - posted by user ' + message.username.substr(0,20);
-
-      console.log('new stuff ' + toastContent);
-
-      // only post users logged in
+    // Set of all tasks that should be performed periodically
+    $scope.runIntervalTasks = function() {
       if (Authentication.user) {
-        Materialize.toast(toastContent, 5000);
+        // Check for unread mail, set flag to alert user if they have new mail.
+        MailService.checkForUnreadMail($http, function(unreadMailCount) {
+          $scope.hasUnreadMail = (unreadMailCount > 0);
+        });
       }
-    });
+    };
 
-    // Remove the event listener when the controller instance is destroyed
-    $scope.$on('$destroy', function () {
-      Socket.removeListener('offeringMessage');
+    // Polling interval is more frequent until we are authenticated.
+    // Before authentication, polling is a no-op.  This way, we can
+    // refresh quickly as soon as we authenticate, and then slow down
+    // to reduce load on the server.
+    $scope.getPollingInterval = function() {
+      var pollingInterval = 5000;
+      if (Authentication.user) {
+        pollingInterval = 60000;
+      }
+      return pollingInterval;
+    };
+
+    var polling; // promise, set when we start intervals, used to cancel intervals.
+    var pollingInterval = $scope.getPollingInterval();
+    $scope.startPolling = function() {
+      polling = $interval(function() {
+        $scope.runIntervalTasks();
+        var newPollingInterval = $scope.getPollingInterval();
+        // Check if our polling interval needs to change - i.e. we just Authenticated.
+        if (newPollingInterval !== pollingInterval) {
+          $scope.stopPolling();
+          pollingInterval = newPollingInterval;
+          $scope.startPolling();
+        }
+      }, pollingInterval);
+    };
+
+    $scope.stopPolling = function() {
+      if (angular.isDefined(polling)) {
+        $interval.cancel(polling);
+        polling = undefined;
+      }
+    };
+
+    // And now start our polling
+    $scope.runIntervalTasks();
+    $scope.startPolling();
+
+    $scope.$on('$destroy', function() {
+      $scope.stopPolling();
     });
   }
 ]);
+

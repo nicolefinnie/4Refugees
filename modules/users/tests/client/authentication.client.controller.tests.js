@@ -9,7 +9,8 @@
       $httpBackend,
       $stateParams,
       $state,
-      $location;
+      $location,
+      LanguageService;
 
     beforeEach(function () {
       jasmine.addMatchers({
@@ -32,7 +33,7 @@
       // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
       // This allows us to inject a service but then attach it to a variable
       // with the same name as the service.
-      beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_) {
+      beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _LanguageService_) {
         // Set a new global scope
         scope = $rootScope.$new();
 
@@ -40,6 +41,8 @@
         $stateParams = _$stateParams_;
         $httpBackend = _$httpBackend_;
         $location = _$location_;
+        LanguageService = _LanguageService_;
+        LanguageService.setupTestEnvironment();
 
         // Initialize the Authentication controller
         AuthenticationController = $controller('AuthenticationController', {

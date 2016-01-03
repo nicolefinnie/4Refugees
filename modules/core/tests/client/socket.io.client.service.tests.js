@@ -11,6 +11,7 @@
       this.cbs[msg] = cb;
     };
     this.emit = function(msg, data) {
+      console.log('message: ' + msg + '  data: ' + JSON.stringify(data));
       this.cbs[msg](data);
     };
     this.removeListener = function(msg) {
