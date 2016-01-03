@@ -1,0 +1,2 @@
+# checkout all files with LF line endings for consistency
+*.* text eol=lf
