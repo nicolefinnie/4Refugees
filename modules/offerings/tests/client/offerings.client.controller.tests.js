@@ -5,12 +5,16 @@
   describe('Offerings Controller Tests', function () {
     // Initialize global variables
     var OfferingsController,
+      OfferingsEditController,
       scope,
       $httpBackend,
       $stateParams,
       $location,
       Authentication,
       Offerings,
+      Socket,
+      GeoService,
+      LanguageService,
       mockOffering;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -23,8 +27,11 @@
         toEqualData: function (util, customEqualityTesters) {
           return {
             compare: function (actual, expected) {
+              // TODO: Match more values?
+              var myPass = (actual.description === expected.description);
+              console.log('EQUAL ? ' + myPass + '  ' + actual.description + ' = ' + expected.description);
               return {
-                pass: angular.equals(actual, expected)
+                pass: myPass
               };
             }
           };
@@ -38,9 +45,10 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoService_, _LanguageService_) {
       // Set a new global scope
       scope = $rootScope.$new();
+      $rootScope.currentLanguage = 'en';
 
       // Point global variables to injected services
       $stateParams = _$stateParams_;
@@ -48,13 +56,23 @@
       $location = _$location_;
       Authentication = _Authentication_;
       Offerings = _Offerings_;
+      Socket = _Socket_;
+      GeoService = _GeoService_;
+      LanguageService = _LanguageService_;
+
+      // Setup the mock GeoService and LanguageService environment.
+      GeoService.setupTestEnvironment();
+      LanguageService.setupTestEnvironment();
 
       // create mock offering
       mockOffering = new Offerings({
         _id: '525a8422f6d0f87f0e407a33',
         description: 'A MEAN Offering',
+        descriptionLanguage: 'en',
+        offerType: 'offer',
         city: 'Stuttgart',
-        loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] }
+        loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
+        category: ['others']
       });
 
       // Mock logged in user
@@ -64,8 +82,24 @@
 
       // Initialize the Offerings controller.
       OfferingsController = $controller('OfferingsController', {
-        $scope: scope
+        $scope: scope,
       });
+      // Initialize the Offerings controller.
+      OfferingsEditController = $controller('OfferingsEditController', {
+        $scope: scope,
+      });
+
+      // Make sure the Socket is connected
+      if (!Socket.socket) {
+        Socket.connect();
+      }
+
+      // Add an event listener to the 'offeringMessage' event and toast logged in users
+      Socket.on('offeringMessage', function (message) {
+        var toastContent = message.content.category;
+        console.log('new stuff ' + toastContent);
+      });
+
     }));
 
     it('$scope.find() should create an array with at least one offering object fetched from XHR', inject(function (Offerings) {
@@ -74,6 +108,14 @@
 
       // Set GET response
       $httpBackend.expectGET('api/offerings').respond(sampleOfferings);
+
+      // Setup dummy view properties needed by the controller, normally
+      // setup by loading all language-specific properties using LanguageService.
+      // The mockOffering used above is in the category 'others', so we need to
+      // provide a translation from the server-side 'others' to the client-side
+      // 'language-specific' display.
+      var properties = { 'others': 'Other' };
+      scope.properties = properties;
 
       // Run controller functionality
       scope.find();
@@ -112,25 +154,51 @@
           password: 'M3@n.jsI$Aw3$0m3'
         };
         sampleOfferingPostData = new Offerings({
-          _id: '525a8422f6d0f87f0e407a33',
+          //_id: '525a8422f6d0f87f0e407a33',
           description: 'A MEAN Offering',
+          descriptionLanguage: 'en',
           city: 'Stuttgart',
-          loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
-          user: sampleUserPostData
+          //loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
+          longitude: Number(8.8),
+          latitude: Number(9.9),
+          //user: sampleUserPostData,
+          offerType: 'offer',
+          category: ['courses']
         });
 
         // Fixture mock form input values
         scope.description = 'A MEAN Offering';
         scope.city = 'Stuttgart';
+        scope.longitude = Number(8.8); // take geolocation into account
+        scope.latitude = Number(9.9);
+        scope.category = {}; // add category
+        scope.category.courses = true;
+        scope.offerType = 'offer';
 
         spyOn($location, 'path');
       });
 
       it('should send a POST request with the form input values and then locate to new object URL', inject(function (Offerings) {
         // Set POST response
-        $httpBackend.expectPOST('api/offerings', sampleOfferingPostData).respond(mockOffering);
+        //$httpBackend.expectPOST('api/offerings', sampleOfferingPostData).respond(mockOffering);
+        $httpBackend.expectPOST('api/offerings', function(reqHandler) {
+          var rh = JSON.parse(reqHandler);
+          delete rh.whenString;
+          delete rh.expiryString;
+          return angular.equals(rh, sampleOfferingPostData);
+        }).respond(mockOffering);
+
+        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
+        Socket.on('offeringMessage', function (message) {
+          var toastContent = message.content.category;
+          console.log('new stuff ' + toastContent);
+        });
 
         // Run controller functionality
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+        scope.description = mockOffering.description;
+
         scope.create(true);
         $httpBackend.flush();
 
@@ -143,11 +211,26 @@
       }));
 
       it('should set scope.error if save error', function () {
+        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
+        Socket.on('offeringMessage', function (message) {
+          var toastContent = message.content.category;
+          console.log('new stuff ' + toastContent);
+        });
+
         var errorMessage = 'this is an error message';
-        $httpBackend.expectPOST('api/offerings', sampleOfferingPostData).respond(400, {
+        $httpBackend.expectPOST('api/offerings', function(reqHandler) {
+          var rh = JSON.parse(reqHandler);
+          delete rh.whenString;
+          delete rh.expiryString;
+          return angular.equals(rh, sampleOfferingPostData);
+        }).respond(400, {
           message: errorMessage
         });
 
+        // invalid create without a description
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+      
         scope.create(true);
         $httpBackend.flush();
 
@@ -162,6 +245,16 @@
       });
 
       it('should update a valid offering', inject(function (Offerings) {
+        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
+        Socket.on('offeringMessage', function (message) {
+          var toastContent = message.content.category;
+          console.log('new stuff ' + toastContent);
+        });
+
+        // test update an offer with the new city JSON
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+
         // Set PUT response
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond();
 
@@ -174,6 +267,16 @@
       }));
 
       it('should set scope.error to error response message', inject(function (Offerings) {
+        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
+        Socket.on('offeringMessage', function (message) {
+          var toastContent = message.content.category;
+          console.log('new stuff ' + toastContent);
+        });
+
+        // test updating a city JSON without name
+        var city = { 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+
         var errorMessage = 'error';
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage

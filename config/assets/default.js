@@ -5,7 +5,6 @@ module.exports = {
     lib: {
       css: [
         'public/lib/materialize/dist/css/materialize.css',
-        'public/lib/angular-materialize/css/style.css',
         'public/lib/ng-tags-input/ng-tags-input.css'
       ],
       js: [

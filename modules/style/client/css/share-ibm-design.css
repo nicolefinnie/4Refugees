@@ -1,0 +1,87 @@
+/** CSS styles shared by all modules 
+* @notice if you need to change the existing css styles in this file, you have to talk to the GUI team for all modules :D
+*
+**/
+/** make IBM design icons more aligned to the input field*/
+.ibm-input-field svg {
+  margin-top: 50%; }
+
+/** hover over IBM design icons to make it look materialize css style */
+.ibm-input-field :hover svg {
+  transition: fill 1s;
+  fill: #008571; }
+
+/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field input.right-align {
+  direction: rtl; }
+
+/* button */
+.ibm-button, .ibm-submit-area button {
+  background: #008571;
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  font-size: 16px;
+  text-transform: capitalize;
+  /* override materialize style, use IBM design icons in a button */ }
+  .ibm-button svg, .ibm-submit-area button svg {
+    margin-top: 1px;
+    height: 24px;
+    width: 24px;
+    margin-left: 5px;
+    vertical-align: middle;
+    fill: #fff; }
+
+/* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
+.ibm-submit-area :hover button svg {
+  fill: #fff; }
+.ibm-submit-area strong {
+  color: #e71d32; }
+
+/* submit-area with button and error message in Latin languages - from left to right*/
+.ibm-submit-area.latin button, .ibm-submit-area.latin a, .ibm-submit-area.latin strong {
+  float: left; }
+
+/* submit-area with button and error message in Arabic languages - from right to left */
+.ibm-submit-area.arabic button, .ibm-submit-area.arabic a, .ibm-submit-area.arabic strong {
+  float: right; }
+.ibm-submit-area.arabic button svg {
+  margin-top: 5px;
+  margin-right: 5px;
+  float: left;
+  transform: rotate(90deg); }
+
+/** Override placeholder colors for different browsers using IBM design color*/
+::-webkit-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+:-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 18- */
+  color: #777677; }
+
+::-moz-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  /* Firefox 19+ */
+  color: #777677; }
+
+:-ms-input-placeholder {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal;
+  color: #777677; }
+
+/** Define font of all text */
+.a .h1 .h2 .h3 .h4 .h5 .h6 {
+  font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+  font-weight: 300;
+  font-stretch: normal; }
+
+/*# sourceMappingURL=share-ibm-design.css.map */

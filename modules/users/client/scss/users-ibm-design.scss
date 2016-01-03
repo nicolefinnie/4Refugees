@@ -1,3 +1,9 @@
+/* the offset of margin-top is the same as .ibm-dropdown-component defined in core-ibm-design.scss */
+.ibm-profile-navigator{
+    margin-top: 64px;
+}    
+
+/* Defined in Mean.JS framework */
 @media (min-width: 992px) {
   .nav-users {
     position: fixed;

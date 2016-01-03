@@ -1,6 +1,6 @@
 <section ng-controller="OfferingsController" ng-init="find()">
   <div class="page-header">
-    <h1>My Offerings</h1>
+    <h1>{{properties.myOfferings}}</h1>
   </div>
   <div class="list-group">
     <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
@@ -10,16 +10,16 @@
       <p class="list-group-item-text" ng-bind="offering.offerType"></p>
     
       <small class="list-group-item-text">
-        Offered by
+        {{properties.offeredBy}}
         <span ng-bind="offering.displayName"></span>
-        , available on
+        {{properties.availableOn}}
         <span ng-bind="offering.when | date:'mediumDate'"></span>
-        , last updated on
+        {{properties.lastUpdatedOn}}
         <span ng-bind="offering.updated | date:'mediumDate'"></span>
       </small>
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-if="offerings.$resolved && !offerings.length">
-    No offerings yet, why don't you <a ui-sref="offerings.create">create one</a>?
+    <a href="offerings/create?offerType=offer">{{properties.createFirstOffering}}</a>
   </div>
 </section>
