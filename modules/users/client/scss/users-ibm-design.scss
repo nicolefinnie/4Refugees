@@ -20,12 +20,11 @@
     }
 }    
 
-.button-group-style{
-    margin-right: 1%;
-}
 
-.ibm-submit-area button{
-    @extend .button-group-style;
+.ibm-submit-area{
+    button.button-group {
+        margin-right: 1%;
+    }
 }
 
 .ibm-submit-area.arabic{

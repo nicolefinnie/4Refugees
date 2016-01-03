@@ -12,7 +12,7 @@
 .ibm-profile-navigator.arabic li a {
   text-align: right; }
 
-.button-group-style, .ibm-submit-area button {
+.ibm-submit-area button.button-group {
   margin-right: 1%; }
 
 .ibm-submit-area.arabic button.no-float {
