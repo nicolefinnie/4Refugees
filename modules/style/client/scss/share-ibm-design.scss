@@ -100,6 +100,16 @@
     }
 }
 
+/* submit-area with button and error message in Arabic languages - from right to left.
+ * Rotate the svg icon, for those icons that look better that way when read from the right.
+ */ 
+.ibm-submit-area.arabic-rotate-icon{
+    @extend .ibm-submit-area.arabic;
+    button svg, a svg{
+        transform: rotate(90deg);
+    }
+}
+
 /** Override placeholder colors for different browsers using IBM design color*/
 ::-webkit-input-placeholder {
   font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;

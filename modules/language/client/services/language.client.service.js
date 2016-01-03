@@ -101,7 +101,6 @@ angular.module('language').service('LanguageService', [function () {
 
   // For unit tests, setup fake/sample language data
   this.setupTestEnvironment = function() {
-    console.log('LanguageService: Creating test environment.');
     var testTranslations = [{ 'viewName':'unitTest' }];
     this.translations[this.globalCurrentLanguage] = testTranslations;
   };

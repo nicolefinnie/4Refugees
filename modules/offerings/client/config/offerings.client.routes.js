@@ -24,24 +24,25 @@ angular.module('offerings').config(['$stateProvider',
       })
       // works in order, first, it has to be user or admin, second, it stores the parameter offerType and passes its value to $scope
       .state('offerings.create', {
-        url: '/create?offerType',
+        url: '/create?offerType&offeringId',
         templateUrl: 'modules/offerings/client/views/create-offering.client.view.html',
         data: {
           roles: ['user', 'admin']
         },
         controller: function($scope, $stateParams) {
           $scope.offerType = $stateParams.offerType;
+          $scope.offeringId = $stateParams.offeringId;
         }
       })
-      .state('offerings.view', {
-        url: '/:offeringId',
-        templateUrl: 'modules/offerings/client/views/view-offering.client.view.html'
-      })
       .state('offerings.edit', {
-        url: '/:offeringId/edit',
-        templateUrl: 'modules/offerings/client/views/edit-offering.client.view.html',
+        url: '/create?offerType&offeringId',
+        templateUrl: 'modules/offerings/client/views/create-offering.client.view.html',
         data: {
           roles: ['user', 'admin']
+        },
+        controller: function($scope, $stateParams) {
+          $scope.offerType = $stateParams.offerType;
+          $scope.offeringId = $stateParams.offeringId;
         }
       });
   }

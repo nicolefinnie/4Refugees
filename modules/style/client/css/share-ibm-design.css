@@ -63,13 +63,19 @@
   float: left; }
 
 /* submit-area with button and error message in Arabic languages - from right to left */
-.ibm-submit-area.arabic button, .ibm-submit-area.arabic a, .ibm-submit-area.arabic strong {
+.ibm-submit-area.arabic button, .ibm-submit-area.arabic-rotate-icon button, .ibm-submit-area.arabic a, .ibm-submit-area.arabic-rotate-icon a, .ibm-submit-area.arabic strong, .ibm-submit-area.arabic-rotate-icon strong {
   float: right; }
-.ibm-submit-area.arabic button svg, .ibm-submit-area.arabic a svg {
+.ibm-submit-area.arabic button svg, .ibm-submit-area.arabic-rotate-icon button svg, .ibm-submit-area.arabic a svg, .ibm-submit-area.arabic-rotate-icon a svg {
   /*both a and button tags can be buttons*/
   margin-top: 5px;
   margin-right: 5px;
   float: left; }
+
+/* submit-area with button and error message in Arabic languages - from right to left.
+ * Rotate the svg icon, for those icons that look better that way when read from the right.
+ */
+.ibm-submit-area.arabic-rotate-icon button svg, .ibm-submit-area.arabic-rotate-icon a svg {
+  transform: rotate(90deg); }
 
 /** Override placeholder colors for different browsers using IBM design color*/
 ::-webkit-input-placeholder {

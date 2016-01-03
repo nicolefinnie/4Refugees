@@ -7,7 +7,7 @@
     <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer'">{{properties.findHelpInCurrentLanguage}}</h4>
     <form name="offeringFormSearch" ng-submit="searchAll()" novalidate>
         <!-- start of category section -->
-        <div id="category" class="col s12 ibm-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div id="category" class="col s12 ibm-offering-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
         <br><br>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
                 <label for="training">{{properties.jobTraining}}</label>   
@@ -30,7 +30,7 @@
         <!-- start with the middle section without category for a different grid layout -->    
         <div class="row">
           <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
-            <div class="input-field ibm-input-field">
+            <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -43,7 +43,7 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-if="!geoManual" ng-class="properties.rightToLeft ? 'right-align':'left-align'" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <input ng-if="!geoManual" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
                         <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
                           but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
                           load the city list when geo location is blocked or not available -->
@@ -52,7 +52,30 @@
                         </select>
                     </div>
                 </div>
+                <!-- Toggle advanced options on/off -->
+                <div class="row ibm-offering-toggle-advanced-options" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleAdvanced()">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                            <path d="M30.366,5.876l-4.245,4.246C25.535,10.707,24.768,11,24,11s-1.535-0.293-2.121-0.879c-1.172-1.171-1.172-3.071-0.001-4.243
+                            l4.245-4.245C25.164,1.226,24.108,1,23,1c-4.419,0-8,3.582-8,8c0,0.914,0.161,1.789,0.443,2.606L2.025,25.025
+                            c-1.367,1.367-1.367,3.583,0,4.95C2.709,30.658,3.605,31,4.5,31s1.791-0.342,2.475-1.025l13.418-13.418
+                            C21.211,16.839,22.086,17,23,17c4.418,0,8-3.582,8-8C31,7.891,30.773,6.835,30.366,5.876z M23,15c-0.654,0-1.312-0.112-1.954-0.334
+                            l-1.183-0.409l-0.885,0.885L5.561,28.56C5.277,28.844,4.9,29,4.5,29s-0.777-0.156-1.06-0.44C3.156,28.277,3,27.9,3,27.5
+                            c0-0.401,0.156-0.777,0.44-1.061l13.418-13.418l0.885-0.884l-0.408-1.182C17.112,10.312,17,9.654,17,9
+                            c0-2.901,2.069-5.328,4.81-5.881l-1.347,1.346c-1.948,1.95-1.947,5.122,0.001,7.07C21.408,12.479,22.664,13,24,13
+                            c1.335,0,2.591-0.52,3.535-1.465l1.347-1.347C28.328,12.93,25.901,15,23,15z"/>
+                            <circle cx="4.5" cy="27.5" r="1"/>
+                        </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'" ng-click="toggleAdvanced()">
+                        <a ng-if="!showDetails">{{properties.showAdvanced}}</a>
+                        <a ng-if="showDetails">{{properties.hideAdvanced}}</a>
+                    </div>
+                </div>
+                <!-- All advanced options are below -->
                 <div class="row">
+                  <div class="search-details-form" data-my-slide="showDetails">
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -64,11 +87,12 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
+                        <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
                     </div>
-                              
+                  </div>
                 </div>
                 <div class="row">
+                  <div class="search-details-form" data-my-slide="showDetails">
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -79,10 +103,11 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'"  id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                        <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
                     </div>          
+                  </div>
                 </div>
-                <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic-rotate-icon':'latin'">
                   <div class="row">
                     <div class="col m12 s12">
                         <button type="submit" id="searchButton" class="btn waves-effect waves-light">
@@ -98,37 +123,88 @@
                     </div>
                     <br><br>
                     <div class="col m12 s12">
-                        <a href="offerings/create?offerType=offer" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
-                        <a href="offerings/create?offerType=request" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
+                        <!-- Swap offerType - if they searched for an offering, they need to create a help request -->
+                        <a href="offerings/create?offerType=offer&offeringId=0" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
+                        <a href="offerings/create?offerType=request&offeringId=0" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
                     </div>
                     <!-- TODO should be a pop-up and it can be closed -->
                     <div class="col m12 s12" ng-show="error">
                         <strong ng-bind="error"></strong>
-                    </div>  
+                    </div>
                   </div> <!-- end of row -->
                 </div> <!-- end of ibm-submit-area -->
+                <!-- Display current search progress -->
+                <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                  <div class="col m12 s12" ng-show="searchStatus">
+                    <strong ng-bind="searchStatus"></strong>
+                  </div>
+                </div>
             </div> <!-- end of input-field ibm-input-field -->
           </div> <!-- end of grid col m6 s11 -->
         </div> <!-- end of middle section without category -->
     </form>       
     <br>  
     <!-- show search results -->
-    <div class="list-group">
-      <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
-        <small class="list-group-item-text">
-        </small>
-        <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>
-        <p class="list-group-item-text">Categories: <span ng-bind="offering.category"></span></p>
-        <p class="list-group-item-text">Location: <span ng-bind="offering.city"></span></p>
-        <p class="list-group-item-text">Distance: <span ng-bind="offering.distance"></span> km</p>
-            Offered by
-          <span ng-bind="offering.displayName"></span>
-          and available on
-          <span ng-bind="offering.when | date:'mediumDate'"></span>
-          <!--         and last updated on
-          <span ng-bind="offering.updated | date:'mediumDate'"></span>
-          -->
-      </a>
+    <div class="row">
+      <div class="col m12 s12">
+        <ul>
+          <li ng-repeat="offering in offerings" class="list-group-item">
+            <div class="row">
+              <h5 class="list-group-item-heading" ng-bind="offering.description"></h5>
+              <p class="list-group-item-text">{{properties.categories}}: <span ng-bind="offering.category"></span></p>
+              <p class="list-group-item-text">{{properties.location}}: <span ng-bind="offering.city"></span></p>
+              <p class="list-group-item-text">{{properties.distance}}: <span ng-bind="offering.distance"></span> {{properties.kilometres}}</p>
+    
+              <small class="list-group-item-text">
+                {{properties.offeredBy}}
+                <span ng-bind="offering.displayName"></span>
+                {{properties.availableOn}}
+                <span ng-bind="offering.when | date:'mediumDate'"></span>
+                <br>{{properties.expiresOn}}
+                <span ng-bind="offering.expiry | date:'mediumDate'"></span>
+              </small>
+            </div>
+            <!-- ibm-submit-area to interact with results, provides appropriate buttons depending on authentication -->
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="row">
+                <div class="col m12 s12" ng-if="authentication.user._id == offering.user._id">
+                    <a class="offering-submit-button btn btn-primary waves-effect waves-light" ui-sref="offerings.edit({offerType: offering.offerType, offeringId: offering._id})">
+                      {{properties.updateButton}}
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <polygon points="14,18.586 10.707,15.293 9.293,16.707 14,21.414 22.707,12.707 21.293,11.293   "/>
+                      <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                      s12,5.383,12,12S22.617,28,16,28z"/>
+                      </svg>
+                    </a>
+                    <button ng-if="offeringId != '0'" type="submit" class="offering-delete-button btn btn-danger waves-effect waves-light" ng-click="removeOfferingFromList(offering);">
+                    {{properties.deleteButton}}
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <rect x="12" y="2" width="8" height="2"/>
+                    <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                    <rect x="11" y="14" width="1" height="12"/>
+                    <rect x="14" y="14" width="1" height="12"/>
+                    <rect x="17" y="14" width="1" height="12"/>
+                    <rect x="20" y="14" width="1" height="12"/>
+                    </svg>
+                    </button>
+                </div>
+                <div class="col m12 s12" ng-if="authentication.user._id != offering.user._id">
+                    <a class="offering-submit-button btn btn-primary waves-effect waves-light" ui-sref="postings.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
+                      {{properties.contact}}
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                      </svg>
+                    </a>
+                </div>
+                <br><br><br>
+              </div> <!-- end of row -->
+            </div> <!-- end of ibm-submit-area -->
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
