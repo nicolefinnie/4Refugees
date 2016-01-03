@@ -18,7 +18,7 @@
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
                 <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="text" id="username" name="username" class="validate" ng-model="credentials.username" placeholder="{{properties.username}}" lowercase required>
                 <div ng-messages="userForm.username.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Username is required.</p>
+                <p class="help-block error-text" ng-message="required">{{properties.usernameRequired}}</p>
                 </div>
             </div>
           </div>
@@ -39,7 +39,7 @@
              <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
                 <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" type="password" id="password" name="password" class="validate" ng-model="credentials.password" placeholder="{{properties.password}}" required>
                 <div ng-messages="userForm.password.$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Password is required.</p>
+                <p class="help-block error-text" ng-message="required">{{properties.passwordRequired}}</p>
                 </div>
             </div>
           </div>

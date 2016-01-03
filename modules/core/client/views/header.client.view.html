@@ -10,14 +10,14 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <a ui-sref="home" class="ibm-brand-logo" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">
         4Refuge.es</a>
         <!-- mobile hamburger menus for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi -->
-        <a href="#" data-activates="mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">menu</i></a>
-        <a href="#" data-activates="mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="user-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="user-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">menu</i></a>
         <!-- mobile language menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
         <a href="#" data-activates="language-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">language</i></a>
         <a href="#" data-activates="language-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">language</i></a>
 
         <!-- mobile menu for languages -->
-        <ul class="side-nav ibm-mobile-menu" id="language-mobile-navigator">
+        <ul class="side-nav ibm-mobile-menu language" id="language-mobile-navigator">
             <li ui-sref-active="active">
                 <a ng-click="changeLanguage('ar')" >العربية
                     <i class="material-icons small right" ng-show="properties.arabicSelected">done</i>
@@ -35,7 +35,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </li>
         </ul>
         <!-- mobile user menu -->
-        <ul class="side-nav ibm-mobile-menu" ng-class="properties.rightToLeft? 'arabic':'latin'" id="mobile-navigator">
+        <ul class="side-nav ibm-mobile-menu user" ng-class="properties.rightToLeft? 'arabic':'latin'" id="user-mobile-navigator">
             <ul ng-hide="authentication.user">
                 <li ui-sref-active="active" >
                     <a ui-sref="authentication.signin">
@@ -66,12 +66,12 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             <ul ng-show="authentication.user">
                 <li ui-sref-active="active">
                     <a ui-sref="postings.list"> 
-                        <svg ng-if="!hasUnreadMail" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                         </svg> 
-                        <i class="large material-icons" ng-if="hasUnreadMail" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">markunread_mailbox</i>
                         {{properties.mail}}
+                        <span ng-if="hasUnreadMail" class="waves-effect waves-circle waves-light btn-floating secondary-content" ng-class="properties.rightToLeft? 'left': 'right'">{{unreadMailCount}}</span>
                     </a>
                 </li>
                 <li ui-sref-active="active">
@@ -137,12 +137,12 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 <ul id="dropdownAuth" class="dropdown-content ibm-dropdown-component"  ng-class="properties.rightToLeft? 'arabic' : 'latin'">
                     <li ui-sref-active="active">
                     <a ui-sref="postings.list">
-                        <svg ng-if="!hasUnreadMail" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                         </svg>
-                        <i class="large material-icons" ng-if="hasUnreadMail">markunread_mailbox</i>
                         {{properties.mail}}
+                        <span ng-if="hasUnreadMail" class="waves-effect waves-circle waves-light btn-floating secondary-content" ng-class="properties.rightToLeft? 'left': 'right'">{{unreadMailCount}}</span>
                     </a>
                     </li>
                     <li ui-sref-active="active">

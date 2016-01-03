@@ -66,8 +66,8 @@
 },
 
 
-{"viewName":"authentication",
-"signInWithYourAccount":"Oder mit Ihrem Account anmelden",
+{"viewName":"user",
+"signInWithYourAccount":"Oder mit Ihrem Konto anmelden",
 "registerWithYourEmail":"Oder mit Ihrer Email registieren", 
 "firstName":"Vorname",
 "lastName":"Namename",
@@ -78,7 +78,35 @@
 "orSignIn":"Oder Anmelden?",
 "register":"Registieren",
 "orRegister":"Oder Registieren?",
-"forgetPassword":"Oder Ihr Passwort vergessen?"
+"forgetPassword":"Oder Ihr Passwort vergessen?",
+"editProfile":"Profil editieren",
+"changeProfilePicture":"Profilbild ändern",
+"changePassword":"Passwort ändern",
+
+"aboutMe":"Über mich",
+"aboutMeText":"Erzählen Sie etwas über sich",
+"chooseTag":"Taggen Sie Ihre Interesse",
+"currentPassword":"Aktuelles Passwort",
+"newPassword":"Neues Passwort",
+"verifyPassword":"Passwort verifizieren",
+"saveProfile":"Profil speichern",
+"selectImage":"Bild selektieren",
+"upload":"Hochladen",
+"cancel":"Abbrechen",
+"savePassword":"Passwort speichern",
+
+"firstNameRequired":"Vorname ist erforderlich",
+"lastNameRequired":"Nachname ist erforderlich",
+"emailRequired":"E-Mail-Adresse ist erforderlich",
+"emailInvalid":"E-Mail-Adress ist ungǘltig",
+"usernameRequired":"Username ist erforderlich",
+"currentPasswordRequired":"Ihr aktuelles Passwort ist erforderlich",
+"enterPassword":"Ein neues Passwort eingeben",
+"verifyPassword":"Ihr Passwort verifizieren",
+"passwordsNoMatch":"Passwörte nicht übereinstimmen",
+"passwordRequirements":"Passwortbedingungen",
+"passwordChangedSuccessfully":"Passwort erfolgreich geändert",
+"profilePictureChangedSuccessfully":"Profilbild erfolgreich geändert"
 },
 
 {"viewName":"firststep",

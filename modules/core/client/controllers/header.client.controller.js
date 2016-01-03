@@ -28,6 +28,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
 
     // TODO Find better way of alerting the user of new mail using IBM icons
     $scope.hasUnreadMail = false;
+    $scope.unreadMailCount = 0;
 
     $scope.checkAdminRole = function() {
       if (Authentication && Authentication.user) {
@@ -53,6 +54,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
         // Check for unread mail, set flag to alert user if they have new mail.
         MailService.checkForUnreadMail($http, function(unreadMailCount) {
           $scope.hasUnreadMail = (unreadMailCount > 0);
+          $scope.unreadMailCount = unreadMailCount;
         });
       }
     };

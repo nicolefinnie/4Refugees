@@ -15,10 +15,37 @@
        transition: fill 1s;
        fill:color('teal', core);
 }
+.ibm-input-field.latin{
+    textarea + label {
+        /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
+        text-align:left;
+        left: 4rem;
+    }
+    input + label {
+        position: relative;
+        top: -4rem;
+        right: 0;
+        float: left;
+    }
+}
 
-/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
-.ibm-input-field input.right-align{
+/* override input field CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field.arabic{
+    textarea, input{
+        text-align: right;
         direction: rtl;
+    }
+    input + label {
+        position: relative;
+        top: -4rem;
+        left: 0;
+        float: right;
+    }
+    textarea + label {
+        /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
+        right: 4rem;
+        text-align: right;
+    }
 }
 
 /* button */
@@ -41,7 +68,7 @@
 
 /* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
 .ibm-submit-area{
-   button{
+   button {
     @extend .ibm-button;
    }
    
@@ -65,11 +92,11 @@
     button, a, strong{
         float:right;
     }
-    button svg{
+    button svg, a svg{
+    /*both a and button tags can be buttons*/
         margin-top: 5px;
         margin-right: 5px;
         float:left;
-        transform: rotate(90deg);
     }
 }
 

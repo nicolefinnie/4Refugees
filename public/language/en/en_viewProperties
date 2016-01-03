@@ -20,6 +20,7 @@
 "quickHelpButton":"Quick Help",
 "findHelpButton":"Find Help",
 "helpOthersButton":"Help Others"
+
 },
 
 {"viewName":"offering",
@@ -65,7 +66,7 @@
 "errorNoResults":"No results found, please modify your search and try again"
 }, 
 
-{"viewName":"authentication",
+{"viewName":"user",
 "signInWithYourAccount":"Or sign in with your account",
 "registerWithYourEmail":"Or register using your email", 
 "firstName":"First Name",
@@ -77,7 +78,37 @@
 "orSignIn":"Or Sign In?",
 "register":"Register",
 "orRegister":"Or Register?",
-"forgetPassword":"or Forgot your password?"
+"forgetPassword":"or Forgot your password?",
+
+"editProfile":"Edit Profile",
+"changeProfilePicture":"Change Profile Picture",
+"changePassword":"Change Password",
+"aboutMe":"About me",
+"aboutMeText":"Write something about you",
+"chooseTag":"Tag your interests",
+"currentPassword":"Current Password",
+"newPassword":"New Password",
+"verifyPassword":"Verify Password",
+"saveProfile":"Save Profile",
+"selectImage":"Select Image",
+"upload":"Upload",
+"cancel":"Cancel",
+"savePassword":"Save Password",
+
+"firstNameRequired":"First name is required",
+"lastNameRequired":"Last name is required",
+"emailRequired":"Email address is required",
+"emailInvalid":"Email address is invalid",
+"usernameRequired":"Username is required",
+"passwordRequired":"Password is required",
+"currentPasswordRequired":"Your current password is required",
+"enterPassword":"Enter a new password",
+"verifyPassword":"Verify your new password",
+"passwordsNoMatch":"Passwords do not match",
+"passwordRequirements":"Password requirements",
+"passwordChangedSuccessfully":"Password changed successfully",
+"profilePictureChangedSuccessfully":"Profile picture changed successfully"
+
 },
 
 {"viewName":"firststep",

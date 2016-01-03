@@ -1,7 +1,46 @@
-/* the offset of margin-top is the same as .ibm-dropdown-component defined in core-ibm-design.scss */
-.ibm-profile-navigator{
-    margin-top: 64px;
+@media screen and (max-width:500px) {
+    .ibm-profile-navigator{
+        margin-top: 56px;
+        /* according to materialize.css, every "a" takes up 64 px, so we pick 192px for 3 items */
+        height: 192px;
+        overflow-y: hidden;
+        width: 200px;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .ibm-profile-navigator{
+    /* the offset of margin-top the same as .ibm-dropdown-component defined in core-ibm-design.scss */
+        margin-top: 64px;
+    }
+}
+.ibm-profile-navigator.arabic{
+    li a{
+    text-align: right;
+    }
 }    
+
+.button-group-style{
+    margin-right: 1%;
+}
+
+.ibm-submit-area button{
+    @extend .button-group-style;
+}
+
+.ibm-submit-area.arabic{
+     button.no-float{
+     /* for profile picture page, we don't float to right for now, design of this page to be determined*/
+        float:none;
+    }
+}
+
+.ibm-tags-input.arabic{
+    label{
+       /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */
+       float:right;
+    }
+}
 
 /* Defined in Mean.JS framework */
 @media (min-width: 992px) {
