@@ -5,7 +5,6 @@
   describe('Offerings Controller Tests', function () {
     // Initialize global variables
     var OfferingsController,
-      OfferingsEditController,
       scope,
       $httpBackend,
       $stateParams,
@@ -84,10 +83,6 @@
       OfferingsController = $controller('OfferingsController', {
         $scope: scope,
       });
-      // Initialize the Offerings controller.
-      OfferingsEditController = $controller('OfferingsEditController', {
-        $scope: scope,
-      });
 
       // Make sure the Socket is connected
       if (!Socket.socket) {
@@ -118,7 +113,7 @@
       scope.properties = properties;
 
       // Run controller functionality
-      scope.find();
+      scope.findAllMine();
       $httpBackend.flush();
 
       // Test scope value
@@ -195,20 +190,23 @@
         });
 
         // Run controller functionality
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
         scope.description = mockOffering.description;
-        scope.city = mockOffering.city;
-        scope.longitude = mockOffering.loc.coordinates[0];
-        scope.latitude = mockOffering.loc.coordinates[1];
+        // Fake controller initialization needed to create offerings
+        scope.offeringId = '0';
+        $stateParams.offeringId = '0';
+        scope.findOne();
 
-        scope.create(true);
+        scope.createOrUpdate();
         $httpBackend.flush();
 
         // Test form inputs are reset
-        expect(scope.description).toEqual('');
-        expect(scope.city).toEqual('');
+        expect(scope.description).toEqual(undefined);
+        expect(scope.city).toEqual(undefined);
 
         // Test URL redirection after the offering was created
-        expect($location.path.calls.mostRecent().args[0]).toBe('offerings/' + mockOffering._id);
+        expect($location.path.calls.mostRecent().args[0]).toBe('offerings');
       }));
 
       it('should set scope.error if save error', function () {
@@ -228,9 +226,15 @@
           message: errorMessage
         });
 
-        scope.longitude = mockOffering.loc.coordinates[0];
-        scope.latitude = mockOffering.loc.coordinates[1];
-        scope.create(true);
+        // invalid create without a description
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
+        // Fake controller initialization needed to create offerings
+        scope.offeringId = '0';
+        $stateParams.offeringId = '0';
+        scope.findOne();
+      
+        scope.createOrUpdate();
         $httpBackend.flush();
 
         expect(scope.error).toBe(errorMessage);
@@ -250,9 +254,9 @@
           console.log('new stuff ' + toastContent);
         });
 
-        // Fixture mock form input values
-        scope.longitude = Number(8.8); // take geolocation into account
-        scope.latitude = Number(9.9);
+        // test update an offer with the new city JSON
+        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
 
         // Set PUT response
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond();
@@ -262,7 +266,7 @@
         $httpBackend.flush();
 
         // Test URL location to new object
-        expect($location.path()).toBe('/offerings/' + mockOffering._id);
+        expect($location.path()).toBe('/offerings');
       }));
 
       it('should set scope.error to error response message', inject(function (Offerings) {
@@ -272,9 +276,9 @@
           console.log('new stuff ' + toastContent);
         });
 
-        // Fixture mock form input values
-        scope.longitude = Number(8.8); // take geolocation into account
-        scope.latitude = Number(9.9);
+        // test updating a city JSON without name
+        var city = { 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        scope.where = city;
 
         var errorMessage = 'error';
         $httpBackend.expectPUT(/api\/offerings\/([0-9a-fA-F]{24})$/).respond(400, {
@@ -288,7 +292,7 @@
       }));
     });
 
-    describe('$scope.remove(offering)', function () {
+    describe('$scope.removeOfferingFromList(offering)', function () {
       beforeEach(function () {
         // Create new offerings array and include the offering
         scope.offerings = [mockOffering, {}];
@@ -297,7 +301,7 @@
         $httpBackend.expectDELETE(/api\/offerings\/([0-9a-fA-F]{24})$/).respond(204);
 
         // Run controller functionality
-        scope.remove(mockOffering);
+        scope.removeOfferingFromList(mockOffering);
       });
 
       it('should send a DELETE request with a valid offeringId and remove the offering from the scope', inject(function (Offerings) {
@@ -305,14 +309,14 @@
       }));
     });
 
-    describe('scope.remove()', function () {
+    describe('scope.removeSingleOffering(offering)', function () {
       beforeEach(function () {
         spyOn($location, 'path');
         scope.offering = mockOffering;
 
         $httpBackend.expectDELETE(/api\/offerings\/([0-9a-fA-F]{24})$/).respond(204);
 
-        scope.remove();
+        scope.removeSingleOffering(mockOffering);
         $httpBackend.flush();
       });
 

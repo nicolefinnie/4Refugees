@@ -1,16 +1,20 @@
 <section class="row" ng-controller="AuthenticationController">
 	<br><br> 
 	<br><br>
-<!-- Not necessary to say  -->
-  <div class="col-md-12 text-center">
-    <img ng-click="callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png" style="height:75px;margin:0 auto;">
-    <img ng-click="callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png" style="height:75px;margin:0 auto;">
-    <img ng-click="callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png" style="height:75px;margin:0 auto;">
-    <img ng-click="callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png" style="height:75px;margin:0 auto;">
+ <!-- the grid col m6 s11 has to match the design of signin.client.view.html as well as signup.client.view.html -->
+  <div class="col m12 s12">
+  <div class="row">
+  <div class="col m6 s12" ng-class="properties.rightToLeft ? 'right':'left'">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png" style="height:75px;margin:0 auto;">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png" style="height:75px;margin:0 auto;">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png" style="height:75px;margin:0 auto;">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png" style="height:75px;margin:0 auto;">
     <!-- we do not support github and paypal sign-in  
-    <img ng-click="callOauthProvider('/api/auth/github')" ng-src="/modules/users/client/img/buttons/github.png" style="height:75px;margin:0 auto;">
-    <img ng-click="callOauthProvider('/api/auth/paypal')"  ng-src="/modules/users/client/img/buttons/paypal.png" style="height:75px;margin:0 auto;">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/github')" ng-src="/modules/users/client/img/buttons/github.png" style="height:75px;margin:0 auto;">
+    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/paypal')"  ng-src="/modules/users/client/img/buttons/paypal.png" style="height:75px;margin:0 auto;">
     -->
   </div>
+  </div>
   <div ui-view></div>
+  </div>
 </section>

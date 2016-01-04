@@ -19,10 +19,6 @@ nav {
    background: color('gray', 80);
     /* text color */
     color: color('white', core);
-     /* a: title */
-    a{
-        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-     }
 }
 
 
@@ -45,12 +41,14 @@ nav {
 }
 
 /** The header logo needs some space to the brand name in Latin languages*/
-.ibm-header-logo.left{
+.ibm-header-logo.latin{
+  float: left;
   margin-right: 2%;
 }
   
 /** The header logo needs some space to the brand name in the header bar in Arabic*/
-.ibm-header-logo.right{
+.ibm-header-logo.arabic{
+  float: right;
   margin-left: 2%;
 }
   
@@ -68,9 +66,7 @@ nav {
             color: color('gray', 80);    
         }
     }
-    
 }
-
 
 /* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component{
@@ -82,20 +78,21 @@ nav {
         a{  
             /* menu text */
             color: color('white', core);
-            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
             
             /* small material icon for language check marks */
             i.small{
                 font-size: 16px;
             }
-            /* large material icon for the rest of icons if it's not an IBM design icon */
-            i.large{
-                font-size: 26px;
+        
+            /* for new email icon */
+            span {
+                background: color('red', 70);
+                font-size: 12px;
             }
+            
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 0 10% 10% 0;
             }
          } 
          a:hover, a.active, a:hover svg, a.active svg {
@@ -116,8 +113,29 @@ nav {
      }   
 }
 
+.ibm-dropdown-component.latin{
+    li a svg{    
+        margin: 0 15% 10% 0;
+        float: left; 
+    }
+}
+
+.ibm-dropdown-component.arabic{
+    li a svg{
+        margin: 0 0 10% 0;
+        float: right;
+    }
+    li a span{
+        /* new email icon*/
+        margin-right: 12px;
+    }
+}
+
 /* mobile menu */
 .ibm-mobile-menu{
+    margin-top: 56px;
+    overflow-y: hidden;
+        
     background: color('gray', 80);
     /* li: menu component */
     li{
@@ -125,23 +143,17 @@ nav {
         a{
             /* menu text */
             color: color('white', core);
-            font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-            
-            /* small material icon for language check marks */
-            i.small{
-                margin-top: 12%;
-                font-size: 16px;
-            }
-            /* large material icon - only for materialize read mail icon, should be removed because we should use IBM icons instead*/
-            i.large{
-                padding: 15px 0 0 0;
-                font-size: 36px;
+             
+            span {
+                /* for new email icon */
+                background: color('red', 70);
+                font-size: 12px;
+                margin-top: 12px;
             }
            
             /* svg IBM design icons*/
             svg{
                 fill: color('white', core);
-                margin: 10% 15% 0 0;
             }
         } 
         a:hover {
@@ -152,6 +164,41 @@ nav {
             fill: color('gray', 80);
         }
      }   
+}
+
+.ibm-mobile-menu.latin {
+    li a svg{
+        margin: 10% 15% 0 0;
+        float: left;
+    }
+}
+.ibm-mobile-menu.arabic {
+    li a svg{
+        margin: 10% 0 0 0;
+        float: right;
+     }
+    li a span {
+        /* for new email icon */
+        margin-right: 12px;
+    }
+}
+
+
+.ibm-mobile-menu.language{
+     /* according to materialize.css, every "a" takes up 64 px, so we pick 192px for 3 languages */
+     height: 192px;
+
+    /* small material icon for language check marks, materialize.css doesn't work for icon size for whatever reason, we override the size and line-height 
+    * line-height is 400% of the current font size. 
+    */
+    li a i.small{
+        font-size: 1rem; 
+        line-height: 400%;
+    }       
+}
+
+.ibm-mobile-menu.user{
+    height: 256px;
 }
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
@@ -188,13 +235,11 @@ nav {
       
     /* h1: headline */
     h1 {
-        font-family:"HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 32px;
     }
     
     /* h2: sub-headline */
     h2 {
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:500; font-stretch:normal;
         font-size: 16px;
     }
 }
@@ -212,21 +257,18 @@ nav {
     /* h2: headline */
     h2{
         color: color('blue', 40);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 20px;
         
     }  
     /* p: text */
     p{
         color: #30393b;
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 11px;
         
     }
     /* a: button */
     a{
         background: color('teal', core);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
         font-size: 16px;
         text-transform: capitalize;
     }

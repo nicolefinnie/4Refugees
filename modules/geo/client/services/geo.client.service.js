@@ -174,14 +174,11 @@ angular.module('geo').service('GeoService', [ function () {
         method: 'GET',
         url: 'geo/de_cities'
       }).then(function successCallback(response) {
-        /*jshint evil:true */
-        // Note - the above jshint directive allows us to use the 'eval' function below,
-        // to transform the data received directly into an array of JSON city objects.
         console.log('GeoService: Loaded city list from \'public/geo/de_cities\' with status ' + response.status);
         try {
           // expected format: [{"name":"Aachen","lat":50.77664,"lng":6.08342},{"name":"Aalen" ... }]
           // cache the resulting city list to avoid future GET requests in this session
-          self.cityList = eval(response.data);
+          self.cityList = response.data;
           self.cityListCached = true;
           callback(self.cityList, true);
         } catch(e) {
@@ -197,7 +194,6 @@ angular.module('geo').service('GeoService', [ function () {
 
   // For unit tests, setup fake/sample cached geo-location data
   this.setupTestEnvironment = function() {
-    console.log('GeoService: Creating test environment.');
     var testCities = [ { 'name': 'Stuttgart', 'lat': 48.782, 'lng': 9.177 } ];
     this.cityListCached = true;
     this.cityList = testCities;

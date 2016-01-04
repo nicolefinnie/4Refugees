@@ -7,7 +7,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       //refresh view properties of home
-      LanguageService.getPropertiesByViewName('authentication', $http, function(translationList) {
+      LanguageService.getPropertiesByViewName('user', $http, function(translationList) {
         $scope.properties = translationList;
       });
     });
@@ -19,7 +19,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
     // is set.  So, only load our properties if a language change is not in progress,
     // otherwise wait until we get the language-change-notification.
     if (LanguageService.isLanguageLoadInProgress() === false) {
-      LanguageService.getPropertiesByViewName('authentication', $http, function(translationList) {
+      LanguageService.getPropertiesByViewName('user', $http, function(translationList) {
         $scope.properties = translationList;
       });
     }

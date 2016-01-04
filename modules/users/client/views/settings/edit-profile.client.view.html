@@ -1,47 +1,106 @@
 <section class="row" ng-controller="EditProfileController">
-  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+<br>
+  <div class="col s12">
     <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="signin" novalidate autocomplete="off">
-        <div input-field>
-          <input type="text" id="firstName" name="firstName" class="validate" ng-model="user.firstName" placeholder="First Name" required>
-          <label class="active" for="firstName">First Name</label>
-          <div ng-messages="userForm.firstName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">First name is required.</p>
+      <div class="ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div class="row input-field">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input type="text" id="firstName" name="firstName" class="validate" ng-model="user.firstName" required>
+                <label class="active" for="firstName">{{properties.firstName}}</label>
+                <div ng-messages="userForm.firstName.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">{{properties.firstNameRequired}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row input-field">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input type="text" id="lastName" name="lastName" class="validate" ng-model="user.lastName" required>
+                <label class="active" for="lastName">{{properties.lastName}}</label>
+                <div ng-messages="userForm.lastName.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">{{properties.lastNameRequired}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row input-field">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                </svg> 
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input type="email" id="email" name="email" class="validate" ng-model="user.email" lowercase required>
+                <label class="active" for="email">{{properties.email}}</label>
+                <div ng-messages="userForm.email.$error" role="alert">
+                    <p class="help-block error-text" ng-message="required">{{properties.emailRequired}}</p>
+                    <p class="help-block error-text" ng-message="email">{{properties.emailInvalid}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row input-field">
+          <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                s-8-3.589-8-8S11.589,3,16,3z"/>
+                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                </svg>
+          </div>
+          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input type="text" id="username" name="username" class="validate" ng-model="user.username" lowercase required>
+                <label class="active" for="username">{{properties.username}}</label>
+                <div ng-messages="userForm.username.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">{{properties.usernameRequired}}</p>
+                </div>
           </div>
         </div>
-        <div input-field>
-          <input type="text" id="lastName" name="lastName" class="validate" ng-model="user.lastName" placeholder="Last Name" required>
-          <label class="active" for="lastName">Last Name</label>
-          <div ng-messages="userForm.lastName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Last name is required.</p>
-          </div>
+        <div class="row input-field">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
+                    C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
+                    L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
+                    s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
+                <circle cx="16" cy="13" r="1.5"/>
+                <circle cx="21" cy="13" r="1.5"/>
+                <circle cx="11" cy="13" r="1.5"/>
+              </svg>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
+                <label class="active" for="aboutMe">{{properties.aboutMe}}</label>
+            </div>
         </div>
-        <div input-field>
-          <input type="email" id="email" name="email" class="validate" ng-model="user.email" placeholder="Email" lowercase required>
-          <label class="active" for="email">Email</label>
-          <div ng-messages="userForm.email.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Email address is required.</p>
-            <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
-          </div>
-        </div>
-        <div input-field>
-          <input type="text" id="username" name="username" class="validate" ng-model="user.username" placeholder="Username" lowercase required>
-          <label class="active" for="username">Username</label>
-          <div ng-messages="userForm.username.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Username is required.</p>
-          </div>
-        </div>
-        <div input-field>
-          <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="Write something about you"></textarea>
-          <label class="active" for="aboutMe">About me</label>
-        </div>
-        <div input-field>
-          <label class="active" for="tags">Choose tags you are interested in</label>
+        <br>
+        <div class="ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+          <label class="active" for="tags">{{properties.chooseTag}}</label>
+          <br>
+           <!-- TODO placeholder in tags-input is not refreshed/translated by languages, removed the placeholder out of tags-input for now 
+           the way to change placeholder dynamically - https://github.com/mbenford/ngTagsInput/issues/428
+            -->
           <tags-input name="tags"
                       ng-model="user.tags"
                       display-property="tagName"
-                      placeholder="Click here to choose tags or enter text to filter for one"
                       replace-spaces-with-dashes="false"
                       add-from-autocomplete-only="true"
+                      placeholder="?"
                       add-on-enter="true"
                       add-on-comma="true"
                       add-on-space="true"
@@ -58,8 +117,19 @@
 	      </auto-complete>
           </tags-input>
         </div>
-        <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </div> <!-- end of ibm-input-field -->
+        
+      
+        <br>
+        <div class="ibm-submit-area form-group" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+          <button type="submit" class="btn btn-primary">{{properties.saveProfile}}
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M3,3v26h7h12h3l4-4V3H3z M27,24.171L24.172,27H22v-2H10v2H5V5h22V24.171z"/>
+            <path d="M16,22c3.313,0,6-2.687,6-6s-2.687-6-6-6s-6,2.686-6,6S12.686,22,16,22z M16,14c1.104,0,2,0.896,2,2s-0.896,2-2,2
+            s-2-0.896-2-2S14.896,14,16,14z"/>
+            </svg>
+          </button>
         </div>
         <div ng-show="success" class="text-center text-success">
           <strong>Profile Saved Successfully</strong>

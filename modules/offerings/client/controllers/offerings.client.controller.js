@@ -110,9 +110,14 @@ function geoGetCurrentLocation(GeoService, $scope, $http) {
 
 // Validate a suitable geoLocation was specified
 function validateGeoLocation(scope) {
-  var isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
-  // if google geo is not reachable or user does not allow it
-  if (!isValid && scope.where)
+  var isValid = false;
+  
+  // google geo is available
+  if (scope.geoManual === false){
+    isValid = (scope.longitude !== undefined && scope.latitude !== undefined);
+  }
+  // google geo is not reachable or user does not allow it
+  else if (scope.where !== undefined)
   {
     isValid = true;
     scope.city = scope.where.name;
@@ -142,12 +147,22 @@ function validateOfferingSearch(scope) {
   validateGeoLocation(scope);
 }
 
+
 // Controller handling offering searches
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                                     'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
+                                                                     'Authentication', 'Offerings', 'GeoService', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
     $scope.authentication = Authentication;
 
+    $scope.showDetails = false;
+    $scope.searchStatus = null;
+
+    // initialize datepicker
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10 // Creates a dropdown of 15 years to control year
+    });
+    
     // initialize all properties in the view (html)
     LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
       $scope.properties = translationList;
@@ -163,22 +178,14 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     // Ask for our current city+coordinates from Geo services
     geoGetCurrentLocation(GeoService, $scope, $http);
 
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
-
     // Search all offerings for the input criteria
     $scope.searchAll = function () {
-        
       $scope.error = null;
-
       validateOfferingSearch($scope);
 
       var now = new Date(); 
       var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
+      $scope.searchStatus = $scope.properties.searchInProgress;
       // TODO: Should we re-direct to a new page? or render a new page?
       $scope.offerings = Offerings.query({
         description: this.description,
@@ -193,197 +200,18 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         offerType: this.offerType 
       }, function () {
         if ($scope.offerings.length < 1) {
-          $scope.error = $scope.properties.errorNoResults;
+          $scope.searchStatus = $scope.properties.searchNoResults;
         } else {
+          $scope.searchStatus = $scope.properties.searchComplete;
           $scope.offerings.forEach(function(offering) {
             convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
           });
         }
       });
     };
-  }
-]);
 
-//Edit controller only available for authenticated users
-angular.module('offerings').controller('OfferingsEditController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                                   'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
-
-    // initialize all properties in the view (html)
-    LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
-      $scope.properties = translationList;
-    });
-
-    // language change clicked
-    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
-        $scope.properties = translationList;
-      });
-    });
-
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
-    $scope.category = {};
-    
-    $scope.authentication = Authentication;
- 
-    // Ask for our current city+coordinates from Geo services
-    geoGetCurrentLocation(GeoService, $scope, $http);
-
-    // Update existing Offering
-    $scope.update = function () {
-      $scope.error = null;
-
-      var offering = $scope.offering;
-      validateOfferingInput($scope, offering);
-
-      offering.category = getCategoryArray(this.category, 'others');
-      offering.longitude = $scope.longitude;
-      offering.latitude = $scope.latitude;
-      offering.descriptionLanguage = LanguageService.getCurrentLanguage(); 
-      var now = new Date(); 
-      var whenDate = offering.when ? new Date(offering.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
-      var newExpiry = new Date(whenDate);
-      newExpiry.setMonth(newExpiry.getMonth()+1);
-      offering.whenString = whenDate.toUTCString();
-      offering.expiryString = newExpiry.toUTCString();
-
-      offering.$update(function () {
-        $location.path('offerings/' + offering._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
-    
-    // Find existing Offering
-    $scope.findOne = function () {
-      $scope.offering = Offerings.get({ 
-        offeringId: $stateParams.offeringId 
-      }, function () {
-        $scope.offerType = $scope.offering.offerType;
-        // set selected category checkbox of the to-edit-request/offer 
-        var selectedCategory = {};
-        $scope.offering.category.forEach(function(eachCategory) {
-          selectedCategory[eachCategory] = true;
-        });
-        $scope.category = selectedCategory;
-        convertServerOfferingUTCDateToLocal($scope.offering);
-        // Convert to nicer date string for display
-        // Note that in the create+edit forms, 'when' is a 'text' form field,
-        // instead of 'date', so that it shows up nicely on all browsers.
-        $scope.offering.when = $scope.offering.when.toDateString();
-      });
-    };
-
-  }
-]);
-
-//Offerings controller only available for authenticated users
-angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                               'Authentication', 'Offerings', 'Socket', 'GeoService', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, Socket, GeoService, LanguageService) {
-    $scope.authentication = Authentication;
-
-    // initialize all properties in the view (html)
-    LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
-      $scope.properties = translationList;
-    });
-
-    // language change clicked
-    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
-        $scope.properties = translationList;
-      });
-    });
-
-    // Ask for our current city+coordinates from Geo services
-    geoGetCurrentLocation(GeoService, $scope, $http);
-
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
-
-    $scope.messages = [];
-
-    // Create new Offering
-    $scope.create = function () {
-      $scope.error = null;
-
-      validateOfferingInput($scope, $scope);
-
-      // Create new Offering object
-      var now = new Date(); 
-      var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
-      var newExpiry = new Date(whenDate);
-      newExpiry.setMonth(newExpiry.getMonth()+1);
-      var offering = new Offerings({
-        whenString: whenDate.toUTCString(),
-        expiryString: newExpiry.toUTCString(),
-        description: this.description,
-        descriptionLanguage: LanguageService.getCurrentLanguage(),
-        city: this.city,
-             // mapping JSON array category from checkbox on webpage to String
-        category: getCategoryArray(this.category, 'others'),
-        longitude: $scope.longitude,
-        latitude: $scope.latitude,
-        offerType: this.offerType 
-      });
-
-      // Emit a 'offeringMessage' message event with the JSON offering object
-      var message = {
-        content: offering
-      };
-      Socket.emit('offeringMessage', message);
-
-      // Redirect after save
-      offering.$save(function (response) {
-        $location.path('offerings/' + response._id);
-
-        // Clear form fields
-        $scope.when = '';
-        $scope.expiry = '';
-        $scope.updated = '';
-        $scope.description = '';
-        $scope.city = '';
-        $scope.category = '';
-        $scope.longitude = '';
-        $scope.latitude = '';
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
-    // Remove existing Offering
-    $scope.remove = function (offering) {
-      if (offering) {
-        offering.$remove();
-
-        for (var i in $scope.offerings) {
-          if ($scope.offerings[i] === offering) {
-            $scope.offerings.splice(i, 1);
-          }
-        }
-      } else {
-        $scope.offering.$remove(function () {
-          $location.path('offerings');
-        });
-      }
-    };
-
-    // Find a list of Offerings
-    $scope.find = function () {
-      $scope.offerings = Offerings.query({
-      }, function () {
-        $scope.offerings.forEach(function(offering) {
-          convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
-        });
-      });
+    $scope.toggleAdvanced = function() {
+      $scope.showDetails = !$scope.showDetails;
     };
 
     // Find existing Offering
@@ -393,6 +221,168 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       }, function () {
         convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, $scope.offering);
       });
+    };
+  }
+]);
+
+
+//Offerings controller only available for authenticated users
+angular.module('offerings').controller('OfferingsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
+                                                               'Authentication', 'Offerings', 'GeoService', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoService, LanguageService) {
+    $scope.authentication = Authentication;
+
+    $scope.offering = {};
+    $scope.category = {};
+
+    // initialize datepicker
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10 // Creates a dropdown of 15 years to control year
+    });
+
+    // language change clicked
+    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
+      $scope.initLanguage();
+    });
+
+    $scope.cancelEdit = function() {
+      // Re-direct back to their list of offerings
+      $location.path('offerings');
+    };
+
+    $scope.createOrUpdate = function() {
+      $scope.error = null;
+      $scope.offering.description = this.description;
+      validateOfferingInput($scope, $scope.offering);
+
+      // Update offering with data from the form
+      var now = new Date(); 
+      var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
+      var expiryDate = this.expiry ? new Date(this.expiry) : new Date(whenDate);
+      if (this.expiry === undefined) {
+        expiryDate.setMonth(expiryDate.getMonth()+1);
+      }
+      $scope.offering.whenString = whenDate.toUTCString();
+      $scope.offering.expiryString = expiryDate.toUTCString();
+      $scope.offering.description = this.description;
+      $scope.offering.descriptionLanguage = LanguageService.getCurrentLanguage();
+      $scope.offering.city = this.city;
+      $scope.offering.category = getCategoryArray(this.category, 'others');
+      $scope.offering.longitude = this.longitude;
+      $scope.offering.latitude = this.latitude;
+      $scope.offering.offerType = this.offerType;
+      
+      if ($scope.offeringId === '0') {
+        $scope.create();
+      } else {
+        $scope.update();
+      }
+    };
+
+    // Create new Offering server request
+    $scope.create = function () {
+      // Redirect after save
+      $scope.offering.$save(function (response) {
+        $location.path('offerings');
+        $scope.clearForm();
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Update existing Offering server request
+    $scope.update = function () {
+      $scope.offering.$update(function () {
+        $location.path('offerings');
+        $scope.clearForm();
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Remove single Offering
+    $scope.removeSingleOffering = function (offering) {
+      offering.$remove(function () {
+        // Re-direct to their list of remaining offerings
+        $location.path('offerings');
+      });
+    };
+
+    // Remove one offering from within list of all my offerings
+    $scope.removeOfferingFromList = function (offering) {
+      offering.$remove();
+      for (var i in $scope.offerings) {
+        if ($scope.offerings[i] === offering) {
+          $scope.offerings.splice(i, 1);
+        }
+      }
+    };
+
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
+        $scope.properties = translationList;
+      });
+    };
+
+    // Find all my offerings - init function for offerings.listMine
+    $scope.findAllMine = function () {
+      delete $scope.offering;
+      $scope.initLanguage();
+      $scope.offerings = Offerings.query({
+      }, function () {
+        $scope.offerings.forEach(function(offering) {
+          convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
+        });
+      });
+    };
+
+    // Pre-fill form based on an existing offering - update codepath
+    $scope.initializeFormFromOffering = function (offering) {
+      $scope.offerType = offering.offerType;
+      var selectedCategory = {};
+      $scope.offering.category.forEach(function(eachCategory) {
+        selectedCategory[eachCategory] = true;
+      });
+      $scope.category = selectedCategory;
+      var whenDate = new Date(offering.whenString);
+      var expiryDate = new Date(offering.expiryString);
+      $scope.when = whenDate.toDateString();
+      $scope.expiry = expiryDate.toDateString();
+      $scope.description = offering.description;
+      $scope.geoManual = false;
+      $scope.city = offering.city;
+      $scope.longitude = offering.longitude;
+      $scope.latitude = offering.latitude;
+    };
+
+    // Clear form fields, i.e. after a successful create or update
+    $scope.clearForm = function () {
+      $scope.category = {};
+      delete $scope.description;
+      delete $scope.when;
+      delete $scope.expiry;
+      delete $scope.city;
+      delete $scope.longitude;
+      delete $scope.latitude;
+    };
+
+    // Find existing Offering - init function for create+edit paths
+    $scope.findOne = function () {
+      $scope.initLanguage();
+      if ($stateParams.offeringId !== '0') {
+        // Pre-populate form based on an existing offering, used when editing an offer
+        $scope.offering = Offerings.get({
+          offeringId: $stateParams.offeringId
+        }, function () {
+          $scope.initializeFormFromOffering($scope.offering);
+        });
+      } else {
+        // Start off with an empty offering, used when creating a new offer
+        $scope.offering = new Offerings({ });
+        // Ask for our current city+coordinates from Geo services
+        geoGetCurrentLocation(GeoService, $scope, $http);
+      }
     };
 
   }
