@@ -60,8 +60,7 @@
     height: 24px;
     width: 24px;
     vertical-align: middle;
-    fill: #fff;
-    transform: none !important; }
+    fill: #fff; }
 
 /* Create or Update an offering */
 .ibm-submit-area button.offering-submit-button, .ibm-submit-area a.offering-submit-button {
