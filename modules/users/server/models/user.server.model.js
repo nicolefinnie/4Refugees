@@ -46,7 +46,7 @@ var UserSchema = new Schema({
   },
   email: {
     type: String,
-    unique: true,
+   // unique: true, Removed this to ensure multiple SSO can be linked RTC defect 4018
     lowercase: true,
     trim: true,
     default: '',
