@@ -10,14 +10,60 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <a ui-sref="home" class="ibm-brand-logo" ng-class="{left:!properties.rightToLeft, right:properties.rightToLeft}">
         4Refuge.es</a>
         <!-- mobile hamburger menus for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi -->
-        <a href="#" data-activates="user-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">menu</i></a>
-        <a href="#" data-activates="user-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <a href="#" data-activates="user-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <circle cx="4" cy="16" r="3"/> <circle cx="16" cy="16" r="3"/> <circle cx="28" cy="16" r="3"/>
+          </svg>
+        </a>
+        <a href="#" data-activates="user-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <circle cx="4" cy="16" r="3"/> <circle cx="16" cy="16" r="3"/> <circle cx="28" cy="16" r="3"/>
+          </svg>
+        </a>
         <!-- mobile admin menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
-        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">supervisor_account</i></a>
-        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">supervisor_account</i></a>
+        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="checkAdminRole() && !properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8s-8-3.589-8-8S11.589,3,16,3z"/>
+            <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+            <polygon points="21.207,8.707 19.793,7.293 14.5,12.586 12.207,10.293 10.793,11.707 14.5,15.414  "/>
+          </svg>
+        </a>
+        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="checkAdminRole() && properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8s-8-3.589-8-8S11.589,3,16,3z"/>
+            <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+            <polygon points="21.207,8.707 19.793,7.293 14.5,12.586 12.207,10.293 10.793,11.707 14.5,15.414  "/>
+          </svg>
+        </a>
         <!-- mobile language menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
-        <a href="#" data-activates="language-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">language</i></a>
-        <a href="#" data-activates="language-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">language</i></a>
+        <a href="#" data-activates="language-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M8.575,18.925C10.625,20.975,13.312,22,16,22c2.531,0,5.055-0.922,7.054-2.74l0.018,0.018l0.707-0.707l-0.018-0.019
+            c3.748-4.119,3.645-10.497-0.336-14.477C21.375,2.025,18.688,1,16,1c-2.531,0-5.055,0.922-7.054,2.74L8.929,3.722L8.222,4.429
+            l0.018,0.019C4.491,8.567,4.595,14.944,8.575,18.925z M16,3c2.271,0,4.405,0.885,6.011,2.489c3.194,3.195,3.3,8.316,0.335,11.649
+            L10.36,5.152C11.917,3.767,13.896,3,16,3z M21.64,17.848C20.083,19.233,18.104,20,16,20c-2.271,0-4.405-0.885-6.011-2.489
+            c-3.194-3.194-3.3-8.315-0.335-11.649L21.64,17.848z"/>
+            <path d="M26.253,1.247l-1.414,1.414C27.2,5.022,28.5,8.16,28.5,11.5s-1.3,6.479-3.661,8.839C22.479,22.699,19.34,24,16,24
+            s-6.479-1.301-8.839-3.661l-1.414,1.414C8.484,24.492,12.126,26,16,26s7.516-1.508,10.253-4.247
+            c2.738-2.738,4.247-6.38,4.247-10.253S28.991,3.985,26.253,1.247z"/>
+            <rect x="11" y="28" width="10" height="3"/>
+          </svg>
+        </a>
+        <a href="#" data-activates="language-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M8.575,18.925C10.625,20.975,13.312,22,16,22c2.531,0,5.055-0.922,7.054-2.74l0.018,0.018l0.707-0.707l-0.018-0.019
+            c3.748-4.119,3.645-10.497-0.336-14.477C21.375,2.025,18.688,1,16,1c-2.531,0-5.055,0.922-7.054,2.74L8.929,3.722L8.222,4.429
+            l0.018,0.019C4.491,8.567,4.595,14.944,8.575,18.925z M16,3c2.271,0,4.405,0.885,6.011,2.489c3.194,3.195,3.3,8.316,0.335,11.649
+            L10.36,5.152C11.917,3.767,13.896,3,16,3z M21.64,17.848C20.083,19.233,18.104,20,16,20c-2.271,0-4.405-0.885-6.011-2.489
+            c-3.194-3.194-3.3-8.315-0.335-11.649L21.64,17.848z"/>
+            <path d="M26.253,1.247l-1.414,1.414C27.2,5.022,28.5,8.16,28.5,11.5s-1.3,6.479-3.661,8.839C22.479,22.699,19.34,24,16,24
+            s-6.479-1.301-8.839-3.661l-1.414,1.414C8.484,24.492,12.126,26,16,26s7.516-1.508,10.253-4.247
+            c2.738-2.738,4.247-6.38,4.247-10.253S28.991,3.985,26.253,1.247z"/>
+            <rect x="11" y="28" width="10" height="3"/>
+          </svg>
+        </a>
 
         <!-- mobile menu for languages -->
         <ul class="side-nav ibm-mobile-menu language" id="language-mobile-navigator">
@@ -200,10 +246,8 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             <li>
                 <a class="dropdown-button" href="#" data-activates="dropdownAdmin" dropdown>
                   [admin]
-                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                    <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
-                    s-8-3.589-8-8S11.589,3,16,3z"/>
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8s-8-3.589-8-8S11.589,3,16,3z"/>
                     <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
                     <polygon points="21.207,8.707 19.793,7.293 14.5,12.586 12.207,10.293 10.793,11.707 14.5,15.414  "/>
                   </svg>
@@ -223,28 +267,39 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <ul ng-class="{right:!properties.rightToLeft, left:properties.rightToLeft}">
           <li>
             <a class="dropdown-button" href="#" data-activates="dropdownLanguage" dropdown>
-                    {{properties.currentLanguageShownInHeader}}
-                <i class="material-icons right">language</i>
-                </a>
+              {{properties.currentLanguageShownInHeader}}
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M8.575,18.925C10.625,20.975,13.312,22,16,22c2.531,0,5.055-0.922,7.054-2.74l0.018,0.018l0.707-0.707l-0.018-0.019
+                c3.748-4.119,3.645-10.497-0.336-14.477C21.375,2.025,18.688,1,16,1c-2.531,0-5.055,0.922-7.054,2.74L8.929,3.722L8.222,4.429
+                l0.018,0.019C4.491,8.567,4.595,14.944,8.575,18.925z M16,3c2.271,0,4.405,0.885,6.011,2.489c3.194,3.195,3.3,8.316,0.335,11.649
+                L10.36,5.152C11.917,3.767,13.896,3,16,3z M21.64,17.848C20.083,19.233,18.104,20,16,20c-2.271,0-4.405-0.885-6.011-2.489
+                c-3.194-3.194-3.3-8.315-0.335-11.649L21.64,17.848z"/>
+                <path d="M26.253,1.247l-1.414,1.414C27.2,5.022,28.5,8.16,28.5,11.5s-1.3,6.479-3.661,8.839C22.479,22.699,19.34,24,16,24
+                s-6.479-1.301-8.839-3.661l-1.414,1.414C8.484,24.492,12.126,26,16,26s7.516-1.508,10.253-4.247
+                c2.738-2.738,4.247-6.38,4.247-10.253S28.991,3.985,26.253,1.247z"/>
+                <rect x="11" y="28" width="10" height="3"/>
+              </svg>
+            </a>
                 
-                <ul id="dropdownLanguage" class="dropdown-content ibm-dropdown-component">
-                    <li ui-sref-active="active">
-                    <a ng-click="changeLanguage('ar')" >العربية
-                    <i class="material-icons small right" ng-show="properties.arabicSelected">done</i>
-                    </a>
-                    </li>
-                    <li ui-sref-active="active">
-                    <a ng-click="changeLanguage('en')">English
-                    <i class="material-icons small right" ng-show="properties.englishSelected">done</i>
-                    </a>
-                    </li>
-                    <li ui-sref-active="active">
-                    <a ng-click="changeLanguage('de')">Deutsch
-                    <i class="material-icons small right" ng-show="properties.germanSelected">done</i>
-                    </a>
-                    </li>
-                </ul>
-            </li>        
+            <ul id="dropdownLanguage" class="dropdown-content ibm-dropdown-component">
+              <li ui-sref-active="active">
+                <a ng-click="changeLanguage('ar')" >العربية
+                <i class="material-icons small right" ng-show="properties.arabicSelected">done</i>
+                </a>
+              </li>
+              <li ui-sref-active="active">
+                <a ng-click="changeLanguage('en')">English
+                <i class="material-icons small right" ng-show="properties.englishSelected">done</i>
+                </a>
+              </li>
+              <li ui-sref-active="active">
+                <a ng-click="changeLanguage('de')">Deutsch
+                <i class="material-icons small right" ng-show="properties.germanSelected">done</i>
+                </a>
+              </li>
+            </ul>
+          </li>        
         </ul>  
         
       </div> <!-- end of big screen menu IBM dropdown-container -->

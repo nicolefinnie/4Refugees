@@ -25,7 +25,8 @@ nav {
       margin-top: 1px; 
       height: 24px;
       width: 24px;
-      margin-left: 5px;
+      margin-left: 8px;
+      margin-right: 8px;
       vertical-align: middle;
       fill: color('white', core);
    }
@@ -219,6 +220,11 @@ nav {
 .ibm-mobile-menu.user{
     height: 256px;
 }
+
+.ibm-mobile-menu.admin{
+    height: 128px;
+}
+
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
   margin-bottom: -10%;
