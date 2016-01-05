@@ -29,12 +29,12 @@
               <div class="row">
                 <div class="col m12 s12" ng-if="authentication.user._id == offering.user._id">
                     <a class="offering-submit-button btn btn-primary waves-effect waves-light" ui-sref="offerings.edit({offerType: offering.offerType, offeringId: offering._id})">
-                      {{properties.updateButton}}
+                      {{properties.editButton}}
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                      <polygon points="14,18.586 10.707,15.293 9.293,16.707 14,21.414 22.707,12.707 21.293,11.293   "/>
-                      <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                      s12,5.383,12,12S22.617,28,16,28z"/>
+                      <rect x="24.379" y="1.257" transform="matrix(0.7071 -0.7071 0.7071 0.7071 3.8726 20.3492)" width="4.243" height="8.485"/>
+                      <path d="M5,21l6,6l15-15l-6-6L5,21z M11,24.171L7.828,21L20,8.829L23.172,12L11,24.171z"/>
+                      <polygon points="1,31 6,29 3,26   "/>
                       </svg>
                     </a>
                     <button ng-if="offeringId != '0'" type="submit" class="offering-delete-button btn btn-danger waves-effect waves-light" ng-click="removeOfferingFromList(offering);">

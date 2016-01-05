@@ -152,7 +152,7 @@ function translateAllOfferings(offerings, desiredLanguage)
 exports.create = function (req, res) {
   var offering = new Offering();
   offering.user = req.user;
-  offering.userId = req.user._id;
+  offering.ownerId = req.user._id.toString();
   offering.when = new Date(req.body.whenString);
   var now = new Date(); 
   offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
@@ -184,7 +184,7 @@ exports.read = function (req, res) {
 exports.update = function (req, res) {
   Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id) }, function (err, offering){
     offering.user = req.user;
-    offering.userId = req.user._id;
+    offering.ownerId = req.user._id.toString();
     offering.when = new Date(req.body.whenString);
     var now = new Date(); 
     offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
@@ -291,7 +291,7 @@ function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
  * List of Offerings
  */
 exports.listMine = function (req, res) {
-  var Query = (req.user) ? { userId: req.user._id } : {};
+  var Query = (req.user) ? { 'ownerId': req.user._id.toString() } : {};
 
   if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
@@ -330,7 +330,7 @@ exports.listMine = function (req, res) {
     // non-authenticated users go through the search path above.
     var query = Offering.find({});
     if (req.user) {
-      query.where('userId', req.user._id);
+      query.where('ownerId', req.user._id.toString());
       query.sort('-created');
     } else {
       query.limit(5);

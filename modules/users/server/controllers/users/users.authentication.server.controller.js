@@ -30,6 +30,16 @@ exports.signup = function (req, res) {
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
 
+  // Only the local user using the official app email can be the admin...
+  // Careful.... we need to ensure we create this special account first.
+  // Ideally, we can avoid this backdoor to get admin, but not sure how
+  // to setup the admin user via BlueMix.  One option I guess is if we
+  // have admin access to mongodb, we can manually edit an existing user
+  // to add the 'admin' role.
+  if (user.email === '4refugees.ibm@gmail.com') {
+    user.roles = ['admin', 'user'];
+  }
+
   // Then save the user
   user.save(function (err) {
     if (err) {

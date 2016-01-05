@@ -13,7 +13,15 @@ nav {
   padding: 0 10% 0 10%;
   background: #323232;
   /* text color */
-  color: #fff; }
+  color: #fff;
+  /* override materialize style, use IBM design icons */ }
+  .ibm-header svg {
+    margin-top: 1px;
+    height: 24px;
+    width: 24px;
+    margin-left: 5px;
+    vertical-align: middle;
+    fill: #fff; }
 
 /** The brand logo 4Refuge.es common setup for bigger screens as well as smaller screens*/
 .ibm-brand-logo {
@@ -49,6 +57,14 @@ nav {
   /* text color when the header menu is active or hovered*/ }
   .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover, .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
     color: #323232; }
+.ibm-dropdown-container svg {
+  /* override materialize style, use IBM design icons */
+  margin-top: 1px;
+  height: 24px;
+  width: 24px;
+  margin-left: 5px;
+  vertical-align: middle;
+  fill: #fff; }
 
 /* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component {

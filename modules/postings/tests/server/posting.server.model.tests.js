@@ -33,7 +33,8 @@ describe('Posting Model Unit Tests:', function () {
         title: 'Posting Title',
         content: 'Posting Content',
         sender: user,
-        recipient: user
+        recipient: user,
+        ownerId: user
       });
 
       done();

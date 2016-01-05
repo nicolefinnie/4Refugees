@@ -44,7 +44,19 @@ var PostingSchema = new Schema({
   replyTo: {
     type: Schema.ObjectId,
     ref: 'Posting'
+  },
+  // WARNING: The admin 'delete user' functionality has a dependency on the ownerId
+  // field below, as it needs to delete all offerings from a user when the user is deleted.
+  ownerId: { // Partial repeat of recipient._id, to allow filtering and indexing
+    type: String,
+    default: '',
+    trim: true,
+    required: 'ownerId cannot be blank'
   }
 });
+
+// Create an index on the recipient ID (owner ID), to speed up both searches
+// for all my emails, as well as to delete all emails from a particular user.
+PostingSchema.index({ ownerId: 1 });
 
 mongoose.model('Posting', PostingSchema);

@@ -4,12 +4,27 @@
       <div class="col-md-6">
         <h1 ng-bind="user.username"></h1>
       </div>
-      <div class="col-md-4">
-        <a class="btn btn-primary" ui-sref="admin.user-edit({userId: user._id})">
-          <i class="glyphicon glyphicon-edit"></i>
+      <div class="col-md-4 ibm-submit-area">
+        <a class="ibm-button btn btn-primary waves-effect waves-light" ui-sref="admin.user-edit({userId: user._id})">
+          Edit
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+          <rect x="24.379" y="1.257" transform="matrix(0.7071 -0.7071 0.7071 0.7071 3.8726 20.3492)" width="4.243" height="8.485"/>
+          <path d="M5,21l6,6l15-15l-6-6L5,21z M11,24.171L7.828,21L20,8.829L23.172,12L11,24.171z"/>
+          <polygon points="1,31 6,29 3,26   "/>
+          </svg>
         </a>
-        <a class="btn btn-primary" ng-click="remove();" ng-if="user._id !== authentication.user._id">
-          <i class="glyphicon glyphicon-trash"></i>
+        <a class="ibm-button btn btn-primary waves-effect waves-light" ng-click="remove();" ng-if="user._id !== authentication.user._id">
+          Delete
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+          <rect x="12" y="2" width="8" height="2"/>
+          <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+          <rect x="11" y="14" width="1" height="12"/>
+          <rect x="14" y="14" width="1" height="12"/>
+          <rect x="17" y="14" width="1" height="12"/>
+          <rect x="20" y="14" width="1" height="12"/>
+          </svg>
         </a>
       </div>
     </div>

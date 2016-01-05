@@ -60,7 +60,8 @@ describe('Posting CRUD tests', function () {
         posting = {
           title: 'Posting Title',
           content: 'Posting Content',
-          recipient: user.id
+          recipient: user.id,
+          ownerId: user.id
         };
 
         done();

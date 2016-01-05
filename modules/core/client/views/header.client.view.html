@@ -12,6 +12,9 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
         <!-- mobile hamburger menus for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi -->
         <a href="#" data-activates="user-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="200" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">menu</i></a>
         <a href="#" data-activates="user-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="240" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">menu</i></a>
+        <!-- mobile admin menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
+        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">supervisor_account</i></a>
+        <a href="#" data-activates="admin-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">supervisor_account</i></a>
         <!-- mobile language menu for left-to-right languages e.g. English/Deutsch and for right-to-left languages e.g. Arabic/Farsi-->
         <a href="#" data-activates="language-mobile-navigator" class="button-collapse right" data-sidenav="right" data-menuwidth="180" data-closeonclick="true" ng-if="!properties.rightToLeft"><i class="material-icons">language</i></a>
         <a href="#" data-activates="language-mobile-navigator" class="button-collapse left" data-sidenav="left" data-menuwidth="180" data-closeonclick="true" ng-if="properties.rightToLeft"><i class="material-icons">language</i></a>
@@ -32,6 +35,15 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 <a ng-click="changeLanguage('de')">Deutsch
                     <i class="material-icons small right" ng-show="properties.germanSelected">done</i>
                 </a>
+            </li>
+        </ul>
+        <!-- mobile admin menu -->
+        <ul class="side-nav ibm-mobile-menu admin" id="admin-mobile-navigator" ng-show="checkAdminRole()">
+            <li ui-sref-active="active" >
+                <a ui-sref="admin.users">Manage Users</a>
+            </li>
+            <li ui-sref-active="active" >
+                <a ui-sref="postings.createadmin">Send Mail to User</a>
             </li>
         </ul>
         <!-- mobile user menu -->
@@ -183,11 +195,18 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </li>
         </ul>
 
-        <!-- Dropdown for admins -->
-        <ul class="right" ng-show="checkAdminRole()">
+        <!-- Dropdown for admins, note no translations needed, admin section is english-only -->
+        <ul ng-class="{right:!properties.rightToLeft, left:properties.rightToLeft}" ng-show="checkAdminRole()">
             <li>
                 <a class="dropdown-button" href="#" data-activates="dropdownAdmin" dropdown>
-                <i class="large material-icons">supervisor_account arrow_drop_down</i>
+                  [admin]
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                    s-8-3.589-8-8S11.589,3,16,3z"/>
+                    <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                    <polygon points="21.207,8.707 19.793,7.293 14.5,12.586 12.207,10.293 10.793,11.707 14.5,15.414  "/>
+                  </svg>
                 </a>
                 <ul id="dropdownAdmin" class="dropdown-content ibm-dropdown-component">
                     <li ui-sref-active="active">

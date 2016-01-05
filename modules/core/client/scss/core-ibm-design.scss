@@ -17,8 +17,18 @@ nav {
 .ibm-header{
    padding: 0 10% 0 10%;
    background: color('gray', 80);
-    /* text color */
-    color: color('white', core);
+   /* text color */
+   color: color('white', core);
+    
+   /* override materialize style, use IBM design icons */
+   svg{
+      margin-top: 1px; 
+      height: 24px;
+      width: 24px;
+      margin-left: 5px;
+      vertical-align: middle;
+      fill: color('white', core);
+   }
 }
 
 
@@ -65,6 +75,15 @@ nav {
         a.active, a:hover{
             color: color('gray', 80);    
         }
+    }
+    svg{
+        /* override materialize style, use IBM design icons */
+        margin-top: 1px; 
+        height: 24px;
+        width: 24px;
+        margin-left: 5px;
+        vertical-align: middle;
+        fill: color('white', core);
     }
 }
 

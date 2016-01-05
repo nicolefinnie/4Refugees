@@ -6,6 +6,8 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Posting = mongoose.model('Posting'),
+  Offering = mongoose.model('Offering'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -44,15 +46,32 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   var user = req.model;
 
-  user.remove(function (err) {
+  // Remove user's postings and offerings prior to deleting the user
+  Posting.remove({ 'ownerId' : user._id.toString() }, function(err, removed) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      console.log('Admin: error (ignored) removing all postings from deleted user - ' + user.displayName + '. removed: ' + removed + ', err: ' + JSON.stringify(err));
+    } else {
+      console.log('Admin: succesfully removed ' + removed + ' postings from ' + user.displayName);
     }
+    Offering.remove({ 'ownerId' : user._id.toString() }, function(err, removed) {
+      if (err) {
+        console.log('Admin: error (ignored) removing all offerings from deleted user - ' + user.displayName + '. removed: ' + removed + ', err: ' + JSON.stringify(err));
+      } else {
+        console.log('Admin: succesfully removed ' + removed + ' offerings from ' + user.displayName);
+      }
 
-    res.json(user);
+      // Now that we've removed all postings and offerings, delete the user.
+      user.remove(function (err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        res.json(user);
+      });
+    });
   });
+  
 };
 
 /**

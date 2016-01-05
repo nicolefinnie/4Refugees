@@ -84,11 +84,13 @@ var OfferingSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  userId: { // Partial repeat of user._id, to allow filtering without populating sub-documents
+  // WARNING: The admin 'delete user' functionality has a dependency on the ownerId
+  // field below, as it needs to delete all offerings from a user when the user is deleted.
+  ownerId: { // Partial repeat of user._id, to allow filtering without populating sub-documents
     type: String,
     default: '',
     trim: true,
-    required: 'user _id cannot be blank'
+    required: 'ownerId cannot be blank'
   }
 });
 
@@ -97,6 +99,6 @@ var OfferingSchema = new Schema({
 OfferingSchema.index({ loc: '2dsphere' });
 // Create a second index for the userId field, this can be used when
 // a user wants to list all of their offerings
-OfferingSchema.index({ userId: 1 });
+OfferingSchema.index({ ownerId: 1 });
 
 mongoose.model('Offering', OfferingSchema);

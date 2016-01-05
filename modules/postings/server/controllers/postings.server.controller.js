@@ -23,6 +23,9 @@ exports.create = function (req, res) {
   console.log('recipient is: ' + JSON.stringify(req.body.recipient));
   posting.offeringId = req.body.offeringId;
   posting.replyTo = req.body.postingId;
+  // The recipient is the owner of the email, only they can delete it.
+  // This ownerId is also used when deleting a user, to delete all their postings.
+  posting.ownerId = posting.recipient.toString();
 
   posting.save(function (err) {
     if (err) {
@@ -90,7 +93,7 @@ exports.delete = function (req, res) {
  * List of all Postings - admin
  */
 exports.listall = function (req, res) {
-  var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'recipient' : req.user._id };
+  var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'ownerId' : req.user._id.toString() };
 
   Posting.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, postings) {
     if (err) {
@@ -118,6 +121,7 @@ exports.list = function (req, res) {
   }
 
   //if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
+  query.ownerId = req.user._id.toString();
   query.recipient = req.user._id;
   //}
 

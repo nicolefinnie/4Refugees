@@ -61,6 +61,9 @@ angular.module('postings').controller('NewPostingsController', ['$scope', '$http
         Socket.emit('postingMessage', message);
 
         if (reload_on_save) {
+          // TODO: This causes client exception when the admin user
+          // sends a message to users.  Should there be a different
+          // re-direct page for admin users?
           $location.path('postings/' + response._id);
           // Clear form fields
           $scope.replyTo = '';
@@ -73,6 +76,21 @@ angular.module('postings').controller('NewPostingsController', ['$scope', '$http
 
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.loadUsers = function($query) {
+      var found = false;
+      //console.log("load users for " + $query);
+      return $http.get('/api/users',{ cache: true }).then(function(response) {
+        var users = response.data;
+        return users.filter(function(users) {
+          var match = users.username && users.username.toLowerCase().indexOf($query.toLowerCase()) !== -1;
+          if (found) match = false;
+          else if (match) found = true;
+          //console.log("load user " + users.username + "   " + found + "  " + match);
+          return match;
+        });
       });
     };
   }
