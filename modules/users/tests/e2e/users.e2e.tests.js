@@ -35,10 +35,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // First Name Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('first name is required');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('First name is required');
     });
 
     it('Should report missing last name', function () {
@@ -51,10 +53,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Last Name Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('last name is required');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Last name is required');
     });
 
     it('Should report missing email address', function () {
@@ -67,10 +71,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Email address error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Email address is required');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Email address is required');
     });
 
     it('Should report invalid email address - "123"', function () {
@@ -85,10 +91,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Email address error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Email address is invalid');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Email address is invalid');
     });
 
     /**
@@ -107,10 +115,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Email address error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Email address is invalid');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Email address is invalid');
     });
 
     it('Should report missing username', function () {
@@ -123,10 +133,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.email')).sendKeys(user1.email);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Username Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Username is required');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Username is required');
     });
 
     it('Should report a password with less than 10 characters long - "P@$$w0rd!"', function () {
@@ -141,10 +153,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys('P@$$w0rd!');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('P@$$w0rd!');
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password must be at least 10 characters long.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must be at least 10 characters long');
     });
 
     it('Should report a password with greater than 128 characters long.', function () {
@@ -158,11 +172,14 @@ describe('Users E2E Tests:', function () {
       // Enter Username
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
-      element(by.model('credentials.password')).sendKeys(')!/uLT="lh&:`6X!]|15o!$!TJf,.13l?vG].-j],lFPe/QhwN#{Z<[*1nX@n1^?WW-%_.*D)m$toB+N7z}kcN#B_d(f41h%w@0F!]igtSQ1gl~6sEV&r~}~1ub>If1c+');
+      var password = ')!/uLT="lh&:`6X!]|15o!$!TJf,.13l?vG].-j],lFPe/QhwN#{Z<[*1nX@n1^?WW-%_.*D)m$toB+N7z}kcN#B_d(f41h%w@0F!]igtSQ1gl~6sEV&r~}~1ub>If1c+';
+      element(by.model('credentials.password')).sendKeys(password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password must be fewer than 128 characters.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must be fewer than 128 characters');
     });
 
     it('Should report a password with more than 3 or more repeating characters - "P@$$w0rd!!!"', function () {
@@ -177,10 +194,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys('P@$$w0rd!!!');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('P@$$w0rd!!!');
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password may not contain sequences of three or more repeated characters.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password may not contain sequences of three or more repeated characters');
     });
 
     it('Should report a password with no uppercase letters - "p@$$w0rd!!"', function () {
@@ -195,10 +214,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys('p@$$w0rd!!');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('p@$$w0rd!!');
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password must contain at least one uppercase letter.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one uppercase letter');
     });
 
     it('Should report a password with less than one number - "P@$$word!!"', function () {
@@ -213,10 +234,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys('P@$$word!!');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('P@$$word!!');
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password must contain at least one number.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one number');
     });
 
     it('Should report a password with less than one special character - "Passw0rdss"', function () {
@@ -231,12 +254,34 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys('Passw0rdss');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('Passw0rdss');
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('The password must contain at least one special character.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one special character');
     });
 
+    it('Should resport passwords do not match - "P0larSn0w!"', function () {
+      browser.get('http://localhost:3001/authentication/signup');
+      // Enter First Name
+      element(by.model('credentials.firstName')).sendKeys(user1.firstName);
+      // Enter Last Name
+      element(by.model('credentials.lastName')).sendKeys(user1.lastName);
+      // Enter Email
+      element(by.model('credentials.email')).sendKeys(user1.email);
+      // Enter Username
+      element(by.model('credentials.username')).sendKeys(user1.username);
+      // Enter Invalid Password
+      element(by.model('credentials.password')).sendKeys('P0larSn0w!');
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys('lala');
+      // Click Submit button
+      element(by.css('button[type=submit]')).click();
+      // Password Error
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Passwords do not match');
+    });
+    
     it('Should Successfully register new user', function () {
       browser.get('http://localhost:3001/authentication/signup');
       // Enter FirstName
@@ -249,6 +294,8 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
       element(by.model('credentials.password')).sendKeys(user1.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user1.password);
       // Click Submit button
       element(by.css('button[type="submit"]')).click();
       expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
@@ -269,10 +316,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user2.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys(user2.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user2.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('strong')).get(0).getText()).toBe('Email already exists');
+      expect(element.all(by.css('strong')).get(0).getText()).toContain('Email already exists');
     });
 
     it('Should report Username already exists', function () {
@@ -288,10 +337,12 @@ describe('Users E2E Tests:', function () {
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Invalid Password
       element(by.model('credentials.password')).sendKeys(user2.password);
+      // Confirm Password
+      element(by.model('credentials.verifyPassword')).sendKeys(user2.password);
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('strong')).get(0).getText()).toBe('Username already exists');
+      expect(element.all(by.css('strong')).get(0).getText()).toContain('Username already exists');
     });
 
   });
@@ -306,9 +357,9 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type="submit"]')).click();
       // Username Error
-      expect(element.all(by.css('.error-text')).get(0).getText()).toBe('Username is required.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Username is required');
       // Password Error
-      expect(element.all(by.css('.error-text')).get(1).getText()).toBe('Password is required.');
+      expect(element.all(by.css('.error-text')).get(1).getText()).toContain('Password is required');
     });
 
     it('Verify that the user is logged in', function() {
@@ -334,9 +385,9 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Errors
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('your current password is required');
-      expect(element.all(by.css('.error-text')).get(1).getText().toLowerCase()).toContain('enter a new password');
-      expect(element.all(by.css('.error-text')).get(2).getText().toLowerCase()).toContain()('verify your new password');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Your current password is required');
+      expect(element.all(by.css('.error-text')).get(1).getText()).toContain('Enter a new password');
+      expect(element.all(by.css('.error-text')).get(2).getText()).toContain('Verify your new password');
     });
 
     it('Should report a password with less than 10 characters long - "P@$$w0rd!"', function () {
@@ -348,7 +399,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('at least 10 characters long');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must be at least 10 characters long');
     });
 
     it('Should report a password with greater than 128 characters long.', function () {
@@ -360,9 +411,9 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('the password must be fewer than 128 characters.');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must be fewer than 128 characters');
     });
-
+    
     it('Should report a password with more than 3 or more repeating characters - "P@$$w0rd!!!"', function () {
       browser.get('http://localhost:3001/settings/password');
       // Enter Current Password
@@ -372,7 +423,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('the password may not contain sequences of three or more repeated characters');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password may not contain sequences of three or more repeated characters');
     });
 
     it('Should report a password with no uppercase letters - "p@$$w0rd!!"', function () {
@@ -384,7 +435,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('at least one uppercase letter');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one uppercase letter');
     });
 
     it('Should report a password with less than one number - "P@$$word!!"', function () {
@@ -396,7 +447,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('at least one number');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one number');
     });
 
     it('Should report a password with less than one special character - "Passw0rdss"', function () {
@@ -408,7 +459,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Error
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('at least one special character');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('The password must contain at least one special character');
     });
 
     it('Should report passwords do not match', function () {
@@ -422,7 +473,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Errors
-      expect(element.all(by.css('.error-text')).get(0).getText().toLowerCase()).toContain('not match');
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Passwords do not match');
     });
 
     it('Should change the password to - "P@$$w0rds!!"', function () {
@@ -436,7 +487,7 @@ describe('Users E2E Tests:', function () {
       // Click Submit button
       element(by.css('button[type=submit]')).click();
       // Password Changed
-      expect(element.all(by.css('.text-success')).get(0).getText().toLowerCase()).toContain('password changed successfully');
+      expect(element.all(by.css('.text-success')).get(0).getText()).toContain('Password changed successfully');
     });
   });
 });

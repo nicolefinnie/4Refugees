@@ -22,8 +22,9 @@
   float: left; }
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field.arabic textarea, .ibm-input-field.arabic input, .ibm-input-field.arabic p {
+  text-align: right; }
 .ibm-input-field.arabic textarea, .ibm-input-field.arabic input {
-  text-align: right;
   direction: rtl; }
 .ibm-input-field.arabic input + label {
   position: relative;

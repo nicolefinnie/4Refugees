@@ -1,7 +1,7 @@
 <section class="row" ng-controller="EditProfileController">
 <br>
   <div class="col s12">
-    <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" class="signin" novalidate autocomplete="off">
+    <form name="userForm" ng-submit="updateUserProfile(userForm.$valid)" novalidate autocomplete="off">
       <div class="ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
         <div class="row input-field">
             <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
@@ -13,7 +13,7 @@
                 </svg>
             </div>
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <input type="text" id="firstName" name="firstName" class="validate" ng-model="user.firstName" required>
+                <input type="text" id="firstName" name="firstName" ng-model="user.firstName" required>
                 <label class="active" for="firstName">{{properties.firstName}}</label>
                 <div ng-messages="userForm.firstName.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">{{properties.firstNameRequired}}</p>
@@ -30,7 +30,7 @@
                 </svg>
             </div>
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <input type="text" id="lastName" name="lastName" class="validate" ng-model="user.lastName" required>
+                <input type="text" id="lastName" name="lastName" ng-model="user.lastName" required>
                 <label class="active" for="lastName">{{properties.lastName}}</label>
                 <div ng-messages="userForm.lastName.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">{{properties.lastNameRequired}}</p>
@@ -45,7 +45,7 @@
                 </svg> 
             </div>
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <input type="email" id="email" name="email" class="validate" ng-model="user.email" lowercase required>
+                <input type="email" id="email" name="email" ng-model="user.email" lowercase required>
                 <label class="active" for="email">{{properties.email}}</label>
                 <div ng-messages="userForm.email.$error" role="alert">
                     <p class="help-block error-text" ng-message="required">{{properties.emailRequired}}</p>
@@ -63,7 +63,7 @@
                 </svg>
           </div>
           <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <input type="text" id="username" name="username" class="validate" ng-model="user.username" lowercase required>
+                <input type="text" id="username" name="username" ng-model="user.username" lowercase required>
                 <label class="active" for="username">{{properties.username}}</label>
                 <div ng-messages="userForm.username.$error" role="alert">
                 <p class="help-block error-text" ng-message="required">{{properties.usernameRequired}}</p>
@@ -84,7 +84,7 @@
               </svg>
             </div>
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" class="validate" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
+                <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
                 <label class="active" for="aboutMe">{{properties.aboutMe}}</label>
             </div>
         </div>

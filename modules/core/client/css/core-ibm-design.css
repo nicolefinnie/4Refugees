@@ -213,9 +213,6 @@ nav {
   .ibm-welcome-bar.arabic h1, .ibm-welcome-bar.arabic h2 {
     margin-left: 60%; } }
 /** This design below comes with Mean.JS **/
-.undecorated-link:hover {
-  text-decoration: none; }
-
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
@@ -228,15 +225,8 @@ nav {
   height: 28px;
   width: 28px;
   border-radius: 50%;
-  margin-right: 5px; }
-
-.open .header-profile-image,
-a:hover .header-profile-image {
-  opacity: 1; }
-
-.user-header-dropdown-toggle {
-  padding-top: 11px !important;
-  padding-bottom: 11px !important; }
+  margin-right: 5px;
+  margin-bottom: -10px; }
 
 .error-text {
   display: none; }

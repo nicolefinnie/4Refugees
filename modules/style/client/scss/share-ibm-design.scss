@@ -31,8 +31,10 @@
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
 .ibm-input-field.arabic{
+    textarea, input, p{
+       text-align: right;
+    }
     textarea, input{
-        text-align: right;
         direction: rtl;
     }
     input + label {

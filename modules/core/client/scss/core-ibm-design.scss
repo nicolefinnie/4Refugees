@@ -304,9 +304,7 @@ nav {
     }
 }
 /** This design below comes with Mean.JS **/
-.undecorated-link:hover {
-  text-decoration: none;
-}
+
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
@@ -314,22 +312,16 @@ nav {
 .x-ng-cloak {
   display: none !important;
 }
+
 .header-profile-image {
   opacity: 0.8;
   height: 28px;
   width: 28px;
   border-radius: 50%;
   margin-right: 5px;
+  margin-bottom: -10px;
 }
-.open .header-profile-image,
-a:hover .header-profile-image {
-  opacity: 1;
 
-}
-.user-header-dropdown-toggle {
-  padding-top: 11px !important;
-  padding-bottom: 11px !important;
-}
 .error-text {
   display: none;
 }
