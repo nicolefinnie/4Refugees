@@ -27,18 +27,30 @@
   display: inline-block; }
   .social-account-container a {
     padding: 0;
+    margin: 0 auto;
     background: #e0e0e0; }
   .social-account-container i {
+    display: none; }
+  .social-account-container h6 {
     display: none; }
 
 .social-account-container:hover a, .social-account-container:hover img {
   transition-delay: width 1s, height 1s;
+  margin: 0 auto;
   background: #e0e0e0; }
 .social-account-container:hover i {
   display: block;
   color: #fff;
   position: relative;
   z-index: 2; }
+.social-account-container:hover h6 {
+  display: block;
+  color: #fff;
+  z-index: 2;
+  font-size: 16px;
+  position: relative; }
+.social-account-container:hover h6.dark {
+  color: #121212; }
 
 @media screen and (min-width: 1200px) {
   .social-account-container a, .social-account-container img {
@@ -48,7 +60,7 @@
   .social-account-container:hover a, .social-account-container:hover img {
     width: 150px;
     height: 150px; }
-  .social-account-container:hover i {
+  .social-account-container:hover i, .social-account-container:hover h6 {
     transform: translate(10px, -140px); } }
 @media screen and (max-width: 1200px) {
   .social-account-container a, .social-account-container img {
@@ -58,7 +70,7 @@
   .social-account-container:hover a, .social-account-container:hover img {
     width: 75px;
     height: 75px; }
-  .social-account-container:hover i {
+  .social-account-container:hover i, .social-account-container:hover h6 {
     transform: translate(5px, -70px); } }
 .btn-remove-account {
   top: 10px;

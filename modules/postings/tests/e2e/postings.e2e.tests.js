@@ -26,6 +26,7 @@ describe('Postings E2E Tests:', function () {
   };
 
   describe('Test postings page', function () {
+    //TODO You need to register first
     it('Should report missing credentials', function () {
 
       //Make sure user is signed out first
@@ -41,6 +42,8 @@ describe('Postings E2E Tests:', function () {
       signout();
       //Sign in
       browser.get('http://localhost:3001/authentication/signin');
+      //Click advanced signin area, FIXME but you won't see this toggle-area ID from your module, testing another module here is not too clean
+      // the test case doesn't belong here
       // Enter UserName
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password

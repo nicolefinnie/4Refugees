@@ -80,7 +80,9 @@
 
 {"viewName":"user",
 "signInWithYourAccount":"أو تسجيل الدخول باستخدام حسابك",
+"hideSignInWithYourAccount":"إخفاء تسجيل الدخول المحلي",
 "registerWithYourEmail":"أو قم بالتسجيل باستخدام البريد الإلكتروني الخاص بك", 
+"hideRegisterWithYourEmail":"إخفاء التسجيل المحلي", 
 "firstName":"الاسم الأول",
 "lastName":"الاسم الاخير",
 "email":"البريد الإلكتروني",

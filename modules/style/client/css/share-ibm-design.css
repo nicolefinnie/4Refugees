@@ -20,6 +20,9 @@
   top: -4rem;
   right: 0;
   float: left; }
+.ibm-input-field.latin p.error-text {
+  color: #e71d32;
+  position: relative; }
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
 .ibm-input-field.arabic textarea, .ibm-input-field.arabic input, .ibm-input-field.arabic p {
@@ -35,6 +38,12 @@
   /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
   right: 4rem;
   text-align: right; }
+
+/* click to show/hide the advanced offering search/create/edit options */
+.ibm-toggle-advanced-options a {
+  font-size: 14px;
+  line-height: 400%;
+  text-align: center; }
 
 /* button */
 .ibm-button, .ibm-submit-area button {
@@ -110,5 +119,14 @@
   font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
   font-stretch: normal; }
+
+.error-text {
+  display: none; }
+
+.has-error .help-block.error-text {
+  display: block; }
+
+.has-error .help-inline.error-text {
+  display: inline; }
 
 /*# sourceMappingURL=share-ibm-design.css.map */

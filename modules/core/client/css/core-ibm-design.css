@@ -247,13 +247,4 @@ nav {
   margin-right: 5px;
   margin-bottom: -10px; }
 
-.error-text {
-  display: none; }
-
-.has-error .help-block.error-text {
-  display: block; }
-
-.has-error .help-inline.error-text {
-  display: inline; }
-
 /*# sourceMappingURL=core-ibm-design.css.map */

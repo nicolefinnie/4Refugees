@@ -78,7 +78,9 @@
 
 {"viewName":"user",
 "signInWithYourAccount":"Oder mit Ihrem Konto anmelden",
-"registerWithYourEmail":"Oder mit Ihrer Email registieren", 
+"hideSignInWithYourAccount":"Lokale Anmeldung ausblenden",
+"registerWithYourEmail":"Oder ein neues Konto erzeugen...wirklich?", 
+"hideRegisterWithYourEmail":"Nein, danke!", 
 "firstName":"Vorname",
 "lastName":"Namename",
 "email":"Email",

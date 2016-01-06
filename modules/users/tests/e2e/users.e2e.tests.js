@@ -23,10 +23,13 @@ describe('Users E2E Tests:', function () {
     // Delete all cookies
     browser.driver.manage().deleteAllCookies();
   };
-
+  
   describe('Signup Validation', function () {
+    
     it('Should report missing first name', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter Last Name
       element(by.model('credentials.lastName')).sendKeys(user1.lastName);
       // Enter Email
@@ -45,6 +48,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report missing last name', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Email
@@ -63,6 +68,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report missing email address', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -81,6 +88,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report invalid email address - "123"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -98,13 +107,16 @@ describe('Users E2E Tests:', function () {
       // Email address error
       expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Email address is invalid');
     });
-
-    /**
-     * Note: 123@123 is a valid email adress according to HTML5.
-     * However, 123@123@123 is an invalid email address.
-     */
+    
+    //
+    //  Note: 123@123 is a valid email adress according to HTML5.
+    //  However, 123@123@123 is an invalid email address.
+    //
+   
     it('Should report invalid email address - "123@123@123"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -125,6 +137,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report missing username', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -143,6 +157,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with less than 10 characters long - "P@$$w0rd!"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -163,6 +179,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with greater than 128 characters long.', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -184,6 +202,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with more than 3 or more repeating characters - "P@$$w0rd!!!"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -204,6 +224,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with no uppercase letters - "p@$$w0rd!!"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -224,6 +246,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with less than one number - "P@$$word!!"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -244,6 +268,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should report a password with less than one special character - "Passw0rdss"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -264,6 +290,8 @@ describe('Users E2E Tests:', function () {
 
     it('Should resport passwords do not match - "P0larSn0w!"', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter Last Name
@@ -281,9 +309,11 @@ describe('Users E2E Tests:', function () {
       // Password Error
       expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Passwords do not match');
     });
-    
+   
     it('Should Successfully register new user', function () {
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter FirstName
       element(by.model('credentials.firstName')).sendKeys(user1.firstName);
       // Enter LastName
@@ -306,6 +336,8 @@ describe('Users E2E Tests:', function () {
       signout();
       // Signup
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user2.firstName);
       // Enter Last Name
@@ -327,6 +359,8 @@ describe('Users E2E Tests:', function () {
     it('Should report Username already exists', function () {
       // Signup
       browser.get('http://localhost:3001/authentication/signup');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-area')).click();
       // Enter First Name
       element(by.model('credentials.firstName')).sendKeys(user2.firstName);
       // Enter Last Name
@@ -348,25 +382,43 @@ describe('Users E2E Tests:', function () {
   });
 
   describe('Signin Validation', function () {
-
     it('Should report missing credentials', function () {
       //Make sure user is signed out first
       signout();
       //Sign in
       browser.get('http://localhost:3001/authentication/signin');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-signin-area')).click();
+      // Attention, there's a race condition here, toggle happens after button click sometimes, 
       // Click Submit button
-      element(by.css('button[type="submit"]')).click();
+      element(by.model('credentials.password')).sendKeys(user1.password);
+      element(by.css('button[type="submit"]')).click(); 
       // Username Error
       expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Username is required');
-      // Password Error
-      expect(element.all(by.css('.error-text')).get(1).getText()).toContain('Password is required');
     });
-
+      
+    it('Should report missing credentials', function () {
+      //Make sure user is signed out first
+      signout();
+      //Sign in
+      browser.get('http://localhost:3001/authentication/signin');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-signin-area')).click();
+      // Attention, there's a race condition here, toggle happens after button click sometimes, 
+      // Click Submit button
+      element(by.model('credentials.username')).sendKeys(user1.username);
+      element(by.css('button[type="submit"]')).click();
+      // Username Error
+      expect(element.all(by.css('.error-text')).get(0).getText()).toContain('Password is required');
+    });  
+    
     it('Verify that the user is logged in', function() {
       //Make sure user is signed out first
       signout();
       //Sign in
       browser.get('http://localhost:3001/authentication/signin');
+      // Click advanced option to make all elements visible
+      element(by.id('toggle-signin-area')).click();
       // Enter UserName
       element(by.model('credentials.username')).sendKeys(user1.username);
       // Enter Password
@@ -375,7 +427,6 @@ describe('Users E2E Tests:', function () {
       element(by.css('button[type="submit"]')).click();
       expect(browser.getCurrentUrl()).toEqual('http://localhost:3001/');
     });
-
   });
 
   describe ('Change Password Settings Validation', function () {
@@ -490,4 +541,5 @@ describe('Users E2E Tests:', function () {
       expect(element.all(by.css('.text-success')).get(0).getText()).toContain('Password changed successfully');
     });
   });
+  
 });

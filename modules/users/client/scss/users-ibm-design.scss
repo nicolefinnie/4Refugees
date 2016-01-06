@@ -49,15 +49,20 @@
   display: inline-block;
   a {
     padding: 0;
+    margin: 0 auto;
     background: color('gray', 10);
   }
   i {
+    display: none;
+  }
+  h6{
     display: none;
   }
 }
 .social-account-container:hover{
   a, img{
     transition-delay: width 1s, height 1s;
+    margin: 0 auto;
     background: color('gray', 10);
   }
   i{
@@ -65,6 +70,16 @@
     color: color('white', core);
     position: relative;
     z-index: 2;
+  }
+  h6{
+    display: block;
+    color: color('white', core);
+    z-index: 2;
+    font-size: 16px;
+    position: relative;
+  }
+  h6.dark{
+    color: color('gray', 90);
   }
 }
 
@@ -83,9 +98,11 @@
             height: 150px;
         }
         
-        i{
+        i, h6{
             transform: translate(10px, -140px);
         }
+        
+        
     }
 }
 
@@ -102,7 +119,7 @@
             height: 75px;
         }
         
-        i{
+        i, h6{
         transform: translate(5px, -70px);
         }
     }

@@ -1,20 +1,40 @@
 <section class="row" ng-controller="AuthenticationController">
-	<br><br> 
-	<br><br>
+<br>
  <!-- the grid col m6 s11 has to match the design of signin.client.view.html as well as signup.client.view.html -->
   <div class="col m12 s12">
   <div class="row">
   <div class="col m6 s12" ng-class="properties.rightToLeft ? 'right':'left'">
-    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/facebook')" ng-src="/modules/users/client/img/buttons/facebook.png" style="height:75px;margin:0 auto;">
-    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/twitter')" ng-src="/modules/users/client/img/buttons/twitter.png" style="height:75px;margin:0 auto;">
-    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/google')" ng-src="/modules/users/client/img/buttons/google.png" style="height:75px;margin:0 auto;">
-    <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/linkedin')" ng-src="/modules/users/client/img/buttons/linkedin.png" style="height:75px;margin:0 auto;">
+    <div class="col m3 s3 social-account-container">
+      <a class="btn waves-effect waves-light" ng-click="callOauthProvider('/api/auth/facebook')">
+      <img ng-class="properties.rightToLeft ? 'right':'left'" ng-src="/modules/users/client/img/buttons/facebook.png">
+      </a>
+      <h6>{{properties.signIn}}</h6>
+    </div> 
+    <div class="col m3 s3 social-account-container">
+      <a class="btn waves-effect waves-light" ng-click="callOauthProvider('/api/auth/twitter')">
+      <img ng-class="properties.rightToLeft ? 'right':'left'" ng-src="/modules/users/client/img/buttons/twitter.png">
+      </a>
+      <h6>{{properties.signIn}}</h6>
+    </div>   
+    <div class="col m3 s3 social-account-container">
+      <a class="btn waves-effect waves-light" ng-click="callOauthProvider('/api/auth/google')">
+       <img ng-class="properties.rightToLeft ? 'right':'left'" ng-src="/modules/users/client/img/buttons/google.png">
+      </a>
+      <h6 class="dark">{{properties.signIn}}</h6>
+   </div>   
+   <div class="col m3 s3 social-account-container">
+      <a class="btn waves-effect waves-light" ng-click="callOauthProvider('/api/auth/linkedin')">
+      <img ng-class="properties.rightToLeft ? 'right':'left'" ng-src="/modules/users/client/img/buttons/linkedin.png">
+      </a>
+      <h6>{{properties.signIn}}</h6>
+   </div>     
     <!-- we do not support github and paypal sign-in  
     <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/github')" ng-src="/modules/users/client/img/buttons/github.png" style="height:75px;margin:0 auto;">
     <img ng-class="properties.rightToLeft ? 'right':'left'" ng-click="callOauthProvider('/api/auth/paypal')"  ng-src="/modules/users/client/img/buttons/paypal.png" style="height:75px;margin:0 auto;">
     -->
   </div>
   </div>
+  <br>
   <div ui-view></div>
   </div>
 </section>
