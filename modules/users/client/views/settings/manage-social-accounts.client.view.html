@@ -1,7 +1,7 @@
 <section class="row" ng-controller="SocialAccountsController">
   <div class="col s12 m12">
    <h5 class="col m12 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.connectedSocialAccounts}}</h5>
-    <div class="col m3 s12 social-account-container" ng-repeat="(providerName, providerData) in user.additionalProvidersData">
+    <div class="col m3 s3 social-account-container" ng-repeat="(providerName, providerData) in user.additionalProvidersData">
       <a class="btn waves-effect waves-light" ng-click="removeUserSocialAccount(providerName)">
       <img ng-src="/modules/users/client/img/buttons/{{providerName}}.png">
       </a>
@@ -10,7 +10,7 @@
   </div>
 
   <div class="col s12 m12">
-    <h5 class="col m12 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="!hasConnectedAdditionalSocialAccounts()">{{properties.unconnectedSocialAccounts}}</h5>
+    <h5 class="col m12 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.unconnectedSocialAccounts}}</h5>
     <div class="col m3 s3 social-account-container" ng-hide="isConnectedSocialAccount('facebook')">
       <a class="btn waves-effect waves-light" href="/api/auth/facebook" target="_self">
       <img ng-src="/modules/users/client/img/buttons/facebook.png">
