@@ -95,6 +95,7 @@
 "editProfile":"تعديل الملف الشخصي",
 "changeProfilePicture":"تغيير الصورة الشخصية",
 "changePassword":"تغيير كلمة المرور",
+"manageSocialAccount":"إدارة الحسابات الاجتماعية",
 
 "aboutMe":"عني",
 "aboutMeText":"أكتب شيئا عنك",
@@ -107,6 +108,8 @@
 "upload":"الرفع",
 "cancel":"إلغاء",
 "savePassword":"حفظ كلمة السر",
+"connectedSocialAccounts":"الحسابات الاجتماعية المتصلة",
+"unconnectedSocialAccounts":"الحسابات الاجتماعية غير مترابطة",
 
 "firstNameRequired":"مطلوب الاسم الأول",
 "lastNameRequired":"مطلوب اسم العائلة",

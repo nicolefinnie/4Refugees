@@ -89,9 +89,11 @@
 "register":"Registieren",
 "orRegister":"Oder Registieren?",
 "forgetPassword":"Oder Ihr Passwort vergessen?",
+
 "editProfile":"Profil editieren",
 "changeProfilePicture":"Profilbild ändern",
 "changePassword":"Passwort ändern",
+"manageSocialAccount":"Sozialkonten verwalten",
 
 "aboutMe":"Über mich",
 "aboutMeText":"Erzählen Sie etwas über sich",
@@ -104,6 +106,8 @@
 "upload":"Hochladen",
 "cancel":"Abbrechen",
 "savePassword":"Passwort speichern",
+"connectedSocialAccounts":"Verbundene Sozialkonten",
+"unconnectedSocialAccounts":"Unverbundee Sozialkonten",
 
 "firstNameRequired":"Vorname ist erforderlich",
 "lastNameRequired":"Nachname ist erforderlich",

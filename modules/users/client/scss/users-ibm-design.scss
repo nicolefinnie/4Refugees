@@ -1,10 +1,12 @@
+@import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
+
 @media screen and (max-width:500px) {
     .ibm-profile-navigator{
         margin-top: 56px;
-        /* according to materialize.css, every "a" takes up 64 px, so we pick 192px for 3 items */
-        height: 192px;
+        /* according to materialize.css, every "a" takes up 64 px, so we pick 248px for 4 items */
+        height: 248px;
         overflow-y: hidden;
-        width: 200px;
+        width: 220px;
     }
 }
 
@@ -20,7 +22,6 @@
     }
 }    
 
-
 .ibm-submit-area{
     button.button-group {
         margin-right: 1%;
@@ -33,7 +34,10 @@
         float:none;
     }
 }
+.ibm-submit-area  {
 
+
+}
 .ibm-tags-input.arabic{
     label{
        /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */
@@ -41,16 +45,69 @@
     }
 }
 
-/* Defined in Mean.JS framework */
-@media (min-width: 992px) {
-  .nav-users {
-    position: fixed;
-  }
-}
 .social-account-container {
   display: inline-block;
-  position: relative;
+  a {
+    padding: 0;
+    background: color('gray', 10);
+  }
+  i {
+    display: none;
+  }
 }
+.social-account-container:hover{
+  a, img{
+    transition-delay: width 1s, height 1s;
+    background: color('gray', 10);
+  }
+  i{
+    display: block;
+    color: color('white', core);
+    position: relative;
+    z-index: 2;
+  }
+}
+
+
+
+@media screen and (min-width:1200px) {
+    .social-account-container {
+        a, img{
+            width: 128px;
+            height: 128px;
+     }
+    }
+    .social-account-container:hover{
+        a, img{
+            width: 150px;
+            height: 150px;
+        }
+        
+        i{
+            transform: translate(10px, -140px);
+        }
+    }
+}
+
+@media screen and (max-width:1200px) {
+    .social-account-container {
+        a, img{
+            width: 64px;
+            height: 64px;
+        }
+     }
+    .social-account-container:hover{
+        a, img{
+            width: 75px;
+            height: 75px;
+        }
+        
+        i{
+        transform: translate(5px, -70px);
+        }
+    }
+}
+
 .btn-remove-account {
   top: 10px;
   right: 10px;

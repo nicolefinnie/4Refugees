@@ -93,6 +93,7 @@
 "editProfile":"Edit Profile",
 "changeProfilePicture":"Change Profile Picture",
 "changePassword":"Change Password",
+"manageSocialAccount":"Manage Social Accounts",
 "aboutMe":"About me",
 "aboutMeText":"Write something about you",
 "chooseTag":"Tag your interests",
@@ -104,6 +105,8 @@
 "upload":"Upload",
 "cancel":"Cancel",
 "savePassword":"Save Password",
+"connectedSocialAccounts":"Connected social accounts",
+"unconnectedSocialAccounts":"Unconnected social accounts",
 
 "firstNameRequired":"First name is required",
 "lastNameRequired":"Last name is required",
