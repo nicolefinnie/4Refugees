@@ -147,6 +147,23 @@ function translateAllOfferings(offerings, desiredLanguage)
 }
 
 /**
+ * Re-build indexes.  geoNear queries require an index to be created, and
+ * mongoose only creates indexes at startup.  So, if the offerings collection
+ * is dropped, the indexes won't be rebuilt until startup, causing all geoNear
+ * queries to fail with a 16604 error code until the app is restarted.  To
+ * workaround this, rebuild the indexes manually if errors are encountered.
+ */
+function rebuildOfferingIndexes() {
+  Offering.ensureIndexes(function(err) {
+    if (err) { 
+      console.log('Offering: error rebuilding indexes: ' + err); 
+    } else {
+      console.log('Offering: indexes re-built succesfully.');
+    } 
+  });
+}
+
+/**
  * Create a offering
  */
 exports.create = function (req, res) {
@@ -282,7 +299,10 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
 function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
   var filteredResults = [];
   rawDocs.forEach(function(rawDoc) {
-    filteredResults.push(filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance));
+    // Skip invalid offerings that do not have any associated user
+    if (rawDoc.user && rawDoc.user._id) {
+      filteredResults.push(filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance));
+    }
   });
   return filteredResults;
 }
@@ -304,6 +324,9 @@ exports.listMine = function (req, res) {
       { '$sort': { 'distance': 1 } } // Sort the nearest first
     ], function(err,offerings) {
       if (err) {
+        // On error, try to rebuild the index, required by geoNear, so hopefully
+        // the next attempt will succeed.
+        rebuildOfferingIndexes();
         return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         // Populate the display name of the user that created this offering.
@@ -329,6 +352,7 @@ exports.listMine = function (req, res) {
     // Note that currently only unit tests call this without authentication, normally
     // non-authenticated users go through the search path above.
     var query = Offering.find({});
+    // TODO: If user is admin, then return all offerings? use results pagination?
     if (req.user) {
       query.where('ownerId', req.user._id.toString());
       query.sort('-created');
