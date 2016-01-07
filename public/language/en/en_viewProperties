@@ -127,8 +127,8 @@
 "passwordsNoMatch":"Passwords do not match",
 "passwordRequirements":"Password requirements",
 "passwordChangedSuccessfully":"Password changed successfully",
-"profilePictureChangedSuccessfully":"Profile picture changed successfully"
-
+"profilePictureChangedSuccessfully":"Profile picture changed successfully",
+"profileSavedSuccessfully":"Profile saved successfully"
 },
 
 {"viewName":"firststep",

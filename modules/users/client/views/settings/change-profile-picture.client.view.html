@@ -3,10 +3,10 @@
   <div class="col s12">
     <form>
       <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-        <div class="form-group">
+        <div class="col s12 form-group">
           <img ng-src="{{imageURL}}" alt="{{user.displayName}}" class="img-thumbnail user-profile-picture">
         </div>
-        <div class="form-group" ng-hide="uploader.queue.length">
+        <div class="col s12 form-group" ng-hide="uploader.queue.length">
           <button class="no-float waves-effect waves-light btn btn-file">
               {{properties.selectImage}} <input type="file" nv-file-select uploader="uploader">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -17,7 +17,7 @@
             </svg>
           </button>
         </div>
-        <div ng-show="uploader.queue.length">
+        <div class="col s12" ng-show="uploader.queue.length">
           <button class="no-float button-group btn btn-primary" ng-click="uploadProfilePicture();">{{properties.upload}}
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -34,12 +34,11 @@
             s12,5.383,12,12S22.617,28,16,28z"/>
             </svg>
           </button>
-          
         </div>
-        <div ng-show="success" class="text-center text-success">
+        <div ng-show="success" class="col s12 text-success">
           <strong>{{properties.profilePictureChangedSuccessfully}}</strong>
         </div>
-        <div ng-show="error" class="text-center text-danger">
+        <div ng-show="error" class="col s12 text-danger">
           <strong ng-bind="error"></strong>
         </div>
       </div> <!-- end of ibm-submit-area -->  

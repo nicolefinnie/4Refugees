@@ -131,6 +131,7 @@
 "passwordRequirements":"متطلبات كلمة المرور",
 "passwordChangedSuccessfully":"تم تغيير الرقم السري بنجاح",
 "profilePictureChangedSuccessfully":"تغيرت الصورة الشخصية بنجاح",
+"profileSavedSuccessfully":"تم حفظ الملف الشخصي بنجاح",
 "rightToLeft":true
 },
 

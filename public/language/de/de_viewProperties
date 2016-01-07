@@ -127,7 +127,8 @@
 "passwordsNoMatch":"Passwörte nicht übereinstimmen",
 "passwordRequirements":"Passwortbedingungen",
 "passwordChangedSuccessfully":"Passwort erfolgreich geändert",
-"profilePictureChangedSuccessfully":"Profilbild erfolgreich geändert"
+"profilePictureChangedSuccessfully":"Profilbild erfolgreich geändert",
+"profileSavedSuccessfully":"Profil erfolgreich gespeichert"
 },
 
 {"viewName":"firststep",

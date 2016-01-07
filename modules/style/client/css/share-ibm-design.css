@@ -20,12 +20,9 @@
   top: -4rem;
   right: 0;
   float: left; }
-.ibm-input-field.latin p.error-text {
-  color: #e71d32;
-  position: relative; }
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
-.ibm-input-field.arabic textarea, .ibm-input-field.arabic input, .ibm-input-field.arabic p {
+.ibm-input-field.arabic textarea, .ibm-input-field.arabic input, .ibm-input-field.arabic p, .ibm-input-field.arabic strong {
   text-align: right; }
 .ibm-input-field.arabic textarea, .ibm-input-field.arabic input {
   direction: rtl; }
@@ -65,8 +62,6 @@
 /* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
 .ibm-submit-area :hover button svg {
   fill: #fff; }
-.ibm-submit-area strong {
-  color: #e71d32; }
 
 /* submit-area with button and error message in Latin languages - from left to right*/
 .ibm-submit-area.latin button, .ibm-submit-area.latin a, .ibm-submit-area.latin strong {
@@ -120,11 +115,22 @@
   font-weight: 300;
   font-stretch: normal; }
 
+.text-success {
+  color: #2d660a; }
+
+.text-danger {
+  color: #e71d32; }
+
 .error-text {
   display: none; }
 
+p.help-block.error-text {
+  position: relative;
+  top: -2em; }
+
 .has-error .help-block.error-text {
-  display: block; }
+  display: block;
+  color: #e71d32; }
 
 .has-error .help-inline.error-text {
   display: inline; }

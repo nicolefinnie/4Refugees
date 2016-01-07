@@ -1,5 +1,6 @@
 'use strict';
 
+//TODO race condition has to be solved 
 describe('Users E2E Tests:', function () {
   var user1 = {
     firstName: 'test',
