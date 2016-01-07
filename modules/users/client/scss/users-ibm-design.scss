@@ -3,8 +3,8 @@
 @media screen and (max-width:500px) {
     .ibm-profile-navigator{
         margin-top: 56px;
-        /* according to materialize.css, every "a" takes up 64 px, so we pick 248px for 4 items */
-        height: 248px;
+        /* according to materialize.css, every "a" takes up 64 px, so we pick 256px for 4 items */
+        height: 256px;
         overflow-y: hidden;
         width: 220px;
     }
@@ -34,10 +34,7 @@
         float:none;
     }
 }
-.ibm-submit-area  {
 
-
-}
 .ibm-tags-input.arabic{
     label{
        /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */

@@ -3,8 +3,8 @@
   
   <div class="row">
     <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
-    <div class="ibm-input-field ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-        <div class="row">
+    <div class="col m12 s12 ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div class="row ibm-toggle-advanced-options">
           <div id="toggle-area" ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleSignUp()">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -21,7 +21,8 @@
         </div>
     </div>
     <!-- All advanced signup starting from here -->
-    <form name="userForm" ng-submit="signup(userForm.$valid)" novalidate autocomplete="off" data-my-slide="showSignUp">
+    <div class="col m12 12" data-my-slide="showSignUp">
+    <form name="userForm" ng-submit="signup(userForm.$valid)" novalidate autocomplete="off">
     <!-- first name input field -->
         <div class="input-field form-group ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'" show-errors>
           <div class="row">
@@ -174,6 +175,7 @@
           </div>
         </div>
     </form>
+    </div>
    </div>
   </div>
 </div>

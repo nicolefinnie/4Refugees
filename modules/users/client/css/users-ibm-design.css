@@ -1,8 +1,8 @@
 @media screen and (max-width: 500px) {
   .ibm-profile-navigator {
     margin-top: 56px;
-    /* according to materialize.css, every "a" takes up 64 px, so we pick 248px for 4 items */
-    height: 248px;
+    /* according to materialize.css, every "a" takes up 64 px, so we pick 256px for 4 items */
+    height: 256px;
     overflow-y: hidden;
     width: 220px; } }
 @media screen and (min-width: 992px) {

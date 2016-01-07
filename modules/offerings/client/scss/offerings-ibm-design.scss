@@ -31,17 +31,6 @@
     }
 }
 
-/* click to show/hide the advanced offering search/create/edit options */
-.ibm-offering-toggle-advanced-options a {
-  font-size: 14px;
-  line-height: 300%;
-  text-align: center;
-}
-
-.ibm-offering-toggle-advanced-options.latin svg {
-  transform: rotate(270deg);
-}
-
 /* Show current search progress */
 .offering-search-status {
   strong{

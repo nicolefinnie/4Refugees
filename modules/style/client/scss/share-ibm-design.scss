@@ -55,10 +55,12 @@
 }
 
 /* click to show/hide the advanced offering search/create/edit options */
-.ibm-toggle-advanced-options a {
-  font-size: 14px;
-  line-height: 400%;
-  text-align: center;
+.ibm-toggle-advanced-options {
+    svg, a{
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
 }
 
 /* button */

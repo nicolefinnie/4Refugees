@@ -2,8 +2,8 @@
 
  <div class="row">
   <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
-    <div class="ibm-input-field ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-       <div class="row">
+    <div class="col m12 s12 ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+       <div class="row ibm-toggle-advanced-options">
           <div id="toggle-signin-area" ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleSignIn()">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -15,13 +15,14 @@
             </svg>
          </div>
          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'" ng-click="toggleSignIn()">
-            <a ng-if="!showSignIn">{{properties.signInWithYourAccount}}</a>
-            <a ng-if="showSignIn">{{properties.hideSignInWithYourAccount}}</a>
+           <a ng-if="!showSignIn">{{properties.signInWithYourAccount}}</a>
+           <a ng-if="showSignIn">{{properties.hideSignInWithYourAccount}}</a>
          </div>
       </div>
     </div>
     <!-- All advanced sign-in options are below -->
-    <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off"  data-my-slide="showSignIn" >
+    <div class="col m12 s12"  data-my-slide="showSignIn">
+    <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
         <div class="input-field form-group ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'" show-errors>
          <div class="row">
             <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
@@ -91,6 +92,7 @@
         </div>
       </div>
     </form>
+    </div>
    </div>
   </div>
 </div>
