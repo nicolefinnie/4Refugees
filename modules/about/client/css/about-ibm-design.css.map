@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,EAAE;EACE,KAAK,EC0QA,OAAO;;ADvQhB,oCAAoC;EAEhC,GAAG;IACC,KAAK,EAAE,KAAK;IACZ,MAAM,EAAE,IAAI",
+"sources": ["../scss/about-ibm-design.scss","../../../../public/lib/IBM-Design-Colors/_ibm-colors.scss"],
+"names": [],
+"file": "about-ibm-design.css"
+}
