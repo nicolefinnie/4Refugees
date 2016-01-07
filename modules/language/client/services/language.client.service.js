@@ -101,7 +101,9 @@ angular.module('language').service('LanguageService', [function () {
 
   // For unit tests, setup fake/sample language data
   this.setupTestEnvironment = function() {
-    var testTranslations = [{ 'viewName':'unitTest' }];
+    // Offering unit tests have a requirement that this.getPropertiesByViewName()
+    // issues the callback when asked to get the 'offering' translations.
+    var testTranslations = [{ 'viewName':'offering' }];
     this.translations[this.globalCurrentLanguage] = testTranslations;
   };
 }

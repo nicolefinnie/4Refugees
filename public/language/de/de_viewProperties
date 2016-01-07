@@ -42,6 +42,7 @@
 "others":"Sonstiges",
 "description":"Beschreibung",
 "city":"Stadt",
+"geolocating":"Geolocation unterwegs...",
 "searchRadius":"Suchumkreis in ? km",
 "when":"Wann",
 "showAdvanced":"Erweiterte Optionen anzeigen",
@@ -72,6 +73,8 @@
 "searchInProgress":"Suche läuft, bitte warten Sie",
 "searchNoResults":"Keine Ergebnisse gefunden, bitte Such ändern und versuchen Sie es erneut",
 "searchComplete":"Suche fertig, scrollen Sie nach unten für Ergebnisse",
+"searchRetry":"Bitte versuchen Sie Ihre Suche später, während wir versuchen, dieses Problem zu beheben",
+"errorFromServer":"Whoops, ging etwas schief",
 "errorNoDescription":"Ungültige Beschreibung, bitte geben Sie eine gültige Beschreibung und versuchen Sie es erneut",
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut"
 },

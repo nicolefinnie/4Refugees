@@ -1,4 +1,4 @@
-<section ng-controller="OfferingsPublicController">
+<section ng-controller="OfferingsPublicController" ng-init="initialize()">
 <div class="row">
 <!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
   <div class="col m12 s11">
@@ -32,7 +32,9 @@
           <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
             <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
+                    <!-- Location, toggle between geo-location and manual city-list by clicking on icon -->
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                      <a ng-click="toggleGeoLocation()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1c-3.314,0-6.314,1.343-8.484,3.515C5.344,6.687,4,9.686,4,13
@@ -41,14 +43,22 @@
                             c2.671,0,5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.028,20.613z"/>
                         <circle cx="16" cy="13" r="4"/>
                         </svg>
+                      </a>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-if="!geoManual" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <!-- when geo.auto.active is true, this field will be filled in when we get our geo location response -->
+                        <a ng-if="geo.auto.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.auto.location.city" readonly>
+                        </a>
+                        <!-- when geo.manual.active is true, this value is retrieved form an existing offering -->
+                        <a ng-if="geo.manual.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.manual.location.city" readonly>
+                        </a>
                         <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
-                          but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
-                          load the city list when geo location is blocked or not available -->
-                        <select ng-show="geoManual" name="repeatSelect" id="where" ng-model="where" 
-                            ng-options="option.name for option in citylist">
+                          but we want to bind to the child ID ng-model="geo.list.location" so we use ng-show instead, it's not expensive in this case
+                          since we only load the city list when geo location is blocked or not available -->
+                        <select ng-show="geo.list.active" name="repeatSelect" ng-model="geo.list.location" 
+                            ng-options="option.city for option in geo.list.data">
                         </select>
                     </div>
                 </div>
@@ -74,39 +84,38 @@
                     </div>
                 </div>
                 <!-- All advanced options are below -->
-                <div class="row">
-                  <div class="search-details-form" data-my-slide="showDetails">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                            <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
-                            l8-4L18,18z"/>
-                            <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                            s12,5.383,12,12S22.617,28,16,28z"/>
-                            <circle cx="16" cy="16" r="1"/>
-                        </svg>
-                    </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
-                    </div>
+                <div class="search-details-form" data-my-slide="showDetails">
+                  <div class="row">
+                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                              <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
+                              l8-4L18,18z"/>
+                              <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                              s12,5.383,12,12S22.617,28,16,28z"/>
+                              <circle cx="16" cy="16" r="1"/>
+                          </svg>
+                      </div>
+                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                          <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                          <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                          S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                          <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                          17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                          </svg>
+                      </div>
+                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                          <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                      </div>          
                   </div>
                 </div>
-                <div class="row">
-                  <div class="search-details-form" data-my-slide="showDetails">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
-                        S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
-                        <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
-                        17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
-                        </svg>
-                    </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
-                    </div>          
-                  </div>
-                </div>
+                <!-- Submit area for buttons, error displays, etc -->
                 <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic-rotate-icon':'latin'">
                   <div class="row">
                     <div class="col m12 s12">
@@ -135,8 +144,10 @@
                 </div> <!-- end of ibm-submit-area -->
                 <!-- Display current search progress -->
                 <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                  <div class="row">
                   <div class="col m12 s12" ng-show="searchStatus">
                     <strong ng-bind="searchStatus"></strong>
+                  </div>
                   </div>
                 </div>
             </div> <!-- end of input-field ibm-input-field -->

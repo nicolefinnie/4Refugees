@@ -12,7 +12,7 @@
       Authentication,
       Offerings,
       Socket,
-      GeoService,
+      GeoSelector,
       LanguageService,
       mockOffering;
 
@@ -44,7 +44,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoService_, _LanguageService_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoSelector_, _LanguageService_) {
       // Set a new global scope
       scope = $rootScope.$new();
       $rootScope.currentLanguage = 'en';
@@ -56,11 +56,11 @@
       Authentication = _Authentication_;
       Offerings = _Offerings_;
       Socket = _Socket_;
-      GeoService = _GeoService_;
+      GeoSelector = _GeoSelector_;
       LanguageService = _LanguageService_;
 
       // Setup the mock GeoService and LanguageService environment.
-      GeoService.setupTestEnvironment();
+      scope.geo = GeoSelector.setupTestEnvironment();
       LanguageService.setupTestEnvironment();
 
       // create mock offering
@@ -162,10 +162,11 @@
         });
 
         // Fixture mock form input values
+        scope.geo = GeoSelector.getInitialState(false, false, true);
+        var city = { 'city':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
+        GeoSelector.activateManual(scope.geo, city);
+        
         scope.description = 'A MEAN Offering';
-        scope.city = 'Stuttgart';
-        scope.longitude = Number(8.8); // take geolocation into account
-        scope.latitude = Number(9.9);
         scope.category = {}; // add category
         scope.category.courses = true;
         scope.offerType = 'offer';
@@ -190,8 +191,6 @@
         });
 
         // Run controller functionality
-        var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
-        scope.where = city;
         scope.description = mockOffering.description;
         // Fake controller initialization needed to create offerings
         scope.offeringId = '0';

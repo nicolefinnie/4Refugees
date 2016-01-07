@@ -47,6 +47,9 @@
   float: left;
   transform: rotate(90deg); }
 
+.ibm-force-text-black {
+  color: #000; }
+
 /* Common button style for offering forms, to display on small and large screens
  * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
  * but the svgs we chose to use in the offerings should not be rotated */

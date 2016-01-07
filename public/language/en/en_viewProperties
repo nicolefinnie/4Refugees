@@ -43,6 +43,7 @@
 "others":"Others",
 "description":"description",
 "city":"city",
+"geolocating":"geolocation in progress...",
 "searchRadius":"Search radius in ? km",
 "when":"when",
 "showAdvanced":"Show advanced options",
@@ -73,6 +74,8 @@
 "searchInProgress":"Search in progress...",
 "searchNoResults":"No results found, please modify your search and try again",
 "searchComplete":"Search complete, scroll down for results",
+"searchRetry":"Please try your search later, while we try to fix this",
+"errorFromServer":"Whoops, something went wrong",
 "errorNoDescription":"Invalid description, please enter a valid description and try again",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again"
 }, 
