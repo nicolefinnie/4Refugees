@@ -1,8 +1,8 @@
-h5 {
+.ibm-about-us h5 {
   color: #777677; }
 
 @media screen and (max-width: 600px) {
-  img {
+  .ibm-about-us img {
     width: 330px;
     height: auto; } }
 
