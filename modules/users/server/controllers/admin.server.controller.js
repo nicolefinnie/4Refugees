@@ -6,7 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  Posting = mongoose.model('Posting'),
+  Mail = mongoose.model('Mail'),
   Offering = mongoose.model('Offering'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
@@ -46,12 +46,12 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   var user = req.model;
 
-  // Remove user's postings and offerings prior to deleting the user
-  Posting.remove({ 'ownerId' : user._id.toString() }, function(err, removed) {
+  // Remove user's mails and offerings prior to deleting the user
+  Mail.remove({ 'ownerId' : user._id.toString() }, function(err, removed) {
     if (err) {
-      console.log('Admin: error (ignored) removing all postings from deleted user - ' + user.displayName + '. removed: ' + removed + ', err: ' + JSON.stringify(err));
+      console.log('Admin: error (ignored) removing all mails from deleted user - ' + user.displayName + '. removed: ' + removed + ', err: ' + JSON.stringify(err));
     } else {
-      console.log('Admin: succesfully removed ' + removed + ' postings from ' + user.displayName);
+      console.log('Admin: succesfully removed ' + removed + ' mails from ' + user.displayName);
     }
     Offering.remove({ 'ownerId' : user._id.toString() }, function(err, removed) {
       if (err) {
@@ -60,7 +60,7 @@ exports.delete = function (req, res) {
         console.log('Admin: succesfully removed ' + removed + ' offerings from ' + user.displayName);
       }
 
-      // Now that we've removed all postings and offerings, delete the user.
+      // Now that we've removed all mails and offerings, delete the user.
       user.remove(function (err) {
         if (err) {
           return res.status(400).send({

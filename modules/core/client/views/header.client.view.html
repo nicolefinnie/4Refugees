@@ -89,7 +89,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                 <a ui-sref="admin.users">Manage Users</a>
             </li>
             <li ui-sref-active="active" >
-                <a ui-sref="postings.createadmin">Send Mail to User</a>
+                <a ui-sref="mails.createadmin">Send Mail to User</a>
             </li>
         </ul>
         <!-- mobile user menu -->
@@ -123,7 +123,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
             </ul>
             <ul ng-show="authentication.user">
                 <li ui-sref-active="active">
-                    <a ui-sref="postings.list"> 
+                    <a ui-sref="mails.list"> 
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
@@ -226,7 +226,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                   </a>
               </li>
               <li ng-show="authentication.user" ui-sref-active="active">
-                <a  ui-sref="postings.list">
+                <a  ui-sref="mails.list">
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                   width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                   <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
@@ -305,7 +305,7 @@ https://scotch.io/tutorials/making-mean-apps-with-google-maps-part-i -->
                     </li>
                     <li class="divider"></li>
                     <li ui-sref-active="active">
-                    <a ui-sref="postings.createadmin">Send Mail to User</a>
+                    <a ui-sref="mails.createadmin">Send Mail to User</a>
                     </li>
                 </ul>
             </li>
