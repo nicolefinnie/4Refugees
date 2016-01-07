@@ -9,6 +9,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
 
     // initialize mobile side navigation
     $('.button-collapse').sideNav();
+    $('.collapsible').collapsible();
 
     // language change clicked
     $scope.changeLanguage = function (language) {

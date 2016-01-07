@@ -58,14 +58,22 @@ nav {
   /* text color when the header menu is active or hovered*/ }
   .ibm-dropdown-container li:hover a.active, .ibm-dropdown-container li:hover a:hover, .ibm-dropdown-container li.active a.active, .ibm-dropdown-container li.active a:hover {
     color: #323232; }
+    .ibm-dropdown-container li:hover a.active svg, .ibm-dropdown-container li:hover a:hover svg, .ibm-dropdown-container li.active a.active svg, .ibm-dropdown-container li.active a:hover svg {
+      fill: #323232; }
 .ibm-dropdown-container svg {
   /* override materialize style, use IBM design icons */
   margin-top: 1px;
   height: 24px;
   width: 24px;
-  margin-left: 5px;
   vertical-align: middle;
   fill: #fff; }
+
+.ibm-dropdown-container a.signin-header {
+  width: 180px; }
+
+.ibm-dropdown-container.arabic a.signin-header svg {
+  margin-left: 100px;
+  margin-right: 0; }
 
 /* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component {
@@ -153,8 +161,13 @@ nav {
     font-size: 1rem;
     line-height: 400%; }
 
+/* normal user has 3 items, sign-in, sign-up, about-me*/
 .ibm-mobile-menu.user {
-  height: 256px; }
+  height: 192px; }
+
+/* authenticated user has 5 tiems*/
+.ibm-mobile-menu.authenticated-user {
+  height: 320px; }
 
 .ibm-mobile-menu.admin {
   height: 128px; }

@@ -1,0 +1,13 @@
+@import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
+
+h5{
+    color: color('gray', 50);
+}
+    
+@media screen and (max-width:600px) {
+    
+    img{
+        width: 330px;
+        height: auto;
+    }
+}
