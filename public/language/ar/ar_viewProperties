@@ -151,5 +151,20 @@
 "projectsHeader":"مشاريع للاجئين",
 "projectsDescription":"ألمانيا لديها العديد من المشاريع في مختلف المناطق لمساعدة اللاجئين. العثور على مزيد من المعلومات عن مشاريع في منطقتك. متوفر باللغة الألمانية فقط",
 "rightToLeft":true
-}
+},
+
+{"viewName":"mail",
+"mailTitle":"T-",
+"detailsHeader":"D-",
+"subject":"S-",
+"reply":"R-",
+"replyTo":"R--",
+"content":"C-",
+"maincategory":"K-",
+"offerReferral":"O-",
+"about":"A-",
+"sendTo":"S-",
+"rightToLeft":true
+},
+
 ]

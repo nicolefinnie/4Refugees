@@ -146,5 +146,20 @@
 "integrationLink":"http://www.bamf.de/EN/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
 "projectsHeader":"Refugee Projects",
 "projectsDescription":"Germany has many projects in different regions to help refugees. Find more info on projects in your area. Available in German only."
+},
+
+{"viewName":"mail",
+"mailTitle":"Your emails: ",
+"detailsHeader":"Details: ",
+"subject":"Subject: ",
+"reply":"Reply",
+"replyTo":"Reply To: ",
+"content":"content",
+"maincategory":"main category: ",
+"offerReferral":"offer to refer to:",
+"about":"About offering: ",
+"sendTo":"Send mail to: ",
+"rightToLeft":false
 }
+
 ]

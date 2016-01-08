@@ -146,5 +146,21 @@
 "integrationLink":"http://www.bamf.de/DE/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
 "projectsHeader":"Flüchtlingsprojekte",
 "projectsDescription":"Deutschland hat viele Projekte in verschiedenen Regionen, um Flüchtlingen zu helfen. Mehr Info auf Projekte in Ihrer Nähe."
+},
+
+{"viewName":"mail",
+"mailTitle":"Ihre emails: ",
+"detailsHeader":"Kompletter Inhalt: ",
+"subject":"Betrifft: ",
+"reply":"Antworten",
+"replyTo":"Antwort an: ",
+"content":"Ihr Text",
+"maincategory":"Haupt-Kategorie: ",
+"offerReferral":"Angebot, auf das sich diese email bezieht:",
+"about":"Wegen des Angebotes ",
+"sendTo":"Kontaktiere ",
+"rightToLeft":false
 }
+
+
 ]

@@ -1,8 +1,9 @@
 'use strict';
 
-// New Mails controller - allows admin to send email
-angular.module('mails').controller('NewMailsController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Mails', 'Socket',
-  function ($scope, $http, $stateParams, $location, Authentication, Mails, Socket) {
+// New Mails controller - allows to reply (and also admins to send "unsolicited" emails)
+angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication',
+    'Mails', 'Socket', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Mails, Socket,LanguageService) {
     $scope.authentication = Authentication;
 
     // If user is not signed in then redirect back home
@@ -10,13 +11,18 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$http', '$s
       $location.path('/');
     }
 
+    // language change clicked
+    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
+      $scope.initLanguage();
+    });
+
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
       Socket.connect();
     }
 
     // Create new Mail
-    $scope.create = function (isValid, recipient) {
+    $scope.create = function (isValid, recipient, offeringID) {
       $scope.error = null;
 
       if (!isValid) {
@@ -45,7 +51,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$http', '$s
         unread: true,
         recipient: recipient_id,
         replyTo: this.replyTo,
-        offeringId: this.offeringId,
+        offeringId: (reload_on_save) ? this.offeringId : offeringID
       });
 
       // Emit a 'mailMessage' message event with the JSON mail object
@@ -90,6 +96,15 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$http', '$s
           else if (match) found = true;
           //console.log("load user " + users.username + "   " + found + "  " + match);
           return match;
+        });
+      });
+    };
+
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.properties = translationList;
+        LanguageService.getPropertiesByViewName('offering', $http, function(translationListO) {
+          $scope.offeringproperties = translationListO;
         });
       });
     };

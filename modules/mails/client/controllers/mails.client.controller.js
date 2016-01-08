@@ -1,14 +1,20 @@
 'use strict';
 
 // Mails controller - handles listing and replies etc.
-angular.module('mails').controller('MailsController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Mails', 'Socket',
-  function ($scope, $http, $stateParams, $location, Authentication, Mails, Socket) {
+angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '$window', '$http', '$stateParams', '$location',
+     'Authentication', 'Mails', 'Socket', 'LanguageService',
+  function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, Socket, LanguageService) {
     $scope.authentication = Authentication;
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) {
       $location.path('/');
     }
+
+    // language change clicked
+    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
+      $scope.initLanguage();
+    });
 
     // Make sure the Socket is connected to notify of updates
     if (!Socket.socket) {
@@ -64,10 +70,16 @@ angular.module('mails').controller('MailsController', ['$scope', '$http', '$stat
     };
 
     // Find a list of Mails
-    $scope.find = function () {
-      $scope.mails = Mails.query({ reset : true }, function() {
+    $scope.find = function (num) {
+      console.log('Window size: ', $window.innerHeight);
+      if (num == 0)
+        $scope.numOfMails = parseInt($window.innerHeight / 100);
+      else 
+        $scope.numOfMails += num;
+
+      $scope.mails = Mails.query({ reset : true, limit: $scope.numOfMails}, function() {
         for(var i = 0,len = $scope.mails.length; i < len;i++) {
-          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,30);
+          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
         }
       });
 
@@ -86,9 +98,9 @@ angular.module('mails').controller('MailsController', ['$scope', '$http', '$stat
       if (message.content.recipient === Authentication.user._id) {
         if (message.content.title) {
           console.log('MailController: Received new email');
-          $scope.mails = Mails.query({ reset : false }, function() {
+          $scope.mails = Mails.query({ reset : false, limit: $scope.numOfMails}, function() {
             for(var i = 0,len = $scope.mails.length; i < len;i++) {
-              $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,30);
+              $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
             }
           });
           //message.content.contentShort = message.content.content.substr(0,30);
@@ -110,7 +122,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$http', '$stat
     $scope.findNew = function () {
       $scope.mails = Mails.query({ unread : true,reset : true }, function() {
         for(var i = 0,len = $scope.mails.length; i < len;i++) {
-          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,30);
+          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
         }
       });
 
@@ -146,5 +158,15 @@ angular.module('mails').controller('MailsController', ['$scope', '$http', '$stat
         });
       });
     };
+
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.properties = translationList;
+        LanguageService.getPropertiesByViewName('offering', $http, function(translationListO) {
+          $scope.offeringproperties = translationListO;
+        });
+      });
+    };
+
   }
 ]);

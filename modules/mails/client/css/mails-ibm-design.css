@@ -1,0 +1,83 @@
+.ibm-mail-category-checkbox.latin label {
+  margin-right: 3%; }
+
+.ibm-mail-category-checkbox.arabic input, .ibm-mail-category-checkbox.arabic label {
+  margin-left: 3%;
+  float: right; }
+
+/* geo location when there's no geo service, a drop down select city list is shown*/
+.ibm-input-field select {
+  display: inline-flex;
+  background: #f9f9fb;
+  border: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-top: 2%;
+  height: 36px;
+  overflow: hidden; }
+  .ibm-input-field select option {
+    background: #323232;
+    color: #fff;
+    border: 0; }
+
+/* click to show/hide the advanced mail search/create/edit options */
+.ibm-mail-toggle-advanced-options a {
+  font-size: 14px;
+  line-height: 300%;
+  text-align: center; }
+
+.ibm-mail-toggle-advanced-options.latin svg {
+  transform: rotate(270deg); }
+
+/* Show current search progress */
+.mail-search-status strong {
+  color: #000; }
+
+/* search progress area in Latin languages - from left to right*/
+.mail-search-status.latin button, .mail-search-status.latin a, .mail-search-status.latin strong {
+  float: left; }
+
+/* search progress area in Arabic languages - from right to left */
+.mail-search-status.arabic button, .mail-search-status.arabic a, .mail-search-status.arabic strong {
+  float: right; }
+.mail-search-status.arabic button svg {
+  margin-top: 5px;
+  margin-right: 5px;
+  float: left;
+  transform: rotate(90deg); }
+
+.ibm-force-text-black {
+  color: #000; }
+
+/* Common button style for mail forms, to display on small and large screens
+ * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
+ * but the svgs we chose to use in the mails should not be rotated */
+.mail-button-style, .ibm-submit-area button.mail-submit-button, .ibm-submit-area a.mail-submit-button, .ibm-submit-area button.mail-cancel-button, .ibm-submit-area a.mail-cancel-button, .ibm-submit-area button.mail-delete-button, .ibm-submit-area a.mail-delete-button {
+  font-size: 10px;
+  text-transform: capitalize;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 0 10px 0 10px; }
+  .mail-button-style svg, .ibm-submit-area button.mail-submit-button svg, .ibm-submit-area a.mail-submit-button svg, .ibm-submit-area button.mail-cancel-button svg, .ibm-submit-area a.mail-cancel-button svg, .ibm-submit-area button.mail-delete-button svg, .ibm-submit-area a.mail-delete-button svg {
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    fill: #fff; }
+
+/* Create or Update an mail */
+.ibm-submit-area button.mail-submit-button, .ibm-submit-area a.mail-submit-button {
+  background: #008571; }
+
+/* Cancel a request to create/update mail */
+.ibm-submit-area button.mail-cancel-button, .ibm-submit-area a.mail-cancel-button {
+  background: #efc100; }
+
+/* Delete an mail. */
+.ibm-submit-area button.mail-delete-button, .ibm-submit-area a.mail-delete-button {
+  background: #ad1625; }
+
+.mail-td {
+  padding: 1px 15px; }
+
+/*# sourceMappingURL=mails-ibm-design.css.map */

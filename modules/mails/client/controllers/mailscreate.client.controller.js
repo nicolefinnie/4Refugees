@@ -1,9 +1,15 @@
 'use strict';
 
 // Controller to create a mail/mail to the offering owner, from an offering contact request
-angular.module('mails').controller('MailsCreateController', ['$scope', '$http', '$stateParams', '$location', 'Authentication', 'Mails', 'Socket',
-  function ($scope, $http, $stateParams, $location, Authentication, Mails, Socket) {
+angular.module('mails').controller('MailsCreateController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 'Authentication',
+   'Mails', 'Socket', 'LanguageService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Mails, Socket, LanguageService) {
     $scope.authentication = Authentication;
+
+    // language change clicked
+    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
+      $scope.initLanguage();
+    });
 
     if ($stateParams.offeringId) {
       $scope.showTitle = 'Contact Offering Owner';
@@ -59,6 +65,16 @@ angular.module('mails').controller('MailsCreateController', ['$scope', '$http', 
       $scope.content = 'Hello,\nI am interested in your offering.  Please e-mail me to discuss further.\n\nThank you,\n' + Authentication.user.displayName;
       $('#modalAskAboutOffering').openModal();
     };
+
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.properties = translationList;
+        LanguageService.getPropertiesByViewName('offering', $http, function(translationListO) {
+          $scope.offeringproperties = translationListO;
+        });
+      });
+    };
+
   }
 ]);
 

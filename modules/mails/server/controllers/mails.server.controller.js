@@ -138,6 +138,13 @@ exports.list = function (req, res) {
     delete query.reset;
   }
 
+  var limit = 0;
+  if (query.limit) {
+    limit = query.limit;
+    delete query.limit;
+  }
+
+
   if (query.countOnly === 'true') {
     // Client just wanted a count, to avoid cost of populating and sending all docs
     delete query.countOnly;
@@ -153,7 +160,7 @@ exports.list = function (req, res) {
     });
   } else {
     //Mail.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, mails) {
-    Mail.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, mails) {
+    Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').populate('offeringId').exec(function (err, mails) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)

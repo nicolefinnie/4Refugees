@@ -58,3 +58,20 @@ angular.module('mails').service('MailService', [ function () {
 }
 ]);
 
+
+
+angular.module('mails').directive('scroll', function($window,$document) {
+  return {
+    link: function(scope,element,attribute) {
+      angular.element($window).on('scroll', function(e) {
+        // Namespacing events with name of directive + event to avoid collisions
+        //console.log('asdfasdf');
+        console.log('scrollTop: ' + $window.pageYOffset + '  doc.height: ' + $document.height() + '  window.height: ' + $window.innerHeight);
+        if ($window.pageYOffset >= $document.height() - $window.innerHeight) {
+          scope.find(5);
+          scope.$apply();
+        }
+      });
+    }
+  }
+});

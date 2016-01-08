@@ -6,8 +6,8 @@
     <div class="modal-content">
       <form name="mailForm" class="my-form" novalidate>
         <div class="row">
-          Send mail to:   <input ng-model="recipientName" readonly><br>
-          About offering: <input ng-model="offeringDescription" readonly><br>
+          {{properties.sendTo}}   <input ng-model="recipientName" readonly><br>
+          {{properties.about}} <input ng-model="offeringDescription" readonly><br>
           <!-- Hidden fields set/used by controller
           Recipient Id: <input ng-model="recipientId" readonly><br>
           Reply to (i.e. current logged in user): <input ng-model="replyTo" readonly><br>
