@@ -60,7 +60,7 @@ angular.module('mails').service('MailService', [ function () {
 
 
 
-angular.module('mails').directive('scroll', function($window,$document) {
+angular.module('mails').directive('scroll', function($window, $document) {
   return {
     link: function(scope,element,attribute) {
       angular.element($window).on('scroll', function(e) {
@@ -73,5 +73,5 @@ angular.module('mails').directive('scroll', function($window,$document) {
         }
       });
     }
-  }
+  };
 });

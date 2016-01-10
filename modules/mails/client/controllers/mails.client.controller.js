@@ -71,15 +71,22 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // Find a list of Mails
     $scope.find = function (num) {
-      console.log('Window size: ', $window.innerHeight);
-      if (num == 0)
-        $scope.numOfMails = parseInt($window.innerHeight / 100);
-      else 
-        $scope.numOfMails += num;
+      //console.log('Window size: ', $window.innerHeight);
+      $scope.mailCount = Mails.query({ countOnly: 'true' }, function(err) {
+        //console.log('mailCount = ' + $scope.mailCount[0].numResults);
+        
+        if (num === 0 || $scope.mailCount[0].numResults > $scope.numOfMails)
+        {
+          if (num === 0)
+            $scope.numOfMails = parseInt($window.innerHeight / 100);
+          else 
+            $scope.numOfMails += num;
 
-      $scope.mails = Mails.query({ reset : true, limit: $scope.numOfMails}, function() {
-        for(var i = 0,len = $scope.mails.length; i < len;i++) {
-          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
+          $scope.mails = Mails.query({ reset : true, limit: $scope.numOfMails }, function(err) {
+            for(var i = 0,len = $scope.mails.length; i < len;i++) {
+              $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
+            }
+          });
         }
       });
 
@@ -98,7 +105,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       if (message.content.recipient === Authentication.user._id) {
         if (message.content.title) {
           console.log('MailController: Received new email');
-          $scope.mails = Mails.query({ reset : false, limit: $scope.numOfMails}, function() {
+          $scope.mails = Mails.query({ reset : false, limit: $scope.numOfMails }, function() {
             for(var i = 0,len = $scope.mails.length; i < len;i++) {
               $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
             }
