@@ -10,7 +10,7 @@
 },
 
 {"viewName":"home",
-"headline":"Wilkommen in Deutschland",
+"headline":"Willkommen in Deutschland",
 "subheadline":"Wie können wir Ihnen weiter hilfen?",
 "quickHelpTitle":"Deutschland auf einen Blick",
 "findHelpTitle":"Koordinierende Hilfe",
@@ -43,6 +43,7 @@
 "description":"Beschreibung",
 "city":"Stadt",
 "geolocating":"Geolocation unterwegs...",
+"geolocationSuccess":"Aktueller Standort",
 "searchRadius":"Suchumkreis in ? km",
 "when":"Wann",
 "expirationDate":"gültig bis",

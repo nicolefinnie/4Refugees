@@ -45,9 +45,10 @@
 "description":"الوصف",
 "city":"مدينة",
 "geolocating":"تحديد الموقع الجغرافي في التقدم",
+"geolocationSuccess":"الموقع الحالي",
 "searchRadius":"دائرة نصف قطرها ? كم البحث في",
 "when":"متى",
-"expirationDate":"no internet connection to translate this to Arabic",
+"expirationDate":"ساري المفعول حتى",
 "showAdvanced":"عرض الخيارات المتقدمة",
 "hideAdvanced":"إخفاء خيارات متقدمة",
 "offerOthersHelpText":"أو تقديم الآخرين لمساعدتكم",
@@ -167,6 +168,6 @@
 "sendTo":"S-",
 "loadMore":"L-",
 "rightToLeft":true
-},
+}
 
 ]

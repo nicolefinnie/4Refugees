@@ -110,7 +110,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     $scope.showDetails = false;
     $scope.searchStatus = null;
-    $scope.geo = GeoSelector.getInitialState(true, true, false);
+    $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': false, 'enableList': true, 'enableManual': false });
 
     // initialize datepicker
     $('.datepicker').pickadate({
@@ -186,7 +186,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
         $scope.properties = translationList;
         // Ask for our current city+coordinates from Geo services
-        GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, function() {
+        GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess, function() {
           // only called if geo location failed, or if the location was returned
           // asynchronously and a digest round is required
           if (!$scope.geo.auto.supported) {
@@ -209,7 +209,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     $scope.offering = {};
     $scope.category = {};
-    $scope.geo = GeoSelector.getInitialState(true, true, true);
+    $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 
     // initialize datepicker
     $('.datepicker').pickadate({
@@ -375,7 +375,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
           // Start off with an empty offering, used when creating a new offer
           $scope.offering = new Offerings({ });
           // Ask for our current city+coordinates from Geo services
-          GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, function(digestInProgress) {
+          GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess, function(digestInProgress) {
             // only called if geo location failed, or if the location was returned
             // asynchronously and a digest round is required
             if (!$scope.geo.auto.supported) {
