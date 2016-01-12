@@ -7,6 +7,7 @@ var path = require('path'),
   url = require('url'),
   mongoose = require('mongoose'),
   Mail = mongoose.model('Mail'),
+  User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
@@ -20,7 +21,18 @@ exports.create = function (req, res) {
   mail.title = req.body.title;
   mail.content = req.body.content;
   mail.recipient = req.body.recipient;
-  console.log('recipient is: ' + JSON.stringify(req.body.recipient));
+
+  // check whether recipient is valid, if not replace it with the user
+  // allow self sending of mails to make e2e testing easier and to make 
+  // the mail module more robust
+  var recUser;
+  if (mail.recipient) {
+    recUser = User.findById(mail.recipient, '-salt -password');
+  }
+  if (!recUser) mail.recipient = mail.sender._id;
+
+  console.log('recipient is ' + JSON.stringify(mail.recipient));
+  //console.log('recipient is either ' + JSON.stringify(mail.recipient) + ' or   ' + JSON.stringify(recUser));
   mail.offeringId = req.body.offeringId;
   mail.replyTo = req.body.mailId;
   // The recipient is the owner of the email, only they can delete it.

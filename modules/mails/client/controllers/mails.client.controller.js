@@ -31,6 +31,9 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
             $scope.mails.splice(i, 1);
           }
         }
+        $scope.numOfMail--;
+        if ($scope.mailCount && $scope.mailCount[0])
+          $scope.mailCount[0].numResults--;
       } else {
         $scope.mail.$remove(function () {
           $location.path('mails');
@@ -73,9 +76,9 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     $scope.find = function (num) {
       //console.log('Window size: ', $window.innerHeight);
       $scope.mailCount = Mails.query({ countOnly: 'true' }, function(err) {
-        //console.log('mailCount = ' + $scope.mailCount[0].numResults);
+        //console.log('mailCount = ' + JSON.stringify($scope.mailCount));
         
-        if (num === 0 || $scope.mailCount[0].numResults > $scope.numOfMails)
+        if (num === 0 || $scope.mailCount[0] && $scope.mailCount[0].numResults > $scope.numOfMails)
         {
           if (num === 0)
             $scope.numOfMails = parseInt($window.innerHeight / 100);

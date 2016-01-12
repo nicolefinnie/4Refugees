@@ -31,57 +31,81 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         return false;
       }
 
-      var recipient_id, reload_on_save;
+      var index, len, recipient_id, reload_on_save, recipients, offeringid,
+        title = this.title,
+        content = this.content,
+        replyTo = this.replyTo;
 
+      // set up mass mail array - for replies turn single recipient into an array
       if (this.recipient && this.recipient[0]) {
-        console.log('mail for ' + JSON.stringify(this.recipient[0]));
-        recipient_id = this.recipient[0]._id;
+        console.log('admin mail for ' + JSON.stringify(this.recipient[0]));
+        recipients = this.recipient;
         reload_on_save = true;
+        offeringid = this.offeringId;
       }
       else {
         console.log('reply to ' + JSON.stringify(recipient));
-        recipient_id = recipient._id;
+        recipients = [recipient];
         reload_on_save = false;
+        offeringid = offeringID;
       }
 
-      // Create new Mail object
-      var mail = new Mails({
-        title: this.title,
-        content: this.content,
-        unread: true,
-        recipient: recipient_id,
-        replyTo: this.replyTo,
-        offeringId: (reload_on_save) ? this.offeringId : offeringID
-      });
+      //if (this.recipient && this.recipient[0]) {
+      //  console.log('mail for ' + JSON.stringify(this.recipient[0]));
+      //  recipient_id = this.recipient[0]._id;
+      //}
+      //else {
+      //  console.log('reply to ' + JSON.stringify(recipient));
+      //  recipient_id = recipient._id;
+      //  reload_on_save = false;
+      //}
 
-      // Emit a 'mailMessage' message event with the JSON mail object
-      var message = {
-        content: mail
-      };
-      //Socket.emit('mailMessage', message);
+      len = recipients.length;
+      
+      recipients.forEach(function(recp, index) {
 
-      console.log('mail is ' + JSON.stringify(mail));
+        console.log('mail ' + index + ' for ' + JSON.stringify(recp));
 
-      // Redirect after save
-      mail.$save(function (response) {
-        Socket.emit('mailMessage', message);
+        // Create new Mail object
+        var mail = new Mails({
+          title: title,
+          content: content,
+          unread: true,
+          //recipient: recipient_id,
+          recipient: recp._id,
+          replyTo: replyTo,
+          offeringId: offeringid
+        });
 
-        if (reload_on_save) {
-          // TODO: This causes client exception when the admin user
-          // sends a message to users.  Should there be a different
-          // re-direct page for admin users?
-          $location.path('mails/' + response._id);
-          // Clear form fields
-          $scope.replyTo = '';
-          $scope.offeringId = '';
-          $scope.recipient = {};
-        }
-        $scope.title = '';
-        $scope.content = '';
-        $scope.authentication = Authentication;
+        // Emit a 'mailMessage' message event with the JSON mail object
+        var message = {
+          content: mail
+        };
+        //Socket.emit('mailMessage', message);
 
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+        console.log('mail is ' + JSON.stringify(mail));
+
+        // Redirect after save
+        mail.$save(function (response) {
+          Socket.emit('mailMessage', message);
+
+          if (reload_on_save && index === len - 1) {
+            // TODO: This causes client exception when the admin user
+            // sends a message to users.  Should there be a different
+            // re-direct page for admin users?
+            $location.path('mails/' + response._id);
+            // Clear form fields
+            $scope.replyTo = '';
+            $scope.offeringId = '';
+            $scope.recipient = {};
+          }
+          $scope.title = '';
+          $scope.content = '';
+          $scope.authentication = Authentication;
+
+        }, function (errorResponse) {
+          $scope.error = errorResponse.data.message;
+        });
       });
     };
 

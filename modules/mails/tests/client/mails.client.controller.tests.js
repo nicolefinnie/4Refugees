@@ -89,15 +89,16 @@
       });
     }));
 
-    it('$scope.find() should create an array with at least one mail object fetched from XHR', inject(function (Mails) {
+    it('$scope.find(0) should create an array with at least one mail object fetched from XHR', inject(function (Mails) {
       // Create a sample mails array that includes the new mail
       var sampleMails = [mockMail];
 
-      // Set GET response
-      $httpBackend.expectGET('api/mails?reset=true').respond(sampleMails);
+      // Set GET response - first mails are counted, then retrieved with a predefined limit for infinite scrolling
+      $httpBackend.expectGET('api/mails?countOnly=true').respond(sampleMails);
+      $httpBackend.expectGET('api/mails?limit=3&reset=true').respond(sampleMails);
 
       // Run controller functionality
-      scope.find();
+      scope.find(0);
       $httpBackend.flush();
 
       // Test scope value
@@ -182,12 +183,13 @@
         $httpBackend.expectPOST('api/mails', function(reqHandler) {
           var rh = JSON.parse(reqHandler);
           delete rh.unread;
-          if (!angular.equals(rh, sampleMailPostData)) {console.log('got: ' + JSON.stringify(rh) + ' | ' + JSON.stringify(sampleMailPostData));}
+          //if (!angular.equals(rh, sampleMailPostData)) {console.log('got: ' + JSON.stringify(rh) + ' | ' + JSON.stringify(sampleMailPostData));}
           return angular.equals(rh, sampleMailPostData);
         }).respond(mockMail);
 
         // Run controller functionality - same as in list-mails.client.view.html,
-        scope.create(true, scope.recipient);
+        // fake offeringid taken from sampleUserPostData._id
+        scope.create(true, sampleUserPostData, sampleUserPostData._id);
         $httpBackend.flush();
 
         // Test form inputs are reset
@@ -210,7 +212,8 @@
         });
 
         //scope.recipient = [sampleUserPostData];
-        scope.create(true, sampleUserPostData);
+        // fake offeringid taken from sampleUserPostData._id
+        scope.create(true, sampleUserPostData, sampleUserPostData._id);
         $httpBackend.flush();
 
         expect(scope.error).toBe(errorMessage);

@@ -12,7 +12,7 @@ module.exports = function (io, socket) {
     message.profileImageURL = socket.request.user.profileImageURL;
     message.username = socket.request.user.username;
 
-    // Emit the 'chatMessage' event
+    // Emit the 'mailMessage' event
     io.emit('mailMessage', message);
   });
 };
