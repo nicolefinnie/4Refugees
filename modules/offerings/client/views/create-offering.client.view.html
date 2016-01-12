@@ -91,6 +91,20 @@
                         <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
                     </div>          
                 </div>
+                <div class="row">
+                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <svg class="flip-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                    S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                    <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                    17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                    </svg>
+                  </div>
+                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <input id="expirationDate" type="text" ng-model="expiry" name="expirationDate" class="datepicker" placeholder="{{properties.expirationDate}}">
+                  </div>          
+                </div>  
             </div> <!-- end of input-field ibm-input-field -->
           </div> <!-- end of grid col m6 s11 -->
           <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">

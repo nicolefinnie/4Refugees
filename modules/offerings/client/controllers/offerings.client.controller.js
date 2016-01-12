@@ -255,7 +255,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       var expiryDate = this.expiry ? new Date(this.expiry) : new Date(whenDate);
       if (this.expiry === undefined) {
         expiryDate.setMonth(expiryDate.getMonth()+1);
-      }
+      } 
       $scope.offering.whenString = whenDate.toUTCString();
       $scope.offering.expiryString = expiryDate.toUTCString();
       $scope.offering.description = this.description;

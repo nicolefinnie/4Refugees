@@ -21,6 +21,10 @@
     color: #fff;
     border: 0; }
 
+/* flip icon to 180 degree for clock icon */
+.ibm-input-field svg.flip-icon {
+  transform: rotate(180deg); }
+
 /* Show current search progress */
 .offering-search-status strong {
   color: #000; }

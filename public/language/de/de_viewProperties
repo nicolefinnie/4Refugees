@@ -45,6 +45,7 @@
 "geolocating":"Geolocation unterwegs...",
 "searchRadius":"Suchumkreis in ? km",
 "when":"Wann",
+"expirationDate":"gültig bis",
 "showAdvanced":"Erweiterte Optionen anzeigen",
 "hideAdvanced":"Zusatzoptionen ausblenden",
 "offerOthersHelpText":"Oder den Anderen Hilfe anbieten!",
