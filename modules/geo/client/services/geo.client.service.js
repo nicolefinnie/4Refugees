@@ -1,11 +1,11 @@
 'use strict';
 
 /**
- * GeoLocator global service to determine current geo location.
+ * GeoLocator global service to determine current geo coordinates.
  * 
  * To use this global service, make sure to include GeoLocator in your controller.
  * 
- * To query your current location coordinates, use the following code in your controller:
+ * To query your current coordinates, use the following code in your controller:
  * 
  * @code 
   angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
@@ -14,7 +14,6 @@
 
     GeoLocator.getCurrentLocation(function(myLocation, digestInProgress) {
       if (myLocation.available) {
-        $scope.city = myLocation.city;
         $scope.latitude = myLocation.latitude;
         $scope.longitude = myLocation.longitude;
       } else {
@@ -37,70 +36,8 @@ angular.module('geo').service('GeoLocator', [ function () {
   this.currentLocation = {
     initialized: false, // internal-use only
     available: false,   // geo-location services determined location properly
-    city: '',           // nearest city to our current location
-    longitude: '',      // current longitude
-    latitude: ''        // current latitude
-  };
-
-  // Determine the closest city to the current location
-  this.findClosestCity = function (geocoderResults) {
-    var city = 'Unknown';
-    var country = 'Unknown';
-    var results = geocoderResults;
-    // Search through the returned results to find a reasonably good city + country to display
-    // In general, the returned 'results' start from the most specific address, to the most general,
-    // and since we only look for city + country (not street address, postal code, etc), we should be
-    // able to find them from results[0].
-    for (var x = 0, length_1 = results.length; x < length_1; x++){
-      for (var y = 0, length_2 = results[x].address_components.length; y < length_2; y++){
-        var type = results[x].address_components[y].types[0];
-        if (type === 'locality'){
-          city = results[x].address_components[y].long_name;
-          if (country !== 'Unknown') {
-            break;
-          }
-        } else if (type === 'country') {
-          country = results[x].address_components[y].long_name;
-          if (city !== 'Unknown') {
-            break;
-          }
-        }
-      }
-      if (city !== 'Unknown' && country !== 'Unknown') {
-        break;
-      }
-    }
-    if (city === 'Unknown' || country === 'Unknown') {
-      // according to Google map docs, results[4].formatted_address should provide
-      // a relatively coarse address, for example, 'Stuttgart, Germany'.
-      city = results[4].formatted_address;
-    } else {
-      city = city + ', ' + country;
-    }
-    return city;
-  };
-
-  // Callback after successful call to acquire current coordinates
-  this.geolocationComplete = function(position, self, callback) {
-    var geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    self.currentLocation.latitude = position.coords.latitude;
-    self.currentLocation.longitude = position.coords.longitude;
-    geocoder.geocode({ 'latLng': latlng }, function(results, status) {
-      self.currentLocation.city = self.findClosestCity(results);
-      self.currentLocation.initialized = true;
-      self.currentLocation.available = true;
-      console.log('GeoLocator: new location coordinates: ' + JSON.stringify(self.currentLocation));
-      callback(self.currentLocation, false);
-    });
-  };
-
-  // Callback after failed attempt to acquire current coordinates
-  this.geolocationError = function(error, self, callback) {
-    console.log('GeoLocator: Google geolocation.getCurrentPosition() error: ' + error.code + ', ' + error.message);
-    self.currentLocation.initialized = true;
-    self.currentLocation.available = false;
-    callback(self.currentLocation, false);
+    longitude: 0,       // current longitude
+    latitude: 0         // current latitude
   };
 
   // Main function provided by service - return the current location
@@ -109,16 +46,30 @@ angular.module('geo').service('GeoLocator', [ function () {
   // digest round is currently in progress (i.e. whether they need to call
   // $scope.apply() in their callback handler or not).
   this.getCurrentLocation = function (callback) {
-    // Initialize if needed
+
+    if (navigator.geolocation === undefined) {
+      this.currentLocation.initialized = true;
+      this.currentLocation.available = false;
+      console.log('GeoLocator: Location services are not available.');
+    } 
+
     if (this.currentLocation.initialized === true) {
       callback(this.currentLocation, true);
-    } else if (navigator.geolocation) {
+    } else {
       var self = this;
       navigator.geolocation.getCurrentPosition(function(position) {
-        self.geolocationComplete(position, self, callback);
+        self.currentLocation.initialized = true;
+        self.currentLocation.available = true;
+        self.currentLocation.latitude = position.coords.latitude;
+        self.currentLocation.longitude = position.coords.longitude;
+        console.log('GeoLocator: New location coordinates: ' + JSON.stringify(self.currentLocation));
+        callback(self.currentLocation, false);
       },
       function errorCallback(error) {
-        self.geolocationError(error, self, callback);
+        self.currentLocation.initialized = true;
+        self.currentLocation.available = false;
+        console.log('GeoLocator: Location services not available, error: ' + error.code + ', ' + error.message);
+        callback(self.currentLocation, false);
       },
         {
           // Note: Do NOT specify maximumAge to re-use previously-cached locations, since
@@ -126,11 +77,6 @@ angular.module('geo').service('GeoLocator', [ function () {
           timeout:10000        // 10-second timeout
         }
       );
-    } else {
-      this.currentLocation.initialized = true;
-      this.currentLocation.available = false;
-      console.log('GeoLocator: navigator.geolocation service not available.');
-      callback(this.currentLocation, true);
     }
   };
 
@@ -138,7 +84,132 @@ angular.module('geo').service('GeoLocator', [ function () {
   this.setupTestEnvironment = function() {
     this.currentLocation.initialized = true;
     this.currentLocation.available = true;
-    this.currentLocation.city = 'Stuttgart';
+    this.currentLocation.longitude = Number(9.177);
+    this.currentLocation.latitude = Number(48.782);
+  };
+}
+]);
+
+
+/**
+ * GeoReverseLookup global service to find an address from coordinates.
+ * 
+ * To use this global service, make sure to include GeoReverseLookup in your controller.
+ * 
+ * To query your current address, use the following code in your controller:
+ * 
+ * @code 
+  angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
+                                                                     'Authentication', 'Offerings', 'GeoLocator', 'GeoReverseCoder',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoLocator, GeoReverseCoder) {
+
+    GeoReverseCoder.getAddress(myLocation, function(address, digestInProgress) {
+      if (address.available) {
+        // Yeah, I can use address.city, address.region, address.country!!!
+      }
+    });
+  }];
+ * @endcode
+ * 
+ * The APIs currently offered are:
+ * 
+ * getAddress(coordinates, callback(address, digestInProgress)); 
+ * setupTestEnvironment(); // fake support for unit tests
+ * 
+ **/
+angular.module('geo').service('GeoReverseCoder', [ 'GeoLocator',
+function (GeoLocator) {
+
+  // Define the current location object
+  this.address = {
+    initialized: false, // internal-use only
+    available: false,   // reverse geocoding services are available
+    city: '',           // nearest city to our current location
+    region: '',         // region/province/state of current location
+    country: '',        // country of current location
+    longitude: 0,       // provided longitude for reverse lookup
+    latitude: 0         // provided latitude for reverse lookup
+  };
+
+  this.findClosest = function (findType, results) {
+    // Search through the returned results to find the location at the granularity
+    // requested by the caller. In general, the returned 'results' start from the
+    // most specific address, to the most general, so start with the most specific.
+    for (var x = 0, length_1 = results.length; x < length_1; x++){
+      for (var y = 0, length_2 = results[x].address_components.length; y < length_2; y++){
+        var type = results[x].address_components[y].types[0];
+        if (type === findType) {
+          return results[x].address_components[y].long_name;
+        }
+      }
+    }
+    return 'Unknown';
+  };
+
+  this.cachedLocationValid = function(coordinates) {
+    return (this.address.initialized && coordinates && (this.address.longitude === coordinates.longitude) && (this.address.latitude === coordinates.latitude));
+  };
+
+  this.doReverseGeocode = function(self, callback) {
+    // Note: Other reverse-geocoding providers besides Google could be used
+    // as well, for example, OpenStreetMap has the Nominatim service:
+    // http://wiki.openstreetmap.org/wiki/Nominatim#Reverse_Geocoding
+    var geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(self.address.latitude, self.address.longitude);
+    geocoder.geocode({ 'latLng': latlng }, function(results, status) {
+      self.address.initialized = true;
+      self.address.available = (status === google.maps.GeocoderStatus.OK);
+      if (self.address.available) {
+        self.address.city = self.findClosest('locality', results);
+        self.address.country = self.findClosest('country', results);
+        self.address.region = self.findClosest('administrative_area_level_1', results);
+        console.log('GeoReverseCoder: new address information: ' + JSON.stringify(self.address));
+      } else {
+        console.log('GeoReverseCoder: service not available, status: ' + status);
+      }
+      callback(self.address, false);
+    });
+  };
+
+  // Main function provided by service - do a reverse geocoding lookup for
+  // the specified location (or current location, if none specified).
+  // The callback will return the current translated address, if possible, and
+  // also return a second parameter, specifying if a digest round is currently
+  // in progress (i.e. whether they need to call $scope.apply() in their
+  // callback handler or not).
+  this.getAddress = function (coordinates, callback) {
+    if (this.cachedLocationValid(coordinates)) {
+      callback(this.address, true);
+    } else {
+      var self = this;
+      if (coordinates && coordinates.latitude && coordinates.longitude) {
+        self.address.latitude = coordinates.latitude;
+        self.address.longitude = coordinates.longitude;
+        self.doReverseGeocode(self, callback);
+      } else {
+        // No coordinates provided, lookup current location, and get address of that
+        GeoLocator.getCurrentLocation(function(myLocation, digestInProgress) {
+          if (myLocation.available) {
+            self.address.latitude = myLocation.latitude;
+            self.address.longitude = myLocation.longitude;
+            self.doReverseGeocode(self, callback);
+          } else {
+            self.address.initialized = true;
+            self.address.available = false;
+            callback(self.address, false);
+          }
+        });
+      }
+    }
+  };
+
+  // For unit tests, setup fake/sample cached geo-location data
+  this.setupTestEnvironment = function() {
+    this.address.initialized = true;
+    this.address.available = true;
+    this.address.city = 'Stuttgart';
+    this.address.region = 'Baden Württemberg';
+    this.address.country = 'Germany';
     this.currentLocation.longitude = Number(9.177);
     this.currentLocation.latitude = Number(48.782);
   };
@@ -275,28 +346,28 @@ angular.module('geo').service('GeoList', [ function () {
  * setupTestEnvironment();
  * 
  **/
-angular.module('geo').service('GeoSelector', ['GeoLocator', 'GeoList',
-function (GeoLocator, GeoList) {
+angular.module('geo').service('GeoSelector', ['GeoLocator', 'GeoReverseCoder', 'GeoList',
+function (GeoLocator, GeoReverseCoder, GeoList) {
 
   //Initializes and return a common geo json useful for controllers
-  this.getInitialState = function (enableLocator, enableList, enableManual) {
+  this.getInitialState = function (selections) {
     var geo = {
       'auto' : {
-        'supported'   : enableLocator,
-        'initialized' : false,
-        'active'      : false,
-        'initialCity' : '',
-        'location'    : {}
+        'supported'           : selections.enableLocator,
+        'reverseGeocoder'     : selections.enableReverseGeocoder,
+        'initialized'         : false,
+        'active'              : false,
+        'location'            : {}
       },
       'list' : {
-        'supported'   : enableList,
+        'supported'   : selections.enableList,
         'initialized' : false,
         'active'      : false,
         'data'        : [],
         'location'    : {}
       },
       'manual' : {
-        'supported'   : enableManual,
+        'supported'   : selections.enableManual,
         'initialized' : false,
         'active'      : false,
         'location'    : {}
@@ -305,23 +376,47 @@ function (GeoLocator, GeoList) {
     return geo;
   };
 
-  this.activateLocator = function(geo, initText, needDigestCallback) {
+  // Need to add reverse lookup options, pass to setup?
+  this.activateLocator = function(geo, initText, successText, needDigestCallback) {
     geo.auto.active = true;
     geo.list.active = false;
     geo.manual.active = false;
-    geo.auto.location.city = initText;
-    GeoLocator.getCurrentLocation(function(myLocation, digestInProgress) {
-      geo.auto.supported = myLocation.available;
-      geo.auto.initialized = true;
-      if (geo.auto.supported) {
-        geo.auto.location.city = myLocation.city;
-        geo.auto.location.lat = myLocation.latitude;
-        geo.auto.location.lng = myLocation.longitude;
+    if (!geo.auto.initialized) {
+      geo.auto.location.city = initText;
+      geo.auto.location.region = initText;
+      geo.auto.location.country = initText;
+      if (geo.auto.reverseGeocoder) {
+        GeoReverseCoder.getAddress(null, function(myAddress, digestInProgress) {
+          geo.auto.supported = myAddress.available;
+          geo.auto.initialized = true;
+          if (geo.auto.supported) {
+            geo.auto.location.lat = myAddress.latitude;
+            geo.auto.location.lng = myAddress.longitude;
+            geo.auto.location.city = myAddress.city;
+            geo.auto.location.region = myAddress.region;
+            geo.auto.location.country = myAddress.country;
+          }
+          if (!geo.auto.supported || !digestInProgress) {
+            needDigestCallback();
+          }
+        });
+      } else {
+        GeoLocator.getCurrentLocation(function(myLocation, digestInProgress) {
+          geo.auto.supported = myLocation.available;
+          geo.auto.initialized = true;
+          if (geo.auto.supported) {
+            geo.auto.location.lat = myLocation.latitude;
+            geo.auto.location.lng = myLocation.longitude;
+            geo.auto.location.city = successText;
+            geo.auto.location.region = successText;
+            geo.auto.location.country = successText;
+          }
+          if (!geo.auto.supported || !digestInProgress) {
+            needDigestCallback();
+          }
+        });
       }
-      if (!digestInProgress || !geo.auto.supported) {
-        needDigestCallback();
-      }
-    });
+    }
   };
 
   this.activateManual = function(geo, manualLocation) {
@@ -336,22 +431,19 @@ function (GeoLocator, GeoList) {
     geo.list.active = true;
     geo.auto.active = false;
     geo.manual.active = false;
-    GeoList.getCityList($http, function(cityList) {
-      geo.list.data = cityList;
-      geo.list.initialized = true;
-    });
+    if (!geo.list.initialized) {
+      GeoList.getCityList($http, function(cityList) {
+        geo.list.data = cityList;
+        geo.list.initialized = true;
+      });
+    }
   };
 
   // Make the next supported geo option the active one
   this.toggleActive = function(geo, $http, needDigestCallback) {
     if (geo.auto.active) {
       if (geo.list.supported) {
-        if (geo.list.initialized) {
-          geo.list.active = true;
-          geo.auto.active = false;
-        } else {
-          this.activateCityList(geo, $http); // clears geo.auto.active on success
-        }
+        this.activateCityList(geo, $http);
       } else if (geo.manual.supported && geo.manual.initialized) {
         geo.manual.active = true;
         geo.auto.active = false;
@@ -361,28 +453,13 @@ function (GeoLocator, GeoList) {
         geo.manual.active = true;
         geo.list.active = false;
       } else if (geo.auto.supported) {
-        if (geo.auto.initialized) {
-          geo.auto.active = true;
-          geo.list.active = false;
-        } else {
-          this.activateLocator(geo, '...', needDigestCallback);
-        }
+        this.activateLocator(geo, '...', '...', needDigestCallback);
       } // else, no other options, leave list active
     } else {
       if (geo.auto.supported) {
-        if (geo.auto.initialized) {
-          geo.auto.active = true;
-          geo.manual.active = false;
-        } else {
-          this.activateLocator(geo, '...', needDigestCallback);
-        }
+        this.activateLocator(geo, '...', '...', needDigestCallback);
       } else if (geo.list.supported) {
-        if (geo.list.initialized) {
-          geo.list.active = true;
-          geo.manual.active = false;
-        } else {
-          this.activateCityList(geo, $http); // clears geo.manual.active on success
-        }
+        this.activateCityList(geo, $http);
       } // else, no other options, leave manual active
     }
   };

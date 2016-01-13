@@ -110,14 +110,15 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     $scope.showDetails = false;
     $scope.searchStatus = null;
-    $scope.geo = GeoSelector.getInitialState(true, true, false);
+    $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': false, 'enableList': true, 'enableManual': false });
 
     // initialize datepicker
-    $('.datepicker').pickadate({
+    $('#searchWhen').pickadate({
       selectMonths: true, // Creates a dropdown to control month
-      selectYears: 10 // Creates a dropdown of 15 years to control year
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
     });
-    
+
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       $scope.initialize();
@@ -186,7 +187,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
         $scope.properties = translationList;
         // Ask for our current city+coordinates from Geo services
-        GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, function() {
+        GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess, function() {
           // only called if geo location failed, or if the location was returned
           // asynchronously and a digest round is required
           if (!$scope.geo.auto.supported) {
@@ -209,12 +210,18 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     $scope.offering = {};
     $scope.category = {};
-    $scope.geo = GeoSelector.getInitialState(true, true, true);
+    $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 
     // initialize datepicker
-    $('.datepicker').pickadate({
+    $('#when').pickadate({
       selectMonths: true, // Creates a dropdown to control month
-      selectYears: 10 // Creates a dropdown of 15 years to control year
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
+    });
+    $('#expirationDate').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
     });
 
     // language change clicked
@@ -340,8 +347,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.category = selectedCategory;
       var whenDate = new Date(offering.whenString);
       var expiryDate = new Date(offering.expiryString);
-      $scope.when = whenDate.toDateString();
-      $scope.expiry = expiryDate.toDateString();
+      $scope.when = whenDate;
+      $scope.expiry = expiryDate;
       $scope.description = offering.description;
       // pre-fill geo-location with values in retrieved offering
       var manualLocation = {
@@ -375,7 +382,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
           // Start off with an empty offering, used when creating a new offer
           $scope.offering = new Offerings({ });
           // Ask for our current city+coordinates from Geo services
-          GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, function(digestInProgress) {
+          GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess, function(digestInProgress) {
             // only called if geo location failed, or if the location was returned
             // asynchronously and a digest round is required
             if (!$scope.geo.auto.supported) {

@@ -162,7 +162,8 @@
         });
 
         // Fixture mock form input values
-        scope.geo = GeoSelector.getInitialState(false, false, true);
+        scope.geo = GeoSelector.getInitialState({ 'enableLocator': false, 'enableList': false, 'enableManual': true });
+
         var city = { 'city':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
         GeoSelector.activateManual(scope.geo, city);
         
