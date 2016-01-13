@@ -113,11 +113,12 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': false, 'enableList': true, 'enableManual': false });
 
     // initialize datepicker
-    $('.datepicker').pickadate({
+    $('#searchWhen').pickadate({
       selectMonths: true, // Creates a dropdown to control month
-      selectYears: 10 // Creates a dropdown of 15 years to control year
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
     });
-    
+
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       $scope.initialize();
@@ -212,9 +213,15 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 
     // initialize datepicker
-    $('.datepicker').pickadate({
+    $('#when').pickadate({
       selectMonths: true, // Creates a dropdown to control month
-      selectYears: 10 // Creates a dropdown of 15 years to control year
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
+    });
+    $('#expirationDate').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 10, // Creates a dropdown of 10 years to control year
+      format:'yyyy-mm-dd'
     });
 
     // language change clicked
@@ -340,8 +347,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.category = selectedCategory;
       var whenDate = new Date(offering.whenString);
       var expiryDate = new Date(offering.expiryString);
-      $scope.when = whenDate.toDateString();
-      $scope.expiry = expiryDate.toDateString();
+      $scope.when = whenDate;
+      $scope.expiry = expiryDate;
       $scope.description = offering.description;
       // pre-fill geo-location with values in retrieved offering
       var manualLocation = {
