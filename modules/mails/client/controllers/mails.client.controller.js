@@ -42,9 +42,35 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     };
 
     // ReplyTo existing Mail
-    $scope.replyMail = function (mail) {
+    $scope.replyMail = function (mail, reportAdmin) {
       $scope.mail = mail;
-      $('#modalReply').openModal();
+      $scope.reportAdmin = reportAdmin;
+
+      console.log('mail is ' + JSON.stringify(mail));
+      if (reportAdmin) {
+        $http.get('/api/mails/' + mail,{ cache: true }).then(function(response) {
+          $scope.mail = response.data;
+          $('#modalReply').openModal();
+        });
+      }
+      else {
+        $('#modalReply').openModal();
+      }
+    };
+
+    // Report existing Mail
+    $scope.reportMail = function (mail) {
+      $scope.mail = mail;
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.title = translationList.reportTitle;
+        $scope.content = translationList.reportBody + mail.content;
+
+        $http.get('/api/users/admin',{ cache: true }).then(function(response) {
+          console.log('report to ' + JSON.stringify(response.data));
+          $scope.adminId = response.data;
+          $('#modalReport').openModal();
+        });
+      });
     };
 
 

@@ -167,6 +167,11 @@
 "about":"A-",
 "sendTo":"S-",
 "loadMore":"L-",
+"done":"D-",
+"report":"R-",
+"reportTitle":"Rr",
+"reportBody":"Rr",
+"replyToOffender":"RO",
 "rightToLeft":true
 }
 

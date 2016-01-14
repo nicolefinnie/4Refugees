@@ -21,6 +21,10 @@ exports.create = function (req, res) {
   mail.title = req.body.title;
   mail.content = req.body.content;
   mail.recipient = req.body.recipient;
+  mail.replyTo = req.body.replyTo;
+
+  // support reporting offending entries like offerings and emails
+  mail.reportAdmin = req.body.reportAdmin;
 
   // check whether recipient is valid, if not replace it with the user
   // allow self sending of mails to make e2e testing easier and to make 
@@ -34,7 +38,7 @@ exports.create = function (req, res) {
   console.log('recipient is ' + JSON.stringify(mail.recipient));
   //console.log('recipient is either ' + JSON.stringify(mail.recipient) + ' or   ' + JSON.stringify(recUser));
   mail.offeringId = req.body.offeringId;
-  mail.replyTo = req.body.mailId;
+  //mail.replyTo = req.body.mailId;
   // The recipient is the owner of the email, only they can delete it.
   // This ownerId is also used when deleting a user, to delete all their mails.
   mail.ownerId = mail.recipient.toString();

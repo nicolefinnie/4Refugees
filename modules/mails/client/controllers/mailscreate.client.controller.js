@@ -39,6 +39,7 @@ angular.module('mails').controller('MailsCreateController', ['$scope', '$rootSco
         title: this.title,
         content: this.content,
         unread: true,
+        reportToAdmin: false,
         recipient: this.recipientId,
         replyTo: this.replyTo,
         offeringId: this.offeringId,

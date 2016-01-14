@@ -22,7 +22,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
     }
 
     // Create new Mail
-    $scope.create = function (isValid, recipient, offeringID) {
+    $scope.create = function (isValid, recipient, mailId, offeringID, reportAdmin) {
       $scope.error = null;
 
       if (!isValid) {
@@ -34,7 +34,9 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
       var index, len, recipient_id, reload_on_save, recipients, offeringid,
         title = this.title,
         content = this.content,
-        replyTo = this.replyTo;
+        replyTo = mailId;
+
+      //console.log('replyTo set to : ' + JSON.stringify(replyTo));
 
       // set up mass mail array - for replies turn single recipient into an array
       if (this.recipient && this.recipient[0]) {
@@ -71,7 +73,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
           title: title,
           content: content,
           unread: true,
-          //recipient: recipient_id,
+          reportAdmin: reportAdmin,
           recipient: recp._id,
           replyTo: replyTo,
           offeringId: offeringid
@@ -98,9 +100,9 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
             $scope.replyTo = '';
             $scope.offeringId = '';
             $scope.recipient = {};
+            $scope.title = '';
+            $scope.content = '';
           }
-          $scope.title = '';
-          $scope.content = '';
           $scope.authentication = Authentication;
 
         }, function (errorResponse) {

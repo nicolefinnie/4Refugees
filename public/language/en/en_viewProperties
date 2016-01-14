@@ -162,6 +162,11 @@
 "about":"About offering: ",
 "sendTo":"Send mail to: ",
 "loadMore":"Load More",
+"done":"Done",
+"report":"Report",
+"reportTitle":"Report offending email",
+"reportBody":">> ",
+"replyToOffender":"Contact offender",
 "rightToLeft":false
 }
 

@@ -29,6 +29,10 @@ var MailSchema = new Schema({
     type: Boolean,
     default: true
   },
+  reportAdmin: {
+    type: Boolean,
+    default: false 
+  },
   sender: {
     type: Schema.ObjectId,
     ref: 'User'

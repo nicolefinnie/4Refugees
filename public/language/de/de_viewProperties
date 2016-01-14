@@ -162,6 +162,11 @@
 "about":"Wegen des Angebotes ",
 "sendTo":"Kontaktiere ",
 "loadMore":"Weitere emails",
+"done":"Fertig",
+"report":"Melden",
+"reportTitle":"Meldung einer ungehörigen email",
+"reportBody":"Inhalt: ",
+"replyToOffender":"Admin Kontakt",
 "rightToLeft":false
 }
 

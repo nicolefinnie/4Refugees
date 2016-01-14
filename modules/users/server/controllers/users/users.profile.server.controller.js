@@ -101,3 +101,19 @@ exports.changeProfilePicture = function (req, res) {
 exports.me = function (req, res) {
   res.json(req.user || null);
 };
+
+/**
+ * Locate (first) Admin User - used to report offending offerings or emails
+ */
+exports.admin = function (req, res) {
+  User.find({ roles:{ $elemMatch:{ $eq:'admin' } } 
+  },{ _id: true }).limit(1).exec(function (err, users) {
+    if (err || users.length === -1) {
+      res.status(400).send({
+        message: 'No Admin user found'
+      });
+    } else
+      return res.json(users[0]);
+  });
+};
+
