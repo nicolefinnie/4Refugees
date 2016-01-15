@@ -22,8 +22,9 @@
   float: left; }
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
+.ibm-input-field.arabic textarea, .ibm-input-field.arabic input, .ibm-input-field.arabic p, .ibm-input-field.arabic strong {
+  text-align: right; }
 .ibm-input-field.arabic textarea, .ibm-input-field.arabic input {
-  text-align: right;
   direction: rtl; }
 .ibm-input-field.arabic input + label {
   position: relative;
@@ -34,6 +35,12 @@
   /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
   right: 4rem;
   text-align: right; }
+
+/* click to show/hide the advanced offering search/create/edit options */
+.ibm-toggle-advanced-options svg, .ibm-toggle-advanced-options a {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%); }
 
 /* button */
 .ibm-button, .ibm-submit-area button {
@@ -55,8 +62,6 @@
 /* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
 .ibm-submit-area :hover button svg {
   fill: #fff; }
-.ibm-submit-area strong {
-  color: #e71d32; }
 
 /* submit-area with button and error message in Latin languages - from left to right*/
 .ibm-submit-area.latin button, .ibm-submit-area.latin a, .ibm-submit-area.latin strong {
@@ -109,5 +114,25 @@
   font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
   font-stretch: normal; }
+
+.text-success {
+  color: #2d660a; }
+
+.text-danger {
+  color: #e71d32; }
+
+.error-text {
+  display: none; }
+
+p.help-block.error-text {
+  position: relative;
+  top: -2em; }
+
+.has-error .help-block.error-text {
+  display: block;
+  color: #e71d32; }
+
+.has-error .help-inline.error-text {
+  display: inline; }
 
 /*# sourceMappingURL=share-ibm-design.css.map */

@@ -1,0 +1,25 @@
+<!-- obsolete -->
+<section ng-controller="MailsController" ng-init="findOne()">
+  <div class="page-header">
+    <h1 ng-bind="mail.title"></h1>
+  </div>
+  <div class="pull-right" ng-show="authentication.user._id == mail.sender._id">
+    <a class="btn btn-primary" ui-sref="mails.edit({mailId: mail._id})">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" ng-click="remove();">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span ng-bind="mail.created | date:'mediumDate'"></span>
+      by
+      <span ng-bind="mail.sender.displayName"></span>
+    </em>
+  </small>
+  <p class="lead" ng-bind="mail.content"></p>
+  <p class="lead" ng-bind="mail.replyTo"></p>
+  <p class="lead" ng-bind="mail.offeringId"></p>
+</section>

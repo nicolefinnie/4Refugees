@@ -5,6 +5,7 @@
 "listMyOfferings":"Offerings",
 "profile":"Profile",
 "signOut":"Sign Out",
+"aboutUs":"About Us",
 "englishSelected":true
 }, 
 
@@ -42,8 +43,11 @@
 "others":"Others",
 "description":"description",
 "city":"city",
+"geolocating":"geolocation in progress...",
+"geolocationSuccess":"Current Location",
 "searchRadius":"Search radius in ? km",
 "when":"when",
+"expirationDate":"valid until",
 "showAdvanced":"Show advanced options",
 "hideAdvanced":"Hide advanced options",
 "offerOthersHelpText":"Or offer others your help!",
@@ -72,13 +76,17 @@
 "searchInProgress":"Search in progress...",
 "searchNoResults":"No results found, please modify your search and try again",
 "searchComplete":"Search complete, scroll down for results",
+"searchRetry":"Please try your search later, while we try to fix this",
+"errorFromServer":"Whoops, something went wrong",
 "errorNoDescription":"Invalid description, please enter a valid description and try again",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again"
 }, 
 
 {"viewName":"user",
-"signInWithYourAccount":"Or sign in with your account",
-"registerWithYourEmail":"Or register using your email", 
+"signInWithYourAccount":"Or log in with your account",
+"hideSignInWithYourAccount":"Hide local login",
+"registerWithYourEmail":"Or register a new account...are you sure?", 
+"hideRegisterWithYourEmail":"No thanks!", 
 "firstName":"First Name",
 "lastName":"Last Name",
 "email":"email",
@@ -93,6 +101,7 @@
 "editProfile":"Edit Profile",
 "changeProfilePicture":"Change Profile Picture",
 "changePassword":"Change Password",
+"manageSocialAccount":"Manage Social Accounts",
 "aboutMe":"About me",
 "aboutMeText":"Write something about you",
 "chooseTag":"Tag your interests",
@@ -104,6 +113,8 @@
 "upload":"Upload",
 "cancel":"Cancel",
 "savePassword":"Save Password",
+"connectedSocialAccounts":"Connected social accounts",
+"unconnectedSocialAccounts":"Unconnected social accounts",
 
 "firstNameRequired":"First name is required",
 "lastNameRequired":"Last name is required",
@@ -113,12 +124,13 @@
 "passwordRequired":"Password is required",
 "currentPasswordRequired":"Your current password is required",
 "enterPassword":"Enter a new password",
-"verifyPassword":"Verify your new password",
+"enterPasswordAgain":"Enter the password again to verify",
+"verifyNewPassword":"Verify your new password",
 "passwordsNoMatch":"Passwords do not match",
 "passwordRequirements":"Password requirements",
 "passwordChangedSuccessfully":"Password changed successfully",
-"profilePictureChangedSuccessfully":"Profile picture changed successfully"
-
+"profilePictureChangedSuccessfully":"Profile picture changed successfully",
+"profileSavedSuccessfully":"Profile saved successfully"
 },
 
 {"viewName":"firststep",
@@ -136,5 +148,26 @@
 "integrationLink":"http://www.bamf.de/EN/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
 "projectsHeader":"Refugee Projects",
 "projectsDescription":"Germany has many projects in different regions to help refugees. Find more info on projects in your area. Available in German only."
+},
+
+{"viewName":"mail",
+"mailTitle":"Your emails: ",
+"detailsHeader":"Details: ",
+"subject":"Subject: ",
+"reply":"Reply",
+"replyTo":"Reply To: ",
+"content":"content",
+"maincategory":"main category: ",
+"offerReferral":"offer to refer to:",
+"about":"About offering: ",
+"sendTo":"Send mail to: ",
+"loadMore":"Load More",
+"done":"Done",
+"report":"Report",
+"reportTitle":"Report offending email",
+"reportBody":">> ",
+"replyToOffender":"Contact offender",
+"rightToLeft":false
 }
+
 ]

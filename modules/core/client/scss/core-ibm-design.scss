@@ -17,8 +17,19 @@ nav {
 .ibm-header{
    padding: 0 10% 0 10%;
    background: color('gray', 80);
-    /* text color */
-    color: color('white', core);
+   /* text color */
+   color: color('white', core);
+    
+   /* override materialize style, use IBM design icons */
+   svg{
+      margin-top: 1px; 
+      height: 24px;
+      width: 24px;
+      margin-left: 8px;
+      margin-right: 8px;
+      vertical-align: middle;
+      fill: color('white', core);
+   }
 }
 
 
@@ -62,12 +73,36 @@ nav {
         background: color('gray', 10);
      
         /* text color when the header menu is active or hovered*/
-        a.active, a:hover{
+        a.active, a:hover {
             color: color('gray', 80);    
+            svg {
+               fill: color('gray',80);
+            }
         }
+     
+    }
+    svg{
+        /* override materialize style, use IBM design icons */
+        margin-top: 1px; 
+        height: 24px;
+        width: 24px;
+        vertical-align: middle;
+        fill: color('white', core);
     }
 }
 
+.ibm-dropdown-container{
+    a.signin-header{
+        width: 180px;
+    }
+}
+
+.ibm-dropdown-container.arabic{
+    a.signin-header svg{
+       margin-left: 100px;
+       margin-right: 0;
+    }
+}
 /* dropdown - for each component inside the menu, only shown when the screen is wider than 960px or so*/
 .ibm-dropdown-component{
     /* the first menu item starts below the header bar, fixed size because the header height doesn't change by the screen size*/
@@ -197,9 +232,20 @@ nav {
     }       
 }
 
+/* normal user has 3 items, sign-in, sign-up, about-me*/
 .ibm-mobile-menu.user{
-    height: 256px;
+    height: 192px;
 }
+
+/* authenticated user has 5 tiems*/
+.ibm-mobile-menu.authenticated-user{
+    height: 320px;
+}
+
+.ibm-mobile-menu.admin{
+    height: 128px;
+}
+
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
   margin-bottom: -10%;
@@ -272,7 +318,6 @@ nav {
         font-size: 16px;
         text-transform: capitalize;
     }
-    
 }
 
 /* smaller screens */    
@@ -304,9 +349,7 @@ nav {
     }
 }
 /** This design below comes with Mean.JS **/
-.undecorated-link:hover {
-  text-decoration: none;
-}
+
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
@@ -314,31 +357,15 @@ nav {
 .x-ng-cloak {
   display: none !important;
 }
+
 .header-profile-image {
   opacity: 0.8;
   height: 28px;
   width: 28px;
-  border-radius: 50%;
   margin-right: 5px;
+  margin-bottom: -10px;
 }
-.open .header-profile-image,
-a:hover .header-profile-image {
-  opacity: 1;
 
-}
-.user-header-dropdown-toggle {
-  padding-top: 11px !important;
-  padding-bottom: 11px !important;
-}
-.error-text {
-  display: none;
-}
-.has-error .help-block.error-text {
-  display: block;
-}
-.has-error .help-inline.error-text {
-  display: inline;
-}
 
 
 

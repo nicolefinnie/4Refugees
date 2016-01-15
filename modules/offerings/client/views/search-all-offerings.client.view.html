@@ -1,4 +1,4 @@
-<section ng-controller="OfferingsPublicController">
+<section ng-controller="OfferingsPublicController" ng-init="initialize()">
 <div class="row">
 <!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
   <div class="col m12 s11">
@@ -32,7 +32,9 @@
           <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
             <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
+                    <!-- Location, toggle between geo-location and manual city-list by clicking on icon -->
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                      <a ng-click="toggleGeoLocation()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1c-3.314,0-6.314,1.343-8.484,3.515C5.344,6.687,4,9.686,4,13
@@ -41,32 +43,45 @@
                             c2.671,0,5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.028,20.613z"/>
                         <circle cx="16" cy="13" r="4"/>
                         </svg>
+                      </a>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-if="!geoManual" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <!-- when geo.auto.active is true, this field will be filled in when we get our geo location response -->
+                        <a ng-if="geo.auto.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.auto.location.city" readonly>
+                        </a>
+                        <!-- when geo.manual.active is true, this value is retrieved form an existing offering -->
+                        <a ng-if="geo.manual.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.manual.location.city" readonly>
+                        </a>
                         <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
-                          but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
-                          load the city list when geo location is blocked or not available -->
-                        <select ng-show="geoManual" name="repeatSelect" id="where" ng-model="where" 
-                            ng-options="option.name for option in citylist">
+                          but we want to bind to the child ID ng-model="geo.list.location" so we use ng-show instead, it's not expensive in this case
+                          since we only load the city list when geo location is blocked or not available -->
+                        <select ng-show="geo.list.active" name="repeatSelect" ng-model="geo.list.location" 
+                            ng-options="option.city for option in geo.list.data">
                         </select>
                     </div>
                 </div>
                 <!-- Toggle advanced options on/off -->
-                <div class="row ibm-offering-toggle-advanced-options" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleAdvanced()">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                            <path d="M30.366,5.876l-4.245,4.246C25.535,10.707,24.768,11,24,11s-1.535-0.293-2.121-0.879c-1.172-1.171-1.172-3.071-0.001-4.243
-                            l4.245-4.245C25.164,1.226,24.108,1,23,1c-4.419,0-8,3.582-8,8c0,0.914,0.161,1.789,0.443,2.606L2.025,25.025
-                            c-1.367,1.367-1.367,3.583,0,4.95C2.709,30.658,3.605,31,4.5,31s1.791-0.342,2.475-1.025l13.418-13.418
-                            C21.211,16.839,22.086,17,23,17c4.418,0,8-3.582,8-8C31,7.891,30.773,6.835,30.366,5.876z M23,15c-0.654,0-1.312-0.112-1.954-0.334
-                            l-1.183-0.409l-0.885,0.885L5.561,28.56C5.277,28.844,4.9,29,4.5,29s-0.777-0.156-1.06-0.44C3.156,28.277,3,27.9,3,27.5
-                            c0-0.401,0.156-0.777,0.44-1.061l13.418-13.418l0.885-0.884l-0.408-1.182C17.112,10.312,17,9.654,17,9
-                            c0-2.901,2.069-5.328,4.81-5.881l-1.347,1.346c-1.948,1.95-1.947,5.122,0.001,7.07C21.408,12.479,22.664,13,24,13
-                            c1.335,0,2.591-0.52,3.535-1.465l1.347-1.347C28.328,12.93,25.901,15,23,15z"/>
-                            <circle cx="4.5" cy="27.5" r="1"/>
-                        </svg>
+                <br>
+                <div class="row" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                    <div class="ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleAdvanced()">
+                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                            <path d="M27.5,16c0-0.615-0.062-1.213-0.155-1.802L31,11l-3.105-5.098l-4.359,1.424c-1.042-0.906-2.248-1.623-3.569-2.109L19,1h-6
+                                l-0.966,4.217c-1.321,0.486-2.527,1.203-3.57,2.11L4.105,5.902L1,11l3.655,3.199C4.562,14.787,4.5,15.386,4.5,16
+                                c0,0.615,0.062,1.213,0.155,1.802L1,21l3.106,5.098l4.358-1.424c1.042,0.907,2.249,1.624,3.57,2.11L13,31h6l0.966-4.217
+                                c1.321-0.486,2.527-1.203,3.569-2.109l4.359,1.424L31,21l-3.655-3.197C27.438,17.214,27.5,16.615,27.5,16z M28.416,21.397
+                                l-1.406,2.308l-2.854-0.932l-1.078-0.352l-0.855,0.744c-0.868,0.755-1.86,1.341-2.947,1.742l-1.017,0.375l-0.242,1.056L17.406,29
+                                h-2.812l-0.61-2.664l-0.242-1.056l-1.017-0.375c-1.088-0.4-2.08-0.986-2.948-1.742L8.921,22.42l-1.078,0.353L4.99,23.705
+                                l-1.406-2.308l2.388-2.09l0.83-0.727L6.63,17.49C6.543,16.934,6.5,16.446,6.5,16c0-0.446,0.043-0.934,0.13-1.49l0.172-1.09
+                                l-0.83-0.727l-2.388-2.091l1.406-2.308l2.854,0.933L8.921,9.58l0.855-0.744c0.869-0.756,1.86-1.342,2.948-1.742l1.017-0.375
+                                l0.242-1.056L14.594,3h2.812l0.61,2.664l0.242,1.056l1.017,0.375c1.087,0.4,2.079,0.986,2.947,1.742l0.855,0.744l1.078-0.352
+                                l2.854-0.933l1.406,2.308l-2.388,2.089l-0.831,0.727l0.173,1.091C25.457,15.066,25.5,15.553,25.5,16s-0.043,0.935-0.131,1.49
+                                l-0.173,1.091l0.831,0.727L28.416,21.397z"/>
+                            <path d="M16,10c-3.314,0-6,2.685-6,6s2.686,6,6,6c3.315,0,6-2.685,6-6S19.315,10,16,10z M16,18c-1.104,0-2-0.896-2-2s0.896-2,2-2
+                                s2,0.896,2,2S17.104,18,16,18z"/>
+                    </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'" ng-click="toggleAdvanced()">
                         <a ng-if="!showDetails">{{properties.showAdvanced}}</a>
@@ -74,39 +89,38 @@
                     </div>
                 </div>
                 <!-- All advanced options are below -->
-                <div class="row">
-                  <div class="search-details-form" data-my-slide="showDetails">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                            <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
-                            l8-4L18,18z"/>
-                            <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                            s12,5.383,12,12S22.617,28,16,28z"/>
-                            <circle cx="16" cy="16" r="1"/>
-                        </svg>
-                    </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
-                    </div>
+                <div class="search-details-form" data-my-slide="showDetails">
+                  <div class="row">
+                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                              <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
+                              l8-4L18,18z"/>
+                              <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                              s12,5.383,12,12S22.617,28,16,28z"/>
+                              <circle cx="16" cy="16" r="1"/>
+                          </svg>
+                      </div>
+                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                          <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                          <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                          S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                          <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                          17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                          </svg>
+                      </div>
+                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                          <input id="searchWhen" type="date" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                      </div>          
                   </div>
                 </div>
-                <div class="row">
-                  <div class="search-details-form" data-my-slide="showDetails">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
-                        S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
-                        <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
-                        17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
-                        </svg>
-                    </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
-                    </div>          
-                  </div>
-                </div>
+                <!-- Submit area for buttons, error displays, etc -->
                 <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic-rotate-icon':'latin'">
                   <div class="row">
                     <div class="col m12 s12">
@@ -135,8 +149,10 @@
                 </div> <!-- end of ibm-submit-area -->
                 <!-- Display current search progress -->
                 <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                  <div class="row">
                   <div class="col m12 s12" ng-show="searchStatus">
                     <strong ng-bind="searchStatus"></strong>
+                  </div>
                   </div>
                 </div>
             </div> <!-- end of input-field ibm-input-field -->
@@ -179,7 +195,7 @@
                     </a>
                 </div>
                 <div class="col m12 s12" ng-if="authentication.user._id != offering.user._id">
-                    <a class="offering-submit-button btn waves-effect waves-light" ui-sref="postings.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
+                    <a class="offering-submit-button btn waves-effect waves-light" ui-sref="mails.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
                       {{properties.contact}}
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">

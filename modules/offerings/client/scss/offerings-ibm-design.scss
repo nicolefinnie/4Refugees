@@ -31,15 +31,11 @@
     }
 }
 
-/* click to show/hide the advanced offering search/create/edit options */
-.ibm-offering-toggle-advanced-options a {
-  font-size: 14px;
-  line-height: 300%;
-  text-align: center;
-}
-
-.ibm-offering-toggle-advanced-options.latin svg {
-  transform: rotate(270deg);
+/* flip icon to 180 degree for clock icon */
+.ibm-input-field {
+        svg.flip-icon{
+            transform: rotate(180deg);
+        }
 }
 
 /* Show current search progress */
@@ -69,6 +65,10 @@
   }
 }
 
+
+.ibm-force-text-black {
+  color: color('black', core);
+}
 
 /* Common button style for offering forms, to display on small and large screens
  * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,

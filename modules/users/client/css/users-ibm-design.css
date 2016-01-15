@@ -1,10 +1,10 @@
 @media screen and (max-width: 500px) {
   .ibm-profile-navigator {
     margin-top: 56px;
-    /* according to materialize.css, every "a" takes up 64 px, so we pick 192px for 3 items */
-    height: 192px;
+    /* according to materialize.css, every "a" takes up 64 px, so we pick 256px for 4 items */
+    height: 256px;
     overflow-y: hidden;
-    width: 200px; } }
+    width: 220px; } }
 @media screen and (min-width: 992px) {
   .ibm-profile-navigator {
     /* the offset of margin-top the same as .ibm-dropdown-component defined in core-ibm-design.scss */
@@ -23,14 +23,55 @@
   /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */
   float: right; }
 
-/* Defined in Mean.JS framework */
-@media (min-width: 992px) {
-  .nav-users {
-    position: fixed; } }
 .social-account-container {
-  display: inline-block;
-  position: relative; }
+  display: inline-block; }
+  .social-account-container a {
+    padding: 0;
+    margin: 0 auto;
+    background: #e0e0e0; }
+  .social-account-container i {
+    display: none; }
+  .social-account-container h6 {
+    display: none; }
 
+.social-account-container:hover a, .social-account-container:hover img {
+  transition-delay: width 1s, height 1s;
+  margin: 0 auto;
+  background: #e0e0e0; }
+.social-account-container:hover i {
+  display: block;
+  color: #fff;
+  position: relative;
+  z-index: 2; }
+.social-account-container:hover h6 {
+  display: block;
+  color: #fff;
+  z-index: 2;
+  font-size: 16px;
+  position: relative; }
+.social-account-container:hover h6.dark {
+  color: #121212; }
+
+@media screen and (min-width: 1200px) {
+  .social-account-container a, .social-account-container img {
+    width: 128px;
+    height: 128px; }
+
+  .social-account-container:hover a, .social-account-container:hover img {
+    width: 150px;
+    height: 150px; }
+  .social-account-container:hover i, .social-account-container:hover h6 {
+    transform: translate(10px, -140px); } }
+@media screen and (max-width: 1200px) {
+  .social-account-container a, .social-account-container img {
+    width: 64px;
+    height: 64px; }
+
+  .social-account-container:hover a, .social-account-container:hover img {
+    width: 75px;
+    height: 75px; }
+  .social-account-container:hover i, .social-account-container:hover h6 {
+    transform: translate(5px, -70px); } }
 .btn-remove-account {
   top: 10px;
   right: 10px;

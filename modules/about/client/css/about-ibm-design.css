@@ -1,0 +1,9 @@
+.ibm-about-us h5 {
+  color: #777677; }
+
+@media screen and (max-width: 600px) {
+  .ibm-about-us img {
+    width: 330px;
+    height: auto; } }
+
+/*# sourceMappingURL=about-ibm-design.css.map */

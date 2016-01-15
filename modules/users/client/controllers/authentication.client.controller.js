@@ -30,6 +30,16 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
     // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
 
+    // if advanced sing-in is toggled, show details or hide details
+    $scope.toggleSignIn = function() {
+      $scope.showSignIn = !$scope.showSignIn;
+    };
+    
+    // if advanced sing-up is toggled, show details or hide details
+    $scope.toggleSignUp = function() {
+      $scope.showSignUp = !$scope.showSignUp;
+    };
+    
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
       $location.path('/');

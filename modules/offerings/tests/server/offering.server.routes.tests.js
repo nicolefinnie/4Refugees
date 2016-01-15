@@ -199,7 +199,7 @@ describe('Offering CRUD tests', function () {
         // Create new offering model instance
         var offeringObj = new Offering(offering);
         offeringObj.user = user;
-        offeringObj.userId = user.id;
+        offeringObj.ownerId = user.id;
         offeringObj.description = 'test';
         offeringObj.loc.type = 'Point';
         offeringObj.loc.coordinates = [ 10,20 ];
@@ -228,7 +228,7 @@ describe('Offering CRUD tests', function () {
     // Create new offering model instance
     var offeringObj = new Offering(offering);
     offeringObj.user = user;
-    offeringObj.userId = user.id;
+    offeringObj.ownerId = user.id;
     offeringObj.description = 'test';
     offeringObj.loc.type = 'Point';
     offeringObj.loc.coordinates = [ 10,20 ];
@@ -320,7 +320,7 @@ describe('Offering CRUD tests', function () {
     // Create new offering model instance
     var offeringObj = new Offering(offering);
     offeringObj.user = user;
-    offeringObj.userId = user.id;
+    offeringObj.ownerId = user.id;
     offeringObj.description = 'test';
     offeringObj.loc.type = 'Point';
     offeringObj.loc.coordinates = [ 10,20 ];

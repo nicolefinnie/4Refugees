@@ -5,11 +5,12 @@
 "listMyOfferings":"Angebote",
 "profile":"Profil",
 "signOut":"Abmelden",
+"aboutUs":"Über uns",
 "germanSelected":true
 },
 
 {"viewName":"home",
-"headline":"Wilkommen in Deutschland",
+"headline":"Willkommen in Deutschland",
 "subheadline":"Wie können wir Ihnen weiter hilfen?",
 "quickHelpTitle":"Deutschland auf einen Blick",
 "findHelpTitle":"Koordinierende Hilfe",
@@ -41,8 +42,11 @@
 "others":"Sonstiges",
 "description":"Beschreibung",
 "city":"Stadt",
+"geolocating":"Geolocation unterwegs...",
+"geolocationSuccess":"Aktueller Standort",
 "searchRadius":"Suchumkreis in ? km",
 "when":"Wann",
+"expirationDate":"gültig bis",
 "showAdvanced":"Erweiterte Optionen anzeigen",
 "hideAdvanced":"Zusatzoptionen ausblenden",
 "offerOthersHelpText":"Oder den Anderen Hilfe anbieten!",
@@ -71,6 +75,8 @@
 "searchInProgress":"Suche läuft, bitte warten Sie",
 "searchNoResults":"Keine Ergebnisse gefunden, bitte Such ändern und versuchen Sie es erneut",
 "searchComplete":"Suche fertig, scrollen Sie nach unten für Ergebnisse",
+"searchRetry":"Bitte versuchen Sie Ihre Suche später, während wir versuchen, dieses Problem zu beheben",
+"errorFromServer":"Whoops, ging etwas schief",
 "errorNoDescription":"Ungültige Beschreibung, bitte geben Sie eine gültige Beschreibung und versuchen Sie es erneut",
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut"
 },
@@ -78,7 +84,9 @@
 
 {"viewName":"user",
 "signInWithYourAccount":"Oder mit Ihrem Konto anmelden",
-"registerWithYourEmail":"Oder mit Ihrer Email registieren", 
+"hideSignInWithYourAccount":"Lokale Anmeldung ausblenden",
+"registerWithYourEmail":"Oder ein neues Konto erzeugen...wirklich?", 
+"hideRegisterWithYourEmail":"Nein, danke!", 
 "firstName":"Vorname",
 "lastName":"Namename",
 "email":"Email",
@@ -89,21 +97,25 @@
 "register":"Registieren",
 "orRegister":"Oder Registieren?",
 "forgetPassword":"Oder Ihr Passwort vergessen?",
+
 "editProfile":"Profil editieren",
 "changeProfilePicture":"Profilbild ändern",
 "changePassword":"Passwort ändern",
+"manageSocialAccount":"Sozialkonten verwalten",
 
 "aboutMe":"Über mich",
 "aboutMeText":"Erzählen Sie etwas über sich",
 "chooseTag":"Taggen Sie Ihre Interesse",
 "currentPassword":"Aktuelles Passwort",
 "newPassword":"Neues Passwort",
-"verifyPassword":"Passwort verifizieren",
+"verifyPassword":"Passwort überprüfen",
 "saveProfile":"Profil speichern",
 "selectImage":"Bild selektieren",
 "upload":"Hochladen",
 "cancel":"Abbrechen",
 "savePassword":"Passwort speichern",
+"connectedSocialAccounts":"Verbundene Sozialkonten",
+"unconnectedSocialAccounts":"Unverbundee Sozialkonten",
 
 "firstNameRequired":"Vorname ist erforderlich",
 "lastNameRequired":"Nachname ist erforderlich",
@@ -112,11 +124,13 @@
 "usernameRequired":"Username ist erforderlich",
 "currentPasswordRequired":"Ihr aktuelles Passwort ist erforderlich",
 "enterPassword":"Ein neues Passwort eingeben",
-"verifyPassword":"Ihr Passwort verifizieren",
+"enterPasswordAgain":"Das Passwort noch mal eingeben zu überprüfen",
+"verifyNewPassword":"Ihr neues Passwort überprüfen",
 "passwordsNoMatch":"Passwörte nicht übereinstimmen",
 "passwordRequirements":"Passwortbedingungen",
 "passwordChangedSuccessfully":"Passwort erfolgreich geändert",
-"profilePictureChangedSuccessfully":"Profilbild erfolgreich geändert"
+"profilePictureChangedSuccessfully":"Profilbild erfolgreich geändert",
+"profileSavedSuccessfully":"Profil erfolgreich gespeichert"
 },
 
 {"viewName":"firststep",
@@ -134,5 +148,27 @@
 "integrationLink":"http://www.bamf.de/DE/Willkommen/DeutschLernen/Integrationskurse/integrationskurse-node.html",
 "projectsHeader":"Flüchtlingsprojekte",
 "projectsDescription":"Deutschland hat viele Projekte in verschiedenen Regionen, um Flüchtlingen zu helfen. Mehr Info auf Projekte in Ihrer Nähe."
+},
+
+{"viewName":"mail",
+"mailTitle":"Ihre emails: ",
+"detailsHeader":"Kompletter Inhalt: ",
+"subject":"Betrifft: ",
+"reply":"Antworten",
+"replyTo":"Antwort an: ",
+"content":"Ihr Text",
+"maincategory":"Haupt-Kategorie: ",
+"offerReferral":"Angebot, auf das sich diese email bezieht:",
+"about":"Wegen des Angebotes ",
+"sendTo":"Kontaktiere ",
+"loadMore":"Weitere emails",
+"done":"Fertig",
+"report":"Melden",
+"reportTitle":"Meldung einer ungehörigen email",
+"reportBody":"Inhalt: ",
+"replyToOffender":"Admin Kontakt",
+"rightToLeft":false
 }
+
+
 ]

@@ -5,6 +5,7 @@
 "listMyOfferings":"عروض",
 "profile":"مظهر جانبي",
 "signOut":"تسجيل الخروج",
+"aboutUs":"معلومات عنا",
 "arabicSelected":true,
 "rightToLeft":true
 },
@@ -43,8 +44,11 @@
 "others":"آخرون",
 "description":"الوصف",
 "city":"مدينة",
+"geolocating":"تحديد الموقع الجغرافي في التقدم",
+"geolocationSuccess":"الموقع الحالي",
 "searchRadius":"دائرة نصف قطرها ? كم البحث في",
 "when":"متى",
+"expirationDate":"ساري المفعول حتى",
 "showAdvanced":"عرض الخيارات المتقدمة",
 "hideAdvanced":"إخفاء خيارات متقدمة",
 "offerOthersHelpText":"أو تقديم الآخرين لمساعدتكم",
@@ -73,6 +77,8 @@
 "searchInProgress":"البحث في التقدم، يرجى الانتظار",
 "searchNoResults":"لا توجد نتائج، يرجى تعديل بحثك وحاول مرة أخرى",
 "searchComplete":"بحث كاملة، انتقل لأسفل للحصول على نتائج",
+"searchRetry":"يرجى محاولة البحث في وقت لاحق، بينما نحاول إصلاح هذه",
+"errorFromServer":"يصيح، حدث خطأ ما",
 "errorNoDescription":"وصف صالح، يرجى إدخال وصف صالح وحاول مرة أخرى",
 "errorNoCity":"موقع غير صالح المقدمة، يرجى تحديد أقرب مدينتك وحاول مرة أخرى",
 "rightToLeft":true
@@ -80,7 +86,9 @@
 
 {"viewName":"user",
 "signInWithYourAccount":"أو تسجيل الدخول باستخدام حسابك",
+"hideSignInWithYourAccount":"إخفاء تسجيل الدخول المحلي",
 "registerWithYourEmail":"أو قم بالتسجيل باستخدام البريد الإلكتروني الخاص بك", 
+"hideRegisterWithYourEmail":"إخفاء التسجيل المحلي", 
 "firstName":"الاسم الأول",
 "lastName":"الاسم الاخير",
 "email":"البريد الإلكتروني",
@@ -95,6 +103,7 @@
 "editProfile":"تعديل الملف الشخصي",
 "changeProfilePicture":"تغيير الصورة الشخصية",
 "changePassword":"تغيير كلمة المرور",
+"manageSocialAccount":"إدارة الحسابات الاجتماعية",
 
 "aboutMe":"عني",
 "aboutMeText":"أكتب شيئا عنك",
@@ -107,6 +116,8 @@
 "upload":"الرفع",
 "cancel":"إلغاء",
 "savePassword":"حفظ كلمة السر",
+"connectedSocialAccounts":"الحسابات الاجتماعية المتصلة",
+"unconnectedSocialAccounts":"الحسابات الاجتماعية غير مترابطة",
 
 "firstNameRequired":"مطلوب الاسم الأول",
 "lastNameRequired":"مطلوب اسم العائلة",
@@ -116,11 +127,13 @@
 "passwordRequired":"كلمة المرور مطلوبة",
 "currentPasswordRequired":"مطلوب كلمة المرور الحالية",
 "enterPassword":"إدخال كلمة مرور جديدة",
-"verifyPassword":"التحقق من كلمة السر",
+"enterPasswordAgain":"أدخل كلمة المرور مرة أخرى للتحقق",
+"verifyNewPassword":"التحقق من كلمة المرور الجديدة",
 "passwordsNoMatch":"كلمة المرور غير مطابقة",
 "passwordRequirements":"متطلبات كلمة المرور",
 "passwordChangedSuccessfully":"تم تغيير الرقم السري بنجاح",
 "profilePictureChangedSuccessfully":"تغيرت الصورة الشخصية بنجاح",
+"profileSavedSuccessfully":"تم حفظ الملف الشخصي بنجاح",
 "rightToLeft":true
 },
 
@@ -140,5 +153,26 @@
 "projectsHeader":"مشاريع للاجئين",
 "projectsDescription":"ألمانيا لديها العديد من المشاريع في مختلف المناطق لمساعدة اللاجئين. العثور على مزيد من المعلومات عن مشاريع في منطقتك. متوفر باللغة الألمانية فقط",
 "rightToLeft":true
+},
+
+{"viewName":"mail",
+"mailTitle":"T-",
+"detailsHeader":"D-",
+"subject":"S-",
+"reply":"R-",
+"replyTo":"R--",
+"content":"C-",
+"maincategory":"K-",
+"offerReferral":"O-",
+"about":"A-",
+"sendTo":"S-",
+"loadMore":"L-",
+"done":"D-",
+"report":"R-",
+"reportTitle":"Rr",
+"reportBody":"Rr",
+"replyToOffender":"RO",
+"rightToLeft":true
 }
+
 ]

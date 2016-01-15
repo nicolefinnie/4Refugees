@@ -27,12 +27,14 @@
         right: 0;
         float: left;
     }
-}
+}   
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
 .ibm-input-field.arabic{
+    textarea, input, p, strong{
+       text-align: right;
+    }
     textarea, input{
-        text-align: right;
         direction: rtl;
     }
     input + label {
@@ -45,6 +47,15 @@
         /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
         right: 4rem;
         text-align: right;
+    }  
+}
+
+/* click to show/hide the advanced offering search/create/edit options */
+.ibm-toggle-advanced-options {
+    svg, a{
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
 }
 
@@ -74,9 +85,6 @@
    
    :hover button svg{
     fill: color('white', core);
-   }
-   strong{
-    color: color('red', 50);
    }
 }
  
@@ -137,3 +145,29 @@
 .a .h1 .h2 .h3 .h4 .h5 .h6 {
  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;       
 } 
+
+.text-success {
+  color: color('green', 60);
+}
+
+.text-danger{
+  color: color('red', 50);
+}
+
+.error-text {
+  display: none; 
+}
+
+p.help-block.error-text{
+  position: relative;
+  top: -2em;
+}
+
+.has-error .help-block.error-text {
+  display: block;
+  color: color('red', 50);
+}
+
+.has-error .help-inline.error-text {
+  display: inline;
+}

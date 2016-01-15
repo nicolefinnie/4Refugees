@@ -1,0 +1,93 @@
+<section ng-controller="MailsController" ng-init="find(0)">
+  <div class="page-header">
+    <h5>{{properties.mailTitle}}</h5>
+  </div>
+  <div scroll class="row">
+    <div class="s12 col">
+      <ul class="collection">
+        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="mail in mails| filter:query | orderBy:'mail.created'">
+          <a id="mailDetails.{{$index}}" href="" ng-click="modalDetails(mail)" class="modal-trigger title"><img ng-src="{{mail.sender.picture.thumbnail}}" alt="" class="circle">{{properties.subject}}{{mail.title}}<br>
+            <small>{{mail.contentShort}}</small>
+          </a>
+          <span class="new badge" ng-show="mail.unread"></span>
+          <br>
+          <a id="mailReply.{{$index}}" href="#!" ng-click="replyMail(mail)" class="modal-action waves-effect waves-green">{{properties.replyTo}}{{mail.sender.displayName}}</a>
+          <a id="mailReplyReport.{{$index}}" href="#!" ng-show="{{mail.reportAdmin}}" ng-click="replyMail(mail.replyTo, true)" class="modal-action waves-effect waves-green btn mail-btn-report">{{properties.replyToOffender}}</a>
+          <a id="mailDelete.{{$index}}" href="#!" class="secondary-content" ng-click="removeMail(mail)">
+            <i class="small mdi-action-highlight-remove"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <button class="" ng-show="mailCount[0].numResults > numOfMails" ng-click="find(5)">{{properties.loadMore}}</button>
+  </div>
+  <div id="modalDetails" class="modal bottom-sheet">
+    <div class="modal-content">
+      <div class="row">
+        <div class="l2 col">
+          <img ng-src="{{mail.sender.picture.thumbnail}}" alt="{{mail.sender.displayName}}" class="align-right circle">
+        </div>
+        <div class="l10 col">
+          <h6>{{properties.detailsHeader}}</h6>
+          <label>{{properties.subject}}</label> {{mail.title}} <br/>
+          {{mail.content}} <br/>
+          <br/>
+          <a href="/offerings/search?offerType=offer&offeringId={{mail.offeringId._id}}">{{properties.offerReferral}}</a><br/>
+          <table width="200px" class="responsive-table">
+            <thead> </thead>
+            <tr><td class="mail-td">{{properties.maincategory}}</td> <td class="mail-td">{{mail.offeringId.category[0]}} </td></tr>
+            <tr><td class="mail-td">{{offeringproperties.description}}</td> <td class="mail-td">{{mail.offeringId.description}} </td></tr>
+            <tr><td class="mail-td">{{offeringproperties.when}}</td> <td class="mail-td">{{mail.offeringId.when}} </td></tr>
+            <tr><td class="mail-td">{{offeringproperties.city}}</td> <td class="mail-td">{{mail.offeringId.location}} </td></tr>
+            <tr><td class="mail-td">{{offeringproperties.expiresOn}}</td> <td class="mail-td">{{mail.offeringId.expiry}} </td></tr>
+            <tr><td class="mail-td">{{offeringproperties.numOffered}}</td> <td class="mail-td">{{mail.offeringId.numOffered}} </td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a id="mailDetailsReport" href="#!" ng-click="reportMail(mail)" class="modal-action btn mail-btn-report waves-effect waves-red">{{properties.report}}</a>
+        <a id="mailDetailsReply" href="#!" ng-click="replyMail(mail)" class="modal-action btn waves-effect waves-green">{{properties.reply}}</a>
+        <!-- 
+          <a href="#!" ng-click="removeMail(mail)" class="modal-action modal-close waves-effect waves-red btn-flat">Remove</a>
+        -->
+        <a id="mailDetailsDone" href="#!" class="modal-action btn modal-close waves-effect waves-blue">{{properties.done}}</a>
+      </div>
+    </div>
+  </div>
+  <div id="modalReply" class="modal" ng-controller="NewMailsController">
+    <div class="modal-content">
+      <form name="mailForm" class="my-form" novalidate>
+        <div class="row">
+          <p>{{properties.replyTo}}{{mail.sender.displayName}}</p>
+          <p>{{properties.about}}{{mail.offeringId.description}}</p>
+          <input id="titleid" name="title" ng-model="title">
+          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="{{properties.content}}" cols="30" rows="10" required>Hier</textarea>
+          <hr>
+          <!-- <label>Content</label> {{mail.content}} <br/> -->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a id="mailReplySend" href="#!" ng-click="create(true, mail.sender, mail._id, mail.offeringId._id, false)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
+  </div>
+  <div id="modalReport" class="modal" ng-controller="NewMailsController">
+    <div class="modal-content">
+      <form name="mailForm" class="my-form" novalidate>
+        <div class="row">
+          <p>{{properties.sendTo}}Admin    {{adminId}}</p>
+          <!-- <p>{{properties.about}}{{mail.offeringId.description}}</p> -->
+          <input disabled id="titleidrep" name="title" ng-model="title">
+          <textarea name="content" type="text" ng-model="content" id="contentrep" class="form-control" placeholder="{{mail.title}}:{{mail.content}}" cols="30" rows="10" required></textarea>
+          <hr>
+          <!-- <label>Content</label> {{mail.content}} <br/> -->
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a id="mailReportSend" href="#!" ng-click="create(true, adminId, mail._id, mail.offeringId._id, true)" class="modal-action modal-close waves-effect waves-green btn-flat">Send Report</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+    </div>
+  </div>
+</section>

@@ -33,8 +33,9 @@
           <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
             <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
-                    <!-- TODO: Disable for edit? And/or add option to get current location, or get city list? -->
+                    <!-- Location, toggle between geo-location and manual city-list by clicking on icon -->
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                      <a ng-click="toggleGeoLocation()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1c-3.314,0-6.314,1.343-8.484,3.515C5.344,6.687,4,9.686,4,13
@@ -43,14 +44,22 @@
                             c2.671,0,5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.028,20.613z"/>
                         <circle cx="16" cy="13" r="4"/>
                         </svg>
+                      </a>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-if="!geoManual" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <!-- when geo.auto.active is true, this field will be filled in when we get our geo location response -->
+                        <a ng-if="geo.auto.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.auto.location.city" readonly>
+                        </a>
+                        <!-- when geo.manual.active is true, this value is retrieved form an existing offering -->
+                        <a ng-if="geo.manual.active" ng-click="toggleGeoLocation()">
+                          <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.manual.location.city" readonly>
+                        </a>
                         <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
-                          but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
-                          load the city list when geo location is blocked or not available -->
-                        <select ng-show="geoManual" name="repeatSelect" id="where" ng-model="where" 
-                            ng-options="option.name for option in citylist">
+                          but we want to bind to the child ID ng-model="geo.list.location" so we use ng-show instead, it's not expensive in this case
+                          since we only load the city list when geo location is blocked or not available -->
+                        <select ng-show="geo.list.active" name="repeatSelect" ng-model="geo.list.location" 
+                            ng-options="option.city for option in geo.list.data">
                         </select>
                     </div>
                 </div>
@@ -79,9 +88,23 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                        <input id="when" type="date" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
                     </div>          
                 </div>
+                <div class="row">
+                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <svg class="flip-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                    S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                    <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                    17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                    </svg>
+                  </div>
+                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <input id="expirationDate" type="date" ng-model="expiry" name="expirationDate" class="datepicker" placeholder="{{properties.expirationDate}}">
+                  </div>          
+                </div>  
             </div> <!-- end of input-field ibm-input-field -->
           </div> <!-- end of grid col m6 s11 -->
           <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
