@@ -1,22 +1,18 @@
 @import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
  
-.ibm-category-checkbox.latin{
+.ibm-offering-category-checkbox.latin{
     label{
         margin-right: 3%;
      }
  }
- .ibm-category-checkbox.arabic{
+ .ibm-offering-category-checkbox.arabic{
     input, label {
         margin-left: 3%;
         float: right;
     }
 }
  
-/* override input field right-align CSS style so people can edit from right to left in Arabic languages*/
-.ibm-input-field input.right-align{
-        direction: rtl;
-}
-/* geo location when there's no geo service, a drow down select city list is shown*/
+/* geo location when there's no geo service, a drop down select city list is shown*/
 .ibm-input-field select {
     display: inline-flex;
     background: color('cool-white', 20);
@@ -35,81 +31,82 @@
     }
 }
 
-/* button */
-.ibm-button{
-        background: color('teal', core);
-        font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-        font-size: 16px;
-        text-transform: capitalize;
-        
-        /* override materialize style, use IBM design icons in a button */
-        svg{
-            margin-top: 1px; 
-            height: 24px;
-            width: 24px;
-            margin-left: 5px;
-            vertical-align: middle;
-            fill: color('white', core);
-        }
+/* click to show/hide the advanced offering search/create/edit options */
+.ibm-offering-toggle-advanced-options a {
+  font-size: 14px;
+  line-height: 300%;
+  text-align: center;
 }
 
-/* inherit ibm-button and override materialize style - the color changes when the div is hovered, make the color unchanged */
-.ibm-submit-area{
-   button{
-    @extend .ibm-button;
-   }
-   
-   :hover button svg{
+.ibm-offering-toggle-advanced-options.latin svg {
+  transform: rotate(270deg);
+}
+
+/* Show current search progress */
+.offering-search-status {
+  strong{
+   color: color('black', core);
+  }
+}
+
+/* search progress area in Latin languages - from left to right*/ 
+.offering-search-status.latin{
+  button, a, strong{
+    float:left;
+  }
+}
+
+/* search progress area in Arabic languages - from right to left */ 
+.offering-search-status.arabic{
+  button, a, strong{
+    float:right;
+  }
+  button svg{
+    margin-top: 5px;
+    margin-right: 5px;
+    float:left;
+    transform: rotate(90deg);
+  }
+}
+
+
+/* Common button style for offering forms, to display on small and large screens
+ * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
+ * but the svgs we chose to use in the offerings should not be rotated */
+.offering-button-style {
+  font-size: 10px;
+  text-transform: capitalize;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 0 10px 0 10px;
+  svg{
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
     fill: color('white', core);
-   }
-   strong{
-    color: color('red', 50);
-   }
-}
-  
-.ibm-submit-area.latin{
-    button, a, strong{
-        float:left;
-    }
+  }
 }
 
-.ibm-submit-area.arabic{
-    button, a, strong{
-        float:right;
-    }
-    button svg{
-        margin-top: 5px;
-        margin-right: 5px;
-        float:left;
-        transform: rotate(90deg);
-    }
+/* Create or Update an offering */
+.ibm-submit-area  {
+  button.offering-submit-button, a.offering-submit-button {
+    @extend .offering-button-style;
+    background: color('teal', core);
+  }
 }
 
-/* override placeholder colors for different browsers using IBM design color*/
-::-webkit-input-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  color: color('gray', 50); 
+/* Cancel a request to create/update offering */
+.ibm-submit-area  {
+  button.offering-cancel-button, a.offering-cancel-button {
+    @extend .offering-button-style;
+    background: color('yellow', 30);
+  }
 }
 
-:-moz-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  /* Firefox 18- */
-  color: color('gray', 50); 
+/* Delete an offering. */
+.ibm-submit-area  {
+  button.offering-delete-button, a.offering-delete-button {
+    @extend .offering-button-style;
+    background: color('red', 60);
+  }
 }
-
-::-moz-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  /* Firefox 19+ */
-  color: color('gray', 50); 
-}
-
-:-ms-input-placeholder {
-  font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;
-  color: color('gray', 50); 
-}
-
-.a .h1 .h2 .h3 .h4 .h5 .h6 {
- font-family:"HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif; font-weight:300; font-stretch:normal;       
-}    
-
-    

@@ -1,35 +1,27 @@
-<section ng-controller="SettingsController">
-  <div class="page-header">
-    <h5>Settings</h5>
-  </div>
-  <div class="row">
-  <div class="col s12">
-
-   <div class="col s3">
-    <div class="nav-wrapper">
-     <!-- bootstrap attribute to make navigation bar -->
-      <!--  <ul class="nav nav-pills nav-stacked"> -->
-       <ul class="nav nav-pills nav-stacked">
-        <li ui-sref-active="active">
-          <a ui-sref="settings.profile">Edit Profile</a>
+<section ng-controller="SettingsController" ng-init="initialize()">
+<!-- due to RTC https://github.com/Dogfalo/materialize/issues/1488 the side-nav doesn't swap to right in Arabic languages until the window gets resized -->
+ <div class="row">
+  <div class="col m10 s11">
+   <div ng-class="properties.rightToLeft ? 'col m4 s1 right':'col m4 s1 left'">
+      <!-- side navigator in Latin languages-->
+      <a ng-if="!properties.rightToLeft" href="#" data-activates="profile-side-navigator" class="button-collapse top-nav full hide-on-large-only" data-sidenav="left" data-menuwidth="240"><i class="mdi-navigation-menu"></i></a>
+      <!-- side navigator in Arabic languages-->
+      <a ng-if="properties.rightToLeft" href="#" data-activates="profile-side-navigator" class="button-collapse top-nav full hide-on-large-only" data-sidenav="right" data-menuwidth="240"><i class="mdi-navigation-menu"></i></a>
+        <ul id="profile-side-navigator" class="side-nav fixed ibm-profile-navigator" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <li class="bold" ui-sref-active="active">
+          <a ui-sref="settings.profile">{{properties.editProfile}}</a>
         </li>
         <li ui-sref-active="active">
-          <a ui-sref="settings.picture">Change Profile Picture</a>
+          <a ui-sref="settings.picture">{{properties.changeProfilePicture}}</a>
         </li>
         <li ui-sref-active="active" ng-show="user.provider === 'local'">
-          <a ui-sref="settings.password">Change Password</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="settings.accounts">Manage Social Accounts</a>
+          <a ui-sref="settings.password">{{properties.changePassword}}</a>
         </li>
       </ul>
-      </div>
-   </div>
-    
-    <div class="col s9 settings-view">
-      <div ui-view></div>
+    </div> 
+    <div ng-class="properties.rightToLeft ? 'col m8 s12 left':'col m8 s12 right'">
+      <div ui-view></div> 
     </div>
-    
-  </div>
-</div>
+   </div>
+   </div>
 </section>

@@ -1,25 +1,67 @@
-<section ng-controller="OfferingsController" ng-init="find()">
-  <div class="page-header">
-    <h1>{{properties.myOfferings}}</h1>
+<section ng-controller="OfferingsController" ng-init="findAllMine()">
+<div class="row">
+<!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
+  <div class="col m12 s11">
+    <br>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'">{{properties.myOfferings}}</h4>
+    <div class="row">
+      <div class="col m12 s12" ng-class="properties.rightToLeft ? 'right-align':'left-align'">
+        <ul>
+          <li ng-repeat="offering in offerings" class="list-group-item">
+            <div class="row">
+              <h5 class="list-group-item-heading" ng-bind="offering.description"></h5>
+              <p class="list-group-item-text">{{properties.categories}}: <span ng-bind="offering.category"></span></p>
+              <p class="list-group-item-text">{{properties.location}}: <span ng-bind="offering.city"></span></p>
+              <p class="list-group-item-text" ng-bind="offering.offerType"></p>
+
+              <small class="list-group-item-text">
+                {{properties.offeredBy}}
+                <span ng-bind="offering.displayName"></span>
+                {{properties.availableOn}}
+                <span ng-bind="offering.when | date:'mediumDate'"></span>
+                <br>{{properties.lastUpdatedOn}}
+                <span ng-bind="offering.updated | date:'mediumDate'"></span>
+                <br>{{properties.expiresOn}}
+                <span ng-bind="offering.expiry | date:'mediumDate'"></span>
+              </small>
+            </div>
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="row">
+                <div class="col m12 s12" ng-if="authentication.user._id == offering.user._id">
+                    <a class="offering-submit-button btn btn-primary waves-effect waves-light" ui-sref="offerings.edit({offerType: offering.offerType, offeringId: offering._id})">
+                      {{properties.updateButton}}
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <polygon points="14,18.586 10.707,15.293 9.293,16.707 14,21.414 22.707,12.707 21.293,11.293   "/>
+                      <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                      s12,5.383,12,12S22.617,28,16,28z"/>
+                      </svg>
+                    </a>
+                    <button ng-if="offeringId != '0'" type="submit" class="offering-delete-button btn btn-danger waves-effect waves-light" ng-click="removeOfferingFromList(offering);">
+                    {{properties.deleteButton}}
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <rect x="12" y="2" width="8" height="2"/>
+                    <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                    <rect x="11" y="14" width="1" height="12"/>
+                    <rect x="14" y="14" width="1" height="12"/>
+                    <rect x="17" y="14" width="1" height="12"/>
+                    <rect x="20" y="14" width="1" height="12"/>
+                    </svg>
+                    </button>
+                </div>
+                <br><br>
+              </div> <!-- end of row -->
+            </div> <!-- end of ibm-submit-area -->
+          </li>
+        </ul>
+      </div>
+      <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+        <div class="alert alert-warning text-center" ng-if="offerings.$resolved && !offerings.length">
+          <a href="offerings/create?offerType=offer&offeringId=0">{{properties.createFirstOffering}}</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="list-group">
-    <a ng-repeat="offering in offerings" ui-sref="offerings.view({offeringId: offering._id})" class="list-group-item">
-      <h4 class="list-group-item-heading" ng-bind="offering.description"></h4>
-      <p class="list-group-item-text" ng-bind="offering.category"></p>
-      <p class="list-group-item-text" ng-bind="offering.city"></p>
-      <p class="list-group-item-text" ng-bind="offering.offerType"></p>
-    
-      <small class="list-group-item-text">
-        {{properties.offeredBy}}
-        <span ng-bind="offering.displayName"></span>
-        {{properties.availableOn}}
-        <span ng-bind="offering.when | date:'mediumDate'"></span>
-        {{properties.lastUpdatedOn}}
-        <span ng-bind="offering.updated | date:'mediumDate'"></span>
-      </small>
-    </a>
-  </div>
-  <div class="alert alert-warning text-center" ng-if="offerings.$resolved && !offerings.length">
-    <a href="offerings/create?offerType=offer">{{properties.createFirstOffering}}</a>
-  </div>
+</div>
 </section>

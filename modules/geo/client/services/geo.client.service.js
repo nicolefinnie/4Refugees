@@ -194,7 +194,6 @@ angular.module('geo').service('GeoService', [ function () {
 
   // For unit tests, setup fake/sample cached geo-location data
   this.setupTestEnvironment = function() {
-    console.log('GeoService: Creating test environment.');
     var testCities = [ { 'name': 'Stuttgart', 'lat': 48.782, 'lng': 9.177 } ];
     this.cityListCached = true;
     this.cityList = testCities;

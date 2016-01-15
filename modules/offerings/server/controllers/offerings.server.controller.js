@@ -253,12 +253,6 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   var tmpRes = {};
   tmpRes._id = rawDoc._id;
   tmpRes.displayName = rawDoc.user.displayName;
-  if (myOwnDoc === true) {
-    tmpRes.user = rawDoc.user;
-  } else {
-    tmpRes.user = { _id : rawDoc.user._id,
-                    displayName : rawDoc.user.displayName };
-  }
   tmpRes.whenString = rawDoc.when.toUTCString();
   tmpRes.updatedString = rawDoc.updated.toUTCString();
   tmpRes.category = rawDoc.category;
@@ -269,11 +263,15 @@ function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
   tmpRes.numOffered = rawDoc.numOffered;
   tmpRes.expiryString = new Date(rawDoc.expiry).toUTCString();
   tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
+  tmpRes.city = rawDoc.city;
   if (myOwnDoc === true) {
     // this is my own document, we can show exact co-ordinates in results
-    tmpRes.city = rawDoc.city + ' (@' + rawDoc.loc.coordinates[1] + ',' + rawDoc.loc.coordinates[0] + ')';
+    tmpRes.longitude = rawDoc.loc.coordinates[0];
+    tmpRes.latitude = rawDoc.loc.coordinates[1];
+    tmpRes.user = rawDoc.user;
   } else {
-    tmpRes.city = rawDoc.city;
+    tmpRes.user = { _id : rawDoc.user._id,
+                    displayName : rawDoc.user.displayName };
   }
   if (includeDistance === true) {
     tmpRes.distance = Math.round(rawDoc.distance * 100) / 100;
@@ -375,7 +373,8 @@ exports.offeringByID = function (req, res, next, id) {
         message: 'No offering with that identifier has been found'
       });
     }
-    req.offering = filterSingleInternalOfferingFields(offering, (req.user && req.user._id === offering.userId), false);
+    var myDoc = (req.user && req.user._id && req.user._id.toString() === offering.user._id.toString());
+    req.offering = filterSingleInternalOfferingFields(offering, myDoc, false);
     next();
   });
 };

@@ -1,13 +1,15 @@
-<section ng-controller="OfferingsController">
+<section ng-controller="OfferingsController" ng-init="findOne()">
 <div class="row">
 <!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
   <div class="col m12 s11">
     <br>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request'">{{properties.needHelpInCurrentLanguage}}</h4>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer'">{{properties.offerHelpInCurrentLanguage}}</h4>
-    <form name="offeringForm" ng-submit="create()" novalidate>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request' && offeringId == '0'">{{properties.needHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer' && offeringId == '0'">{{properties.offerHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request' && offeringId != '0'">{{properties.editNeedHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer' && offeringId != '0'">{{properties.editOfferHelpInCurrentLanguage}}</h4>
+    <form name="offeringForm" novalidate>
         <!-- start of category section -->
-        <div id="category" class="col s12 ibm-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div id="category" class="col s12 ibm-offering-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
         <br><br>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
                 <label for="training">{{properties.jobTraining}}</label>   
@@ -22,7 +24,6 @@
                 <label for="childcare">{{properties.childCare}}</label> 
 
                 <input type="checkbox" id="others" name="others" ng-model="category.others">
-        
                 <label for="others">{{properties.others}}</label>    
         <br><br>       
         </div> <!-- end of category section -->
@@ -30,8 +31,9 @@
         <!-- start with the middle section without category for a different grid layout -->    
         <div class="row">
           <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
-            <div class="input-field ibm-input-field">
+            <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
+                    <!-- TODO: Disable for edit? And/or add option to get current location, or get city list? -->
                     <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -43,7 +45,7 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-if="!geoManual" ng-class="properties.rightToLeft ? 'right-align':'left-align'" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
+                        <input ng-if="!geoManual" id="city" type="text" placeholder="{{properties.city}}" ng-model="city">
                         <!-- use ng-show instead of ng-if because ng-if removes the child node from DOM, ng-model has to bind to a parent element ID
                           but we want to bind to the child ID ng-model="where" so we use ng-show instead, it's not expensive in this case since we only 
                           load the city list when geo location is blocked or not available -->
@@ -62,7 +64,7 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'" name="description" type="text" ng-model="description" id="description"
+                        <input name="description" type="text" ng-model="description" id="description"
                         placeholder = "{{properties.description}}">
                     </div>
                 </div>
@@ -77,35 +79,66 @@
                         </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input ng-class="properties.rightToLeft ? 'right-align':'left-align'"  id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
+                        <input id="when" type="text" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
                     </div>          
                 </div>
-                <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                  <div class="row">
-                    <div class="col m12 s12">
-                        <button type="submit" id="createButton" class="btn waves-effect waves-light">
-                        {{properties.add}}
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <polygon points="17,9 15,9 15,15 9,15 9,17 15,17 15,23 17,23 17,17 23,17 23,15 17,15    "/>
-                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                        s12,5.383,12,12S22.617,28,16,28z"/>
-                        </svg>
-                        </button>
-                    </div>
-                    <br><br>
-                    <div class="col m12 s12">
-                        <a href="offerings/search?offerType=offer" ng-if="offerType=='request'">{{properties.findOtherOffersText}}</a>
-                        <a href="offerings/search?offerType=request" ng-if="offerType=='offer'">{{properties.findOtherNeedsText}}</a>
-                    </div>
-                    <!-- TODO should be a pop-up and it can be closed -->
-                    <div class="col m12 s12" ng-show="error">
-                        <strong ng-bind="error"></strong>
-                    </div>
-                  </div> <!-- end of row -->
-                </div> <!-- end of ibm-submit-area -->
             </div> <!-- end of input-field ibm-input-field -->
           </div> <!-- end of grid col m6 s11 -->
+          <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+            <div class="row">
+              <div class="col m12 s12">
+                  <button ng-if="offeringId == '0'" type="submit" class="offering-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
+                  {{properties.add}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <polygon points="17,9 15,9 15,15 9,15 9,17 15,17 15,23 17,23 17,17 23,17 23,15 17,15    "/>
+                  <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                  s12,5.383,12,12S22.617,28,16,28z"/>
+                  </svg>
+                  </button>
+                  <button ng-if="offeringId != '0'" type="submit" class="offering-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
+                  {{properties.updateButton}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <polygon points="14,18.586 10.707,15.293 9.293,16.707 14,21.414 22.707,12.707 21.293,11.293   "/>
+                  <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                  s12,5.383,12,12S22.617,28,16,28z"/>
+                  </svg>
+                  </button>
+                  <button type="submit" class="offering-cancel-button btn waves-effect waves-light" ng-click="cancelEdit()">
+                  {{properties.cancelButton}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
+                  20.293,21.707 21.707,20.293 17.414,16 21.707,11.707   "/>
+                  <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                  s12,5.383,12,12S22.617,28,16,28z"/>
+                  </svg>
+                  </button>
+                  <button ng-if="offeringId != '0'" type="submit" class="offering-delete-button btn btn-danger waves-effect waves-light" ng-click="removeSingleOffering(offering)">
+                  {{properties.deleteButton}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <rect x="12" y="2" width="8" height="2"/>
+                  <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                  <rect x="11" y="14" width="1" height="12"/>
+                  <rect x="14" y="14" width="1" height="12"/>
+                  <rect x="17" y="14" width="1" height="12"/>
+                  <rect x="20" y="14" width="1" height="12"/>
+                  </svg>
+                  </button>
+              </div>
+              <br><br>
+              <div class="col m12 s12">
+                  <a href="offerings/search?offerType=offer" ng-if="offerType=='request' && offeringId=='0'">{{properties.findOtherOffersText}}</a>
+                  <a href="offerings/search?offerType=request" ng-if="offerType=='offer' && offeringId=='0'">{{properties.findOtherNeedsText}}</a>
+              </div>
+              <!-- TODO should be a pop-up and it can be closed -->
+              <div class="col m12 s12" ng-show="error">
+                  <strong ng-bind="error"></strong>
+              </div>
+            </div> <!-- end of row -->
+          </div> <!-- end of ibm-submit-area -->
         </div> <!-- end of middle section without category -->
     </form>       
   </div>
