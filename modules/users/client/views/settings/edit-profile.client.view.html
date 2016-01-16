@@ -71,62 +71,61 @@
           </div>
         </div>
         <div class="row form-group input-field" show-errors>
-            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
-                    C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
-                    L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
-                    s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
-                <circle cx="16" cy="13" r="1.5"/>
-                <circle cx="21" cy="13" r="1.5"/>
-                <circle cx="11" cy="13" r="1.5"/>
+          <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+              <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
+                  C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
+                  L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
+                  s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
+              <circle cx="16" cy="13" r="1.5"/>
+              <circle cx="21" cy="13" r="1.5"/>
+              <circle cx="11" cy="13" r="1.5"/>
               </svg>
-            </div>
-            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                <textarea id="textarea1" class="materialize-textarea" id="aboutMe" name="aboutMe" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
-                <label class="active" for="aboutMe">{{properties.aboutMe}}</label>
-            </div>
+          </div>
+          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+            <textarea class="materialize-textarea" id="aboutMe" name="aboutMe" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
+            <label class="active" for="aboutMe">{{properties.aboutMe}}</label>
+          </div>
         </div>
         <br>
-        <div class="ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div class="row form-group input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-              <g>
-                <path d="M18,1L4,15l-3,3l13,13l3-3l14-14V1H18z M29,13.172L15.586,26.586L5.414,16.414L18.829,3H29V13.172z"/>
-                <circle cx="24" cy="8" r="2"/>
-              </g>
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M18,1L4,15l-3,3l13,13l3-3l14-14V1H18z M29,13.172L15.586,26.586L5.414,16.414L18.829,3H29V13.172z"/>
+            <circle cx="24" cy="8" r="2"/>
             </svg>
           </div>
-          <label class="active" for="tags">{{properties.chooseTag}}</label>
-          <br>
-           <!-- placeholder in tags-input is not refreshed/translated by languages, removed the placeholder out of tags-input for now 
-           the way to change placeholder dynamically - https://github.com/mbenford/ngTagsInput/issues/428 -->
-           <!-- TODO Replace the hard coded placeholder string to a translatable one -->
-          <tags-input name="tags"
-                      ng-model="user.tags"
-                      display-property="tagName"
-                      replace-spaces-with-dashes="false"
-                      add-from-autocomplete-only="true"
-                      placeholder="{{user.tags.length ? '' : 'Click here to choose tags are interested in'}}"
-                      add-on-enter="true"
-                      add-on-comma="false"
-                      add-on-space="false"
-                      allow-leftover-text="false"
-                      on-invalid-tag="$tag">
-            <auto-complete source="loadTags($query)"
-                           load-on-focus="true"
-                           load-on-empty="true"
-                           min-length="0"
-                           highlight-matched-text="true"
-                           max-results-to-show="10"
-                           select-first-match="true">
-            </auto-complete>
-          </tags-input>
+          <div ng-class="properties.rightToLeft ? 'col m11 s11 pull-s2':'col m11 s2'">
+            <label class="active" for="tags">{{properties.chooseTag}}</label>
+             <!-- placeholder in tags-input is not refreshed/translated by languages, removed the placeholder out of tags-input for now 
+             the way to change placeholder dynamically - https://github.com/mbenford/ngTagsInput/issues/428 -->
+             <!-- TODO Replace the hard coded placeholder string to a translatable one -->
+            <tags-input name="tags"
+                        ng-model="user.tags"
+                        display-property="tagName"
+                        replace-spaces-with-dashes="false"
+                        add-from-autocomplete-only="true"
+                        placeholder="{{user.tags.length ? '' : properties.tagPlaceholder}}"
+                        add-on-enter="true"
+                        add-on-comma="false"
+                        add-on-space="false"
+                        allow-leftover-text="false"
+                        on-invalid-tag="$tag">
+              <auto-complete source="loadTags($query)"
+                             load-on-focus="true"
+                             load-on-empty="true"
+                             min-length="0"
+                             highlight-matched-text="true"
+                             max-results-to-show="10"
+                             select-first-match="true">
+              </auto-complete>
+            </tags-input>
+          </div>
         </div>
-        </div> <!-- end of ibm-input-field -->
-        <br>
+      </div> <!-- end of ibm-input-field -->
+        <p>
         <div class="ibm-submit-area form-group" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <button type="submit" class="btn btn-primary">{{properties.saveProfile}}
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

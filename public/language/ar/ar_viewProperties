@@ -108,6 +108,7 @@
 "aboutMe":"عني",
 "aboutMeText":"أكتب شيئا عنك",
 "chooseTag":"علامة اهتماماتك",
+"tagPlaceholder":"انقر هنا لاختيار العلامات التي ترغب في",
 "currentPassword":"كلمة السر الحالية",
 "newPassword":"كلمة سر جديدة",
 "verifyPassword":"التحقق من كلمة السر",
