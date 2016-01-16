@@ -14,7 +14,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     // Update a user profile
     ctrl.updateUserProfile = function (isValid) {
       ctrl.success = ctrl.error = null;
-      
       if (!isValid) {
         ctrl.$broadcast('show-errors-check-validity', 'userForm');
 
@@ -25,7 +24,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
 
       user.$update(function (response) {
         ctrl.$broadcast('show-errors-reset', 'userForm');
-
         ctrl.success = true;
         Authentication.user = response;
       }, function (response) {
