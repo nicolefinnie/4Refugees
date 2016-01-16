@@ -1,4 +1,8 @@
 'use strict';
+angular.module('users').config(function(tagsInputConfigProvider) {
+  tagsInputConfigProvider.setDefaults('tagsInput', { placeholder: '' });
+  tagsInputConfigProvider.setActiveInterpolation('tagsInput', { placeholder: true });
+});
 
 angular.module('users').controller('EditProfileController', ['$scope', '$http', '$location', 'Users', 'Authentication', '$log',
   function (ctrl, $http, $location, Users, Authentication, log) {
