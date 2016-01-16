@@ -215,6 +215,19 @@ gulp.task('karma', function (done) {
     }));
 });
 
+// Make sure upload directory exists
+gulp.task('mkdir:upload', function () {
+  return gulp.src(
+      [
+          './modules/users/client/img/profile'
+      ],
+      {
+          base: './modules/users/client/img/profile'
+      }
+  )
+      .pipe(gulp.dest('./modules/users/client/img/profile/uploads'));
+});
+
 // Drops the MongoDB database, used in e2e testing
 gulp.task('dropdb', function (done) {
   // Use mongoose configuration
@@ -286,15 +299,15 @@ gulp.task('test:e2e', function (done) {
 
 // Run the project in development mode
 gulp.task('default', function (done) {
-  runSequence('env:dev', 'lint', ['nodemon', 'watch'], done);
+  runSequence('env:dev', 'lint', 'mkdir:upload', ['nodemon', 'watch'], done);
 });
 
 // Run the project in debug mode
 gulp.task('debug', function (done) {
-  runSequence('env:dev', 'lint', ['nodemon', 'watch'], done);
+  runSequence('env:dev', 'lint', 'mkdir:upload', ['nodemon', 'watch'], done);
 });
 
 // Run the project in production mode
 gulp.task('prod', function (done) {
-  runSequence('templatecache', 'build', 'env:prod', 'lint', ['nodemon', 'watch'], done);
+  runSequence('templatecache', 'build', 'env:prod', 'lint', 'mkdir:upload', ['nodemon', 'watch'], done);
 });
