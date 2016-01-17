@@ -37,7 +37,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
       var tags;
       return $http.get('/api/tags', { cache: true }).then(function(response) {
         tags = response.data;
-        log.info('DEBUG - resonse.data content: ' + response.data);
+//        log.info('DEBUG - resonse.data content: ' + response.data);
         tags = [
                     { tagName: 'Job Training' },
                     { tagName: 'Language Courses' },
