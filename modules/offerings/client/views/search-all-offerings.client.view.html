@@ -88,76 +88,80 @@
                         <a ng-if="showDetails">{{properties.hideAdvanced}}</a>
                     </div>
                 </div>
-                <!-- All advanced options are below -->
-                <div class="search-details-form" data-my-slide="showDetails">
-                  <div class="row">
-                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                              <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
-                              l8-4L18,18z"/>
-                              <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                              s12,5.383,12,12S22.617,28,16,28z"/>
-                              <circle cx="16" cy="16" r="1"/>
-                          </svg>
-                      </div>
-                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                          <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                          <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
-                          S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
-                          <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
-                          17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
-                          </svg>
-                      </div>
-                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                          <input id="searchWhen" type="date" ng-model="when" name="date" class="datepicker" placeholder="{{properties.when}}">
-                      </div>          
-                  </div>
-                </div>
-                <!-- Submit area for buttons, error displays, etc -->
-                <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic-rotate-icon':'latin'">
-                  <div class="row">
-                    <div class="col m12 s12">
-                        <button type="submit" class="btn waves-effect waves-light">
-                        {{properties.search}}
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                            <path d="M12,1C5.926,1,1,5.926,1,12c0,6.074,4.926,11,11,11s11-4.926,11-11C23,5.926,18.074,1,12,1z M12,21c-4.962,0-9-4.038-9-9
-                            s4.038-9,9-9s9,4.038,9,9S16.962,21,12,21z"/>
-                            <rect x="23.879" y="21.05" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -10.7696 26)" width="4.243" height="9.899"/>
-                            <circle cx="21" cy="21" r="1"/>
-                        </svg>
-                        </button>
-                    </div>
-                    <br><br>
-                    <div class="col m12 s12">
-                        <!-- Swap offerType - if they searched for an offering, they need to create a help request -->
-                        <a href="offerings/create?offerType=offer&offeringId=0" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
-                        <a href="offerings/create?offerType=request&offeringId=0" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
-                    </div>
-                    <!-- TODO should be a pop-up and it can be closed -->
-                    <div class="col m12 s12" ng-show="error">
-                        <strong ng-bind="error"></strong>
-                    </div>
-                  </div> <!-- end of row -->
-                </div> <!-- end of ibm-submit-area -->
-                <!-- Display current search progress -->
-                <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                  <div class="row">
-                  <div class="col m12 s12" ng-show="searchStatus">
-                    <strong ng-bind="searchStatus"></strong>
-                  </div>
-                  </div>
-                </div>
             </div> <!-- end of input-field ibm-input-field -->
+            <!-- All advanced options are below -->
+            <div data-my-slide="showDetails">
+              <div class="ibm-input-field">
+                <div class="row">
+                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                          <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
+                          l8-4L18,18z"/>
+                          <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14s14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                          s12,5.383,12,12S22.617,28,16,28z"/>
+                          <circle cx="16" cy="16" r="1"/>
+                      </svg>
+                  </div>
+                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                      <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
+                  </div>
+                </div>
+              </div>
+              <div class="ibm-input-field">
+                <div class="row">
+                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
+                      S9.383,4,16,4c6.617,0,12,5.383,12,12S22.617,28,16,28z"/>
+                      <polygon points="22.646,8.646 16.353,14.939 12.707,11.293 11.293,12.707 14.939,16.354 13.646,17.646 14.353,18.354 15.646,17.06 
+                      17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
+                      </svg>
+                  </div>
+                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                      <input id="searchWhen" type="date" ng-model="when" name="searchWhen" class="datepicker" placeholder="{{properties.when}}">
+                  </div>         
+                </div> 
+              </div>
+            </div> <!-- end of showDetails -->
+            <!-- Submit area for buttons, error displays, etc -->
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic-rotate-icon':'latin'">
+              <div class="row">
+                <div class="col m12 s12">
+                    <button type="submit" class="btn waves-effect waves-light">
+                    {{properties.search}}
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <path d="M12,1C5.926,1,1,5.926,1,12c0,6.074,4.926,11,11,11s11-4.926,11-11C23,5.926,18.074,1,12,1z M12,21c-4.962,0-9-4.038-9-9
+                        s4.038-9,9-9s9,4.038,9,9S16.962,21,12,21z"/>
+                        <rect x="23.879" y="21.05" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -10.7696 26)" width="4.243" height="9.899"/>
+                        <circle cx="21" cy="21" r="1"/>
+                    </svg>
+                    </button>
+                </div>
+                <br><br>
+                <div class="col m12 s12">
+                    <!-- Swap offerType - if they searched for an offering, they need to create a help request -->
+                    <a href="offerings/create?offerType=offer&offeringId=0" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
+                    <a href="offerings/create?offerType=request&offeringId=0" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
+                </div>
+                <!-- TODO should be a pop-up and it can be closed -->
+                <div class="col m12 s12" ng-show="error">
+                    <strong ng-bind="error"></strong>
+                </div>
+              </div> <!-- end of row -->
+            </div> <!-- end of ibm-submit-area -->
+            <!-- Display current search progress -->
+            <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="row">
+                <div class="col m12 s12" ng-show="searchStatus">
+                  <strong ng-bind="searchStatus"></strong>
+                </div>
+              </div>
+            </div>
           </div> <!-- end of grid col m6 s11 -->
-        </div> <!-- end of middle section without category -->
+        </div> <!-- end of row - middle section without category -->
     </form>       
     <br>  
     <!-- show search results -->
