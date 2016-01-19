@@ -108,6 +108,9 @@ var UserSchema = new Schema({
   }],
   aboutMe: {
     type: String
+  },
+  languagePreference: {
+    type: String
   }
 });
 
