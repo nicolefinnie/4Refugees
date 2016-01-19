@@ -105,7 +105,8 @@
 
 "aboutMe":"Über mich",
 "aboutMeText":"Erzählen Sie etwas über sich",
-"chooseTag":"Kategorien, die Sie interessieren",
+"chooseTagInterests":"Deine Interessen",
+"chooseTagSkills":"Deine Fähigkeiten",
 "tagPlaceholder":"Klicken Sie hier um Kategorien auszuwählen",
 "currentPassword":"Momentanes Passwort",
 "newPassword":"Neues Passwort",

@@ -50,6 +50,5 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
         });
       });
     };
-    
   }
 ]);

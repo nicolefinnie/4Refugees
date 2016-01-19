@@ -98,7 +98,11 @@ var UserSchema = new Schema({
   resetPasswordExpires: {
     type: Date
   },
-  tags: [{
+  tagsInterests: [{
+    tagName : String,
+    value : String
+  }],
+  tagsSkills: [{
     tagName : String,
     value : String
   }],

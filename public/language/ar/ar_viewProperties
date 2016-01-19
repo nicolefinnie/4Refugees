@@ -107,7 +107,8 @@
 
 "aboutMe":"عني",
 "aboutMeText":"أكتب شيئا عنك",
-"chooseTag":"علامة اهتماماتك",
+"chooseTagInterests":"اهتماماتك",
+"chooseTagSkills":"مهاراتك",
 "tagPlaceholder":"الكلمات كنت مهتما في",
 "currentPassword":"كلمة السر الحالية",
 "newPassword":"كلمة سر جديدة",
