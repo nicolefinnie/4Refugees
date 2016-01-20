@@ -33,11 +33,11 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
 
     ctrl.loadTags = function($query) {
       var tags = [
-                  { tagName: 'Job Training' },
-                  { tagName: 'Language Courses' },
-                  { tagName: 'Medical Assistance' },
-                  { tagName: 'Childcare' },
-                  { tagName: 'Others' }
+                  { tagID: '1', tagName: 'Job Training' },
+                  { tagID: '2', tagName: 'Language Courses' },
+                  { tagID: '3', tagName: 'Medical Assistance' },
+                  { tagID: '4', tagName: 'Childcare' },
+                  { tagID: '5', tagName: 'Others' }
       ];
       return tags.filter(function(tag) {
         return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
@@ -45,9 +45,9 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     };
 
     ctrl.languages = [
-                  { langID: '1', langValue: 'arabic' },
-                  { langID: '2', langValue: 'english' },
-                  { langID: '3', langValue: 'deutsch' }
+                  { langID: '1', langValue: 'العربية' },
+                  { langID: '2', langValue: 'deutsch' },
+                  { langID: '3', langValue: 'english' }
     ];
     
   }
