@@ -52,11 +52,11 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     };
     
 //    ctrl.loadLanguages = function($query) {
-      ctrl.languages = [
-                    { langID: '1', langValue: 'arabic' },
-                    { langID: '2', langValue: 'english' },
-                    { langID: '3', langValue: 'german' }
-      ];
+    ctrl.languages = [
+                  { langID: '1', langValue: 'arabic' },
+                  { langID: '2', langValue: 'english' },
+                  { langID: '3', langValue: 'german' }
+    ];
 //      return languages.filter(function(tag) {
 //        return tag.langName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
 //      });
