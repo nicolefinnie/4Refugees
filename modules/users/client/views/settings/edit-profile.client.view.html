@@ -109,6 +109,7 @@
                     ng-model="user.languagePreference"
                     ng-options="lang.langValue for lang in languages track by lang.langID"
                     ng-selected="user.languagePreference.langID == $index">
+              <option value="">{{properties.languageDropdownPlaceholder}}</option>
             </select>
           </div>
         </div>
