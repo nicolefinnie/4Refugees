@@ -19,9 +19,11 @@
   /* for profile picture page, we don't float to right for now, design of this page to be determined*/
   float: none; }
 
-.ibm-tags-input.arabic label {
-  /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */
+/* override ng-tags-input.css in Arabic like languages */
+.ibm-tags-input.arabic tags-input .tags .tag-item, .ibm-tags-input.arabic tags-input .tags .input {
   float: right; }
+.ibm-tags-input.arabic tags-input .autocomplete, .ibm-tags-input.arabic tags-input .autocomplete .suggestion-list {
+  direction: rtl; }
 
 .social-account-container {
   display: inline-block; }

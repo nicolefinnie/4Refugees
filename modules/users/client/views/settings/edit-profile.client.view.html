@@ -103,7 +103,7 @@
               <rect x="11" y="28" width="10" height="3"/>
             </svg>
           </div>
-          <div ng-class="properties.rightToLeft ? 'col m11 s11 pull-s2':'col m11 s10'">
+          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s3':'col m11 s10'">
             <label class="active" for="language">{{properties.langPreference}}</label>
             <select name="languageSelector"
                     ng-model="user.languagePreference"
@@ -113,7 +113,7 @@
             </select>
           </div>
         </div>
-        <div class="row form-group ibm-tags-input">
+        <div class="row form-group ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -121,30 +121,36 @@
             <circle cx="24" cy="8" r="2"/>
             </svg>
           </div>
-          <div ng-class="properties.rightToLeft ? 'col m11 s11 pull-s2':'col m11 s10'">
-            <label class="active" for="tags">{{properties.chooseTagInterests}}</label>
-            <tags-input name="tags"
-                        ng-model="user.tagsInterests"
-                        display-property="tagName"
-                        replace-spaces-with-dashes="false"
-                        add-from-autocomplete-only="true"
-                        placeholder="{{user.tagsInterests.length ? '' : properties.tagPlaceholder}}"
-                        add-on-enter="true"
-                        add-on-comma="false"
-                        add-on-space="false"
-                        allow-leftover-text="false"
-                        on-invalid-tag="$tag">
-              <auto-complete source="loadTags($query)"
-                             load-on-focus="true"
-                             load-on-empty="true"
-                             min-length="0"
-                             highlight-matched-text="true"
-                             max-results-to-show="10">
-              </auto-complete>
-            </tags-input>
+          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s3':'col m11 s10'">
+            <div class="row">
+            <div class="col s12">
+                <label class="active" for="tags">{{properties.chooseTagInterests}}</label>
+            </div>
+            <div class="col s12">
+                <tags-input name="tags"
+                            ng-model="user.tagsInterests"
+                            display-property="tagName"
+                            replace-spaces-with-dashes="false"
+                            add-from-autocomplete-only="true"
+                            placeholder="{{user.tagsInterests.length ? '' : properties.tagPlaceholder}}"
+                            add-on-enter="true"
+                            add-on-comma="false"
+                            add-on-space="false"
+                            allow-leftover-text="false"
+                            on-invalid-tag="$tag">
+                  <auto-complete source="loadTags($query)"
+                                 load-on-focus="true"
+                                 load-on-empty="true"
+                                 min-length="0"
+                                 highlight-matched-text="true"
+                                 max-results-to-show="10">
+                  </auto-complete>
+                </tags-input>
+            </div>
+            </div>
           </div>
         </div>
-        <div class="row form-group ibm-tags-input">
+        <div class="row form-group ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -152,27 +158,32 @@
             <circle cx="24" cy="8" r="2"/>
             </svg>
           </div>
-          <div ng-class="properties.rightToLeft ? 'col m11 s11 pull-s2':'col m11 s10'">
-            <label class="active" for="tags">{{properties.chooseTagSkills}}</label>
-            <tags-input name="tags"
-                        ng-model="user.tagsSkills"
-                        display-property="tagName"
-                        replace-spaces-with-dashes="false"
-                        add-from-autocomplete-only="true"
-                        placeholder="{{user.tagsSkills.length ? '' : properties.tagPlaceholder}}"
-                        add-on-enter="true"
-                        add-on-comma="false"
-                        add-on-space="false"
-                        allow-leftover-text="false"
-                        on-invalid-tag="$tag">
-              <auto-complete source="loadTags($query)"
-                             load-on-focus="true"
-                             load-on-empty="true"
-                             min-length="0"
-                             highlight-matched-text="true"
-                             max-results-to-show="10">
-              </auto-complete>
-            </tags-input>
+          <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s3':'col m11 s10'">
+            <div class="row">
+            <div class="col s12">
+                <label class="active" for="tags">{{properties.chooseTagSkills}}</label>
+            </div>
+            <div class="col s12">
+                <tags-input name="tags"
+                            ng-model="user.tagsSkills"
+                            display-property="tagName"
+                            replace-spaces-with-dashes="false"
+                            add-from-autocomplete-only="true"
+                            placeholder="{{user.tagsSkills.length ? '' : properties.tagPlaceholder}}"
+                            add-on-enter="true"
+                            add-on-comma="false"
+                            add-on-space="false"
+                            allow-leftover-text="false"
+                            on-invalid-tag="$tag">
+                  <auto-complete source="loadTags($query)"
+                                 load-on-focus="true"
+                                 load-on-empty="true"
+                                 min-length="0"
+                                 highlight-matched-text="true"
+                                 max-results-to-show="10">
+                  </auto-complete>
+                </tags-input>
+            </div>
           </div>
         </div>
       </div> <!-- end of ibm-input-field -->

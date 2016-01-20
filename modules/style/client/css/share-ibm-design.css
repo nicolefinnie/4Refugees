@@ -11,13 +11,9 @@
   transition: fill 1s;
   fill: #008571; }
 
-.ibm-input-field.latin textarea + label {
-  /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
-  text-align: left;
-  left: 4rem; }
 .ibm-input-field.latin input + label {
   position: relative;
-  top: -4rem;
+  top: -5rem;
   right: 0;
   float: left; }
 
@@ -26,15 +22,22 @@
   text-align: right; }
 .ibm-input-field.arabic textarea, .ibm-input-field.arabic input {
   direction: rtl; }
+.ibm-input-field.arabic label {
+  /* standalone label, only used for aboutMe in editing profile right now*/
+  position: relative;
+  left: 0;
+  float: right; }
 .ibm-input-field.arabic input + label {
   position: relative;
-  top: -4rem;
+  top: -5rem;
   left: 0;
   float: right; }
 .ibm-input-field.arabic textarea + label {
   /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
   right: 4rem;
   text-align: right; }
+.ibm-input-field.arabic select, .ibm-input-field.arabic option {
+  direction: rtl; }
 
 /* click to show/hide the advanced offering search/create/edit options */
 .ibm-toggle-advanced-options svg, .ibm-toggle-advanced-options a {

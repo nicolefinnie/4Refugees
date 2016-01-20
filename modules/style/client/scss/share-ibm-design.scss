@@ -16,14 +16,9 @@
        fill:color('teal', core);
 }
 .ibm-input-field.latin{
-    textarea + label {
-        /* laying out the label in the textarea to right is tricky, we simply override materialize style*/
-        text-align:left;
-        left: 4rem;
-    }
     input + label {
         position: relative;
-        top: -4rem;
+        top: -5rem;
         right: 0;
         float: left;
     }
@@ -37,9 +32,15 @@
     textarea, input{
         direction: rtl;
     }
+    label {
+    /* standalone label, only used for aboutMe in editing profile right now*/
+       position: relative;
+       left: 0;
+       float: right;
+    }
     input + label {
         position: relative;
-        top: -4rem;
+        top: -5rem;
         left: 0;
         float: right;
     }
@@ -48,6 +49,10 @@
         right: 4rem;
         text-align: right;
     }  
+    select, option {
+        direction: rtl;
+    }
+    
 }
 
 /* click to show/hide the advanced offering search/create/edit options */

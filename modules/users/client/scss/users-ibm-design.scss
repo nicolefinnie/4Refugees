@@ -35,10 +35,14 @@
     }
 }
 
+/* override ng-tags-input.css in Arabic like languages */
 .ibm-tags-input.arabic{
-    label{
-       /* the label is a stand-alone box, thus it has no content to align to, so floating instead of aligning */
-       float:right;
+    tags-input .tags .tag-item, tags-input .tags .input {
+        float: right;
+    }
+
+    tags-input .autocomplete, tags-input .autocomplete .suggestion-list  {
+        direction: rtl;   
     }
 }
 
