@@ -1,0 +1,90 @@
+<section ng-controller="MatchesController" ng-init="findOne()">
+<div class="row">
+<!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
+  <div class="col m12 s11">
+    <br>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'">{{properties.matchTitle}}</h4>
+    <br><br>
+    <br><br>
+    <form name="matchForm" novalidate>
+        <div class="row">
+          <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+            <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
+              <h5 class="list-group-item-heading">{{properties.description}}{{match.offering.description}}</h5>
+            </a><br/>
+            <!-- Sort the last two messages based on date -->
+            <p class="list-group-item-text" ng-if="match.ownerState.updated <= match.requesterState.updated"><span ng-bind="match.owner.displayName"></span>, <span ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.ownerState.lastMessage"></span></p>
+            <p class="list-group-item-text"><span ng-bind="match.requester.displayName"></span>, <span ng-bind="match.requesterState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.requesterState.lastMessage"></span></p>
+            <p class="list-group-item-text" ng-if="match.ownerState.updated > match.requesterState.updated"><span ng-bind="match.owner.displayName"></span>, <span ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.ownerState.lastMessage"></span></p>
+          </div> <!-- end of grid col m6 s11 -->
+        </div>
+        <!-- Start of input fields for match interactions -->
+        <div class="row">
+          <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+            <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                <!-- TODO: Add help for this field - i.e. 'special instructions', 'contact advice', etc. -->
+                <div class="row">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                            <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
+                            <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
+                            <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
+                        </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                        <input name="message" type="text" ng-model="matchMessage" id="message"
+                        placeholder = "{{properties.message}}">
+                    </div>
+                </div>
+            </div> <!-- end of input-field ibm-input-field -->
+          </div> <!-- end of grid col m6 s11 -->
+          <!-- Match interactions with the other party, contact requests -->
+          <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+            <div class="row">
+              <div class="col m12 s12">
+                <button ng-if="showContactButton" type="submit" class="match-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
+                  {{properties.contact}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                  </svg>
+                </button>
+                <button ng-if="showAcceptButton" type="submit" class="match-submit-button btn waves-effect waves-light" ng-click="acceptMatch()">
+                  {{properties.accept}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <polygon points="14,18.586 10.707,15.293 9.293,16.707 14,21.414 22.707,12.707 21.293,11.293   "/>
+                    <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4 s12,5.383,12,12S22.617,28,16,28z"/>
+                  </svg>
+                </button>
+                <button ng-if="showRejectButton" type="submit" class="match-cancel-button btn waves-effect waves-light" ng-click="rejectMatch()">
+                  {{properties.reject}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 20.293,21.707 21.707,20.293 17.414,16 21.707,11.707   "/>
+                    <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4 s12,5.383,12,12S22.617,28,16,28z"/>
+                  </svg>
+                </button>
+                <button ng-if="showBlockButton" type="submit" class="match-delete-button btn waves-effect waves-light" ng-click="blockContact()">
+                  {{properties.block}}
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,3L1,29h30L16,3z M16,7.002L27.537,27H4.463L16,7.002z"/>
+                    <polygon points="15,14 15,16 15.5,21 16.5,21 17,16 17,14  "/>
+                    <circle cx="16" cy="23" r="1"/>
+                  </svg>
+                </button>
+              </div>
+              <br><br>
+              <!-- TODO should be a pop-up and it can be closed -->
+              <div class="col m12 s12" ng-show="error">
+                  <strong ng-bind="error"></strong>
+              </div>
+            </div> <!-- end of row -->
+          </div> <!-- end of ibm-submit-area -->
+        </div> <!-- end of section requiring additional user details -->
+    </form>       
+  </div>
+</div>
+</section>

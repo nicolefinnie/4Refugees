@@ -3,6 +3,7 @@
 "register":"Registieren",
 "mail":"Post",
 "listMyOfferings":"Angebote",
+"listMyMatches":"Passen",
 "profile":"Profil",
 "signOut":"Abmelden",
 "aboutUs":"Über uns",
@@ -59,6 +60,8 @@
 "needHelpInCurrentLanguage":"Hilfe Brauchen",
 "editOfferHelpInCurrentLanguage":"Angebot ändern",
 "editNeedHelpInCurrentLanguage":"Bedürfnis ändern",
+"viewOfferHelpInCurrentLanguage":"Angebot anzeigen",
+"viewNeedHelpInCurrentLanguage":"Bedürfnis anzeigen",
 "myOfferings":"Meine Angebote",
 "offeredBy":"Angeboten von",
 "availableOn":", verfügbar auf",
@@ -81,6 +84,22 @@
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut"
 },
 
+{"viewName":"matches",
+"matchTitle":"Passende Angebote",
+"myMatches":"Meine Abgestimmte Angebote",
+"description":"Beschreibung: ",
+"message":"Zusätzliche Nachricht senden",
+"contact":"Kontakt",
+"cancel":"Absagen",
+"delete":"Löschen",
+"view":"Sehen",
+"accept":"Akzeptieren",
+"reject":"Ablehnen",
+"block":"Block",
+"noMessageYet":"Noch nichts.",
+"noMatches":"Leider sind noch keine Spiele vor. Klicken Sie hier um zu suchen.",
+"errorNoMessage":"Ungültige Nachricht. Bitte geben Sie eine gültige Nachricht, und versuchen Sie es erneut"
+}, 
 
 {"viewName":"user",
 "signInWithYourAccount":"Oder mit Ihrem Konto anmelden",
@@ -162,8 +181,8 @@
 "replyTo":"Antwort an: ",
 "content":"Ihr Text",
 "maincategory":"Haupt-Kategorie: ",
-"offerReferral":"Angebot, auf das sich diese email bezieht:",
-"about":"Wegen des Angebotes ",
+"offerReferral":"Klicken Sie hier für passend Details",
+"about":"Wegen: ",
 "sendTo":"Kontaktiere ",
 "loadMore":"Weitere emails",
 "done":"Fertig",
@@ -171,6 +190,9 @@
 "reportTitle":"Meldung einer ungehörigen email",
 "reportBody":"Inhalt: ",
 "replyToOffender":"Admin Kontakt",
+"contactInProgress":"Kontakt im Gange...",
+"contactSuccess":"Ihre Kontaktanfrage wurde verschickt",
+"errorFromServer":"Whoops, ging etwas schief",
 "rightToLeft":false
 }
 

@@ -1,0 +1,60 @@
+<section ng-controller="MatchesController" ng-init="findAllMine()">
+<div class="row">
+<!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
+  <div class="col m12 s11">
+    <br>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'">{{properties.myMatches}}</h4>
+    <div class="row">
+      <div class="col m12 s12" ng-class="properties.rightToLeft ? 'right-align':'left-align'">
+        <ul>
+          <li ng-repeat="match in matches" class="list-group-item">
+            <div class="row">
+              <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+                <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
+                  <h5 class="list-group-item-heading">{{properties.description}}{{match.offering.description}}</h5>
+                </a><br/>
+                <!-- Sort the last two messages based on date -->
+                <p class="list-group-item-text" ng-if="match.ownerState.updated <= match.requesterState.updated"><span ng-bind="match.owner.displayName"></span>, <span ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.ownerState.lastMessage"></span></p>
+                <p class="list-group-item-text"><span ng-bind="match.requester.displayName"></span>, <span ng-bind="match.requesterState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.requesterState.lastMessage"></span></p>
+                <p class="list-group-item-text" ng-if="match.ownerState.updated > match.requesterState.updated"><span ng-bind="match.owner.displayName"></span>, <span ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>: <span ng-bind="match.ownerState.lastMessage"></span></p>
+              </div> <!-- end of grid col m6 s11 -->
+            </div>
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="row">
+                <div class="col m12 s12">
+                    <a class="match-submit-button btn btn-primary waves-effect waves-light" ui-sref="matches.edit({matchId: match._id})">
+                      {{properties.view}}
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <path d="M16,11c-3.314,0-6,2.685-6,6s2.686,6,6,6c3.315,0,6-2.685,6-6S19.315,11,16,11z M16,19c-1.106,0-2-0.895-2-2s0.894-2,2-2 s2,0.895,2,2S17.105,19,16,19z"/>
+                        <path d="M16,8C9.269,8,4.147,11.625,1,17c3.147,5.375,8.269,9,15,9s11.854-3.625,15-9C27.854,11.625,22.73,8,16,8z M16,24 c-5.164,0-9.612-2.475-12.642-7c3.029-4.525,7.477-7,12.642-7s9.612,2.475,12.642,7C25.612,21.525,21.164,24,16,24z"/>
+                      </svg>
+                    </a>
+                    <button type="submit" class="match-delete-button btn btn-danger waves-effect waves-light" ng-if="authentication.user._id == match.owner._id" ng-click="removeMatchFromList(match);">
+                      {{properties.delete}}
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <rect x="12" y="2" width="8" height="2"/>
+                      <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                      <rect x="11" y="14" width="1" height="12"/>
+                      <rect x="14" y="14" width="1" height="12"/>
+                      <rect x="17" y="14" width="1" height="12"/>
+                      <rect x="20" y="14" width="1" height="12"/>
+                      </svg>
+                    </button>
+                </div>
+                <br><br>
+              </div> <!-- end of row -->
+            </div> <!-- end of ibm-submit-area -->
+          </li>
+        </ul>
+      </div>
+      <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
+        <div class="alert alert-warning text-center" ng-if="matches.$resolved && !matches.length">
+          <a href="offerings/search?offerType=offer">{{properties.noMatches}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>

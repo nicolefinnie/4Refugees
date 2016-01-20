@@ -3,6 +3,7 @@
 "register":"Register",
 "mail":"Mail",
 "listMyOfferings":"Offerings",
+"listMyMatches":"Matches",
 "profile":"Profile",
 "signOut":"Sign Out",
 "aboutUs":"About Us",
@@ -59,6 +60,8 @@
 "needHelpInCurrentLanguage":"Need Help",
 "editOfferHelpInCurrentLanguage":"Edit Offer",
 "editNeedHelpInCurrentLanguage":"Edit Request",
+"viewOfferHelpInCurrentLanguage":"View Offer",
+"viewNeedHelpInCurrentLanguage":"View Request",
 "myOfferings":"My Offerings",
 "offeredBy":"Offered by",
 "availableOn":", available on",
@@ -79,6 +82,23 @@
 "errorFromServer":"Whoops, something went wrong",
 "errorNoDescription":"Invalid description, please enter a valid description and try again",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again"
+}, 
+
+{"viewName":"matches",
+"matchTitle":"Offering Match",
+"myMatches":"My Matched Offers",
+"description":"Description: ",
+"message":"Additional message to send",
+"contact":"Contact",
+"cancel":"Cancel",
+"delete":"Delete",
+"view":"View",
+"accept":"Accept",
+"reject":"Reject",
+"block":"Block",
+"noMessageYet":"Nothing yet.",
+"noMatches":"Sorry, no matches found. Click to search.",
+"errorNoMessage":"Invalid message, please enter a valid message and try again"
 }, 
 
 {"viewName":"user",
@@ -161,8 +181,8 @@
 "replyTo":"Reply To: ",
 "content":"content",
 "maincategory":"main category: ",
-"offerReferral":"offer to refer to:",
-"about":"About offering: ",
+"offerReferral":"Click to open match",
+"about":"About: ",
 "sendTo":"Send mail to: ",
 "loadMore":"Load More",
 "done":"Done",
@@ -170,6 +190,9 @@
 "reportTitle":"Report offending email",
 "reportBody":">> ",
 "replyToOffender":"Contact offender",
+"contactInProgress":"Contact in progress...",
+"contactSuccess":"Your contact request has been sent",
+"errorFromServer":"Whoops, something went wrong",
 "rightToLeft":false
 }
 

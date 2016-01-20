@@ -37,7 +37,7 @@ exports.create = function (req, res) {
 
   console.log('recipient is ' + JSON.stringify(mail.recipient));
   //console.log('recipient is either ' + JSON.stringify(mail.recipient) + ' or   ' + JSON.stringify(recUser));
-  mail.offeringId = req.body.offeringId;
+  mail.matchId = req.body.matchId;
   //mail.replyTo = req.body.mailId;
   // The recipient is the owner of the email, only they can delete it.
   // This ownerId is also used when deleting a user, to delete all their mails.
@@ -111,7 +111,7 @@ exports.delete = function (req, res) {
 exports.listall = function (req, res) {
   var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'ownerId' : req.user._id.toString() };
 
-  Mail.find(query).sort('-created').populate('sender').populate('recipient').populate('offeringId').exec(function (err, mails) {
+  Mail.find(query).sort('-created').populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -176,7 +176,7 @@ exports.list = function (req, res) {
     });
   } else {
     //Mail.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, mails) {
-    Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').populate('offeringId').exec(function (err, mails) {
+    Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
       if (err) {
         return res.status(400).send({
           message: errorHandler.getErrorMessage(err)
@@ -228,7 +228,7 @@ exports.mailByID = function (req, res, next, id) {
 /**
  * Mail middleware
  */
-exports.mailChainByOfferingId = function (req, res, next, id) {
+exports.mailChainByMatchId = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
@@ -236,7 +236,7 @@ exports.mailChainByOfferingId = function (req, res, next, id) {
     });
   }
 
-  Mail.where('offeringId').equals(req.offeringId).populate('sender','displayName').exec(function (err, mails) {
+  Mail.where('matchId').equals(req.matchId).populate('sender','displayName').exec(function (err, mails) {
     if (err) {
       return next(err);
     } else if (!mails) {

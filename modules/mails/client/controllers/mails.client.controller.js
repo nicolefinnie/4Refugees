@@ -11,9 +11,11 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       $location.path('/');
     }
 
+    $scope.languageInitialized = false;
+
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      $scope.initLanguage();
+      $scope.reloadLanguage();
     });
 
     // Make sure the Socket is connected to notify of updates
@@ -100,6 +102,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // Find a list of Mails
     $scope.find = function (num) {
+      $scope.initLanguage();
       //console.log('Window size: ', $window.innerHeight);
       $scope.mailCount = Mails.query({ countOnly: 'true' }, function(err) {
         //console.log('mailCount = ' + JSON.stringify($scope.mailCount));
@@ -156,6 +159,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // Find a list of new Mails
     $scope.findNew = function () {
+      $scope.initLanguage();
       $scope.mails = Mails.query({ unread : true,reset : true }, function() {
         for(var i = 0,len = $scope.mails.length; i < len;i++) {
           $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
@@ -173,6 +177,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // Find existing Mail
     $scope.findOne = function () {
+      $scope.initLanguage();
       $scope.mail = Mails.get({
         mailId: $stateParams.MailId
       });
@@ -196,11 +201,15 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     };
 
     $scope.initLanguage = function () {
+      if (!$scope.languageInitialized) {
+        $scope.languageInitialized = true;
+        $scope.reloadLanguage();
+      }
+    };
+
+    $scope.reloadLanguage = function () {
       LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
         $scope.properties = translationList;
-        LanguageService.getPropertiesByViewName('offering', $http, function(translationListO) {
-          $scope.offeringproperties = translationListO;
-        });
       });
     };
 

@@ -1,0 +1,42 @@
+@import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
+
+/* Common button style for match forms, to display on small and large screens
+ * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
+ * but the svgs we chose to use in the matches should not be rotated */
+.match-button-style {
+  font-size: 10px;
+  text-transform: capitalize;
+  margin-left: 1%;
+  margin-right: 1%;
+  padding: 0 10px 0 10px;
+  svg{
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    fill: color('white', core);
+  }
+}
+
+/* Create or Update an match */
+.ibm-submit-area  {
+  button.match-submit-button, a.match-submit-button {
+    @extend .match-button-style;
+    background: color('teal', core);
+  }
+}
+
+/* Cancel a request to create/update match */
+.ibm-submit-area  {
+  button.match-cancel-button, a.match-cancel-button {
+    @extend .match-button-style;
+    background: color('yellow', 30);
+  }
+}
+
+/* Delete an match. */
+.ibm-submit-area  {
+  button.match-delete-button, a.match-delete-button {
+    @extend .match-button-style;
+    background: color('red', 60);
+  }
+}

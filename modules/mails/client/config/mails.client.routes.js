@@ -30,22 +30,22 @@ angular.module('mails').config(['$stateProvider',
         }
       })
       .state('mails.createFromOffer', {
-        url: '/createFromOffer',
+        url: '/createFromOffer?recipientId&title&content&matchId',
         params: {
-          offeringId: null,
-          offeringDescription: null,
-          recipientName: null,
-          recipientId: null
+          recipientId: null,
+          title: null,
+          content: null,
+          matchId: null
         },
         templateUrl: 'modules/mails/client/views/create-mail-offer.client.view.html',
         data: {
           roles: ['user']
         },
         controller: function($scope, $stateParams) {
-          $scope.offeringId = $stateParams.offeringId;
-          $scope.offeringDescription = $stateParams.offeringDescription;
-          $scope.recipientName = $stateParams.recipientName;
           $scope.recipientId = $stateParams.recipientId;
+          $scope.title = $stateParams.title;
+          $scope.content = $stateParams.content;
+          $scope.matchId = $stateParams.matchId;
         }
       })
       .state('mails.createFromOfferSuccess', {

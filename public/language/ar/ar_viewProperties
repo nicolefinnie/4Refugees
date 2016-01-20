@@ -3,6 +3,7 @@
 "register":"سجل",
 "mail":"بريد",
 "listMyOfferings":"عروض",
+"listMyMatches":"مباراة",
 "profile":"مظهر جانبي",
 "signOut":"تسجيل الخروج",
 "aboutUs":"معلومات عنا",
@@ -61,6 +62,8 @@
 "needHelpInCurrentLanguage":"احتاج مساعدة",
 "editOfferHelpInCurrentLanguage":"تحرير عرض",
 "editNeedHelpInCurrentLanguage":"تحرير طلب",
+"viewOfferHelpInCurrentLanguage":"مشاهدة عرض",
+"viewNeedHelpInCurrentLanguage":"عرض طلب",
 "myOfferings":"بلدي عروض",
 "offeredBy":"التي تتيحها",
 "availableOn":"، متاح على",
@@ -83,6 +86,24 @@
 "errorNoCity":"موقع غير صالح المقدمة، يرجى تحديد أقرب مدينتك وحاول مرة أخرى",
 "rightToLeft":true
 },
+
+{"viewName":"matches",
+"matchTitle":"عروض مطابقة",
+"myMatches":"عروض بلدي متطابق",
+"description":"الوصف",
+"message":"رسالة إضافية لإرسال",
+"contact":"اتصال",
+"cancel":"إلغاء",
+"delete":"حذف",
+"view":"عرض",
+"accept":"تقبل",
+"reject":"رفض",
+"block":"منع",
+"noMessageYet":"لا شيء حتى الان",
+"noMatches":"عذرا، لم يتم العثور على المباريات. اضغط للبحث",
+"errorNoMessage":"رسالة غير صالحة، يرجى إدخال رسالة صحيحة وحاول مرة أخرى",
+"rightToLeft":true
+}, 
 
 {"viewName":"user",
 "signInWithYourAccount":"أو تسجيل الدخول باستخدام حسابك",
@@ -167,8 +188,8 @@
 "replyTo":"R--",
 "content":"C-",
 "maincategory":"K-",
-"offerReferral":"O-",
-"about":"A-",
+"offerReferral":"انقر هنا للمطابقة التفاصيل",
+"about":"حول",
 "sendTo":"S-",
 "loadMore":"L-",
 "done":"D-",
@@ -176,6 +197,9 @@
 "reportTitle":"Rr",
 "reportBody":"Rr",
 "replyToOffender":"RO",
+"contactInProgress":"الاتصال في التقدم",
+"contactSuccess":"تم ارسال طلب الاتصال الخاصة بك",
+"errorFromServer":"يصيح، حدث خطأ ما",
 "rightToLeft":true
 }
 

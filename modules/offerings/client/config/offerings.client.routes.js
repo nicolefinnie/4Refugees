@@ -34,8 +34,19 @@ angular.module('offerings').config(['$stateProvider',
           $scope.offeringId = $stateParams.offeringId;
         }
       })
+      .state('offerings.view', {
+        url: '/view?offerType&offeringId',
+        templateUrl: 'modules/offerings/client/views/create-offering.client.view.html',
+        data: {
+          roles: ['user', 'admin']
+        },
+        controller: function($scope, $stateParams) {
+          $scope.offerType = $stateParams.offerType;
+          $scope.offeringId = $stateParams.offeringId;
+        }
+      })
       .state('offerings.edit', {
-        url: '/create?offerType&offeringId',
+        url: '/edit?offerType&offeringId',
         templateUrl: 'modules/offerings/client/views/create-offering.client.view.html',
         data: {
           roles: ['user', 'admin']

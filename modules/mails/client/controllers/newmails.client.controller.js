@@ -22,7 +22,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
     }
 
     // Create new Mail
-    $scope.create = function (isValid, recipient, mailId, offeringID, reportAdmin) {
+    $scope.create = function (isValid, recipient, mailId, matchID, reportAdmin) {
       $scope.error = null;
 
       if (!isValid) {
@@ -31,7 +31,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         return false;
       }
 
-      var index, len, recipient_id, reload_on_save, recipients, offeringid,
+      var index, len, recipient_id, reload_on_save, recipients, matchid,
         title = this.title,
         content = this.content,
         replyTo = mailId;
@@ -43,13 +43,13 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         console.log('admin mail for ' + JSON.stringify(this.recipient[0]));
         recipients = this.recipient;
         reload_on_save = true;
-        offeringid = this.offeringId;
+        matchid = this.matchId;
       }
       else {
         console.log('reply to ' + JSON.stringify(recipient));
         recipients = [recipient];
         reload_on_save = false;
-        offeringid = offeringID;
+        matchid = matchID;
       }
 
       //if (this.recipient && this.recipient[0]) {
@@ -76,7 +76,7 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
           reportAdmin: reportAdmin,
           recipient: recp._id,
           replyTo: replyTo,
-          offeringId: offeringid
+          matchId: matchid
         });
 
         // Emit a 'mailMessage' message event with the JSON mail object
@@ -91,14 +91,16 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         mail.$save(function (response) {
           Socket.emit('mailMessage', message);
 
-          if (reload_on_save && index === len - 1) {
+          var condition = (reload_on_save && (index === (len - 1)));
+          var condition2 = ((index === (len - 1)));
+          if (reload_on_save && (index === (len - 1))) {
             // TODO: This causes client exception when the admin user
             // sends a message to users.  Should there be a different
             // re-direct page for admin users?
             $location.path('mails/' + response._id);
             // Clear form fields
             $scope.replyTo = '';
-            $scope.offeringId = '';
+            $scope.matchId = '';
             $scope.recipient = {};
             $scope.title = '';
             $scope.content = '';
@@ -129,9 +131,6 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
     $scope.initLanguage = function () {
       LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
         $scope.properties = translationList;
-        LanguageService.getPropertiesByViewName('offering', $http, function(translationListO) {
-          $scope.offeringproperties = translationListO;
-        });
       });
     };
   }

@@ -41,9 +41,9 @@ var MailSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  offeringId: {
+  matchId: {
     type: Schema.ObjectId,
-    ref: 'Offering'
+    ref: 'Match'
   },
   replyTo: {
     type: Schema.ObjectId,

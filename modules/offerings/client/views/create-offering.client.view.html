@@ -3,10 +3,12 @@
 <!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
   <div class="col m12 s11">
     <br>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request' && offeringId == '0'">{{properties.needHelpInCurrentLanguage}}</h4>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer' && offeringId == '0'">{{properties.offerHelpInCurrentLanguage}}</h4>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='request' && offeringId != '0'">{{properties.editNeedHelpInCurrentLanguage}}</h4>
-    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="offerType=='offer' && offeringId != '0'">{{properties.editOfferHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id == offering.user._id && offerType=='request' && offeringId == '0'">{{properties.needHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id == offering.user._id && offerType=='offer' && offeringId == '0'">{{properties.offerHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id == offering.user._id && offerType=='request' && offeringId != '0'">{{properties.editNeedHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id == offering.user._id && offerType=='offer' && offeringId != '0'">{{properties.editOfferHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id != offering.user._id && offerType=='request' && offeringId != '0'">{{properties.viewNeedHelpInCurrentLanguage}}</h4>
+    <h4 ng-class="properties.rightToLeft ? 'right':'left'" ng-if="authentication.user._id != offering.user._id && offerType=='offer' && offeringId != '0'">{{properties.viewOfferHelpInCurrentLanguage}}</h4>
     <form name="offeringForm" novalidate>
         <!-- start of category section -->
         <div id="category" class="col s12 ibm-offering-category-checkbox" ng-class="properties.rightToLeft ? 'arabic':'latin'">
@@ -109,7 +111,7 @@
           </div> <!-- end of grid col m6 s11 -->
           <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
             <div class="row">
-              <div class="col m12 s12">
+              <div class="col m12 s12" ng-if="authentication.user._id == offering.user._id">
                   <button ng-if="offeringId == '0'" type="submit" class="offering-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
                   {{properties.add}}
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -150,6 +152,15 @@
                   <rect x="20" y="14" width="1" height="12"/>
                   </svg>
                   </button>
+              </div>
+              <div class="col m12 s12" ng-if="authentication.user._id != offering.user._id">
+                  <a class="offering-submit-button btn waves-effect waves-light" ui-sref="matches.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
+                    {{properties.contact}}
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                    </svg>
+                  </a>
               </div>
               <br><br>
               <div class="col m12 s12">
