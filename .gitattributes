@@ -1,2 +1,2 @@
 # checkout all files with LF line endings for consistency
-*.* -crlf
+*.* text eol=lf*.* -crlf
