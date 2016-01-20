@@ -21,7 +21,6 @@
 "quickHelpButton":"Quick Help",
 "findHelpButton":"Find Help",
 "helpOthersButton":"Help Others"
-
 },
 
 {"viewName":"offering",
@@ -99,6 +98,7 @@
 "forgetPassword":"or Forgot your password?",
 
 "langPreference":"language",
+"languageDropdownPlaceholder":"--- Select an option ---",
 "editProfile":"Edit Profile",
 "changeProfilePicture":"Change Profile Picture",
 "changePassword":"Change Password",

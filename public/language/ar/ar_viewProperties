@@ -106,6 +106,7 @@
 "manageSocialAccount":"إدارة الحسابات الاجتماعية",
 
 "langPreference":"لغة",
+"languageDropdownPlaceholder":"--- حدد اختيارا ---",
 "aboutMe":"عني",
 "aboutMeText":"أكتب شيئا عنك",
 "chooseTagInterests":"اهتماماتك",

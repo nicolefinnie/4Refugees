@@ -88,7 +88,7 @@
             <textarea class="materialize-textarea" id="aboutMe" name="aboutMe" ng-model="user.aboutMe" placeholder="{{properties.aboutMeText}}"></textarea>
           </div>
         </div>
-        <div class="row form-group ibm-tags-input">
+        <div class="row form-group ibm-input-field">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -105,9 +105,10 @@
           </div>
           <div ng-class="properties.rightToLeft ? 'col m11 s11 pull-s2':'col m11 s10'">
             <label class="active" for="language">{{properties.langPreference}}</label>
-            <select name="languageSelect" id="languageSelect" ng-model="user.languagePreference">
-              <option value="">--- Select an option ---</option>
-              <option ng-repeat="lang in languages" value="{{lang.langID}}">{{lang.langValue}}</option>
+            <select name="languageSelector"
+                    ng-model="user.languagePreference"
+                    ng-options="lang.langValue for lang in languages track by lang.langID"
+                    ng-selected="user.languagePreference.langID == $index">
             </select>
           </div>
         </div>

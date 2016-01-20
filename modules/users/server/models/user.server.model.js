@@ -110,7 +110,7 @@ var UserSchema = new Schema({
     type: String
   },
   languagePreference: {
-    type: String
+    type: Object
   }
 });
 

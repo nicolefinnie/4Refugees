@@ -31,37 +31,24 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
       });
     };
 
-    // TODO load available tags here, already set ones should come from user object authentication.user later;
-    // mocked data until I got a concept how to provide / manage the tags in the DB
     ctrl.loadTags = function($query) {
-      var tags;
-      return $http.get('/api/tags', { cache: true }).then(function(response) {
-//        tags = response.data;
-//        log.info('DEBUG - resonse.data content: ' + response.data);
-        tags = [
-                    { tagName: 'Job Training' },
-                    { tagName: 'Language Courses' },
-                    { tagName: 'Medical Assistance' },
-                    { tagName: 'Childcare' },
-                    { tagName: 'Others' }
-        ];
-        return tags.filter(function(tag) {
-          return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
-        });
+      var tags = [
+                  { tagName: 'Job Training' },
+                  { tagName: 'Language Courses' },
+                  { tagName: 'Medical Assistance' },
+                  { tagName: 'Childcare' },
+                  { tagName: 'Others' }
+      ];
+      return tags.filter(function(tag) {
+        return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
       });
     };
-    
-//    ctrl.loadLanguages = function($query) {
+
     ctrl.languages = [
                   { langID: '1', langValue: 'arabic' },
                   { langID: '2', langValue: 'english' },
-                  { langID: '3', langValue: 'german' }
+                  { langID: '3', langValue: 'deutsch' }
     ];
-//      return languages.filter(function(tag) {
-//        return tag.langName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
-//      });
-//    };
-    
     
   }
 ]);

@@ -104,6 +104,7 @@
 "manageSocialAccount":"Soziale Konten verwalten",
 
 "langPreference":"Sprache",
+"languageDropdownPlaceholder":"--- Wählen Sie eine Option ---",
 "aboutMe":"Über mich",
 "aboutMeText":"Erzählen Sie etwas über sich",
 "chooseTagInterests":"Deine Interessen",
