@@ -143,8 +143,8 @@
                 <br><br>
                 <div class="col m12 s12">
                     <!-- Swap offerType - if they searched for an offering, they need to create a help request -->
-                    <a href="offerings/create?offerType=offer&offeringId=0" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
-                    <a href="offerings/create?offerType=request&offeringId=0" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
+                    <a ui-sref="offerings.create({offerType:'offer', offeringId:'0'})" ng-if="offerType=='request'">{{properties.offerOthersHelpText}}</a>
+                    <a ui-sref="offerings.create({offerType:'request', offeringId:'0'})" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
                 </div>
                 <!-- TODO should be a pop-up and it can be closed -->
                 <div class="col m12 s12" ng-show="error">

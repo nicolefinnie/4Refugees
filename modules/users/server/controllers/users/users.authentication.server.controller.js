@@ -129,6 +129,21 @@ exports.oauthCallback = function (strategy) {
           return res.redirect('/authentication/signin');
         }
 
+        // Ugly workaround for facebook redirection.  If no hash is specified
+        // at the end, facebook redirect URIs add '#_=_', which breaks angular,
+        // causing all parameters in the redirect URI to be lost.  Angular
+        // is fine with '#!' hash appended to the end of a URI, so if we always
+        // append that to the facebook redirect URI, we can preserve all
+        // parameters after the login success redirect.  For more background, read:
+        // http://stackoverflow.com/questions/7131909/facebook-callback-appends-to-return-url
+        if (strategy === 'facebook'){
+          if (redirectURL !== undefined){
+            redirectURL = redirectURL + '#!';
+          } else if (sessionRedirectURL !== undefined){
+            sessionRedirectURL = sessionRedirectURL + '#!';
+          }
+        }
+
         return res.redirect(redirectURL || sessionRedirectURL || '/');
       });
     })(req, res, next);
