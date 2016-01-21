@@ -20,12 +20,18 @@ angular.module('firststep').controller('FirstStepController', ['$scope', '$rootS
       LanguageService.getPropertiesByViewName('firststep', $http, function(translationList) {
         $scope.properties = translationList;
         $scope.resources = [
+          { 'header': $scope.properties.ankommenHeader,
+            'description': $scope.properties.ankommenDescription,
+            'link': 'https://www.ankommenapp.de' },
           { 'header': $scope.properties.generalHeader,
             'description': $scope.properties.generalDescription,
             'link': 'http://www.bundesregierung.de/Webs/Breg/DE/Themen/Fluechtlings-Asylpolitik/4-FAQ/_node.html' },
           { 'header': $scope.properties.asylumHeader,
             'description': $scope.properties.asylumDescription,
             'link': $scope.properties.asylumLink },
+          { 'header': $scope.properties.onlineGermanHeader,
+            'description': $scope.properties.onlineGermanDescription,
+            'link': $scope.properties.onlineGermanLink },
           { 'header': $scope.properties.integrationHeader,
             'description': $scope.properties.integrationDescription,
             'link': $scope.properties.integrationLink },
