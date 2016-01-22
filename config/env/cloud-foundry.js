@@ -50,8 +50,8 @@ module.exports = {
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {
-    clientID: getCred('mean-linkedin', 'id') || 'APP_ID',
-    clientSecret: getCred('mean-linkedin', 'secret') || 'APP_SECRET',
+    clientID: getCred('mean-linkedin', 'id') || '770mzyuf8k7ul6',
+    clientSecret: getCred('mean-linkedin', 'secret') || '0r9Xa7LVpHi82YKe',
     callbackURL: '/api/auth/linkedin/callback'
   },
   github: {
