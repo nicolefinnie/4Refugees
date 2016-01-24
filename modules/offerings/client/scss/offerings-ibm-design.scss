@@ -12,6 +12,18 @@
     }
 }
  
+.ibm-offering-list.card {
+    background-color: color('cool-gray',60);
+    color: color('white', core); 
+    .chip{
+        background-color: color('yellow',20);
+    }
+}
+
+.ibm-offering-list.card .modal .modal-content{
+    color: color('gray',90);
+}
+
 /* geo location when there's no geo service, a drop down select city list is shown*/
 .ibm-input-field select {
     display: inline-flex;

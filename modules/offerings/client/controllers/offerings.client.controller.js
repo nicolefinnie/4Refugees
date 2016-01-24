@@ -123,7 +123,10 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       $scope.initialize();
     });
-    
+
+    $scope.profileModalDetails = function(){
+      $('#volunteerProfile').openModal();
+    };
     // Called when user clicks to update location
     $scope.toggleGeoLocation = function() {
       // We already tried the geo locator, so future toggles do not need to
@@ -267,7 +270,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offering.expiryString = expiryDate.toUTCString();
       $scope.offering.description = this.description;
       $scope.offering.descriptionLanguage = LanguageService.getCurrentLanguage();
-      $scope.offering.category = getCategoryArray(this.category, 'others');
+      console.log('this category is '+ JSON.stringify(this.category));
+      $scope.offering.category = [this.category];
       $scope.offering.city = offeringLocation.city;
       $scope.offering.longitude = offeringLocation.lng;
       $scope.offering.latitude = offeringLocation.lat;
@@ -340,11 +344,10 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     // Pre-fill form based on an existing offering - update codepath
     $scope.initializeFormFromOffering = function (offering) {
       $scope.offerType = offering.offerType;
-      var selectedCategory = {};
-      $scope.offering.category.forEach(function(eachCategory) {
-        selectedCategory[eachCategory] = true;
-      });
-      $scope.category = selectedCategory;
+      // each offer or request can only have one category
+      if ($scope.offering.category.length > 0){
+        $scope.category = $scope.offering.category[0];
+      }
       var whenDate = new Date(offering.whenString);
       var expiryDate = new Date(offering.expiryString);
       $scope.when = whenDate;

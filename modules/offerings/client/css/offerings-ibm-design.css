@@ -5,6 +5,15 @@
   margin-left: 3%;
   float: right; }
 
+.ibm-offering-list.card {
+  background-color: #5a6464;
+  color: #fff; }
+  .ibm-offering-list.card .chip {
+    background-color: #fdd600; }
+
+.ibm-offering-list.card .modal .modal-content {
+  color: #121212; }
+
 /* geo location when there's no geo service, a drop down select city list is shown*/
 .ibm-input-field select {
   display: inline-flex;
