@@ -38,18 +38,27 @@ function mapOfferTypeNumberToString(offerType) {
 var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
-  translationHandler = require(path.resolve('./modules/language/server/watson/language.server.watson.translation')),
+  translater = require(path.resolve('./modules/language/server/watson/language.server.watson.translation')),
   config = require(path.resolve('./config/config')),
   extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 
 // Helper function to translate, save, and return an offering
-function doTranslateOfferingAndSave(offering, res)
-{
-	translationHandler.doTranslate(offering.descriptionLanguage, offering.description, function(transEnglish, transOther){
-    offering.descriptionEnglish = transEnglish;
-    offering.descriptionOther = transOther;
+function doTranslateOfferingAndSave(offering, res) {
+  var translateInput = {
+    substituteOnFailure: true,
+    sourceLanguage: offering.descriptionLanguage,
+    sourceText: offering.description
+  };
+  translater.translateAllLanguages(translateInput, function(translationOutput) {
+    translationOutput.targets.forEach(function(translation) {
+      if (translation.language === 'en') {
+        offering.descriptionEnglish = translation.text;
+      } else {
+        offering.descriptionOther = translation.text;
+      }
+    });
     offering.save(function (err) {
       if (err) {
         return res.status(400).send({
