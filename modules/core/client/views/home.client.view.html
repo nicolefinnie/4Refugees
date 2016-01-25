@@ -24,6 +24,25 @@
         <div class="col s12 m4">
           <div class="ibm-help-bar">
             <h1 class="center">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+                <polygon points="36,28 24,28 24,32 28,32 28,44 24,44 24,48 40,48 40,44 36,44    "/>
+                <circle cx="32" cy="20" r="4"/>
+                <path d="M32,4C16.537,4,4,16.537,4,32s12.537,28,28,28s28-12.537,28-28S47.463,4,32,4z M32,58C17.664,58,6,46.336,6,32
+                S17.664,6,32,6s26,11.664,26,26S46.336,58,32,58z"/>
+              </svg>
+            </h1>
+            <h2 class="center">{{properties.quickHelpTitle}}</h2>
+            <p class="center"><a href="firststep/resources" id="quickHelp" class="btn-large waves-effect waves-light">
+                {{properties.quickHelpButton}}</a>
+            </p>
+            <br>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="ibm-help-bar">
+            <h1 class="center">
               <svg version="1.1" id="help_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
               <path d="M32,4C16.537,4,4,16.537,4,32s12.537,28,28,28s28-12.537,28-28S47.463,4,32,4z M32,6c5.123,0,9.891,1.51,13.922,4.078
@@ -38,31 +57,7 @@
                   C56.49,22.108,58,26.877,58,32s-1.51,9.892-4.078,13.922L46.572,38.572z"/>
               </svg>
             </h1>
-            <h2 class="center">{{properties.quickHelpTitle}}</h2>
-            <p class="center">{{properties.quickHelpSubtitle}}</p>
-            <br>
-            <p class="center"><a href="firststep/resources" id="quickHelp" class="btn-large waves-effect waves-light">
-                {{properties.quickHelpButton}}</a>
-            </p>
-            <br>
-          </div>
-        </div>
-
-        <div class="col s12 m4">
-          <div class="ibm-help-bar">
-            <h1 class="center">
-              <svg version="1.1" id="location_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-                <path d="M48.969,9.03C44.627,4.687,38.627,2,32,2S19.373,4.687,15.031,9.03C10.687,13.373,8,19.373,8,26
-                  c0,7.017,2.687,13.37,7.031,17.968L32,62l16.969-18.032C53.312,39.37,56,33.017,56,26C56,19.373,53.312,13.373,48.969,9.03z
-                  M47.512,42.597L32,59.082L16.485,42.594C12.303,38.168,10,32.274,10,26c0-5.875,2.289-11.4,6.446-15.556C20.6,6.289,26.123,4,32,4
-                  c5.876,0,11.4,2.289,15.555,6.445C51.711,14.6,54,20.125,54,26C54,32.274,51.697,38.168,47.512,42.597z"/>
-                <circle cx="32" cy="26" r="8"/>
-              </svg>
-            </h1>
             <h2 class="center">{{properties.findHelpTitle}}</h2>
-            <p class="center">{{properties.findHelpSubtitle}}</p>
-            <br>
             <p class="center"><a href="offerings/search?offerType=offer" id="findHelp" class="btn-large waves-effect waves-light">
                 {{properties.findHelpButton}}</a>
             </p>
@@ -73,21 +68,13 @@
         <div class="col s12 m4">
           <div class="ibm-help-bar">
             <h1 class="center">
-              <svg version="1.1" id="group_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-                  <path d="M16,46c5.523,0,10-4.477,10-10s-4.477-10-10-10S6,30.477,6,36S10.477,46,16,46z M16,28c4.411,0,8,3.589,8,8s-3.589,8-8,8
-                      s-8-3.589-8-8S11.589,28,16,28z"/>
-                  <path d="M38,36c0,5.523,4.477,10,10,10s10-4.477,10-10s-4.477-10-10-10S38,30.477,38,36z M48,28c4.411,0,8,3.589,8,8s-3.589,8-8,8
-                      s-8-3.589-8-8S43.589,28,48,28z"/>
-                  <path d="M42,14c0-5.523-4.477-10-10-10S22,8.477,22,14s4.477,10,10,10S42,19.523,42,14z M32,22c-4.411,0-8-3.589-8-8s3.589-8,8-8
-                      s8,3.589,8,8S36.411,22,32,22z"/>
-                  <path d="M24,50H8c-2.209,0-4,1.791-4,4v6h24v-6C28,51.791,26.209,50,24,50z"/>
-                  <path d="M56,50H40c-2.209,0-4,1.791-4,4v6h24v-6C60,51.791,58.209,50,56,50z"/>
+                <polygon points="38,10 34,12 42,24 34,24 8,24 8,30 34,30 34,32 2,32 2,38 34,38 34,40 8,40 8,46 34,46 34,48 14,48 14,54 34,54 
+                46,54 62,50 62,24   "/>
               </svg>
             </h1>
             <h2 class="center">{{properties.helpOthersTitle}}</h2>
-            <p class="center">{{properties.helpOthersSubtitle}}</p>
-            <br>
             <p class="center"> <a href="offerings/search?offerType=request&offeringId=1" id="helpOthers" class="btn-large waves-effect waves-light">
                 {{properties.helpOthersButton}}</a> 
             </p>

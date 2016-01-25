@@ -294,11 +294,11 @@ nav {
 
 .ibm-help-bar{
     background: color('cool-white', 20);
-    padding: 5% 5% 0 5%;
-    margin-top: 5%;
+    margin-top: -10px;
     /* h1: icon */
     h1 svg{
         fill: color('blue', 40);
+        margin-bottom: -25px;
     }
     /* h2: headline */
     h2{

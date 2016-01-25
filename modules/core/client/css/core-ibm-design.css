@@ -207,14 +207,14 @@ nav {
 /* Help bar/footer */
 .ibm-help-bar {
   background: #f9f9fb;
-  padding: 5% 5% 0 5%;
-  margin-top: 5%;
+  margin-top: -10px;
   /* h1: icon */
   /* h2: headline */
   /* p: text */
   /* a: button */ }
   .ibm-help-bar h1 svg {
-    fill: #5596e6; }
+    fill: #5596e6;
+    margin-bottom: -25px; }
   .ibm-help-bar h2 {
     color: #5596e6;
     font-size: 20px; }
