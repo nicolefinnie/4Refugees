@@ -38,74 +38,16 @@ function mapOfferTypeNumberToString(offerType) {
 var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
-  watson = require('watson-developer-cloud'),
+  translationHandler = require(path.resolve('./modules/language/server/watson/language.server.watson.translation')),
   config = require(path.resolve('./config/config')),
   extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-//Get the local username & password if running locally.
-var languageCredentials = extend({
-  version: 'v2',
-  username: '<username>',
-  password: '<password>'
-}, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
-
-
-var language_translation = watson.language_translation(languageCredentials); // User language translation service
-
-/*var language_translation = watson.language_translation({
-  username: '0771b667-54c2-4010-8dcd-9eed53194136',
-  password: 'IeBtcoZy6hgH',
-  version: 'v2'
-});
-*/
-
-// Translation method
-function doTranslate(textLanguage, textTranslate, transResult)
-{
-  // TODO: Watson does not support german translation yet.  When they
-  // do, we should translate into all 3 languages, to avoid having
-  // to translate each time we query the results.  For now, only do
-  // translation between arabic and english.
-  if (languageCredentials.username === '<username>') {
-    console.log('Translation support not available locally!');
-    transResult(textTranslate, textTranslate);
-  }
-  else if (textLanguage === 'en') {
-    language_translation.translate({
-      text: textTranslate, source: 'en', target: 'ar' },
-      function (err, result) {
-        if (err) {
-          console.log('language_translate error:', err);
-          transResult(textTranslate, textTranslate);
-        }
-        else {
-          transResult(textTranslate, result.translations[0].translation);  
-        }
-      }
-    );
-  } else if (textLanguage === 'de') {
-    transResult(textTranslate, textTranslate);
-  } else {    
-    language_translation.translate({
-      text: textTranslate, source: textLanguage, target: 'en' },
-      function (err, result) {
-        if (err) {
-          console.log('language_translate error:', err);
-          transResult(textTranslate, textTranslate);
-        }
-        else {
-          transResult(result.translations[0].translation, result.translations[0].translation);  
-        }
-      }
-    ); 
-  }
-}
 
 // Helper function to translate, save, and return an offering
 function doTranslateOfferingAndSave(offering, res)
 {
-  doTranslate(offering.descriptionLanguage, offering.description, function(transEnglish, transOther){
+	translationHandler.doTranslate(offering.descriptionLanguage, offering.description, function(transEnglish, transOther){
     offering.descriptionEnglish = transEnglish;
     offering.descriptionOther = transOther;
     offering.save(function (err) {
