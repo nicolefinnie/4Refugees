@@ -52,26 +52,30 @@ function addTranslationToResults(results, translation) {
 // Helper function to setup the individual translation requests, when the
 // caller wants to translate to all possible languages
 function setupTranslationRequests(requests, sourceLanguage, sourceText) {
-  var newRequest = {
+  var firstRequest = {
+    'sourceLanguage': sourceLanguage,
+    'sourceText': sourceText
+  };
+  var secondRequest = {
     'sourceLanguage': sourceLanguage,
     'sourceText': sourceText
   };
 
   if (sourceLanguage === 'en') {
-    newRequest.targetLanguage = 'ar';
-    requests.push(newRequest);
-    newRequest.targetLanguage = 'de';
-    requests.push(newRequest);
+    firstRequest.targetLanguage = 'ar';
+    requests.push(firstRequest);
+    secondRequest.targetLanguage = 'de';
+    requests.push(secondRequest);
   } else if (sourceLanguage === 'ar') {
-    newRequest.targetLanguage = 'en';
-    requests.push(newRequest);
-    newRequest.targetLanguage = 'de';
-    requests.push(newRequest);
+    firstRequest.targetLanguage = 'en';
+    requests.push(firstRequest);
+    secondRequest.targetLanguage = 'de';
+    requests.push(secondRequest);
   } else {
-    newRequest.targetLanguage = 'en';
-    requests.push(newRequest);
-    newRequest.targetLanguage = 'ar';
-    requests.push(newRequest);
+    firstRequest.targetLanguage = 'en';
+    requests.push(firstRequest);
+    secondRequest.targetLanguage = 'ar';
+    requests.push(secondRequest);
   }
 }
 

@@ -168,8 +168,7 @@
         GeoSelector.activateManual(scope.geo, city);
         
         scope.description = 'A MEAN Offering';
-        scope.category = {}; // add category
-        scope.category.courses = true;
+        scope.category = 'courses';
         scope.offerType = 'offer';
 
         spyOn($location, 'path');

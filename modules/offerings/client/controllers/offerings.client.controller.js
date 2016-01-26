@@ -212,7 +212,6 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.authentication = Authentication;
 
     $scope.offering = {};
-    $scope.category = {};
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 
     // initialize datepicker
@@ -270,8 +269,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       $scope.offering.expiryString = expiryDate.toUTCString();
       $scope.offering.description = this.description;
       $scope.offering.descriptionLanguage = LanguageService.getCurrentLanguage();
-      console.log('this category is '+ JSON.stringify(this.category));
-      $scope.offering.category = [this.category];
+      $scope.offering.category = this.category ? [this.category] : ['others'];
       $scope.offering.city = offeringLocation.city;
       $scope.offering.longitude = offeringLocation.lng;
       $scope.offering.latitude = offeringLocation.lat;
@@ -347,6 +345,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       // each offer or request can only have one category
       if ($scope.offering.category.length > 0){
         $scope.category = $scope.offering.category[0];
+      } else {
+        $scope.category = 'others';
       }
       var whenDate = new Date(offering.whenString);
       var expiryDate = new Date(offering.expiryString);
@@ -364,7 +364,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     // Clear form fields, i.e. after a successful create or update
     $scope.clearForm = function () {
-      $scope.category = {};
+      delete $scope.category;
       delete $scope.description;
       delete $scope.when;
       delete $scope.expiry;

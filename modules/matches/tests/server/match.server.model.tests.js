@@ -54,9 +54,8 @@ describe('Match Model Unit Tests:', function () {
             'offeringId': offering._id.toString(),
             'requesterId': user._id.toString()
           });
+          done();
         });
-  
-        done();
       });
     });
   });
