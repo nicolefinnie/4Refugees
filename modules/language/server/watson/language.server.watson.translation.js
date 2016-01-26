@@ -11,7 +11,6 @@ var languageCredentials = extend({
   password: '<password>'
 }, config.utils.getServiceCreds('language_translation')); //VCAP_SERVICES
 
-
 var translationService = watson.language_translation(languageCredentials); // User language translation service
 
 // Helper function to tolerate translation failures, by replacing
@@ -106,8 +105,8 @@ function translateSingleLanguage(request, callback) {
   } else {
     var watsonParms = {
       text: request.sourceText,
-      source: request.source.language,
-      target: request.target.language
+      source: request.sourceLanguage,
+      target: request.targetLanguage
     };
     translationService.translate(watsonParms, function (err, result) {
       if (err) {

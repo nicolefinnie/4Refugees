@@ -53,9 +53,12 @@ function doTranslateOfferingAndSave(offering, res) {
   };
   translater.translateAllLanguages(translateInput, function(translationOutput) {
     translationOutput.targets.forEach(function(translation) {
+      // TODO: This needs a redesign!  The offering.description should
+      // have an array of translated languages, we should not have 3
+      // hard-coded and ugly fields.
       if (translation.language === 'en') {
         offering.descriptionEnglish = translation.text;
-      } else {
+      } else if (translation.language === 'ar') {
         offering.descriptionOther = translation.text;
       }
     });
