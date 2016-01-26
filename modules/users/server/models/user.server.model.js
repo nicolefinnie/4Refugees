@@ -112,6 +112,9 @@ var UserSchema = new Schema({
   languagePreference: {
     langID : String,
     langValue : String
+  },
+  publicLinkedInProfile: {
+    type: String
   }
 });
 
