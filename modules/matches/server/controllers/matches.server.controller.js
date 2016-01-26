@@ -12,34 +12,14 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Helper function to filter out sensitive/internal fields before returning to client.
- *
- * @param rawDoc - unfiltered and possibly populated document straight from Mongo
- * @param curUser - current user object
- * @returns a new Match json doc that has sensitive information filtered out.
- */
-function filterSingleInternalMatchFields(rawDoc, curUser) {
-  var tmpRes = {};
-  // TODO: Anything we need to restrict here???
-  // Like user emails?
-  // TODO: Find out how to call the offering's 'filter-internal-fields' function...
-  tmpRes = rawDoc;
-  return tmpRes;
-}
-
-/**
  * Helper function to filter out sensitive/internal fields from an array of documents.
- *
- * @param rawDocs - unfiltered and possibly populated documents straight from Mongo
- * @param curUser - current user object
- * @returns an array of Match json docs that have sensitive information filtered out.
  */
-function filterInternalMatchFields(rawDocs, curUser) {
+function filterInternalMatchFields(rawDocs) {
   var filteredResults = [];
   rawDocs.forEach(function(rawDoc) {
-    // Skip invalid matches that do not have any associated user
-    if ((rawDoc.owner && rawDoc.owner._id) || (rawDoc.requester && rawDoc.requester._id)) {
-      filteredResults.push(filterSingleInternalMatchFields(rawDoc, curUser));
+    // Skip invalid matches that do not have associated users/offerings
+    if ((rawDoc.owner && rawDoc.owner._id) && (rawDoc.requester && rawDoc.requester._id) && (rawDoc.offering && rawDoc.offering._id)) {
+      filteredResults.push(rawDoc.getPublicObject());
     }
   });
   return filteredResults;
@@ -96,7 +76,7 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              var filteredMatch = filterSingleInternalMatchFields(match, req.user);
+              var filteredMatch = match.getPublicObject();
               res.json(filteredMatch);
             }
           });
@@ -118,6 +98,8 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   Match.findById(mongoose.Types.ObjectId(req.match._id), function(err, match) {
+    // TODO: Need to populate the various fields, so we return a proper
+    // object to the user in the end?
     var now = new Date(); 
     match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
     // TODO: Language translation support for the *State.message fields?
@@ -134,7 +116,7 @@ exports.update = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        var filteredMatch = filterSingleInternalMatchFields(match, req.user);
+        var filteredMatch = match.getPublicObject();
         res.json(filteredMatch);
       }
     });
@@ -185,11 +167,8 @@ exports.search = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      //console.log('MATCH RAW RESULTS : ' + JSON.stringify(matches));
       // restrict results to only public-viewable fields
-      var publicResults = filterInternalMatchFields(matches, req.user);
-      // Note - these results do not go through translation services, they are
-      // returned the same way the user entered them.
+      var publicResults = filterInternalMatchFields(matches);
       res.json(publicResults);
     }
   });
@@ -206,7 +185,7 @@ exports.matchByID = function (req, res, next, id) {
     });
   }
 
-  Match.findById(id).populate('owner', 'displayName').populate('requester', 'displayName').populate('offering').exec(function (err, match) {
+  Match.findById(id).populate('owner').populate('requester').populate('offering').exec(function (err, match) {
     if (err) {
       return next(err);
     } else if (!match) {
@@ -214,7 +193,7 @@ exports.matchByID = function (req, res, next, id) {
         message: 'No match with that identifier has been found'
       });
     }
-    req.match = filterSingleInternalMatchFields(match, req.user);
+    req.match = match.getPublicObject();
     next();
   });
 };

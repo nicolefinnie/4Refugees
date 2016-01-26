@@ -341,6 +341,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     // Pre-fill form based on an existing offering - update codepath
     $scope.initializeFormFromOffering = function (offering) {
+      // FIXME: How to pick correct description language to use?
       $scope.offerType = offering.offerType;
       // each offer or request can only have one category
       if ($scope.offering.category.length > 0){

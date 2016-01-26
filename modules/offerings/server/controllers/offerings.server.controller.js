@@ -1,37 +1,6 @@
 /* indent: 0 */
 'use strict';
 
-function mapOfferTypeStringToNumber(offerType) {
-  if (offerType === 'offer') {
-    return 0;
-  } else if (offerType === 'request') {
-    return 1;
-  }
-  else if (offerType === 'offer (expired)') {
-    return 2;
-  } else if (offerType === 'request (expired)') {
-    return 3;
-  }
-  // unsupported states or unknown errors
-  return -1;
-}
-
-function mapOfferTypeNumberToString(offerType) {
-  if (offerType === 0) {
-    return 'offer';
-  } else if (offerType === 1) {
-    return 'request';
-  }
-  else if (offerType === 2) {
-    return 'offer (expired)';
-  }
-  else if (offerType === 3) {
-    return 'request (expired)';
-  }
-  // unsupported states or unknown errors
-  return 'unknown';
-}
-
 /**
  * Module dependencies.
  */
@@ -68,7 +37,7 @@ function doTranslateOfferingAndSave(offering, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        var filteredOffering = filterSingleInternalOfferingFields(offering, true, false);
+        var filteredOffering = Offering.getPublicObject(offering, true, false);
         res.json(filteredOffering);
       }
     });
@@ -136,7 +105,7 @@ exports.create = function (req, res) {
   offering.loc.type = 'Point';
   offering.loc.coordinates = [ Number(req.body.longitude),
                                Number(req.body.latitude) ];
-  offering.offerType = mapOfferTypeStringToNumber(req.body.offerType);
+  offering.offerType = Offering.mapOfferTypeStringToNumber(req.body.offerType);
   offering.numOffered = req.body.numOffered ? Number(req.body.numOffered) : 1;
   doTranslateOfferingAndSave(offering, res);
 
@@ -192,7 +161,6 @@ function buildGeoNearAggregateRestriction(req) {
   // TODO: The additional fields that can/should be used for the query are:
   // req.body.description -- description of the offering the user is searching for
   // req.body.whenString -- UTC date string the user is interested in receiving offers for
-  // req.body.city -- open question, should we allow searching by city when no coords are provided???
   restrictQuery.maxDistance = req.query.radius*1000;
   restrictQuery.spherical = true;
   restrictQuery.distanceMultiplier = 1/1000;
@@ -207,7 +175,7 @@ function buildGeoNearAggregateRestriction(req) {
     restrictQuery.query = { category: { $in: searchCategories } };
   }
   if (req.query.offerType) {
-    var offerTypeRestrict = mapOfferTypeStringToNumber(req.query.offerType);
+    var offerTypeRestrict = Offering.mapOfferTypeStringToNumber(req.query.offerType);
     if (restrictQuery.query) {
       restrictQuery.query.offerType = offerTypeRestrict;
     } else {
@@ -220,42 +188,12 @@ function buildGeoNearAggregateRestriction(req) {
   return restrictQuery;
 }
 
-function filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance) {
-  var tmpRes = {};
-  tmpRes._id = rawDoc._id;
-  tmpRes.displayName = rawDoc.user.displayName;
-  tmpRes.whenString = rawDoc.when.toUTCString();
-  tmpRes.updatedString = rawDoc.updated.toUTCString();
-  tmpRes.category = rawDoc.category;
-  tmpRes.description = rawDoc.description;
-  tmpRes.descriptionLanguage = rawDoc.descriptionLanguage;
-  tmpRes.descriptionEnglish = rawDoc.descriptionEnglish;
-  tmpRes.descriptionOther = rawDoc.descriptionOther;
-  tmpRes.numOffered = rawDoc.numOffered;
-  tmpRes.expiryString = new Date(rawDoc.expiry).toUTCString();
-  tmpRes.offerType = mapOfferTypeNumberToString(rawDoc.offerType);
-  tmpRes.city = rawDoc.city;
-  if (myOwnDoc === true) {
-    // this is my own document, we can show exact co-ordinates in results
-    tmpRes.longitude = rawDoc.loc.coordinates[0];
-    tmpRes.latitude = rawDoc.loc.coordinates[1];
-    tmpRes.user = rawDoc.user;
-  } else {
-    tmpRes.user = { _id : rawDoc.user._id,
-                    displayName : rawDoc.user.displayName };
-  }
-  if (includeDistance === true) {
-    tmpRes.distance = Math.round(rawDoc.distance * 100) / 100;
-  }
-  return tmpRes;
-}
-
 function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
   var filteredResults = [];
   rawDocs.forEach(function(rawDoc) {
     // Skip invalid offerings that do not have any associated user
     if (rawDoc.user && rawDoc.user._id) {
-      filteredResults.push(filterSingleInternalOfferingFields(rawDoc, myOwnDoc, includeDistance));
+      filteredResults.push(Offering.getPublicObject(rawDoc, myOwnDoc, includeDistance));
     }
   });
   return filteredResults;
@@ -284,7 +222,7 @@ exports.listMine = function (req, res) {
         return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         // Populate the display name of the user that created this offering.
-        Offering.populate(offerings, { path: 'user', select: 'displayName' }, function(err,docs) {
+        Offering.populate(offerings, { path: 'user' }, function(err,docs) {
           if (err) {
             return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
           } else {
@@ -343,7 +281,7 @@ exports.offeringByID = function (req, res, next, id) {
     });
   }
 
-  Offering.findById(id).populate('user', 'displayName').exec(function (err, offering) {
+  Offering.findById(id).populate('user').exec(function (err, offering) {
     if (err) {
       return next(err);
     } else if (!offering) {
@@ -352,7 +290,7 @@ exports.offeringByID = function (req, res, next, id) {
       });
     }
     var myDoc = (req.user && req.user._id && req.user._id.toString() === offering.user._id.toString());
-    req.offering = filterSingleInternalOfferingFields(offering, myDoc, false);
+    req.offering = offering.getPublicObject(myDoc);
     next();
   });
 };

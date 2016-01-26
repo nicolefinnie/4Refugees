@@ -101,4 +101,77 @@ OfferingSchema.index({ loc: '2dsphere' });
 // a user wants to list all of their offerings
 OfferingSchema.index({ ownerId: 1 });
 
+OfferingSchema.statics.mapOfferTypeNumberToString = function (offerType) {
+  if (offerType === 0) {
+    return 'offer';
+  } else if (offerType === 1) {
+    return 'request';
+  } else if (offerType === 2) {
+    return 'offer (expired)';
+  } else if (offerType === 3) {
+    return 'request (expired)';
+  } else {
+    // unsupported states or unknown errors
+    return 'unknown';
+  }
+};
+
+OfferingSchema.statics.mapOfferTypeStringToNumber = function(offerType) {
+  if (offerType === 'offer') {
+    return 0;
+  } else if (offerType === 'request') {
+    return 1;
+  } else if (offerType === 'offer (expired)') {
+    return 2;
+  } else if (offerType === 'request (expired)') {
+    return 3;
+  } else {
+    // unsupported states or unknown errors
+    return -1;
+  }
+};
+
+/**
+ * Static schema method to return only public portions of a user profile.
+ */
+OfferingSchema.statics.getPublicObject = function (rawDoc, myOwnDoc, includeDistance) {
+  var pubOffering = {
+    _id: rawDoc._id,
+    whenString: rawDoc.when.toUTCString(),
+    updatedString: rawDoc.updated.toUTCString(),
+    category: rawDoc.category,
+    description: rawDoc.description,
+    descriptionLanguage: rawDoc.descriptionLanguage,
+    descriptionEnglish: rawDoc.descriptionEnglish,
+    descriptionOther: rawDoc.descriptionOther,
+    numOffered: rawDoc.numOffered,
+    expiryString: new Date(rawDoc.expiry).toUTCString(),
+    offerType: this.mapOfferTypeNumberToString(rawDoc.offerType),
+    city: rawDoc.city
+  };
+
+  if (myOwnDoc === true) {
+    // this is my own document, we can show exact co-ordinates in results
+    pubOffering.longitude = rawDoc.loc.coordinates[0];
+    pubOffering.latitude = rawDoc.loc.coordinates[1];
+  }
+  // Only return the publicly-accessible portion of the user sub-document.
+  if (rawDoc.user && rawDoc.user._id) {
+    pubOffering.user = rawDoc.user.getPublicObject();
+  } else {
+    pubOffering.user = rawDoc.user;
+  }
+  if (includeDistance === true) {
+    pubOffering.distance = Math.round(rawDoc.distance * 100) / 100;
+  }
+  return pubOffering;
+};
+
+/**
+ * Instance method to return only public/client-side portions of an offering object.
+ */
+OfferingSchema.methods.getPublicObject = function (myOwnDoc) {
+  return this.constructor.getPublicObject(this, myOwnDoc, false);
+};
+
 mongoose.model('Offering', OfferingSchema);

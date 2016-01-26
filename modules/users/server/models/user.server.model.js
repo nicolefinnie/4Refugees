@@ -146,7 +146,7 @@ UserSchema.pre('validate', function (next) {
 });
 
 /**
- * Create instance method for hashing a password
+ * Instance method for hashing a password
  */
 UserSchema.methods.hashPassword = function (password) {
   if (this.salt && password) {
@@ -157,10 +157,37 @@ UserSchema.methods.hashPassword = function (password) {
 };
 
 /**
- * Create instance method for authenticating user
+ * Instance method for authenticating user
  */
 UserSchema.methods.authenticate = function (password) {
   return this.password === this.hashPassword(password);
+};
+
+/**
+ * Instance method to return only public portions of a user profile.
+ */
+UserSchema.methods.getPublicObject = function () {
+  var pubUser = {
+    _id: this._id,
+    displayName: this.displayName,
+    languagePreference: this.languagePreference
+  };
+  return pubUser;
+};
+
+/**
+ * Generate invalid/unknown public user object.
+ */
+UserSchema.statics.getPublicObject = function () {
+  var pubUser = {
+    _id: '000000000000',
+    displayName: 'Unknown User',
+    languagePreference: {
+      langId: '3',
+      langValue: 'english'
+    }
+  };
+  return pubUser;
 };
 
 /**

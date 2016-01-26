@@ -104,4 +104,24 @@ MatchSchema.index({ ownerId: 1 });
 MatchSchema.index({ requesterId: 1 });
 MatchSchema.index({ offeringId: 1 });
 
+/**
+ * Instance method to return only public/client-side portions of a match object.
+ */
+MatchSchema.methods.getPublicObject = function() {
+  var pubMatch = {
+    _id: this._id,
+    created: this.created,
+    updated: this.updated,
+    ownerState: this.ownerState,
+    requesterState: this.requesterState,
+    offeringId: this.offeringId,
+    requesterId: this.requesterId,
+    ownerId: this.ownerId
+  };
+  pubMatch.offering = this.offering.getPublicObject(false);
+  pubMatch.owner = this.owner.getPublicObject();
+  pubMatch.requester = this.requester.getPublicObject();
+  return pubMatch;
+};
+
 mongoose.model('Match', MatchSchema);
