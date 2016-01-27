@@ -183,11 +183,11 @@ nav {
     overflow: hidden;
     display: block; }
 
-/** Mac ratio - avoid scrolling for home screen.  16/9 ratios display nicely at 100%. **/
-@media screen and (device-aspect-ratio: 16 / 10) {
+/** Mac ratio - avoid scrolling for home screen.  16/9 ratios display or max browser height > 800px nicely at 100%. **/
+@media screen and (device-aspect-ratio: 16 / 10) and (max-height: 800px) {
   .ibm-home-container {
     width: 90%;
-    padding-left: 13%; } }
+    padding-left: 10%; } }
 /** welcome bar - between the header and the footer */
 .ibm-welcome-bar {
   background: #5596e6;
