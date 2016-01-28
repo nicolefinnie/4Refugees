@@ -53,7 +53,7 @@ exports.isAllowed = function (req, res, next) {
   //}
 
   // If a mail is being processed and the current user created it then allow any manipulation
-  if (req.mail && req.user && req.mail.recipient._id.equals(req.user.id)) {
+  if (req.mail && req.user && (req.mail.recipient._id.toString() === req.user.id.toString())) {
     return next();
   }
 

@@ -48,33 +48,23 @@ exports.create = function (req, res) {
   match.requesterState.withdrawRequest = false;
   User.findById(mongoose.Types.ObjectId(req.body.ownerId), function(err, foundOwner) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else if (!foundOwner) {
-      return res.status(400).send({
-        message: 'No owner with that identifier has been found'
-      });
+      return res.status(400).send({ message: 'No owner with that identifier has been found' });
     } else {
       match.owner = foundOwner;
       match.ownerId = foundOwner._id.toString();
       Offering.findById(mongoose.Types.ObjectId(req.body.offeringId), function(err, foundOffering) {
         if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
+          return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         } else if (!foundOffering) {
-          return res.status(400).send({
-            message: 'No offering with that identifier has been found'
-          });
+          return res.status(400).send({ message: 'No offering with that identifier has been found' });
         } else {
           match.offering = foundOffering;
           match.offeringId = foundOffering._id.toString();
           match.save(function (err) {
             if (err) {
-              return res.status(400).send({
-                message: errorHandler.getErrorMessage(err)
-              });
+              return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
             } else {
               var filteredMatch = match.getPublicObject();
               res.json(filteredMatch);
@@ -97,29 +87,31 @@ exports.read = function (req, res) {
  * Update a match
  */
 exports.update = function (req, res) {
-  Match.findById(mongoose.Types.ObjectId(req.match._id), function(err, match) {
-    // TODO: Need to populate the various fields, so we return a proper
-    // object to the user in the end?
-    var now = new Date(); 
-    match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-    // TODO: Language translation support for the *State.message fields?
-    if (req.user._id.toString() === match.ownerId) {
-      match.ownerState = req.body.ownerState;
-      match.ownerState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+  Match.findById(mongoose.Types.ObjectId(req.match._id)).populate('owner').populate('requester').populate('offering').exec(function(err, match) {
+    if (err) {
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else if (!match) {
+      return res.status(400).send({ message: 'No match with that identifier has been found' });
     } else {
-      match.requesterState = req.body.requesterState;
-      match.requesterState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-    }
-    match.save(function (err) {
-      if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+      var now = new Date(); 
+      match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+      // TODO: Language translation support for the *State.message fields?
+      if (req.user._id.toString() === match.ownerId) {
+        match.ownerState = req.body.ownerState;
+        match.ownerState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       } else {
-        var filteredMatch = match.getPublicObject();
-        res.json(filteredMatch);
+        match.requesterState = req.body.requesterState;
+        match.requesterState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       }
-    });
+      match.save(function (err) {
+        if (err) {
+          return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        } else {
+          var filteredMatch = match.getPublicObject();
+          res.json(filteredMatch);
+        }
+      });
+    }
   });
 };
 
@@ -129,9 +121,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   Match.remove({ _id: mongoose.Types.ObjectId(req.match._id) }, function(err) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
       res.json(req.match);
     }
@@ -163,9 +153,7 @@ exports.search = function (req, res) {
 
   query.exec(function (err, matches) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
       // restrict results to only public-viewable fields
       var publicResults = filterInternalMatchFields(matches);
@@ -180,18 +168,14 @@ exports.search = function (req, res) {
 exports.matchByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Match is invalid'
-    });
+    return res.status(400).send({ message: 'Match is invalid' });
   }
 
   Match.findById(id).populate('owner').populate('requester').populate('offering').exec(function (err, match) {
     if (err) {
       return next(err);
     } else if (!match) {
-      return res.status(404).send({
-        message: 'No match with that identifier has been found'
-      });
+      return res.status(404).send({ message: 'No match with that identifier has been found' });
     }
     req.match = match.getPublicObject();
     next();

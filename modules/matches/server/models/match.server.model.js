@@ -118,9 +118,21 @@ MatchSchema.methods.getPublicObject = function() {
     requesterId: this.requesterId,
     ownerId: this.ownerId
   };
-  pubMatch.offering = this.offering.getPublicObject(false);
-  pubMatch.owner = this.owner.getPublicObject();
-  pubMatch.requester = this.requester.getPublicObject();
+  if (this.offering && this.offering._id) {
+    pubMatch.offering = this.offering.getPublicObject(false);
+  } else {
+    pubMatch.offering = this.offering;
+  }
+  if (this.owner && this.owner._id) {
+    pubMatch.owner = this.owner.getPublicObject();
+  } else {
+    pubMatch.owner = this.owner;
+  }
+  if (this.requester && this.requester._id) {
+    pubMatch.requester = this.requester.getPublicObject();
+  } else {
+    pubMatch.requester = this.requester;
+  }
   return pubMatch;
 };
 

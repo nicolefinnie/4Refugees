@@ -63,4 +63,40 @@ var MailSchema = new Schema({
 // for all my emails, as well as to delete all emails from a particular user.
 MailSchema.index({ ownerId: 1 });
 
+/**
+ * Instance method to return only public/client-side portions of a mail object.
+ */
+MailSchema.methods.getPublicObject = function() {
+  var pubMatch = {
+    _id: this._id,
+    created: this.created,
+    title: this.title,
+    content: this.content,
+    unread: this.unread,
+    reportAdmin: this.reportAdmin,
+    ownerId: this.ownerId
+  };
+  if (this.sender && this.sender._id) {
+    pubMatch.sender = this.sender.getPublicObject();
+  } else {
+    pubMatch.sender = this.sender;
+  }
+  if (this.recipient && this.recipient._id) {
+    pubMatch.recipient = this.recipient.getPublicObject();
+  } else {
+    pubMatch.recipient = this.recipient;
+  }
+  if (this.matchId && this.matchId._id) {
+    pubMatch.matchId = this.matchId.getPublicObject();
+  } else {
+    pubMatch.matchId = this.matchId;
+  }
+  if (this.replyTo && this.replyTo._id) {
+    pubMatch.replyTo = this.replyTo.getPublicObject();
+  } else {
+    pubMatch.replyTo = this.replyTo;
+  }
+  return pubMatch;
+};
+
 mongoose.model('Mail', MailSchema);

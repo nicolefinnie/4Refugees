@@ -123,21 +123,25 @@ exports.read = function (req, res) {
  */
 exports.update = function (req, res) {
   Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id) }, function (err, offering){
-    offering.user = req.user;
-    offering.ownerId = req.user._id.toString();
-    offering.when = new Date(req.body.whenString);
-    var now = new Date(); 
-    offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-    offering.expiry = new Date(req.body.expiryString);
-    offering.description = req.body.description;
-    offering.descriptionLanguage = req.body.descriptionLanguage;
-    offering.city = req.body.city;
-    offering.category = req.body.category;
-    offering.loc.type = 'Point';
-    offering.loc.coordinates = [ Number(req.body.longitude),
-                                 Number(req.body.latitude) ];
+    if (err) {
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else {
+      offering.user = req.user;
+      offering.ownerId = req.user._id.toString();
+      offering.when = new Date(req.body.whenString);
+      var now = new Date(); 
+      offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+      offering.expiry = new Date(req.body.expiryString);
+      offering.description = req.body.description;
+      offering.descriptionLanguage = req.body.descriptionLanguage;
+      offering.city = req.body.city;
+      offering.category = req.body.category;
+      offering.loc.type = 'Point';
+      offering.loc.coordinates = [ Number(req.body.longitude),
+                                   Number(req.body.latitude) ];
 
-    doTranslateOfferingAndSave(offering, res);
+      doTranslateOfferingAndSave(offering, res);
+    }
   });
 };
 
@@ -147,9 +151,7 @@ exports.update = function (req, res) {
 exports.delete = function (req, res) {
   Offering.remove({ _id: mongoose.Types.ObjectId(req.offering._id) }, function(err) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
       res.json(req.offering);
     }
@@ -255,9 +257,7 @@ exports.listMine = function (req, res) {
 
     query.exec(function (err, offerings) {
       if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         // console.log('RAW RESULTS for ' + JSON.stringify(Query) + ' : ' + JSON.stringify(offerings));
         // restrict results to only public-viewable fields
@@ -276,18 +276,14 @@ exports.listMine = function (req, res) {
 exports.offeringByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Offering is invalid'
-    });
+    return res.status(400).send({ message: 'Offering is invalid' });
   }
 
   Offering.findById(id).populate('user').exec(function (err, offering) {
     if (err) {
       return next(err);
     } else if (!offering) {
-      return res.status(404).send({
-        message: 'No offering with that identifier has been found'
-      });
+      return res.status(404).send({ message: 'No offering with that identifier has been found' });
     }
     var myDoc = (req.user && req.user._id && req.user._id.toString() === offering.user._id.toString());
     req.offering = offering.getPublicObject(myDoc);

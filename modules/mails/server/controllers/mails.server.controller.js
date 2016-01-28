@@ -16,7 +16,7 @@ var path = require('path'),
 exports.create = function (req, res) {
   var mail = new Mail();
   mail.sender = req.user;
-  console.log('sender is: ' + JSON.stringify(req.user));
+  console.log('sender is: ' + req.user.displayName + ', id: ' + req.user.id);
   mail.updated = new Date();
   mail.title = req.body.title;
   mail.content = req.body.content;
@@ -35,7 +35,7 @@ exports.create = function (req, res) {
   }
   if (!recUser) mail.recipient = mail.sender._id;
 
-  console.log('recipient is ' + JSON.stringify(mail.recipient));
+  console.log('recipient is ' + mail.recipient.displayName + ', id: ' + mail.recipient._id);
   //console.log('recipient is either ' + JSON.stringify(mail.recipient) + ' or   ' + JSON.stringify(recUser));
   mail.matchId = req.body.matchId;
   //mail.replyTo = req.body.mailId;
@@ -45,11 +45,10 @@ exports.create = function (req, res) {
 
   mail.save(function (err) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
-      res.json(mail);
+      var filteredMail = mail.getPublicObject();
+      res.json(filteredMail);
     }
   });
 };
@@ -65,25 +64,28 @@ exports.read = function (req, res) {
  * Update a mail - not used yet, only to keep grunt test happy
  */
 exports.update = function (req, res) {
-  var mail = req.mail;
-
-  if (req.body.title) {
-    mail.title = req.body.title;
-  }
-  if (req.body.content) {
-    mail.content = req.body.content;
-  }
-
-  mail.replyTo = req.body.mailId;
-  //mail.recipient = req.body.recipient;
-
-  mail.save(function (err) {
+  Mail.findOne({ _id: mongoose.Types.ObjectId(req.mail._id) }, function (err, mail){
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else if (!mail) {
+      return res.status(400).send({ message: 'No mail with that identifier has been found' });
     } else {
-      res.json(mail);
+      if (req.body.title) {
+        mail.title = req.body.title;
+      }
+      if (req.body.content) {
+        mail.content = req.body.content;
+      }
+      mail.replyTo = req.body.mailId;
+
+      mail.save(function (err) {
+        if (err) {
+          return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+        } else {
+          var filteredMail = mail.getPublicObject();
+          res.json(filteredMail);
+        }
+      });
     }
   });
 };
@@ -92,18 +94,28 @@ exports.update = function (req, res) {
  * Delete a mail - might create dangling replyTo
  */
 exports.delete = function (req, res) {
-  var mail = req.mail;
-
-  mail.remove(function (err) {
+  Mail.remove({ _id: mongoose.Types.ObjectId(req.mail._id) }, function(err) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
-      res.json(mail);
+      res.json(req.mail);
     }
   });
 };
+
+/**
+ * Helper function to filter out sensitive/internal fields from an array of documents.
+ */
+function filterInternalMailFields(rawDocs) {
+  var filteredResults = [];
+  rawDocs.forEach(function(rawDoc) {
+    // Skip invalid mails that do not have a recipient
+    if (rawDoc.recipient && rawDoc.recipient._id) {
+      filteredResults.push(rawDoc.getPublicObject());
+    }
+  });
+  return filteredResults;
+}
 
 /**
  * List of all Mails - admin
@@ -113,11 +125,10 @@ exports.listall = function (req, res) {
 
   Mail.find(query).sort('-created').populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
-      res.json(mails);
+      var publicResults = filterInternalMailFields(mails);
+      res.json(publicResults);
     }
   });
 };
@@ -131,9 +142,7 @@ exports.list = function (req, res) {
   var query = url.parse(req.url, true).query;
   
   if (!req.user) {
-    return res.status(400).send({
-      message: errorHandler.getErrorMessage('no user')
-    });
+    return res.status(400).send({ message: errorHandler.getErrorMessage('no user') });
   }
 
   //if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
@@ -143,8 +152,7 @@ exports.list = function (req, res) {
 
   if (query.unread === 'true') {
     query.unread = true;
-  }
-  if (query.unread === 'false') {
+  } else if (query.unread === 'false') {
     query.unread = false;
   }
   
@@ -166,30 +174,26 @@ exports.list = function (req, res) {
     delete query.countOnly;
     Mail.count(query, function (err, count) {
       if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         var result = [{ numResults: count }];
         res.json(result);
       }
     });
   } else {
-    //Mail.find(query).sort('-created').populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, mails) {
     Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
       if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
-        // mark mails read - even for admins only for their specific id
         //if (!query.recipient) {
         //  query.recipient = req.user._id;
         //}
-        res.json(mails);
-        //console.log('mail result: ' + JSON.stringify(mails));
+        var publicResults = filterInternalMailFields(mails);
+        res.json(publicResults);
+        //console.log('mail result: ' + JSON.stringify(publicResults));
   
         if (reset) {
+          // mark mails read - even for admins only for their specific id
           Mail.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
             console.log('mark mail read result: ' + JSON.stringify(res));
           });
@@ -206,21 +210,17 @@ exports.list = function (req, res) {
 exports.mailByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Mail is invalid'
-    });
+    return res.status(400).send({ message: 'Mail is invalid' });
   }
 
-  Mail.findById(id).populate('sender', 'displayName').populate('recipient', 'diplayName').exec(function (err, mail) {
+  Mail.findById(id).populate('sender').populate('recipient').exec(function (err, mail) {
     if (err) {
       return next(err);
     } else if (!mail) {
-      return res.status(404).send({
-        message: 'No mail with that identifier has been found'
-      });
+      return res.status(404).send({ message: 'No mail with that identifier has been found' });
     }
 
-    req.mail = mail;
+    req.mail = mail.getPublicObject();
     next();
   });
 };
@@ -231,20 +231,16 @@ exports.mailByID = function (req, res, next, id) {
 exports.mailChainByMatchId = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'MailId is invalid'
-    });
+    return res.status(400).send({ message: 'MailId is invalid' });
   }
 
-  Mail.where('matchId').equals(req.matchId).populate('sender','displayName').exec(function (err, mails) {
+  Mail.where('matchId').equals(req.matchId).populate('sender').exec(function (err, mails) {
     if (err) {
       return next(err);
     } else if (!mails) {
-      return res.status(404).send({
-        message: 'No mail with that identifier has been found'
-      });
+      return res.status(404).send({ message: 'No mail with that identifier has been found' });
     }
-    req.mails = mails;
+    req.mails = filterInternalMailFields(mails);
     next();
   });
 };
