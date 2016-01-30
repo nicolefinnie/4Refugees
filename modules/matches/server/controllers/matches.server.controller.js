@@ -25,6 +25,17 @@ function filterInternalMatchFields(rawDocs) {
   return filteredResults;
 }
 
+function saveAndReturn(match, res) {
+  match.save(function (err) {
+    if (err) {
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else {
+      var filteredMatch = match.getPublicObject();
+      res.json(filteredMatch);
+    }
+  });
+}
+
 /**
  * Create a match
  */
@@ -62,14 +73,7 @@ exports.create = function (req, res) {
         } else {
           match.offering = foundOffering;
           match.offeringId = foundOffering._id.toString();
-          match.save(function (err) {
-            if (err) {
-              return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-            } else {
-              var filteredMatch = match.getPublicObject();
-              res.json(filteredMatch);
-            }
-          });
+          saveAndReturn(match, res);
         }
       });
     }
@@ -94,23 +98,29 @@ exports.update = function (req, res) {
       return res.status(400).send({ message: 'No match with that identifier has been found' });
     } else {
       var now = new Date(); 
+      var acceptMatch = false;
       match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       // TODO: Language translation support for the *State.message fields?
       if (req.user._id.toString() === match.ownerId) {
+        acceptMatch = (true === req.body.ownerState.acceptMatch) && (false === match.ownerState.acceptMatch);
         match.ownerState = req.body.ownerState;
         match.ownerState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       } else {
         match.requesterState = req.body.requesterState;
         match.requesterState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       }
-      match.save(function (err) {
-        if (err) {
-          return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
-        } else {
-          var filteredMatch = match.getPublicObject();
-          res.json(filteredMatch);
-        }
-      });
+      if (acceptMatch) {
+        // We need to update the offering first to mark it as accepted, then save the match.
+        match.offering.acceptMatchAndSave(function(err, updateResults) {
+          if (err) {
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+          } else {
+            saveAndReturn(match, res);
+          }
+        });
+      } else {
+        saveAndReturn(match, res);
+      }
     }
   });
 };

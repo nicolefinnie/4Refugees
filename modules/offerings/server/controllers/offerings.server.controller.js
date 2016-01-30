@@ -164,7 +164,8 @@ function buildGeoNearAggregateRestriction(req) {
   var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
  
   // Restrict to valid offerings on specified date
-  restrict.query = { when : { $lte: queryDate } };
+  restrict.query = { numOffered: { $gt: 0 } };
+  restrict.query.when = { $lte: queryDate };
   restrict.query.expiry = { $gte: queryDate };
 
   // if any categories were selected, restrict on those

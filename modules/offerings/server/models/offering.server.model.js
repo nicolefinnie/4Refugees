@@ -174,4 +174,16 @@ OfferingSchema.methods.getPublicObject = function (myOwnDoc) {
   return this.constructor.getPublicObject(this, myOwnDoc, false);
 };
 
+/**
+ * Instance method to accept an offering match - decrements the remaining number offered.
+ * After saving, the callback will be issued, passing back any error as well as update results from Mongoose.
+ */
+OfferingSchema.methods.acceptMatchAndSave = function (callback) {
+  var newNumOffered = (this.numOffered > 0) ? (this.numOffered - 1) : 0;
+  this.numOffered = newNumOffered;
+  this.constructor.update({ _id: this._id }, { $set: { numOffered: newNumOffered } }, function (err, updateResults) {
+    callback(err, updateResults);
+  });
+};
+
 mongoose.model('Offering', OfferingSchema);
