@@ -1,8 +1,8 @@
 'use strict';
 /* global Materialize:false */
 
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService',
-  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService) {
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService', '$log', 'Users',
+  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService, log, Users) {
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -14,6 +14,12 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     $scope.changeLanguage = function (language) {
       // set the current language in the language service
       LanguageService.setCurrentLanguage(language);
+      // if the user is logged in, also automatically update the preferred language in the user object
+      if (Authentication.user) {
+        var user = Authentication.user;
+        // update settings with the language chosen
+        $scope.updateUserProfile(language);
+      }
       // refresh view properties in the current language 
       LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
         $scope.properties = translationList;
@@ -22,9 +28,23 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       });
     };
 
+    // Update a user profile with the chosen language
+    $scope.updateUserProfile = function (language) {
+      var user = new Users($scope.user);
+      user.languagePreference = language;
+      user.$update(function (response) {
+        Authentication.user = response;
+      }, function (response) {
+        $scope.error = response.data.message;
+      });
+    };
   
-    // Set the initial language to English
-    $scope.changeLanguage('en');
+    // Set the initial language to English if not logged in
+    if (!Authentication.user) {
+      $scope.changeLanguage('en');
+    } else {
+      $scope.changeLanguage(Authentication.user.languagePreference);
+    }
 
     // TODO Find better way of alerting the user of new mail using IBM icons
     $scope.hasUnreadMail = false;

@@ -110,8 +110,8 @@ var UserSchema = new Schema({
     type: String
   },
   languagePreference: {
-    langID : String,
-    langValue : String
+    type: String,
+    default : 'en'
   },
   publicLinkedInProfile: {
     type: String

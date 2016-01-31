@@ -4,8 +4,8 @@ angular.module('users').config(function(tagsInputConfigProvider) {
   tagsInputConfigProvider.setActiveInterpolation('tagsInput', { placeholder: true });
 });
 
-angular.module('users').controller('EditProfileController', ['$scope', '$http', '$location', 'Users', 'Authentication', '$log',
-  function (ctrl, $http, $location, Users, Authentication, log) {
+angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'Users', 'Authentication', '$log', 'LanguageService',
+  function (ctrl, $rootScope, $http, $location, Users, Authentication, log, languageService) {
     ctrl.user = Authentication.user;
     
     log.info(ctrl.user);
@@ -15,12 +15,9 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
       ctrl.success = ctrl.error = null;
       if (!isValid) {
         ctrl.$broadcast('show-errors-check-validity', 'userForm');
-
         return false;
       }
-
       var user = new Users(ctrl.user);
-
       user.$update(function (response) {
         ctrl.$broadcast('show-errors-reset', 'userForm');
         ctrl.success = true;
@@ -48,6 +45,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
                   { langID: 'de', langValue: 'deutsch' },
                   { langID: 'en', langValue: 'english' }
     ];
-    
+
   }
 ]);

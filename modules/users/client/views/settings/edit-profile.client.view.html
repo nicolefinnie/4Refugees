@@ -124,8 +124,8 @@
             <label class="active" for="language">{{properties.langPreference}}</label>
             <select name="languageSelector"
                     ng-model="user.languagePreference"
-                    ng-options="lang.langValue for lang in languages track by lang.langID"
-                    ng-selected="user.languagePreference.langID == $index">
+                    ng-options="lang.langID as lang.langValue for lang in languages"
+                    ng-selected="user.languagePreference == $index">
               <option value="">{{properties.languageDropdownPlaceholder}}</option>
             </select>
           </div>
