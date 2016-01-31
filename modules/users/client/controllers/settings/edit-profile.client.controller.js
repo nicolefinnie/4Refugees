@@ -8,7 +8,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
   function (ctrl, $http, $location, Users, Authentication, log) {
     ctrl.user = Authentication.user;
     
-    log.info('The user object from Authentication.user:');
     log.info(ctrl.user);
 
     // Update a user profile
@@ -45,9 +44,9 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
     };
 
     ctrl.languages = [
-                  { langID: '1', langValue: 'العربية' },
-                  { langID: '2', langValue: 'deutsch' },
-                  { langID: '3', langValue: 'english' }
+                  { langID: 'ar', langValue: 'العربية' },
+                  { langID: 'de', langValue: 'deutsch' },
+                  { langID: 'en', langValue: 'english' }
     ];
     
   }
