@@ -25,6 +25,9 @@ angular.module('core').controller('HomeController', ['$scope', '$http', '$rootSc
         $scope.properties = translationList;
       });
     }
+
+    // Tell the header to refresh itself too - user may have just authenticated.
+    $rootScope.$broadcast('refreshHeader');
   }
 ]);
 

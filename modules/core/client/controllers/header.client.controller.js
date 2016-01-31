@@ -59,30 +59,10 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       }
     };
 
-    // Polling interval is more frequent until we are authenticated.
-    // Before authentication, polling is a no-op.  This way, we can
-    // refresh quickly as soon as we authenticate, and then slow down
-    // to reduce load on the server.
-    $scope.getPollingInterval = function() {
-      var pollingInterval = 5000;
-      if (Authentication.user) {
-        pollingInterval = 60000;
-      }
-      return pollingInterval;
-    };
-
     var polling; // promise, set when we start intervals, used to cancel intervals.
-    var pollingInterval = $scope.getPollingInterval();
-    $scope.startPolling = function() {
+    $scope.startPolling = function(pollingInterval) {
       polling = $interval(function() {
         $scope.runIntervalTasks();
-        var newPollingInterval = $scope.getPollingInterval();
-        // Check if our polling interval needs to change - i.e. we just Authenticated.
-        if (newPollingInterval !== pollingInterval) {
-          $scope.stopPolling();
-          pollingInterval = newPollingInterval;
-          $scope.startPolling();
-        }
       }, pollingInterval);
     };
 
@@ -93,9 +73,20 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       }
     };
 
-    // And now start our polling
-    $scope.runIntervalTasks();
-    $scope.startPolling();
+    // Someone asked us to refresh
+    $rootScope.$on('refreshHeader', function(){
+      // Check for new mails/etc only once per minute, to limit load on server
+      var pollingInterval = 60000;
+      // Prevent race conditions - stop any current polling, then issue a new
+      // refresh task immediately, and then start polling.  Note that polling
+      // sleeps first, so we won't be running two refreshes back-to-back.
+      $scope.stopPolling();
+      $scope.runIntervalTasks();
+      $scope.startPolling(pollingInterval);
+    });
+
+    // Tell ourselves to refresh new mail count and start polling
+    $rootScope.$broadcast('refreshHeader');
 
     $scope.$on('$destroy', function() {
       $scope.stopPolling();
