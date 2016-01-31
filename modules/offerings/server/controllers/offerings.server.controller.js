@@ -159,13 +159,15 @@ exports.delete = function (req, res) {
 };
 
 function buildGeoNearAggregateRestriction(req) {
-  var restrictQuery = {};
-  // TODO: The additional fields that can/should be used for the query are:
-  // req.body.description -- description of the offering the user is searching for
-  // req.body.whenString -- UTC date string the user is interested in receiving offers for
-  restrictQuery.maxDistance = req.query.radius*1000;
-  restrictQuery.spherical = true;
-  restrictQuery.distanceMultiplier = 1/1000;
+  var restrict = {};
+  var queryDate = new Date(req.query.whenString);
+  var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
+ 
+  // Restrict to valid offerings on specified date
+  restrict.query = { numOffered: { $gt: 0 } };
+  restrict.query.when = { $lte: queryDate };
+  restrict.query.expiry = { $gte: queryDate };
+
   // if any categories were selected, restrict on those
   if (req.query.category) {
     var searchCategories = [];
@@ -174,20 +176,23 @@ function buildGeoNearAggregateRestriction(req) {
     } else {
       searchCategories = req.query.category;
     }
-    restrictQuery.query = { category: { $in: searchCategories } };
+    restrict.query.category = { $in: searchCategories };
   }
+
+  // restrict to search either offerings or requests
   if (req.query.offerType) {
     var offerTypeRestrict = Offering.mapOfferTypeStringToNumber(req.query.offerType);
-    if (restrictQuery.query) {
-      restrictQuery.query.offerType = offerTypeRestrict;
-    } else {
-      restrictQuery.query = { offerType: offerTypeRestrict };
-    }
+    restrict.query.offerType = offerTypeRestrict;
   }
-  var nearPoint = { type : 'Point', coordinates : [ Number(req.query.longitude), Number(req.query.latitude) ] };
-  restrictQuery.near = nearPoint;
-  restrictQuery.distanceField = 'distance';
-  return restrictQuery;
+
+  // add geo-near restrictions
+  restrict.maxDistance = req.query.radius*1000;
+  restrict.spherical = true;
+  restrict.distanceMultiplier = 1/1000;
+  restrict.near = nearPoint;
+  restrict.distanceField = 'distance';
+
+  return restrict;
 }
 
 function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
