@@ -32,13 +32,15 @@ var UserSchema = new Schema({
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+    validate: [validateLocalStrategyProperty, 'Please fill in your first name'],
+    isPrivate : Boolean
   },
   lastName: {
     type: String,
     trim: true,
     default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+    validate: [validateLocalStrategyProperty, 'Please fill in your last name'],
+    isPrivate : Boolean
   },
   displayName: {
     type: String,
@@ -68,7 +70,8 @@ var UserSchema = new Schema({
   },
   profileImageURL: {
     type: String,
-    default: 'modules/users/client/img/profile/default.png'
+    default: 'modules/users/client/img/profile/default.png',
+    isPrivate : Boolean
   },
   provider: {
     type: String,
@@ -100,21 +103,25 @@ var UserSchema = new Schema({
   },
   tagsInterests: [{
     tagName : String,
-    value : String
+    value : String,
+    isPrivate : Boolean
   }],
   tagsSkills: [{
     tagName : String,
-    value : String
+    value : String,
+    isPrivate : Boolean
   }],
   aboutMe: {
-    type: String
+    type: String,
+    isPrivate : Boolean
   },
   languagePreference: {
     langID : String,
     langValue : String
   },
   publicLinkedInProfile: {
-    type: String
+    type: String,
+    isPrivate : Boolean
   }
 });
 
