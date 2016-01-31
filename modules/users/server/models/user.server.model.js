@@ -115,6 +115,15 @@ var UserSchema = new Schema({
   },
   publicLinkedInProfile: {
     type: String
+  },
+  isPrivate: {
+    firstname : { type: Boolean, default: false },
+    lastname : { type: Boolean, default: false },
+    picture : { type: Boolean, default: false },
+    linkedInProfile : { type: Boolean, default: false },
+    skills : { type: Boolean, default: false },
+    interests : { type: Boolean, default: false },
+    aboutMe : { type: Boolean, default: false }
   }
 });
 
