@@ -125,6 +125,8 @@
 "chooseTagInterests":"Your interests",
 "chooseTagSkills":"Your skills",
 "tagPlaceholder":"Click here to choose tags",
+"publicLinkedInProfile":"LinkedIn URL",
+"publicLinkedInProfilePlaceholder":"(optional) your public LinkedIn profile URL",
 "currentPassword":"Current Password",
 "newPassword":"New Password",
 "verifyPassword":"Verify Password",

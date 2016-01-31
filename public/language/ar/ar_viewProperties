@@ -130,6 +130,8 @@
 "chooseTagInterests":"اهتماماتك",
 "chooseTagSkills":"مهاراتك",
 "tagPlaceholder":"الكلمات كنت مهتما في",
+"publicLinkedInProfile":"LinkedIn URL",
+"publicLinkedInProfilePlaceholder":"(اختياري)",
 "currentPassword":"كلمة السر الحالية",
 "newPassword":"كلمة سر جديدة",
 "verifyPassword":"التحقق من كلمة السر",

@@ -126,6 +126,8 @@
 "chooseTagInterests":"Deine Interessen",
 "chooseTagSkills":"Deine Fähigkeiten",
 "tagPlaceholder":"Klicken Sie hier um Kategorien auszuwählen",
+"publicLinkedInProfile":"LinkedIn URL",
+"publicLinkedInProfilePlaceholder":"(optional) Ihre öffentliche LinkedIn Profil URL",
 "currentPassword":"Momentanes Passwort",
 "newPassword":"Neues Passwort",
 "verifyPassword":"Passwort überprüfen",
