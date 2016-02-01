@@ -8,6 +8,10 @@ html {
 body {
   margin: 0 0 5% 0; }
 
+/** Mac ratio - avoid cropping of welcome message for home screen. **/
+@media screen and (device-aspect-ratio: 16 / 10) {
+  body {
+    margin: 0 0 6.5% 0; } }
 footer {
   position: absolute;
   left: 0;
