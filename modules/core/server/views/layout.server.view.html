@@ -30,18 +30,22 @@
 
   <!-- Fav Icon -->
   <link href="{{favicon}}" rel="shortcut icon" type="image/x-icon">
-
+  <!-- Google material icon -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Google Map API -->
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
   <!-- Application CSS Files -->
   {% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
 </head>
 
-<body class="ng-cloak">
+<body>
   <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-  <section class="content">
+  <section>
     <section class="container">
       {% block content %}{% endblock %}
     </section>
   </section>
+  <footer ng-include="'/modules/core/client/views/footer.client.view.html'" class="page-footer" ng-hide="hideFooter"></footer>
 
   <!--Embedding The User Object-->
   <script type="text/javascript">
@@ -59,5 +63,4 @@
   <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
   {% endif %}
 </body>
-
 </html>

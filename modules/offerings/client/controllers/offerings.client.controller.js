@@ -79,7 +79,7 @@ function convertServerOfferingUTCDateToLocal(offering) {
 // Converts server offering JSON into client offering, for integration with views.
 function convertServerOfferingToClientViewOffering(language, $scope, offering) {
   offering.category = convertEnglishCategory(offering.category, language, $scope);
-  offering.offerType = convertEnglishOfferType(offering.offerType, $scope);
+  //offering.offerType = convertEnglishOfferType(offering.offerType, $scope);
   convertServerOfferingUTCDateToLocal(offering);
 }
 
@@ -107,7 +107,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
                                                                      'Authentication', 'Offerings', 'GeoSelector', 'LanguageService',
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoSelector, LanguageService) {
     $scope.authentication = Authentication;
-
+    $rootScope.hideFooter = false;
     $scope.showDetails = false;
     $scope.searchStatus = null;
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': false, 'enableList': true, 'enableManual': false });
@@ -124,9 +124,10 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.initialize();
     });
 
-    $scope.profileModalDetails = function(){
-      $('#volunteerProfile').openModal();
+    $scope.profileModalDetails = function(index){
+      $('#volunteerProfile-'+index).openModal();
     };
+    
     // Called when user clicks to update location
     $scope.toggleGeoLocation = function() {
       // We already tried the geo locator, so future toggles do not need to
@@ -210,7 +211,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
                                                                'Authentication', 'Offerings', 'GeoSelector', 'LanguageService',
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Offerings, GeoSelector, LanguageService) {
     $scope.authentication = Authentication;
-
+    $rootScope.hideFooter = false;
     $scope.offering = {};
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 

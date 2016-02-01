@@ -1,8 +1,8 @@
 <div ng-controller="FirstStepController" ng-init="initialize()">
   <div class="row">
+  <br>
     <div class="col m12 s12" ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-      <h2>{{properties.welcomeTitle}}</h2>
-      <h5>{{properties.welcomeDescription}}</h5>
+      <h4>{{properties.welcomeDescription}}</h4>
     </div>
   </div>
 
@@ -11,25 +11,20 @@
   -->
   <div class="row">
     <div class="col m12 s12" ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-      <a ng-repeat="resource in resources" href="{{resource.link}}" class="list-group-item">
-        <h4 ng-bind="resource.header"></h4>
-        <p ng-bind="resource.description"></p>
-        <div class="ibm-firsthelp-resources-breakword">
-          <p ng-bind="resource.link"></p>
+    <ul>
+      <li ng-repeat="resource in resources" href="{{resource.link}}" class="list-group-item">
+        <div class="ibm-offering-list card">
+          <div class="card-content"> 
+            <span class="card-title" ng-bind="resource.header"></span>
+            <p ng-bind="resource.description"></p>
+            <br>
+            <div class="ibm-firsthelp-resources-breakword card-action">
+                <a ng-href="{{resource.link}}">{{resource.link}}</a>
+            </div>
+          </div>
         </div>
-      </a>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col m12 s12" ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-      <h5>{{properties.searchForHelp}}</h5>
-      <br>
-      <p class="center">
-        <a href="offerings/search?offerType=offer" class="btn-large waves-effect waves-light">
-          {{properties.findHelpButton}}</a>
-      </p>
-      <br>
+      </li>
+    </ul>
     </div>
   </div>
 </div>

@@ -11,6 +11,9 @@
         <br><br>
                 <input type="checkbox" id="training" name="training" ng-model="category.training">
                 <label for="training">{{properties.jobTraining}}</label>   
+                
+                <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
+                <label for="childcare">{{properties.childCare}}</label> 
 
                 <input type="checkbox" id="courses" name="courses" ng-model="category.courses">
                 <label for="courses">{{properties.languageCourses}}</label> 
@@ -18,9 +21,7 @@
                 <input type="checkbox" id="medical" name="medical" ng-model="category.medical">
                 <label for="medical">{{properties.medicalAssistance}}</label> 
 
-                <input type="checkbox" id="childcare" name="childcare" ng-model="category.childcare">
-                <label for="childcare">{{properties.childCare}}</label> 
-
+                
                 <input type="checkbox" id="others" name="others" ng-model="category.others">
                 <label for="others">{{properties.others}}</label>    
         <br><br>       
@@ -65,7 +66,7 @@
                 <br>
                 <div class="row" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                     <div class="ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleAdvanced()">
-                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                             <path d="M27.5,16c0-0.615-0.062-1.213-0.155-1.802L31,11l-3.105-5.098l-4.359,1.424c-1.042-0.906-2.248-1.623-3.569-2.109L19,1h-6
                                 l-0.966,4.217c-1.321,0.486-2.527,1.203-3.57,2.11L4.105,5.902L1,11l3.655,3.199C4.562,14.787,4.5,15.386,4.5,16
@@ -162,35 +163,72 @@
           </div> <!-- end of grid col m6 s11 -->
         </div> <!-- end of row - middle section without category -->
     </form>       
-    <br>  
     <!-- show search results -->
     <div class="row">
-      <div class="col ms12 s12" ng-class="properties.rightToLeft ? 'right-align ':'left-align'">
+      <div ng-class="properties.rightToLeft ? 'right-align col m6 s11 right':'left-algin col m6 offset-s1 s11'">
         <ul>
           <li ng-repeat="offering in offerings" class="list-group-item">
             <div class="row">
               <div class="ibm-offering-list card">
-                
                 <!-- display profile  -->
-                <div id="volunteerProfile" class="modal">
+                <div id="volunteerProfile-{{ $index }}" class="modal">
                   <div class="modal-content">
+                  <div class="row">
+                  <div class="col s12">
+                  <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
+                            20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
+                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                            s12,5.383,12,12S22.617,28,16,28z"/>
+                    </svg>
+                  </a>
+                  </div>
+                  <div class="col s12">
                   <h4 ng-bind="offering.user.displayName"></h4>
-                  <p>Profile TODO</p>
+                  <!-- TODO waiting for Kai's change -->
+                  </div>
+                  </div>
                   </div>
                 </div>
-          
                 <div class="card-content">
-                      <span class="card-title" ng-bind="offering.description"></span>
-                      <p><div class="chip" ng-bind="offering.category"></div></p>
+                  <div class="row">
+                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                        <svg ng-if="offering.offerType=='request'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                      <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M23,16c0,0.893-0.174,1.743-0.479,2.528
+                          c-0.711,1.829-2.164,3.281-3.992,3.992C17.744,22.826,16.893,23,16,23c-0.893,0-1.744-0.174-2.529-0.479
+                          c-1.828-0.711-3.281-2.164-3.992-3.992C9.174,17.743,9,16.893,9,16c0-0.893,0.174-1.743,0.479-2.527
+                          c0.711-1.829,2.165-3.283,3.992-3.994C14.257,9.174,15.107,9,16,9c0.893,0,1.743,0.174,2.529,0.479
+                          c1.827,0.71,3.281,2.165,3.992,3.994C22.826,14.257,23,15.107,23,16z M19.286,8.714C18.282,8.259,17.172,8,16,8
+                          s-2.282,0.259-3.286,0.714L9.766,5.766C11.586,4.653,13.715,4,16,4s4.414,0.653,6.234,1.766L19.286,8.714z M8.714,19.286
+                          l-2.948,2.948C4.653,20.415,4,18.285,4,16s0.653-4.415,1.766-6.234l2.948,2.948C8.26,13.718,8,14.828,8,16S8.26,18.282,8.714,19.286
+                          z M12.714,23.286C13.718,23.741,14.828,24,16,24s2.282-0.259,3.286-0.714l2.948,2.948C20.414,27.347,18.285,28,16,28
+                          s-4.414-0.653-6.234-1.766L12.714,23.286z M23.286,12.714l2.948-2.948C27.347,11.585,28,13.715,28,16s-0.653,4.415-1.766,6.234
+                          l-2.948-2.948C23.74,18.282,24,17.172,24,16S23.74,13.718,23.286,12.714z"/>
+                      </svg>
+                      <svg ng-if="offering.offerType=='offer'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                          <polygon points="19,5 17,6 21,12 17,12 4,12 4,15 17,15 17,16 1,16 1,19 17,19 17,20 4,20 4,23 17,23 17,24 7,24 7,27 17,27 23,27 
+                            31,25 31,12     "/>
+                      </svg>
+                    </div>
+                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                        <span class="card-title"> {{offering.description}}</span>
+                    </div>
+                  </div> 
+                      <p><div class="chip waves-effect waves-light" ng-bind="offering.category"></div></p>
                       <p>{{properties.location}}: <span ng-bind="offering.city"></span></p>
                       <p>{{properties.distance}}: <span ng-bind="offering.distance"></span> {{properties.kilometres}}</p>
-            
-                      <small>
+                      <p>
                         {{properties.offeredBy}}
-                      </small>
-                        <a class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails()" href="#volunteerProfile" ng-bind="offering.user.displayName"></a>
-                      <small>  
-                        <br>
+                        <span>
+                        <a ng-if="authentication.user._id != offering.user._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)" ng-bind="offering.user.displayName"></a>
+                        <a ng-if="authentication.user._id == offering.user._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)">{{properties.me}}</a>
+                        </span>
+                      </p>
+                      <small>
                         {{properties.availableOn}}
                         <span ng-bind="offering.when | date:'mediumDate'"></span>
                         <br>{{properties.expiresOn}}

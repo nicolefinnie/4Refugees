@@ -13,15 +13,36 @@
 }
  
 .ibm-offering-list.card {
-    background-color: color('cool-gray',60);
-    color: color('white', core); 
-    .chip{
-        background-color: color('yellow',20);
+    background-color: color('cool-white', 20);
+    color: color('gray', 60); 
+     .chip{
+        background-color: color('gray',40);
+        color: color('white', core);
+    }
+    .card-content{
+        .card-title{
+            font-weight: bold;
+        }
+        svg{
+            fill: color('gray', 40);
+            float: left;
+        }
+    }
+    
+    .card-action{
+        a{
+            text-transform: lowercase;
+            color: color('blue', core);
+        }
     }
 }
 
 .ibm-offering-list.card .modal .modal-content{
     color: color('gray',90);
+    svg {
+        fill: color('gray', 20);
+        height: 24px;
+    }
 }
 
 /* geo location when there's no geo service, a drop down select city list is shown*/

@@ -12,7 +12,10 @@
 
 {"viewName":"home",
 "headline":"Welcome to Germany",
-"subheadline":"Hi there, how can we help you today?",
+"subheadline":"Hi there, how can we help you today?"
+},
+
+{"viewName":"footer",
 "quickHelpTitle":"Germany in a nutshell",
 "findHelpTitle":"Coordinating Help",
 "helpOthersTitle":"You are one of us",
@@ -20,6 +23,7 @@
 "findHelpButton":"Find Help",
 "helpOthersButton":"Help Others"
 },
+
 
 {"viewName":"offering",
 "search":"Search",
@@ -66,6 +70,7 @@
 "createFirstOffering":"No offerings yet, why don't you create one?",
 "postedOn":"Posted on",
 "by":"by",
+"me":"me",
 "expiresOn":"expires on",
 "numOffered":"number offered:",
 "offer":"offer",
@@ -84,6 +89,7 @@
 {"viewName":"matches",
 "matchTitle":"Offering Match",
 "myMatches":"My Matched Offers",
+"me":"Me",
 "description":"Description: ",
 "message":"Additional message to send",
 "contact":"Contact",
@@ -157,8 +163,7 @@
 
 {"viewName":"firststep",
 "welcomeTitle":"Welcome to Germany!",
-"welcomeDescription":"If you feel a little lost, the links below have valuable information to help you get settled.", 
-"searchForHelp":"When you are ready, find help from nearby volunteers in Germany.",
+"welcomeDescription":"Germany in a nutshell", 
 "findHelpButton":"Find Help",
 "ankommenHeader":"Essential App",
 "ankommenDescription":"Download the following app to guide you through your first weeks in Germany.",

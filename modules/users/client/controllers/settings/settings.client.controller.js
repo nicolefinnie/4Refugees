@@ -17,5 +17,6 @@ angular.module('users').controller('SettingsController', ['$scope', '$rootScope'
     };
   
     $scope.user = Authentication.user;
+    $rootScope.hideFooter = true;
   }
 ]);

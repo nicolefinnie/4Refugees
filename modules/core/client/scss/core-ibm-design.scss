@@ -4,15 +4,52 @@
 /** color/font/icon designed by IBM designer Christian Fritsche
  * All CSS styles have to show properly on smartphone as well.
 */
-header, main, footer {
-    display: block;
-    padding: 0;
+
+html {
+    position: relative;
+    min-height: 80%;
+}
+
+body {
+    margin: 0 0 5% 0; 
+}
+
+/** Mac ratio - avoid cropping of welcome message for home screen. **/
+@media screen and (device-aspect-ratio: 16/10) {
+    body{
+        margin: 0 0 6.5% 0; 
+    }
+}
+
+footer{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
 }
 
 nav {
     overflow: visible;
 }
-   
+
+
+footer.page-footer{
+    background-color: color('white', core);
+    /* inherit and override footer-copyright*/
+    .ibm-footer-copy-right-container{
+       background-color: color('cool-white', 20);
+       color: color('gray', 40);
+       height: 50px;
+       line-height: 50px;
+       overflow: hidden;
+       margin-bottom: -20px;
+    }
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+  
 /** The header that controls the entire bar color/text/font **/
 .ibm-header{
    padding: 0 10% 0 10%;
@@ -260,14 +297,6 @@ nav {
   }
 }
 
-/** Mac ratio - avoid scrolling for home screen.  16/9 ratios display or max browser height > 800px nicely at 100%. **/
-@media screen and (device-aspect-ratio: 16/10) and (max-height: 800px) {
-    .ibm-home-container{
-        width: 90%;
-        padding-left: 10%;
-    }
-}
-
 /** welcome bar - between the header and the footer */
 .ibm-welcome-bar{
     background: color('blue', 40);
@@ -326,6 +355,7 @@ nav {
         text-transform: capitalize;
     }
 }
+    
 
 /* smaller screens */    
 @media screen and (max-width:500px) {
@@ -354,16 +384,71 @@ nav {
             margin-left: 60%;
         }
     }
+    
+    /* footer bar on small/big screen */
+    .ibm-visible-small-screen{
+        display: none;
+     }
+     .ibm-visible-big-screen{
+        padding-top: 0;
+        width: 70%;
+     }
+}
+
+
+@media screen and (max-width: 992px) {
+    .ibm-visible-big-screen{
+        display: none;
+     }
+    .ibm-footer-bar{
+        a{
+            width: 32.5%;
+            padding-top: 5%;
+            padding-bottom: 5%;
+            background-color: color('gray',70);
+        }
+        a svg{ 
+            fill: color('white',core);
+            display: block;
+            margin: auto;
+        }
+        margin-bottom: 0.5%;
+        margin-right: -1%;
+    }
+     
+    html {
+        min-height: 93%;
+    }
+    /* the distance between ibm footer bar to the body*/
+    body {
+        margin: 0 0 18% 0; 
+    }
+    .ibm-home-container {
+        margin-right: -3%;
+        margin-left: -3%;
+    } 
+    .ibm-cover-container {
+        margin-bottom: 0;
+    }
+    footer.page-footer{
+        .ibm-footer-copy-right-container{
+           background-color: color('gray', 80);
+           color: color('gray', 40);
+           height: 50px;
+           line-height: 50px;
+           a {
+            color: color('gray', 40);
+            text-decoration: underline;
+           }
+        }
+   
+    }
+    
+    .drag-target {
+        width: 0;
+    }
 }
 /** This design below comes with Mean.JS **/
-
-[ng\:cloak],
-[ng-cloak],
-[x-ng-cloak],
-.ng-cloak,
-.x-ng-cloak {
-  display: none !important;
-}
 
 .header-profile-image {
   opacity: 0.8;
