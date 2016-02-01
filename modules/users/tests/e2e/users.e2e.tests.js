@@ -28,6 +28,8 @@ describe('Users E2E Tests:', function () {
   describe('Signup Validation', function () {
     
     it('Should report missing first name', function () {
+      //Make sure user is signed out first
+      signout();
       browser.get('http://localhost:3001/authentication/signup');
       // Click advanced option to make all elements visible
       element(by.id('toggle-area')).click();

@@ -26,7 +26,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
   
     $scope.authentication = Authentication;
     $scope.popoverMsg = PasswordValidator.getPopoverMsg();
-
+    // global variable function
+    $rootScope.hideFooter = true;
     // Get an eventual error defined in the URL query string:
     $scope.error = $location.search().err;
 

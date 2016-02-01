@@ -14,6 +14,10 @@
 {"viewName":"home",
 "headline":"أهلا بكم في ألمانيا",
 "subheadline":"مرحبا، كيف يمكننا مساعدتك اليوم؟",
+"rightToLeft":true
+},
+
+{"viewName":"footer",
 "quickHelpTitle":"ألمانيا باختصار",
 "findHelpTitle":"تنسيق المساعدة",
 "helpOthersTitle":"كنت واحدا منا",
@@ -22,6 +26,8 @@
 "helpOthersButton":"ساعد الاخرين",
 "rightToLeft":true
 },
+
+
 
 {"viewName":"offering",
 "search":"البحث عن",
@@ -68,6 +74,7 @@
 "createFirstOffering":"لا عروض حتى الآن، لماذا لا تقوم بإنشاء واحد؟",
 "postedOn":"نشر على",
 "by":"بواسطة",
+"me":"لي",
 "expiresOn":"تنتهي صلاحيته في",
 "numOffered":":عدد عرضت",
 "offer":"عرض",
@@ -87,6 +94,7 @@
 {"viewName":"matches",
 "matchTitle":"عروض مطابقة",
 "myMatches":"عروض بلدي متطابق",
+"me":"أنا",
 "description":"الوصف",
 "message":"رسالة إضافية لإرسال",
 "contact":"اتصال",
@@ -163,7 +171,7 @@
 
 {"viewName":"firststep",
 "welcomeTitle":"أهلا بكم في ألمانيا",
-"welcomeDescription":"إذا كنت تشعر قليلا فقدت، والروابط أدناه لديها معلومات قيمة لمساعدتك في الحصول على تسوية", 
+"welcomeDescription":"ألمانيا باختصار",
 "searchForHelp":"عندما تكون مستعدا، والعثور على مساعدة من المتطوعين قريب في ألمانيا",
 "findHelpButton":"البحث عن مساعدة",
 "ankommenHeader":"التطبيق الأساسي",

@@ -5,6 +5,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
      'Authentication', 'Mails', 'Socket', 'LanguageService',
   function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, Socket, LanguageService) {
     $scope.authentication = Authentication;
+    $rootScope.hideFooter = true;
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) {

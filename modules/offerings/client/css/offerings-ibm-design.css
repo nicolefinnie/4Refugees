@@ -6,13 +6,25 @@
   float: right; }
 
 .ibm-offering-list.card {
-  background-color: #5a6464;
-  color: #fff; }
+  background-color: #f9f9fb;
+  color: #5a5a5a; }
   .ibm-offering-list.card .chip {
-    background-color: #fdd600; }
+    background-color: #959595;
+    color: #fff; }
+  .ibm-offering-list.card .card-content .card-title {
+    font-weight: bold; }
+  .ibm-offering-list.card .card-content svg {
+    fill: #959595;
+    float: left; }
+  .ibm-offering-list.card .card-action a {
+    text-transform: lowercase;
+    color: #4178be; }
 
 .ibm-offering-list.card .modal .modal-content {
   color: #121212; }
+  .ibm-offering-list.card .modal .modal-content svg {
+    fill: #c7c7c7;
+    height: 24px; }
 
 /* geo location when there's no geo service, a drop down select city list is shown*/
 .ibm-input-field select {

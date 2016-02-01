@@ -15,14 +15,15 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
                                                            'Authentication', 'Matches', 'LanguageService',
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Matches, LanguageService) {
     $scope.authentication = Authentication;
-
+   
     $scope.match = {};
     // TODO: Do we need an 'unblock' button if the user changes their mind?
     $scope.showBlockButton = false;
     $scope.showAcceptButton = false;
     $scope.showRejectButton = false;
     $scope.showContactButton = false;
-
+    $rootScope.hideFooter = false;
+    
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       $scope.initLanguage();
@@ -32,6 +33,14 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       return ($scope.authentication.user._id.toString() === $scope.match.ownerId);
     };
 
+    $scope.profileModalDetails = function(index){
+      $('#theOtherProfile-'+index).openModal();
+    };
+    
+    $scope.singleProfileModalDetails = function(){
+      $('#singleProfile').openModal();
+    };
+    
     $scope.createOrUpdate = function() {
       $scope.error = null;
 
@@ -156,6 +165,11 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       if (!match.requesterState.lastMessage || (match.requesterState.lastMessage.length === 0)) {
         match.requesterState.lastMessage = $scope.properties.noMessageYet;
       }
+      if($scope.authentication.user._id.toString() === match.ownerId){
+        match.theOther = match.requester;
+      } else {
+        match.theOther = match.owner;
+      }
     };
 
     // Find all my matches - init function for matches.listMine
@@ -230,6 +244,11 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
                 $scope.matchId = match._id.toString();
                 $scope.prepareMatchForView(match);
                 $scope.setButtonVisibility();
+                if($scope.amIOwner()===true){
+                  $scope.match.theOther = match.requester;
+                } else {
+                  $scope.match.theOther = match.owner;
+                }
               });
             } else {
               // Start off with an empty match, first time this requester is interested

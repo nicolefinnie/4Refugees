@@ -12,7 +12,10 @@
 
 {"viewName":"home",
 "headline":"Willkommen in Deutschland",
-"subheadline":"Wie können wir Ihnen weiter hilfen?",
+"subheadline":"Wie können wir Ihnen weiter hilfen?"
+},
+
+{"viewName":"footer",
 "quickHelpTitle":"Deutschland auf einen Blick",
 "findHelpTitle":"Koordinierende Hilfe",
 "helpOthersTitle":"Du bist einer von uns",
@@ -66,6 +69,7 @@
 "createFirstOffering":"Keine Angebote vorhanden, warum gehst du nicht eine zu erstellen?",
 "postedOn":"Veröffentlicht am",
 "by":"von",
+"me":"mir",
 "expiresOn":"läuft aus am",
 "numOffered":"Nummer angeboten:",
 "offer":"Angebot",
@@ -84,6 +88,7 @@
 {"viewName":"matches",
 "matchTitle":"Passende Angebote",
 "myMatches":"Meine Abgestimmte Angebote",
+"me":"Ich",
 "description":"Beschreibung: ",
 "message":"Zusätzliche Nachricht senden",
 "contact":"Kontakt",
@@ -157,8 +162,7 @@
 
 {"viewName":"firststep",
 "welcomeTitle":"Wilkommen in Deutschland!",
-"welcomeDescription":"Wenn Sie ein wenig verloren fühlen, die Verbindungen unten, wertvolle Informationen, die Ihnen einzuleben.", 
-"searchForHelp":"Sobald Sie bereit sind, finden Sie Hilfe in der Nähe von Freiwilligen in Deutschland.",
+"welcomeDescription":"Deutschland auf einen Blick", 
 "findHelpButton":"Hilfe erhalten",
 "ankommenHeader":"Wesentliche App",
 "ankommenDescription":"Laden Sie die folgende App die Sie durch Ihre ersten Wochen in Deutschland zu führen.",
