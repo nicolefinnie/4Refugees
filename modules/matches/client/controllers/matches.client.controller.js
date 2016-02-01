@@ -12,8 +12,8 @@ function validateMatchMessage(scope, matchMessage) {
 
 //Matches controller only available for authenticated users
 angular.module('matches').controller('MatchesController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
-                                                           'Authentication', 'Matches', 'LanguageService',
-  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Matches, LanguageService) {
+                                                           'Authentication', 'Matches', 'LanguageService', 'MailService',
+  function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Matches, LanguageService, MailService) {
     $scope.authentication = Authentication;
    
     $scope.match = {};
@@ -29,8 +29,8 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       $scope.initLanguage();
     });
 
-    $scope.amIOwner = function() {
-      return ($scope.authentication.user._id.toString() === $scope.match.ownerId);
+    $scope.amIOwner = function(match) {
+      return ($scope.authentication.user._id.toString() === match.ownerId);
     };
 
     $scope.profileModalDetails = function(index){
@@ -46,7 +46,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
 
       validateMatchMessage($scope, $scope.matchMessage);
 
-      if ($scope.amIOwner()) {
+      if ($scope.amIOwner($scope.match)) {
         $scope.match.ownerState.lastMessage = $scope.matchMessage;
       } else {
         $scope.match.requesterState.lastMessage = $scope.matchMessage;
@@ -63,7 +63,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     $scope.sendMessage = function() {
       var match = $scope.match;
       var offering = match.offering;
-      var recipientId = $scope.amIOwner() ? match.requesterId : match.ownerId;
+      var recipientId = $scope.amIOwner(match) ? match.requesterId : match.ownerId;
       var subject = '';
       // TODO: Translation/language support, need to know the recipient's
       // preferred language to generate an appropriate subject.  And, we
@@ -78,9 +78,25 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       // when we store the match, we can use the pre-translated message here...
       // Alternatively, we could just let the mail language translation handle this,
       // but if the match needs to translate anyways, we can save one translation....
+      // Yet another option is to get the result from the sendNewMail() request below,
+      // and if that contains a translated message, issue a match update...
       validateMatchMessage($scope, $scope.matchMessage);
-      // re-direct to mail creation form using pre-filled values.
-      $location.path('mails/createFromOffer').search({ 'recipientId': recipientId, 'title': subject, 'content': $scope.matchMessage, 'matchId': match._id.toString() });
+
+      var messageDetails = {
+        'title': subject,
+        'content': $scope.matchMessage,
+        'recipientId': recipientId,
+        'matchId': match._id.toString()
+      };
+      MailService.sendNewMail(messageDetails, function(errorResponse, sentMail) {
+        if (errorResponse) {
+          // TODO: Better error message handling? Translation support? 'Error sending mail: ' + errorResponse.data.message?
+          $scope.error = errorResponse.data.message;
+        } else {
+          // On success, re-direct to the list of all the current user's matches.
+          $location.path('matches');
+        }
+      });
     };
 
     // Create new Match server request
@@ -107,7 +123,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
 
     // Current user wants to prevent contact from other person about this match
     $scope.blockContact = function () {
-      if ($scope.amIOwner()) {
+      if ($scope.amIOwner($scope.match)) {
         $scope.match.ownerState.blockContact = true;
       } else {
         $scope.match.requesterState.blockContact = true;
@@ -117,7 +133,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
 
     // Current user does not want this match
     $scope.rejectMatch = function () {
-      if ($scope.amIOwner()) {
+      if ($scope.amIOwner($scope.match)) {
         $scope.match.ownerState.rejectMatch = true;
       } else {
         $scope.match.requesterState.withdrawRequest = true;
@@ -128,7 +144,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     // Owner has agreed on this match and will provide the requester with this offering
     $scope.acceptMatch = function () {
       // TODO: Assert that we are owner? Button should only be visible to owner....
-      // assert($scope.amIOwner());
+      // assert($scope.amIOwner($scope.match));
       $scope.match.ownerState.acceptMatch = true;
       $scope.createOrUpdate();
     };
@@ -165,7 +181,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       if (!match.requesterState.lastMessage || (match.requesterState.lastMessage.length === 0)) {
         match.requesterState.lastMessage = $scope.properties.noMessageYet;
       }
-      if($scope.authentication.user._id.toString() === match.ownerId){
+      if($scope.amIOwner(match)) {
         match.theOther = match.requester;
       } else {
         match.theOther = match.owner;
@@ -195,7 +211,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     };
 
     $scope.setButtonVisibility = function() {
-      if ($scope.amIOwner()) {
+      if ($scope.amIOwner($scope.match)) {
         $scope.showBlockButton = !$scope.match.ownerState.blockContact;
         // TODO: How to show owner (and requester) that the match is accepted or rejected?
         $scope.showAcceptButton = !$scope.match.ownerState.acceptMatch;
@@ -244,7 +260,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
                 $scope.matchId = match._id.toString();
                 $scope.prepareMatchForView(match);
                 $scope.setButtonVisibility();
-                if($scope.amIOwner()===true){
+                if($scope.amIOwner(match)===true){
                   $scope.match.theOther = match.requester;
                 } else {
                   $scope.match.theOther = match.owner;
