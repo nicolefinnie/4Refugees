@@ -1,6 +1,7 @@
 'use strict';
 
-var defaultEnvConfig = require('./default');
+var defaultEnvConfig = require('./default'),
+    socialCredentials = require('./credentials');
 
 module.exports = {
   db: {
@@ -35,23 +36,23 @@ module.exports = {
     title: defaultEnvConfig.app.title + ' - Development Environment'
   },
   facebook: {
-    clientID: process.env.FACEBOOK_ID || '1513322465659494',
-    clientSecret: process.env.FACEBOOK_SECRET || '4fed1213104623c900fd96bfd57043d6',
+    clientID: process.env.FACEBOOK_ID || socialCredentials.fbappID,
+    clientSecret: process.env.FACEBOOK_SECRET || socialCredentials.fbappSecret,
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: process.env.TWITTER_KEY || '1EuGddIJblLFLniCty9fOaZ51',
-    clientSecret: process.env.TWITTER_SECRET || 'OKFhbkGf3IhwlZFDM6Hn2ghL3TFJUZH6IaaX2L9BwJsUUI7Nvu',
+    clientID: process.env.TWITTER_KEY || socialCredentials.twitterID,
+    clientSecret: process.env.TWITTER_SECRET || socialCredentials.twitterSecret,
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {
-    clientID: process.env.GOOGLE_ID || '235357693317-5fgvlmecs7edfbhgkt9o0d42mtpdqfr9.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'MOE_aaBYiAJf0gZdK2NGw2mX',
+    clientID: process.env.GOOGLE_ID || socialCredentials.googleID,
+    clientSecret: process.env.GOOGLE_SECRET || socialCredentials.googleSecret,
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {
-    clientID: process.env.LINKEDIN_ID || '770mzyuf8k7ul6',
-    clientSecret: process.env.LINKEDIN_SECRET || '0r9Xa7LVpHi82YKe',
+    clientID: process.env.LINKEDIN_ID || socialCredentials.linkedinID,
+    clientSecret: process.env.LINKEDIN_SECRET || socialCredentials.linkedinSecret,
     callbackURL: '/api/auth/linkedin/callback'
   },
   github: {
