@@ -119,11 +119,15 @@ var UserSchema = new Schema({
   isPrivate: {
     firstname : { type: Boolean, default: false },
     lastname : { type: Boolean, default: false },
+    email : { type: Boolean, default: true },
+    username : { type: Boolean, default: true },
     picture : { type: Boolean, default: false },
     linkedInProfile : { type: Boolean, default: false },
+    aboutMe : { type: Boolean, default: false },
+    preferredLanguage : { type: Boolean, default: false },
+    spokenLanguages : { type: Boolean, default: false },
     skills : { type: Boolean, default: false },
-    interests : { type: Boolean, default: false },
-    aboutMe : { type: Boolean, default: false }
+    interests : { type: Boolean, default: false }
   }
 });
 
