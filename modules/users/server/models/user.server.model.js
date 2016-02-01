@@ -181,6 +181,22 @@ UserSchema.methods.getPublicObject = function () {
     displayName: this.displayName,
     languagePreference: this.languagePreference
   };
+  if (!this.isPrivate || !this.isPrivate.picture) {
+    pubUser.profileImageURL = this.profileImageURL;
+  }
+  if (!this.isPrivate || !this.isPrivate.linkedInProfile) {
+    pubUser.publicLinkedInProfile = this.publicLinkedInProfile;
+  }
+  if (!this.isPrivate || !this.isPrivate.aboutMe) {
+    pubUser.aboutMe = this.aboutMe;
+  }
+  if (!this.isPrivate || !this.isPrivate.skills) {
+    pubUser.tagsSkills = this.tagsSkills;
+  }
+  if (!this.isPrivate || !this.isPrivate.interests) {
+    pubUser.tagsInterests = this.tagsInterests;
+  }
+
   return pubUser;
 };
 
