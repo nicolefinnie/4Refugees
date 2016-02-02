@@ -9,30 +9,22 @@ html {
     position: relative;
     min-height: 80%;
 }
-
+ 
 body {
-    margin: 0 0 5% 0; 
-}
-
-/** Mac ratio - avoid cropping of welcome message for home screen. **/
-@media screen and (device-aspect-ratio: 16/10) {
-    body{
-        margin: 0 0 6.5% 0; 
-    }
+    margin: 0 0 6.5% 0; 
 }
 
 footer{
     position: absolute;
     left: 0;
+    right: 0;     
     bottom: 0;
-    height: 100px;
     width: 100%;
+    height: 100px;
 }
-
 nav {
     overflow: visible;
 }
-
 
 footer.page-footer{
     background-color: color('white', core);
@@ -274,14 +266,15 @@ footer.page-footer{
     height: 192px;
 }
 
-/* authenticated user has 5 tiems*/
+/* authenticated user has 6 items*/
 .ibm-mobile-menu.authenticated-user{
-    height: 320px;
+    height: 384px;
 }
 
 .ibm-mobile-menu.admin{
     height: 128px;
 }
+
 
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {
@@ -295,8 +288,8 @@ footer.page-footer{
     overflow: hidden;
     display: block;
   }
-}
-
+}     
+     
 /** welcome bar - between the header and the footer */
 .ibm-welcome-bar{
     background: color('blue', 40);
@@ -355,29 +348,10 @@ footer.page-footer{
         text-transform: capitalize;
     }
 }
-    
 
-/* smaller screens */    
-@media screen and (max-width:500px) {
-   /* The header bar needs padding to its left and right so the logo and menu are located more in the middle*/
-  .ibm-header{
-    padding: 0 2% 0 2%;
-  }   
-  /* On smaller screens, logo width has a fixed size so its size won't gradually change with the screen size*/
-  .ibm-header-logo{
-    margin-top: 2%;
-    width: 40px;
-  }
-   /* welcome to Germany bar for smaller screens, logo to the right needs space*/   
-  .ibm-welcome-bar.arabic{
-        img{
-            margin-right: 10%;
-        }
-    }
-}
 
 /* bigger screens based on materialize css definition */    
-@media screen and (min-width:992px) {
+@media screen and (min-width:993px) {
  /* welcome to Germany bar in Arabic */   
     .ibm-welcome-bar.arabic{
         h1,h2{
@@ -389,31 +363,53 @@ footer.page-footer{
     .ibm-visible-small-screen{
         display: none;
      }
-     .ibm-visible-big-screen{
+     .ibm-visible-big-screen {
         padding-top: 0;
         width: 70%;
      }
 }
 
-
+/* smaller screens */    
 @media screen and (max-width: 992px) {
+   /* The header bar needs padding to its left and right so the logo and menu are located more in the middle*/
+  .ibm-header{
+    padding: 0 2% 0 2%;
+  }   
+  /* On smaller screens, logo width has a fixed size so its size won't gradually change with the screen size*/
+  .ibm-header-logo{
+    margin-top: 2%;
+    width: 40px;
+  }
+  
+   /* welcome to Germany bar for smaller screens, logo to the right needs space*/   
+  .ibm-welcome-bar.arabic{
+        img{
+            margin-right: 10%;
+        }
+    }
+    /* hide the big screen mode*/
     .ibm-visible-big-screen{
         display: none;
      }
-    .ibm-footer-bar{
+     /* always show footer on smaller screen*/
+     .ibm-visible-small-screen{
+        display: block;
+     }
+    .ibm-footer-buttons{
         a{
-            width: 32.5%;
+            width: 33.3%;
             padding-top: 5%;
             padding-bottom: 5%;
             background-color: color('gray',70);
+            margin-right: -0.1rem;
+            margin-left: -0.1rem;
         }
         a svg{ 
             fill: color('white',core);
             display: block;
             margin: auto;
         }
-        margin-bottom: 0.5%;
-        margin-right: -1%;
+        margin-bottom: 0.1rem;
     }
      
     html {
@@ -423,10 +419,6 @@ footer.page-footer{
     body {
         margin: 0 0 18% 0; 
     }
-    .ibm-home-container {
-        margin-right: -3%;
-        margin-left: -3%;
-    } 
     .ibm-cover-container {
         margin-bottom: 0;
     }
@@ -441,12 +433,21 @@ footer.page-footer{
             text-decoration: underline;
            }
         }
-   
     }
     
     .drag-target {
         width: 0;
     }
+    
+    .ibm-home-container{
+        width: 100%;
+    }
+    .ibm-home-container .row{
+        margin-left: -1.5rem;
+        margin-right: -1.5rem; 
+    
+    }
+  
 }
 /** This design below comes with Mean.JS **/
 

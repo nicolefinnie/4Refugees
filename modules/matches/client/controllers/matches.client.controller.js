@@ -37,9 +37,11 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       $('#theOtherProfile-'+index).openModal();
     };
     
-    $scope.singleProfileModalDetails = function(){
+    $scope.singleProfileModalDetails = function(currentProfile){
+      $scope.activeProfile = currentProfile; 
       $('#singleProfile').openModal();
     };
+    
     
     $scope.createOrUpdate = function() {
       $scope.error = null;

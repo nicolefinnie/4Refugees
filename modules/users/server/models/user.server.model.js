@@ -102,6 +102,10 @@ var UserSchema = new Schema({
     tagName : String,
     value : String
   }],
+  tagsLanguages:  [{
+    tagName : String,
+    value : String
+  }],
   tagsSkills: [{
     tagName : String,
     value : String
@@ -196,7 +200,9 @@ UserSchema.methods.getPublicObject = function () {
   if (!this.isPrivate || !this.isPrivate.interests) {
     pubUser.tagsInterests = this.tagsInterests;
   }
-
+  //FIXME only for demo 
+  pubUser.tagsLanguages = this.tagsLanguages;
+ 
   return pubUser;
 };
 

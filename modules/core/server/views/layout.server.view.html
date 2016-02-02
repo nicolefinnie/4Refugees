@@ -45,7 +45,8 @@
       {% block content %}{% endblock %}
     </section>
   </section>
-  <footer ng-include="'/modules/core/client/views/footer.client.view.html'" class="page-footer" ng-hide="hideFooter"></footer>
+  <!-- TODO when the footer should be hidden, it shouldn't have a height, find a clean way to fix this style after demo -->
+  <footer ng-include="'/modules/core/client/views/footer.client.view.html'" class="page-footer"></footer>
 
   <!--Embedding The User Object-->
   <script type="text/javascript">

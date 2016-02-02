@@ -22,10 +22,13 @@
     .card-content{
         .card-title{
             font-weight: bold;
+            position: relative;
         }
         svg{
             fill: color('gray', 40);
-            float: left;
+            margin: auto;
+            margin-top: 0.5rem;
+           
         }
     }
     

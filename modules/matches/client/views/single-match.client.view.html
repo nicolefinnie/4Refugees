@@ -4,101 +4,86 @@
   <div class="col m12 s11">
     <br>
     <form name="matchForm" novalidate>
-      <div class="row">
-          <div ng-class="properties.rightToLeft ? 'right-align col m12 s12 right':'col m12 s12'">
+        <!-- title section -->
+        <div class="row">
+            <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'col m12 offset-s1 s11'">
               <h4 >{{properties.matchTitle}}</h4>
-          </div>
-          <div ng-class="properties.rightToLeft ? 'right-align col m6 s11 right':'col m6 offset-s1 s11'">
-          <br>
-          <!-- display profile of the requester or owner if it's not you -->
-          <div id="singleProfile" class="modal">
-            <div class="modal-content">
-                <div class="row">
-                  <div class="col s12">
-                  <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
-                            20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
-                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                            s12,5.383,12,12S22.617,28,16,28z"/>
-                    </svg>
-                  </a>
-                  </div>
-                  <div class="col s12" >
-                    <h4 ng-bind="match.theOther.displayName"></h4>
-                    <!-- TODO waiting for Kai's change -->
-                  </div>
-                </div> <!-- end of row -->
-            </div> <!-- end of modal-content -->
-          </div> <!-- end of modal -->
-              <div class="row">
-                <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
-                        <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
-                        <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
-                    </svg>
-                </div>
-                <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                    <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
+              <br>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'col m12 offset-s1 s11'">
+            </div>
+        </div> <!-- end of row of title section -->
+        <!-- description section -->
+        <div class="row">
+          <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
+                    <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
+                    <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
+                </svg>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
                     <h5>{{match.offering.description}}</h5>
-                    </a>
-                </div>
-              </div>
-              <!-- Sort the last two messages based on date -->
-              <div class="row">
+                </a>
+            </div>
+          </div>
+        </div> <!-- end of row of description section -->
+        <!-- Sort the last two messages based on date -->
+        <div class="row">
+            <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
               <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated <= match.requesterState.updated">
-                <a ng-if="authentication.user._id != match.owner._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails()" href="#singleProfile" ng-bind="match.owner.displayName"></a>
-                <span ng-if="authentication.user._id == match.owner._id">{{properties.me}}</span> 
+                <a ng-if="authentication.user._id != match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" ng-bind="match.owner.displayName"></a>
+                <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" >{{properties.me}}</a>
                 : <span ng-bind="match.ownerState.lastMessage"></span>
                 <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
               </div>
               <div class="col s12">  
-                <a ng-if="authentication.user._id != match.requester._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails()" href="#singleProfile" ng-bind="match.requester.displayName"></a>
-                <span ng-if="authentication.user._id == match.requester._id">{{properties.me}}</span> 
+                <a ng-if="authentication.user._id != match.requester._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.requester)" href="#singleProfile" ng-bind="match.requester.displayName"></a>
+                <a ng-if="authentication.user._id == match.requester._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.requester)" href="#singleProfile" >{{properties.me}}</a>
                 : <span ng-bind="match.requesterState.lastMessage"></span>
                 <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.requesterState.updated | date:'yyyy.MM.dd'"></span>
               </div>
               <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated > match.requesterState.updated">
-                <a ng-if="authentication.user._id != match.owner._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails()" href="#singleProfile" ng-bind="match.owner.displayName"></a>
-                <span ng-if="authentication.user._id == match.owner._id">{{properties.me}}</span> 
+                <a ng-if="authentication.user._id != match.owner._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" ng-bind="match.owner.displayName"></a>
+                <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" >{{properties.me}}</a>
                 : <span ng-bind="match.ownerState.lastMessage"></span>
                 <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
               </div>
-              </div> <!-- end of row -->
-          </div> <!-- end of grid col m6 s11 -->
-        </div>
+            </div>
+        </div> <!-- end of row -->
         <!-- Start of input fields for match interactions -->
         <div class="row">
-          <div class="col m6 s11" ng-class="properties.rightToLeft ? 'right':'left'">
-            <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                <!-- TODO: Add help for this field - i.e. 'special instructions', 'contact advice', etc. -->
-                <div class="row">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
-                            C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
-                            L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
-                            s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
-                        <circle cx="16" cy="13" r="1.5"/>
-                        <circle cx="21" cy="13" r="1.5"/>
-                        <circle cx="11" cy="13" r="1.5"/>
-                    </svg>
-                    </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <input name="message" type="text" ng-model="matchMessage" id="message"
-                        placeholder = "{{properties.message}}">
-                    </div>
-                </div>
-            </div> <!-- end of input-field ibm-input-field -->
-          </div> <!-- end of grid col m6 s11 -->
-          <!-- Match interactions with the other party, contact requests -->
-          <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-            <div class="row">
-              <div class="col m12 s12">
+            <div class="col m12 s11">
+              <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                  <!-- TODO: Add help for this field - i.e. 'special instructions', 'contact advice', etc. -->
+                  <div class="row">
+                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2'">
+                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                              <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
+                                  C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
+                                  L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
+                                  s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
+                              <circle cx="16" cy="13" r="1.5"/>
+                              <circle cx="21" cy="13" r="1.5"/>
+                              <circle cx="11" cy="13" r="1.5"/>
+                          </svg>
+                      </div>
+                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                          <input name="message" type="text" ng-model="matchMessage" id="message"
+                          placeholder = "{{properties.message}}">
+                      </div>
+                  </div> <!-- end of row -->
+              </div> <!-- end of input-field ibm-input-field -->
+            </div> <!-- end of grid col m12 s11 -->
+        </div> <!-- end of row of match interactions -->
+        <!-- Match interactions with the other party, contact requests -->
+        <div class="row">
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="col m12 s11">
                 <button ng-if="showContactButton" type="submit" class="match-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
                   {{properties.contact}}
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -134,13 +119,48 @@
               </div>
               <br><br>
               <!-- TODO should be a pop-up and it can be closed -->
-              <div class="col m12 s12" ng-show="error">
+              <div class="col m12 s11" ng-show="error">
                   <strong ng-bind="error"></strong>
               </div>
-            </div> <!-- end of row -->
-          </div> <!-- end of ibm-submit-area -->
-        </div> <!-- end of section requiring additional user details -->
-    </form> 
-    </div>      
+            </div> <!-- end of ibm-submit-area-->
+        </div> <!-- end of row of match interactions-->
+    </form>
   </div>
+</div> <!-- end of outer row -->
+
+<!-- MODAL OTHER PROFILE : display profile of the requester or owner if it's not you -->
+<div class="ibm-modal">
+  <div id="singleProfile" class="modal">
+    <div class="modal-content">
+        <div class="row">
+          <div class="col s12">
+          <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
+                    20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
+                <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                    s12,5.383,12,12S22.617,28,16,28z"/>
+            </svg>
+          </a>
+          </div>
+          <div class="col s12 ibm-profile" >
+            <div class="row">
+              <div class="col m4 s12">
+                  <img ng-src="{{activeProfile.profileImageURL}}"/>
+              </div>
+              <div class="col m8 s12">
+                <h4 ng-bind="activeProfile.displayName"></h4>
+                <h6>About Me : {{activeProfile.aboutMe}}</h6>
+                <h6>Languages : <span class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span></h6>
+                <h6>Skills : <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span></h6>
+                <h6>Interests : <span class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span></h6>
+                <span>LinkedIn : <a ng-href="{{activeProfile.publicLinkedInProfile}}">{{activeProfile.publicLinkedInProfile}}</a></span>
+              </div>
+            </div>
+          </div>
+        </div> <!-- end of row -->
+    </div> <!-- end of modal-content -->
+  </div> <!-- end of modal -->
+</div>
 </section>
