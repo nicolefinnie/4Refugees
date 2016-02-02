@@ -164,6 +164,15 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
           $scope.searchStatus = $scope.properties.searchComplete;
           $scope.offerings.forEach(function(offering) {
             convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
+            //FIXME code for demo to make it linkable
+            if(offering.description.indexOf('https://') > -1){
+              offering.descriptionLink = offering.description.substring(offering.description.indexOf('https://'), offering.description.length);
+              offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('https://'));
+            }
+            else if(offering.description.indexOf('http://') > -1){
+              offering.descriptionLink = offering.description.substring(offering.description.indexOf('http://'), offering.description.length);
+              offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('http://'));
+            }
           });
         }
       }, function (errorResponse) {

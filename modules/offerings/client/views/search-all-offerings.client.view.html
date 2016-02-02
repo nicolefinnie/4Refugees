@@ -215,7 +215,8 @@
                       </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <span class="card-title"> {{offering.description}}</span>
+                        <a ng-href="{{offering.descriptionLink}}" target="_blank"><span ng-if="offering.description.indexOf('http') > -1 || offering.description.indexOf('http') > -1" class="card-title" >{{offering.descriptionTitle}}</span></a>
+                        <span ng-if="offering.description.indexOf('http') == -1 && offering.description.indexOf('https') == -1 " class="card-title">{{offering.description}}</span>
                     </div>
                   </div> 
                       <p><div class="chip waves-effect waves-light" ng-bind="offering.category"></div></p>
