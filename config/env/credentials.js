@@ -24,12 +24,12 @@ module.exports = {
 */
 
 module.exports = {
-		'fbappID': '1513322465659494',
-		'fbappSecret':'4fed1213104623c900fd96bfd57043d6',
-		'twitterID':'1EuGddIJblLFLniCty9fOaZ51',
-		'twitterSecret': 'OKFhbkGf3IhwlZFDM6Hn2ghL3TFJUZH6IaaX2L9BwJsUUI7Nvu',
-		'googleID': '235357693317-5fgvlmecs7edfbhgkt9o0d42mtpdqfr9.apps.googleusercontent.com',
-		'googleSecret': 'MOE_aaBYiAJf0gZdK2NGw2mX',
-		'linkedinID': '770mzyuf8k7ul6',
-		'linkedinSecret': '0r9Xa7LVpHi82YKe'
+  'fbappID': '1513322465659494',
+  'fbappSecret':'4fed1213104623c900fd96bfd57043d6',
+  'twitterID':'1EuGddIJblLFLniCty9fOaZ51',
+  'twitterSecret': 'OKFhbkGf3IhwlZFDM6Hn2ghL3TFJUZH6IaaX2L9BwJsUUI7Nvu',
+  'googleID': '235357693317-5fgvlmecs7edfbhgkt9o0d42mtpdqfr9.apps.googleusercontent.com',
+  'googleSecret': 'MOE_aaBYiAJf0gZdK2NGw2mX',
+  'linkedinID': '770mzyuf8k7ul6',
+  'linkedinSecret': '0r9Xa7LVpHi82YKe'
 };

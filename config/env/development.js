@@ -1,7 +1,7 @@
 'use strict';
 
 var defaultEnvConfig = require('./default'),
-    socialCredentials = require('./credentials');
+  socialCredentials = require('./credentials');
 
 module.exports = {
   db: {
