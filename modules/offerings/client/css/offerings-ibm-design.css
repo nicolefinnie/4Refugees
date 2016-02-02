@@ -8,9 +8,6 @@
 .ibm-offering-list.card {
   background-color: #f9f9fb;
   color: #5a5a5a; }
-  .ibm-offering-list.card .chip {
-    background-color: #959595;
-    color: #fff; }
   .ibm-offering-list.card .card-content .card-title {
     font-weight: bold;
     position: relative; }

@@ -124,7 +124,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.initialize();
     });
 
-    $scope.profileModalDetails = function(index){
+    $scope.profileModalDetails = function(index, currentProfile){
+      $scope.activeProfile = currentProfile; 
       $('#volunteerProfile-'+index).openModal();
     };
     

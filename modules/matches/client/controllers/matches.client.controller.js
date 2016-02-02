@@ -33,7 +33,8 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       return ($scope.authentication.user._id.toString() === match.ownerId);
     };
 
-    $scope.profileModalDetails = function(index){
+    $scope.profileModalDetails = function(index, currentProfile){
+      $scope.activeProfile = currentProfile; 
       $('#theOtherProfile-'+index).openModal();
     };
     

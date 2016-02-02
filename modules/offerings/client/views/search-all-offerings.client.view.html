@@ -185,10 +185,63 @@
                     </svg>
                   </a>
                   </div>
-                  <div class="col s12">
-                  <h4 ng-bind="offering.user.displayName"></h4>
-                  <!-- TODO waiting for Kai's change -->
-                  </div>
+                  <!-- start from display the profile content -->
+                  <div class="col s12 ibm-profile" >
+                      <div class="row">
+                        <div class="col m4 s12">
+                            <img ng-src="{{activeProfile.profileImageURL}}"/>
+                            <br><br>
+                        </div>
+                        <div class="col m8 s12">
+                          <div class="row">
+                            <div class="col m12 s12">
+                              <h4 ng-bind="activeProfile.displayName"></h4>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>About Me</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span>{{activeProfile.aboutMe}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Languages</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Skills</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Interests</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <i class="fa fa-linkedin-square fa-2x"></i>
+                            </div>
+                            <div class="col m10 s9">
+                              <a ng-href="{{activeProfile.publicLinkedInProfile}}">{{activeProfile.publicLinkedInProfile}}</a>
+                            </div>
+                          </div>
+                        </div> 
+                      </div><!-- end of the row - profile picture on the left and profile on the right -->
+                    </div><!-- end of ibm-profile -->
+                  <!-- end of display the profile content -->
                   </div>
                   </div>
                 </div>
@@ -225,8 +278,8 @@
                       <p>
                         {{properties.offeredBy}}
                         <span>
-                        <a ng-if="authentication.user._id != offering.user._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)" ng-bind="offering.user.displayName"></a>
-                        <a ng-if="authentication.user._id == offering.user._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)">{{properties.me}}</a>
+                        <a ng-if="authentication.user._id != offering.user._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, offering.user)" href="#volunteerProfile-@(index)" ng-bind="offering.user.displayName"></a>
+                        <a ng-if="authentication.user._id == offering.user._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, offering.user)" href="#volunteerProfile-@(index)">{{properties.me}}</a>
                         </span>
                       </p>
                       <small>
