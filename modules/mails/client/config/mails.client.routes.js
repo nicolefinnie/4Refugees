@@ -29,32 +29,6 @@ angular.module('mails').config(['$stateProvider',
           roles: ['user']
         }
       })
-      .state('mails.createFromOffer', {
-        url: '/createFromOffer?recipientId&title&content&matchId',
-        params: {
-          recipientId: null,
-          title: null,
-          content: null,
-          matchId: null
-        },
-        templateUrl: 'modules/mails/client/views/create-mail-offer.client.view.html',
-        data: {
-          roles: ['user']
-        },
-        controller: function($scope, $stateParams) {
-          $scope.recipientId = $stateParams.recipientId;
-          $scope.title = $stateParams.title;
-          $scope.content = $stateParams.content;
-          $scope.matchId = $stateParams.matchId;
-        }
-      })
-      .state('mails.createFromOfferSuccess', {
-        url: '/createFromOfferSuccess',
-        templateUrl: 'modules/mails/client/views/create-mail-offer-success.client.view.html',
-        data: {
-          roles: ['user']
-        }
-      })
       .state('mails.createadmin', {
         url: '/createadmin',
         templateUrl: 'modules/mails/client/views/createadmin-mail.client.view.html',

@@ -1,5 +1,5 @@
 <div ng-controller="FooterController">
-  <div class="row ibm-visible-small-screen ibm-footer-bar">
+  <div class="row ibm-visible-small-screen ibm-footer-buttons">
     <a href="firststep/resources" class="waves-effect waves-light">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
           width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
@@ -32,7 +32,7 @@
       </svg>
     </a>
   </div>
-  <div class="row ibm-visible-big-screen">
+  <div ng-hide="hideFooter" class="row ibm-visible-big-screen">
     <div class="col s12 m4">
           <div class="ibm-help-bar">
             <h1 class="center">

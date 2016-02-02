@@ -11,6 +11,7 @@ angular.module('about').controller('AboutController', ['$scope', '$rootScope', '
       $scope.initialize();
     });
     
+    $rootScope.hideFooter = true;
     // Load the language-specific content
     $scope.initialize = function() {
       // initialize all properties in the view (html)

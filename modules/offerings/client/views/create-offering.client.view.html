@@ -36,7 +36,7 @@
             <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
                     <!-- Location, toggle between geo-location and manual city-list by clicking on icon -->
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                       <a ng-click="toggleGeoLocation()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -48,7 +48,7 @@
                         </svg>
                       </a>
                     </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                         <!-- when geo.auto.active is true, this field will be filled in when we get our geo location response -->
                         <a ng-if="geo.auto.active" ng-click="toggleGeoLocation()">
                           <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.auto.location.city" readonly>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                             <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
@@ -74,13 +74,13 @@
                             <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
                         </svg>
                     </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                         <input name="description" type="text" ng-model="description" id="description"
                         placeholder = "{{properties.description}}">
                     </div>
                 </div>
                 <div class="row">
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                         <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
@@ -89,12 +89,12 @@
                         17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
                         </svg>
                     </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                         <input id="when" type="date" ng-model="when" name="when" class="datepicker" placeholder="{{properties.when}}">
                     </div>          
                 </div>
                 <div class="row">
-                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                  <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                     <svg class="flip-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                     <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
@@ -103,12 +103,11 @@
                     17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
                     </svg>
                   </div>
-                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                  <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                     <input id="expirationDate" type="date" ng-model="expiry" name="expirationDate" class="datepicker" placeholder="{{properties.expirationDate}}">
                   </div>          
                 </div>  
             </div> <!-- end of input-field ibm-input-field -->
-          </div> <!-- end of grid col m6 s11 -->
           <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
             <div class="row">
               <div class="col m12 s12" ng-if="offeringId == '0' || authentication.user._id == offering.user._id">
@@ -173,6 +172,7 @@
               </div>
             </div> <!-- end of row -->
           </div> <!-- end of ibm-submit-area -->
+        </div> <!-- end of grid col m6 s11 -->
         </div> <!-- end of middle section without category -->
     </form>       
   </div>

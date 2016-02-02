@@ -33,7 +33,7 @@
             <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
                     <!-- Location, toggle between geo-location and manual city-list by clicking on icon -->
-                    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                    <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                       <a ng-click="toggleGeoLocation()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -45,7 +45,7 @@
                         </svg>
                       </a>
                     </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                    <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                         <!-- when geo.auto.active is true, this field will be filled in when we get our geo location response -->
                         <a ng-if="geo.auto.active" ng-click="toggleGeoLocation()">
                           <input class="ibm-force-text-black" type="text" placeholder="{{properties.city}}" ng-model="geo.auto.location.city" readonly>
@@ -65,7 +65,7 @@
                 <!-- Toggle advanced options on/off -->
                 <br>
                 <div class="row" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                    <div class="ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'" ng-click="toggleAdvanced()">
+                    <div class="ibm-toggle-advanced-options" ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'" ng-click="toggleAdvanced()">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                             <path d="M27.5,16c0-0.615-0.062-1.213-0.155-1.802L31,11l-3.105-5.098l-4.359,1.424c-1.042-0.906-2.248-1.623-3.569-2.109L19,1h-6
@@ -83,7 +83,7 @@
                                 s2,0.896,2,2S17.104,18,16,18z"/>
                     </svg>
                     </div>
-                    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'" ng-click="toggleAdvanced()">
+                    <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2 right-align':'col l11 m10 s10 left-align'" ng-click="toggleAdvanced()">
                         <a ng-if="!showDetails">{{properties.showAdvanced}}</a>
                         <a ng-if="showDetails">{{properties.hideAdvanced}}</a>
                     </div>
@@ -93,7 +93,7 @@
             <div data-my-slide="showDetails">
               <div class="ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
-                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                  <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                           width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                           <path d="M16,6C10.478,6,6,10.479,6,16c0,5.523,4.478,10,10,10c5.523,0,10-4.477,10-10C26,10.479,21.523,6,16,6z M18,18l-8,4l4-8
@@ -103,14 +103,14 @@
                           <circle cx="16" cy="16" r="1"/>
                       </svg>
                   </div>
-                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                  <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                       <input name="radius" type="text" ng-model="radius" id="radius" placeholder="{{properties.searchRadius}}">
                   </div>
                 </div>
               </div>
               <div class="ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
                 <div class="row">
-                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                  <div ng-class="properties.rightToLeft ? 'col l1 m2 s2 push-s10 right':'col l1 m2 s2 left'">
                       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                       width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                       <path d="M16,2C8.268,2,2,8.268,2,16s6.268,14,14,14c7.732,0,14-6.268,14-14S23.732,2,16,2z M16,28C9.383,28,4,22.617,4,16
@@ -119,7 +119,7 @@
                       17.293,18.707 18.707,17.293 17.06,15.646 23.353,9.354   "/>
                       </svg>
                   </div>
-                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                  <div ng-class="properties.rightToLeft ? 'col l11 m10 s10 pull-s2':'col l11 m10 s10'">
                       <input id="searchWhen" type="date" ng-model="when" name="searchWhen" class="datepicker" placeholder="{{properties.when}}">
                   </div>         
                 </div> 
@@ -165,7 +165,7 @@
     </form>       
     <!-- show search results -->
     <div class="row">
-      <div ng-class="properties.rightToLeft ? 'right-align col m6 s11 right':'left-algin col m6 offset-s1 s11'">
+      <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'left-algin col m12 offset-s1 s11'">
         <ul>
           <li ng-repeat="offering in offerings" class="list-group-item">
             <div class="row">
@@ -185,10 +185,63 @@
                     </svg>
                   </a>
                   </div>
-                  <div class="col s12">
-                  <h4 ng-bind="offering.user.displayName"></h4>
-                  <!-- TODO waiting for Kai's change -->
-                  </div>
+                  <!-- start from display the profile content -->
+                  <div class="col s12 ibm-profile" >
+                      <div class="row">
+                        <div class="col m4 s12">
+                            <img ng-src="{{activeProfile.profileImageURL}}"/>
+                            <br><br>
+                        </div>
+                        <div class="col m8 s12">
+                          <div class="row">
+                            <div class="col m12 s12">
+                              <h4 ng-bind="activeProfile.displayName"></h4>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>About Me</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span>{{activeProfile.aboutMe}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Languages</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Skills</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <h6>Interests</h6>
+                            </div>
+                            <div class="col m10 s9">
+                              <span class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col m2 s3">
+                              <i class="fa fa-linkedin-square fa-2x"></i>
+                            </div>
+                            <div class="col m10 s9">
+                              <a ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
+                            </div>
+                          </div>
+                        </div> 
+                      </div><!-- end of the row - profile picture on the left and profile on the right -->
+                    </div><!-- end of ibm-profile -->
+                  <!-- end of display the profile content -->
                   </div>
                   </div>
                 </div>
@@ -215,7 +268,8 @@
                       </svg>
                     </div>
                     <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                        <span class="card-title"> {{offering.description}}</span>
+                        <a ng-href="{{offering.descriptionLink}}" target="_blank"><span ng-if="offering.description.indexOf('http') > -1 || offering.description.indexOf('http') > -1" class="card-title" >{{offering.descriptionTitle}}</span></a>
+                        <span ng-if="offering.description.indexOf('http') == -1 && offering.description.indexOf('https') == -1 " class="card-title">{{offering.description}}</span>
                     </div>
                   </div> 
                       <p><div class="chip waves-effect waves-light" ng-bind="offering.category"></div></p>
@@ -224,8 +278,8 @@
                       <p>
                         {{properties.offeredBy}}
                         <span>
-                        <a ng-if="authentication.user._id != offering.user._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)" ng-bind="offering.user.displayName"></a>
-                        <a ng-if="authentication.user._id == offering.user._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index)" href="#volunteerProfile-@(index)">{{properties.me}}</a>
+                        <a ng-if="authentication.user._id != offering.user._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, offering.user)" href="#volunteerProfile-@(index)" ng-bind="offering.user.displayName"></a>
+                        <a ng-if="authentication.user._id == offering.user._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, offering.user)" href="#volunteerProfile-@(index)">{{properties.me}}</a>
                         </span>
                       </p>
                       <small>
