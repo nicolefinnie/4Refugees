@@ -4,27 +4,15 @@ angular.module('users').config(function(tagsInputConfigProvider) {
   tagsInputConfigProvider.setActiveInterpolation('tagsInput', { placeholder: true });
 });
 
-angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'Users', 'Authentication',
-  function (ctrl, $rootScope, $http, $location, Users, Authentication) {
-    ctrl.user = Authentication.user;
-
+angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'UserService',
+  function (ctrl, $rootScope, $http, $location, userService) {
+    
     // Update a user profile
     ctrl.updateUserProfile = function (isValid) {
-      ctrl.success = ctrl.error = null;
-      if (!isValid) {
-        ctrl.$broadcast('show-errors-check-validity', 'userForm');
-        return false;
-      }
-      var user = new Users(ctrl.user);
-      user.$update(function (response) {
-        ctrl.$broadcast('show-errors-reset', 'userForm');
-        ctrl.success = true;
-        Authentication.user = response;
-      }, function (response) {
-        ctrl.error = response.data.message;
-      });
+      userService.updateUserProfile(ctrl, isValid);
     };
 
+    // Tags for skills and interests
     ctrl.loadTags = function($query) {
       var tags = [
                   { tagID: '1', tagName: 'Job Training' },
@@ -45,27 +33,21 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       });
     };
 
+    // Tags for the languages
     ctrl.loadLanguageTags = function($query) {
-      var tags = [
-                  { tagID: '1', tagName: 'English' },
-                  { tagID: '2', tagName: 'German' },
-                  { tagID: '3', tagName: 'Arabic' },
-                  { tagID: '4', tagName: 'Farsi' },
-                  { tagID: '5', tagName: 'French' },
-                  { tagID: '6', tagName: 'Spanish' },
-                  { tagID: '7', tagName: 'Italian' }
-      ];
-      return tags.filter(function(tag) {
+      var languageTags = [
+                      { tagID: 'en', tagName: 'English' },
+                      { tagID: 'de', tagName: 'Deutsch' },
+                      { tagID: 'ar', tagName: 'العربية' },
+                      { tagID: 'fa', tagName: 'فارسی' },
+                      { tagID: 'fr', tagName: 'Français' },
+                      { tagID: 'es', tagName: 'Español' },
+                      { tagID: 'it', tagName: 'Italiano' }
+                      ];
+      return languageTags.filter(function(tag) {
         return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
       });
     };
-
-    
-    ctrl.languages = [
-                  { langID: 'ar', langValue: 'العربية' },
-                  { langID: 'de', langValue: 'deutsch' },
-                  { langID: 'en', langValue: 'english' }
-    ];
 
   }
 ]);

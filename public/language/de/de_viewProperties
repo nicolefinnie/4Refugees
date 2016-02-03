@@ -1,7 +1,7 @@
 [{"viewName":"header", "currentLanguageShownInHeader":"Deutsch",
 "signIn":"Anmelden", 
-"register":"Registieren",
-"mail":"Post",
+"register":"Registrieren",
+"mail":"Nachrichten",
 "listMyOfferings":"Angebote",
 "listMyMatches":"Treffer",
 "profile":"Profil",
@@ -12,7 +12,7 @@
 
 {"viewName":"home",
 "headline":"Willkommen in Deutschland",
-"subheadline":"Wie können wir Ihnen weiter hilfen?"
+"subheadline":"Wie können wir Ihnen helfen?"
 },
 
 {"viewName":"footer",
@@ -126,6 +126,7 @@
 
 "langPreference":"Bevorzugte Sprache",
 "languageDropdownPlaceholder":"--- Wählen Sie eine Option ---",
+"spokenLanguages":"Sprachen, die ich spreche",
 "aboutMe":"Über mich",
 "aboutMeText":"Erzählen Sie etwas über sich",
 "chooseTagInterests":"Deine Interessen",
