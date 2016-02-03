@@ -4,7 +4,7 @@
 **/
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg {
-  margin-top: 50%; }
+  margin: auto; }
 
 /** hover over IBM design icons to make it look materialize css style */
 .ibm-input-field :hover svg {
@@ -84,6 +84,26 @@
  */
 .ibm-submit-area.arabic-rotate-icon button svg, .ibm-submit-area.arabic-rotate-icon a svg {
   transform: rotate(90deg); }
+
+.ibm-modal .modal .modal-content svg {
+  fill: #c7c7c7;
+  height: 24px; }
+
+@media only screen and (min-width: 994px) and (max-width: 1440px) {
+  .ibm-modal .modal {
+    width: 80%; } }
+@media only screen and (max-width: 414px) {
+  .ibm-modal .modal {
+    width: 100%; } }
+.ibm-profile h4 {
+  /* display name*/
+  color: #121212;
+  font-weight: bold; }
+.ibm-profile img {
+  height: 240px;
+  width: 240px;
+  margin-right: 5px;
+  margin-bottom: -10px; }
 
 /** Override placeholder colors for different browsers using IBM design color*/
 ::-webkit-input-placeholder {

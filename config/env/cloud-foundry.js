@@ -1,6 +1,7 @@
 'use strict';
 
 var cfenv = require('cfenv'),
+  socialCredentials = require('./credentials'),
   appEnv = cfenv.getAppEnv(),
   cfMongoUrl = appEnv.getService('mean-mongo') ?
   appEnv.getService('mean-mongo').credentials.url : undefined;
@@ -35,23 +36,23 @@ module.exports = {
     options: {}
   },
   facebook: {
-    clientID: getCred('mean-facebook', 'id') || '1513322465659494',
-    clientSecret: getCred('mean-facebook', 'secret') || '4fed1213104623c900fd96bfd57043d6',
+    clientID: getCred('mean-facebook', 'id') || socialCredentials.fbappID,
+    clientSecret: getCred('mean-facebook', 'secret') || socialCredentials.fbappSecret,
     callbackURL: '/api/auth/facebook/callback'
   },
   twitter: {
-    clientID: getCred('mean-twitter', 'key') || '1EuGddIJblLFLniCty9fOaZ51',
-    clientSecret: getCred('mean-twitter', 'secret') || 'OKFhbkGf3IhwlZFDM6Hn2ghL3TFJUZH6IaaX2L9BwJsUUI7Nvu',
+    clientID: getCred('mean-twitter', 'key') || socialCredentials.twitterID,
+    clientSecret: getCred('mean-twitter', 'secret') || socialCredentials.twitterSecret,
     callbackURL: '/api/auth/twitter/callback'
   },
   google: {
-    clientID: getCred('mean-google', 'id') || '235357693317-5fgvlmecs7edfbhgkt9o0d42mtpdqfr9.apps.googleusercontent.com',
-    clientSecret: getCred('mean-google', 'secret') || 'MOE_aaBYiAJf0gZdK2NGw2mX',
+    clientID: getCred('mean-google', 'id') || socialCredentials.googleID,
+    clientSecret: getCred('mean-google', 'secret') || socialCredentials.googleSecret,
     callbackURL: '/api/auth/google/callback'
   },
   linkedin: {
-    clientID: getCred('mean-linkedin', 'id') || '770mzyuf8k7ul6',
-    clientSecret: getCred('mean-linkedin', 'secret') || '0r9Xa7LVpHi82YKe',
+    clientID: getCred('mean-linkedin', 'id') || socialCredentials.linkedinID,
+    clientSecret: getCred('mean-linkedin', 'secret') || socialCredentials.linkedinSecret,
     callbackURL: '/api/auth/linkedin/callback'
   },
   github: {

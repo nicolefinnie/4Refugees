@@ -73,12 +73,7 @@
         <!-- linkedIn URL -->
         <div class="row form-group ibm-input-field" show-errors>
             <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
-                s-8-3.589-8-8S11.589,3,16,3z"/>
-                <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
-                </svg>
+                <i class="fa fa-linkedin-square fa-2x"></i>
             </div>
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
                 <input type="text" id="linkedInProfile" name="linkedInProfile" ng-model="user.publicLinkedInProfile" placeholder={{properties.publicLinkedInProfilePlaceholder}}>
@@ -105,7 +100,7 @@
           </div>
         </div>
         <!-- language preference -->
-        <div class="row form-group ibm-input-field">
+        <div class="row form-group ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -121,15 +116,34 @@
             </svg>
           </div>
           <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s3':'col m11 s10'">
-            <label class="active" for="language">{{properties.langPreference}}</label>
-            <select name="languageSelector"
-                    ng-model="user.languagePreference"
-                    ng-options="lang.langID as lang.langValue for lang in languages"
-                    ng-selected="user.languagePreference == $index">
-              <option value="">{{properties.languageDropdownPlaceholder}}</option>
-            </select>
-          </div>
-        </div>
+            <div class="row">
+                <div class="col s12">
+                    <label class="active" for="tags">Languages</label>
+                </div>
+                <div class="col s12">
+                    <tags-input name="tags"
+                                ng-model="user.tagsLanguages"
+                                display-property="tagName"
+                                replace-spaces-with-dashes="false"
+                                add-from-autocomplete-only="true"
+                                placeholder="{{user.tagsLanguages.length ? '' : properties.tagPlaceholder}}"
+                                add-on-enter="true"
+                                add-on-comma="false"
+                                add-on-space="false"
+                                allow-leftover-text="false"
+                                on-invalid-tag="$tag">
+                      <auto-complete source="loadLanguageTags($query)"
+                                     load-on-focus="true"
+                                     load-on-empty="true"
+                                     min-length="0"
+                                     highlight-matched-text="true"
+                                     max-results-to-show="10">
+                      </auto-complete>
+                    </tags-input>
+                </div>
+            </div> <!-- end of row -->
+          </div> 
+        </div> <!-- end of language preference -->
         <!-- tag interests -->
         <div class="row form-group ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">
           <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
@@ -141,30 +155,30 @@
           </div>
           <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s3':'col m11 s10'">
             <div class="row">
-            <div class="col s12">
-                <label class="active" for="tags">{{properties.chooseTagInterests}}</label>
-            </div>
-            <div class="col s12">
-                <tags-input name="tags"
-                            ng-model="user.tagsInterests"
-                            display-property="tagName"
-                            replace-spaces-with-dashes="false"
-                            add-from-autocomplete-only="true"
-                            placeholder="{{user.tagsInterests.length ? '' : properties.tagPlaceholder}}"
-                            add-on-enter="true"
-                            add-on-comma="false"
-                            add-on-space="false"
-                            allow-leftover-text="false"
-                            on-invalid-tag="$tag">
-                  <auto-complete source="loadTags($query)"
-                                 load-on-focus="true"
-                                 load-on-empty="true"
-                                 min-length="0"
-                                 highlight-matched-text="true"
-                                 max-results-to-show="10">
-                  </auto-complete>
-                </tags-input>
-            </div>
+                <div class="col s12">
+                    <label class="active" for="tags">{{properties.chooseTagInterests}}</label>
+                </div>
+                <div class="col s12">
+                    <tags-input name="tags"
+                                ng-model="user.tagsInterests"
+                                display-property="tagName"
+                                replace-spaces-with-dashes="false"
+                                add-from-autocomplete-only="true"
+                                placeholder="{{user.tagsInterests.length ? '' : properties.tagPlaceholder}}"
+                                add-on-enter="true"
+                                add-on-comma="false"
+                                add-on-space="false"
+                                allow-leftover-text="false"
+                                on-invalid-tag="$tag">
+                      <auto-complete source="loadTags($query)"
+                                     load-on-focus="true"
+                                     load-on-empty="true"
+                                     min-length="0"
+                                     highlight-matched-text="true"
+                                     max-results-to-show="10">
+                      </auto-complete>
+                    </tags-input>
+                </div>
             </div>
           </div>
         </div>
@@ -204,8 +218,8 @@
                 </tags-input>
             </div>
           </div>
-        </div>
-      </div>
+        </div> <!-- end of tags skills -->
+       </div>
       <!-- end of ibm-input-field -->
       <p>
       <div class="ibm-submit-area form-group" ng-class="properties.rightToLeft ? 'arabic':'latin'">
@@ -217,7 +231,7 @@
           s-2-0.896-2-2S14.896,14,16,14z"/>
           </svg>
         </button>
-        <br><br>
+        <br><br><br>
         <div ng-show="success" class="text-success">
           <strong>{{properties.profileSavedSuccessfully}}</strong>
         </div>

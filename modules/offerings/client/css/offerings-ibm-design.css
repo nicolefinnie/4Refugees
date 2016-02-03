@@ -8,14 +8,13 @@
 .ibm-offering-list.card {
   background-color: #f9f9fb;
   color: #5a5a5a; }
-  .ibm-offering-list.card .chip {
-    background-color: #959595;
-    color: #fff; }
   .ibm-offering-list.card .card-content .card-title {
-    font-weight: bold; }
+    font-weight: bold;
+    position: relative; }
   .ibm-offering-list.card .card-content svg {
     fill: #959595;
-    float: left; }
+    margin: auto;
+    margin-top: 0.5rem; }
   .ibm-offering-list.card .card-action a {
     text-transform: lowercase;
     color: #4178be; }

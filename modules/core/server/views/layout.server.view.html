@@ -32,6 +32,8 @@
   <link href="{{favicon}}" rel="shortcut icon" type="image/x-icon">
   <!-- Google material icon -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- font awesome icon -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Google Map API -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
   <!-- Application CSS Files -->
@@ -45,7 +47,8 @@
       {% block content %}{% endblock %}
     </section>
   </section>
-  <footer ng-include="'/modules/core/client/views/footer.client.view.html'" class="page-footer" ng-hide="hideFooter"></footer>
+  <!-- TODO when the footer should be hidden, it shouldn't have a height, find a clean way to fix this style after demo -->
+  <footer ng-include="'/modules/core/client/views/footer.client.view.html'" class="page-footer"></footer>
 
   <!--Embedding The User Object-->
   <script type="text/javascript">

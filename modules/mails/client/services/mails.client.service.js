@@ -30,15 +30,27 @@ angular.module('mails').factory('Mails', ['$resource',
     MailService.checkForUnreadMail(function(unreadMailCount) {
       $scope.numUnreadMail = unreadMailCount;
     });
+
+    var mailDetails = {
+      title: 'My email subject',
+      content: 'My email body',
+      recipient: target.user._id,
+      matchId: match._id.toString()
+    };
+    MailService.sendNewMail(mailDetails, function(err, sentMail) {
+      // handle response from mail-send request.
+    });
   }];
  * @endcode
  * 
  * The APIs currently offered are:
  * 
- * checkForUnreadMail($http, callback(unreadMailCount)); 
+ * checkForUnreadMail($http, callback(unreadMailCount));
+ * sendNewMail(mailDetails, callback(err, sentMail)); 
  * 
  **/
-angular.module('mails').service('MailService', [ function () {
+angular.module('mails').service('MailService', [ 'Mails', function (Mails) {
+
   this.checkForUnreadMail = function($http, callback) {
     var unreadMailUrl = '/api/mails?unread=true&countOnly=true';
     $http({
@@ -55,9 +67,27 @@ angular.module('mails').service('MailService', [ function () {
       callback(false);
     });
   };
+
+  this.sendNewMail = function(mailDetails, callback) {
+    var mail = new Mails({
+      title: mailDetails.title,
+      content: mailDetails.content,
+      unread: true,
+      reportAdmin: false,
+      recipient: mailDetails.recipientId,
+      replyTo: null,
+      matchId: mailDetails.matchId,
+    });
+
+    // Send mail and issue callback with success/error status
+    mail.$save(function (response) {
+      callback(null, response);
+    }, function (errorResponse) {
+      callback(errorResponse, null);
+    });
+  };
 }
 ]);
-
 
 
 angular.module('mails').directive('scroll', function($window, $document) {

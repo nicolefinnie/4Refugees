@@ -6,7 +6,6 @@
     // Initialize global variables
     var MailsController,
       NewMailsController,
-      MailsCreateController,
       scope,
       $httpBackend,
       $stateParams,
@@ -86,9 +85,6 @@
         $scope: scope
       });
       NewMailsController = $controller('NewMailsController', {
-        $scope: scope
-      });
-      MailsCreateController = $controller('MailsCreateController', {
         $scope: scope
       });
     }));
