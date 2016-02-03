@@ -4,11 +4,9 @@ angular.module('users').config(function(tagsInputConfigProvider) {
   tagsInputConfigProvider.setActiveInterpolation('tagsInput', { placeholder: true });
 });
 
-angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'Users', 'Authentication', '$log', 'LanguageService',
-  function (ctrl, $rootScope, $http, $location, Users, Authentication, log, languageService) {
+angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'Users', 'Authentication',
+  function (ctrl, $rootScope, $http, $location, Users, Authentication) {
     ctrl.user = Authentication.user;
-    
-    log.info(ctrl.user);
 
     // Update a user profile
     ctrl.updateUserProfile = function (isValid) {
@@ -55,7 +53,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
                   { tagID: '4', tagName: 'Farsi' },
                   { tagID: '5', tagName: 'French' },
                   { tagID: '6', tagName: 'Spanish' },
-                  { tagID: '6', tagName: 'Italian' }
+                  { tagID: '7', tagName: 'Italian' }
       ];
       return tags.filter(function(tag) {
         return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
