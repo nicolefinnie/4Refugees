@@ -17,6 +17,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
       // if the user is logged in, also automatically update the preferred language in the user object
       if (Authentication.user) {
         // update settings with the language chosen
+        Authentication.user.languagePreference = language;
         UserService.updateUserProfile($scope, true);
       }
       // refresh view properties in the current language 

@@ -34,7 +34,7 @@ angular.module('users').service('UserService', ['$rootScope', '$http', '$locatio
         ctrl.$broadcast('show-errors-check-validity', 'userForm');
         return false;
       }
-      var user = new Users(ctrl.user);
+      var user = new Users(Authentication.user);
       user.$update(function (response) {
         ctrl.$broadcast('show-errors-reset', 'userForm');
         ctrl.success = true;
