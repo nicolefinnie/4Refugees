@@ -23,3 +23,26 @@ angular.module('users.admin').factory('Admin', ['$resource',
     });
   }
 ]);
+
+angular.module('users').service('UserService', ['$rootScope', '$http', '$location', 'Users', 'Authentication',
+  function ($rootScope, $http, $location, Users, Authentication) {
+
+    // Update a user profile with the chosen language
+    this.updateUserProfile = function (ctrl, isValid) {
+      ctrl.success = ctrl.error = null;
+      if (!isValid) {
+        ctrl.$broadcast('show-errors-check-validity', 'userForm');
+        return false;
+      }
+      var user = new Users(ctrl.user);
+      user.$update(function (response) {
+        ctrl.$broadcast('show-errors-reset', 'userForm');
+        ctrl.success = true;
+        Authentication.user = response;
+      }, function (response) {
+        ctrl.error = response.data.message;
+      });
+    };
+
+  }
+]);
