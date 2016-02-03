@@ -43,7 +43,7 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
                       { tagID: 'fr', tagName: 'Français' },
                       { tagID: 'es', tagName: 'Español' },
                       { tagID: 'it', tagName: 'Italiano' }
-                      ];
+      ];
       return languageTags.filter(function(tag) {
         return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
       });
