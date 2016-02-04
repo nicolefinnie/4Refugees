@@ -12,20 +12,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
 
     // language change clicked
     $scope.changeLanguage = function (language) {
-      // set the current language in the language service
-      LanguageService.setCurrentLanguage(language);
-      // if the user is logged in, also automatically update the preferred language in the user object
-      if (Authentication.user) {
-        // update settings with the language chosen
-        Authentication.user.languagePreference = language;
-        UserService.updateUserProfile($scope, true);
-      }
-      // refresh view properties in the current language 
-      LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
-        $scope.properties = translationList;
-        // broadcast this language change to HomeController to refresh
-        $rootScope.$broadcast('tellAllControllersToChangeLanguage');
-      });
+      LanguageService.changeLanguage($scope, language, true);
     };
 
     // Set the initial language to English if not logged in
@@ -100,6 +87,15 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     $scope.$on('$destroy', function() {
       $scope.stopPolling();
     });
+   
+    // listen for language change in header because other modules can trigger it too (e.g. after signing in)
+    $rootScope.$on('tellAllControllersToChangeLanguage', function(){
+      //refresh view properties of home
+      LanguageService.getPropertiesByViewName('header', $http, function(translationList) {
+        $scope.properties = translationList;
+      });
+    });
+
   }
 ]);
 
