@@ -27,7 +27,7 @@ angular.module('users.admin').factory('Admin', ['$resource',
 angular.module('users').service('UserService', ['$rootScope', '$http', '$location', 'Users', 'Authentication',
   function ($rootScope, $http, $location, Users, Authentication) {
 
-    // Update a user profile with the chosen language
+    // Update a user profile
     this.updateUserProfile = function (ctrl, isValid) {
       ctrl.success = ctrl.error = null;
       if (!isValid) {

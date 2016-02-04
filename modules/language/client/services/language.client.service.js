@@ -37,7 +37,8 @@
  * setupTestEnvironment();
  * 
  **/
-angular.module('language').service('LanguageService', [function () {
+angular.module('language').service('LanguageService', ['UserService', 'Authentication', '$http', '$rootScope', function (UserService, Authentication, $http, $rootScope) {
+
   this.globalCurrentLanguage = 'en';
   this.translations = { 'en':[], 'de':[], 'ar':[] };
   this.languageLoadInProgress = false;
@@ -106,5 +107,23 @@ angular.module('language').service('LanguageService', [function () {
     var testTranslations = [{ 'viewName':'offering' }];
     this.translations[this.globalCurrentLanguage] = testTranslations;
   };
+
+  // change language and broadcast to all other controller to cause a language refresh
+  this.changeLanguage = function (scope, language, refreshUserObject) {
+    // set the current language
+    this.setCurrentLanguage(language);
+    // if the user is logged in, also automatically update the preferred language in the user object
+    if (Authentication.user && refreshUserObject) {
+      Authentication.user.languagePreference = language;
+      UserService.updateUserProfile(scope, true);
+    }
+    // refresh view properties in the current language 
+    this.getPropertiesByViewName('header', $http, function(translationList) {
+      scope.properties = translationList;
+      // broadcast this language change to HomeController to refresh
+      $rootScope.$broadcast('tellAllControllersToChangeLanguage');
+    });
+  };
+
 }
 ]);
