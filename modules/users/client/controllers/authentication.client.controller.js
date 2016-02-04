@@ -49,9 +49,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
         $scope.$broadcast('show-errors-check-validity', 'userForm');
         return false;
       }
-      // set the current global language
+      // user current global language as future UI preference
       $scope.credentials.languagePreference = LanguageService.globalCurrentLanguage;
-      // POST the creds to sign up
+      // sign up
       $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
