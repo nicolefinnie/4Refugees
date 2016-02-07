@@ -10,6 +10,13 @@ angular.module('matches').config(['$stateProvider',
         url: '/matches',
         template: '<ui-view/>'
       })
+      .state('matches.admin', {
+        url: '/admin',
+        templateUrl: 'modules/matches/client/views/admin-matches.client.view.html',
+        data: {
+          roles: ['admin']
+        },
+      })
       .state('matches.listMine', {
         url: '',
         templateUrl: 'modules/matches/client/views/list-my-matches.client.view.html'

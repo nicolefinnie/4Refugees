@@ -11,7 +11,6 @@
       $location,
       Authentication,
       Offerings,
-      Socket,
       GeoSelector,
       LanguageService,
       mockOffering;
@@ -56,7 +55,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _Socket_, _GeoSelector_, _LanguageService_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Offerings_, _GeoSelector_, _LanguageService_) {
       // Set a new global scope
       scope = $rootScope.$new();
       $rootScope.currentLanguage = 'en';
@@ -67,7 +66,6 @@
       $location = _$location_;
       Authentication = _Authentication_;
       Offerings = _Offerings_;
-      Socket = _Socket_;
       GeoSelector = _GeoSelector_;
       LanguageService = _LanguageService_;
 
@@ -97,17 +95,6 @@
       OfferingsController = $controller('OfferingsController', {
         $scope: scope,
       });
-
-//      // Make sure the Socket is connected
-//      if (!Socket.socket) {
-//        Socket.connect();
-//      }
-//
-//      // Add an event listener to the 'offeringMessage' event and toast logged in users
-//      Socket.on('offeringMessage', function (message) {
-//        var toastContent = message.content.category;
-//        console.log('new stuff ' + toastContent);
-//      });
 
     }));
 
@@ -200,12 +187,6 @@
           return angular.equals(rh, sampleOfferingPostData);
         }).respond(mockOffering);
 
-        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-//        Socket.on('offeringMessage', function (message) {
-//          var toastContent = message.content.category;
-//          console.log('new stuff ' + toastContent);
-//        });
-
         // Run controller functionality
         scope.description = mockOffering.title[0].text;
         // Fake controller initialization needed to create offerings
@@ -225,12 +206,6 @@
       }));
 
       it('should set scope.error if save error', function () {
-        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-//        Socket.on('offeringMessage', function (message) {
-//          var toastContent = message.content.category;
-//          console.log('new stuff ' + toastContent);
-//        });
-
         var errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/offerings', function(reqHandler) {
           var rh = JSON.parse(reqHandler);
@@ -263,12 +238,6 @@
       });
 
       it('should update a valid offering', inject(function (Offerings) {
-        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-//        Socket.on('offeringMessage', function (message) {
-//          var toastContent = message.content.category;
-//          console.log('new stuff ' + toastContent);
-//        });
-
         // test update an offer with the new city JSON
         var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
         scope.where = city;
@@ -285,12 +254,6 @@
       }));
 
       it('should set scope.error to error response message', inject(function (Offerings) {
-        // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-//        Socket.on('offeringMessage', function (message) {
-//          var toastContent = message.content.category;
-//          console.log('new stuff ' + toastContent);
-//        });
-
         // test updating a city JSON without name
         var city = { 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
         scope.where = city;

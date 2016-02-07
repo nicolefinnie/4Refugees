@@ -31,26 +31,18 @@
             </div>
           </div>
         </div> <!-- end of row of description section -->
-        <!-- Sort the last two messages based on date -->
+        <!-- Display the last message from the owner and requester -->
         <div class="row">
             <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-              <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated <= match.requesterState.updated">
-                <a ng-if="authentication.user._id != match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" ng-bind="match.owner.displayName"></a>
-                <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" >{{properties.me}}</a>
-                : <span ng-bind="match.ownerState.lastMessage"></span>
-                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
+              <div class="col s12 list-group-item-text">
+                <a class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.lastMessages[0].user)" href="#singleProfile" ng-bind="match.lastMessages[0].viewName"></a>
+                : <span ng-bind="match.lastMessages[0].message"></span>
+                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[0].date | date:'yyyy.MM.dd'"></span>
               </div>
-              <div class="col s12">  
-                <a ng-if="authentication.user._id != match.requester._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.requester)" href="#singleProfile" ng-bind="match.requester.displayName"></a>
-                <a ng-if="authentication.user._id == match.requester._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.requester)" href="#singleProfile" >{{properties.me}}</a>
-                : <span ng-bind="match.requesterState.lastMessage"></span>
-                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.requesterState.updated | date:'yyyy.MM.dd'"></span>
-              </div>
-              <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated > match.requesterState.updated">
-                <a ng-if="authentication.user._id != match.owner._id"  class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" ng-bind="match.owner.displayName"></a>
-                <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.owner)" href="#singleProfile" >{{properties.me}}</a>
-                : <span ng-bind="match.ownerState.lastMessage"></span>
-                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
+              <div class="col s12 list-group-item-text">
+                <a class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.lastMessages[1].user)" href="#singleProfile" ng-bind="match.lastMessages[1].viewName"></a>
+                : <span ng-bind="match.lastMessages[1].message"></span>
+                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[1].date | date:'yyyy.MM.dd'"></span>
               </div>
             </div>
         </div> <!-- end of row -->
@@ -119,8 +111,8 @@
               </div>
               <br><br>
               <!-- TODO should be a pop-up and it can be closed -->
-              <div class="col m12 s11" ng-show="error">
-                  <strong ng-bind="error"></strong>
+              <div class="col m12 s11" ng-show="error.message">
+                  <strong ng-bind="error.message"></strong>
               </div>
             </div> <!-- end of ibm-submit-area-->
         </div> <!-- end of row of match interactions-->

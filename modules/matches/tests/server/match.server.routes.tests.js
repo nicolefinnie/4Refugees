@@ -220,7 +220,7 @@ describe('Match CRUD tests', function () {
             }
 
             // Update match title
-            match.requesterState.lastMessage = 'WHY YOU GOTTA BE SO MEAN?';
+            match.requesterState.lastMsg = [{ language: 'en', text: 'WHY YOU GOTTA BE SO MEAN?' }];
 
             // Update an existing match
             agent.put('/api/matches/' + matchSaveRes.body._id)
@@ -234,7 +234,7 @@ describe('Match CRUD tests', function () {
 
                 // Set assertions
                 (matchUpdateRes.body._id).should.equal(matchSaveRes.body._id);
-                (matchUpdateRes.body.requesterState.lastMessage).should.match('WHY YOU GOTTA BE SO MEAN?');
+                (matchUpdateRes.body.requesterState.lastMsg[0].text).should.match('WHY YOU GOTTA BE SO MEAN?');
 
                 // Call the assertion callback
                 done();
@@ -257,7 +257,6 @@ describe('Match CRUD tests', function () {
 
         // Save the match
         matchObj.save(function (err) {
-          console.log('save err ' + JSON.stringify(err));
           agent.post('/api/auth/signout')
             .end(function (signoutErr, signinRes) {
 
@@ -276,122 +275,129 @@ describe('Match CRUD tests', function () {
       });
   });
 
-//  it('should be able to get a single match if not signed in', function (done) {
-//    // Create new match model instance
-//    var matchObj = new Match(match);
-//    matchObj.user = user;
-//    matchObj.ownerId = user.id;
-//    matchObj.description = 'test';
-//    matchObj.loc.type = 'Point';
-//    matchObj.loc.coordinates = [ 10,20 ];
-//
-//    // Save the match
-//    matchObj.save(function () {
-//      request(app).get('/api/matches/' + matchObj._id)
-//        .end(function (req, res) {
-//          // Set assertion
-//          res.body.should.be.instanceof(Object).and.have.property('description', matchObj.description);
-//
-//          // Call the assertion callback
-//          done();
-//        });
-//    });
-//  });
-//
-//  it('should return proper error for single match with an invalid Id, if not signed in', function (done) {
-//    // test is not a valid mongoose Id
-//    request(app).get('/api/matches/test')
-//      .end(function (req, res) {
-//        // Set assertion
-//        res.body.should.be.instanceof(Object).and.have.property('message', 'Match is invalid');
-//
-//        // Call the assertion callback
-//        done();
-//      });
-//  });
-//
-//  it('should return proper error for single match which doesnt exist, if not signed in', function (done) {
-//    // This is a valid mongoose Id but a non-existent match
-//    request(app).get('/api/matches/559e9cd815f80b4c256a8f41')
-//      .end(function (req, res) {
-//        // Set assertion
-//        res.body.should.be.instanceof(Object).and.have.property('message', 'No match with that identifier has been found');
-//
-//        // Call the assertion callback
-//        done();
-//      });
-//  });
-//
-//  it('should be able to delete an match if signed in', function (done) {
-//    agent.post('/api/auth/signin')
-//      .send(credentials)
-//      .expect(200)
-//      .end(function (signinErr, signinRes) {
-//        // Handle signin error
-//        if (signinErr) {
-//          return done(signinErr);
-//        }
-//
-//        // Get the userId
-//        var userId = user.id;
-//
-//        // Save a new match
-//        agent.post('/api/matches')
-//          .send(match)
-//          .expect(200)
-//          .end(function (matchSaveErr, matchSaveRes) {
-//            // Handle match save error
-//            if (matchSaveErr) {
-//              return done(matchSaveErr);
-//            }
-//
-//            // Delete an existing match
-//            agent.delete('/api/matches/' + matchSaveRes.body._id)
-//              .send(match)
-//              .expect(200)
-//              .end(function (matchDeleteErr, matchDeleteRes) {
-//                // Handle match error error
-//                if (matchDeleteErr) {
-//                  return done(matchDeleteErr);
-//                }
-//
-//                // Set assertions
-//                (matchDeleteRes.body._id).should.equal(matchSaveRes.body._id);
-//
-//                // Call the assertion callback
-//                done();
-//              });
-//          });
-//      });
-//  });
-//
-//  it('should not be able to delete an match if not signed in', function (done) {
-//    // Set match user
-//    match.user = user;
-//
-//    // Create new match model instance
-//    var matchObj = new Match(match);
-//    matchObj.user = user;
-//    matchObj.ownerId = user.id;
-//    matchObj.description = 'test';
-//    matchObj.loc.type = 'Point';
-//    matchObj.loc.coordinates = [ 10,20 ];
-//
-//    // Save the match
-//    matchObj.save(function () {
-//      // Try deleting match
-//      request(app).delete('/api/matches/' + matchObj._id)
-//        .expect(403)
-//        .end(function (matchDeleteErr, matchDeleteRes) {
-//          // Set message assertion
-//          (matchDeleteRes.body.message).should.match('User is not authorized');
-//
-//          // Handle match error error
-//          done(matchDeleteErr);
-//        });
-//
-//    });
-//  });
+  it('should be able to get a single match if not signed in', function (done) {
+    // Create new match model instance
+    var matchObj = new Match(match);
+    var offering2 = new Offering({
+      title: [{
+        language: 'en',
+        text: 'Match2 description'
+      }],
+      city: 'Match2 city',
+      loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
+      user: owner,
+      ownerId: owner.displayName
+    });
+    offering.save(function () {
+      var matchObj = new Match(match);
+      matchObj.offeringId = offering2._id.toString();
+
+      // Save the match
+      matchObj.save(function () {
+        request(app).get('/api/matches/' + matchObj._id)
+          .end(function (req, res) {
+            // Set assertion
+            res.body.should.be.instanceof(Object).and.have.property('offeringId', matchObj.offeringId);
+  
+            // Call the assertion callback
+            done();
+          });
+      });
+    });
+  });
+
+  it('should return proper error for single match with an invalid Id, if not signed in', function (done) {
+    // test is not a valid mongoose Id
+    request(app).get('/api/matches/test')
+      .end(function (req, res) {
+        // Set assertion
+        res.body.should.be.instanceof(Object).and.have.property('message', 'Match is invalid');
+
+        // Call the assertion callback
+        done();
+      });
+  });
+
+  it('should return proper error for single match which does not exist, if not signed in', function (done) {
+    // This is a valid mongoose Id but a non-existent match
+    request(app).get('/api/matches/559e9cd815f80b4c256a8f41')
+      .end(function (req, res) {
+        // Set assertion
+        res.body.should.be.instanceof(Object).and.have.property('message', 'No match with that identifier has been found');
+
+        // Call the assertion callback
+        done();
+      });
+  });
+
+  it('should be able to delete an match if signed in', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+
+        // Get the userId
+        var userId = user.id;
+
+        // Save a new match
+        agent.post('/api/matches')
+          .send(match)
+          .expect(200)
+          .end(function (matchSaveErr, matchSaveRes) {
+            // Handle match save error
+            if (matchSaveErr) {
+              return done(matchSaveErr);
+            }
+
+            // Delete an existing match
+            agent.delete('/api/matches/' + matchSaveRes.body._id)
+              .send(match)
+              .expect(200)
+              .end(function (matchDeleteErr, matchDeleteRes) {
+                // Handle match error error
+                if (matchDeleteErr) {
+                  return done(matchDeleteErr);
+                }
+
+                // Set assertions
+                (matchDeleteRes.body._id).should.equal(matchSaveRes.body._id);
+
+                // Call the assertion callback
+                done();
+              });
+          });
+      });
+  });
+
+  it('should not be able to delete an match if not signed in', function (done) {
+    // Set match user
+    match.user = user;
+
+    // Create new match model instance
+    var matchObj = new Match(match);
+    matchObj.ownerId = user.id;
+    matchObj.offeringId = offering._id.toString();
+    matchObj.requesterId = user._id.toString();
+
+    // Save the match
+    matchObj.save(function () {
+      // Try deleting match
+      request(app).delete('/api/matches/' + matchObj._id)
+        .expect(403)
+        .end(function (matchDeleteErr, matchDeleteRes) {
+          // Set message assertion
+          (matchDeleteRes.body.message).should.match('User is not authorized');
+
+          // Handle match error error
+          done(matchDeleteErr);
+        });
+
+    });
+  });
 
   afterEach(function (done) {
     User.remove().exec(function () {

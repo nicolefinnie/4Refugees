@@ -102,26 +102,18 @@
                     </a>
                 </div>
               </div>
-                <!-- Sort the last two messages based on date -->
+                <!-- Display the last message from the owner and requester -->
                 <div class="row">
                     <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-                      <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated <= match.requesterState.updated">
-                        <a ng-if="authentication.user._id != match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.owner)" href="#theOtherProfile-@(index)" ng-bind="match.owner.displayName"></a>
-                        <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.owner)" href="#theOtherProfile-@(index)" >{{properties.me}}</a>
-                        : <span ng-bind="match.ownerState.lastMessage"></span>
-                        <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
+                      <div class="col s12 list-group-item-text">
+                        <a class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.lastMessages[0].user)" href="#theOtherProfile-@(index)" ng-bind="match.lastMessages[0].viewName"></a>
+                        : <span ng-bind="match.lastMessages[0].message"></span>
+                        <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[0].date | date:'yyyy.MM.dd'"></span>
                       </div>
-                      <div class="col s12">  
-                        <a ng-if="authentication.user._id != match.requester._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.requester)" href="#theOtherProfile-@(index)" ng-bind="match.requester.displayName"></a>
-                        <a ng-if="authentication.user._id == match.requester._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.requester)" href="#theOtherProfile-@(index)" >{{properties.me}}</a>
-                        : <span ng-bind="match.requesterState.lastMessage"></span>
-                        <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.requesterState.updated | date:'yyyy.MM.dd'"></span>
-                      </div>
-                      <div class="col s12 list-group-item-text" ng-if="match.ownerState.updated > match.requesterState.updated">
-                        <a ng-if="authentication.user._id != match.owner._id"  class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.owner)" href="#theOtherProfile-@(index)" ng-bind="match.owner.displayName"></a>
-                        <a ng-if="authentication.user._id == match.owner._id" class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.owner)" href="#theOtherProfile-@(index)" >{{properties.me}}</a>
-                        : <span ng-bind="match.ownerState.lastMessage"></span>
-                        <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.ownerState.updated | date:'yyyy.MM.dd'"></span>
+                      <div class="col s12 list-group-item-text">
+                        <a class="waves-effect waves-light modal-trigger" ng-click="profileModalDetails($index, match.lastMessages[1].user)" href="#theOtherProfile-@(index)" ng-bind="match.lastMessages[1].viewName"></a>
+                        : <span ng-bind="match.lastMessages[1].message"></span>
+                        <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[1].date | date:'yyyy.MM.dd'"></span>
                       </div>
                     </div>
                 </div> <!-- end of row -->

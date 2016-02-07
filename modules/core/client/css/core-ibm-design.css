@@ -194,7 +194,7 @@ footer.page-footer {
   height: 384px; }
 
 .ibm-mobile-menu.admin {
-  height: 192px; }
+  height: 256px; }
 
 /** Cover picture - no gap between the picture and its neighbours, no padding to the grid, the rule with !important is always applied **/
 .ibm-cover-container {

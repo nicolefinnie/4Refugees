@@ -1,15 +1,5 @@
 'use strict';
 
-// Validate a proper match message was provided
-function validateMatchMessage(scope, matchMessage) {
-  var isValid = (matchMessage !== undefined && matchMessage.length > 0);
-  if (!isValid) {
-    scope.error = scope.properties.errorNoMessage;
-    throw new Error('Match: Invalid message');
-  }
-}
-
-
 //Matches controller only available for authenticated users
 angular.module('matches').controller('MatchesController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
                                                            'Authentication', 'Matches', 'LanguageService', 'MailService',
@@ -23,11 +13,33 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     $scope.showRejectButton = false;
     $scope.showContactButton = false;
     $rootScope.hideFooter = false;
-    
+    //Note that the controller must call $scope.translateStatusCodes(properties) when first
+    //initialized, and whenever the current language is modified.
+    $scope.StatusCodes = {
+      NONE:             { value: 0, message: '' }, 
+      ERROR_NO_MESSAGE: { value: 1, message: '' }
+    };
+
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      $scope.initLanguage();
+      LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
+        $scope.properties = translationList;
+        $scope.translateStatusCodes();
+        // Update results according to new language
+        if ($scope.matches) {
+          $scope.matches.forEach(function(match) {
+            $scope.prepareMatchForView(match);
+          });
+        }
+        if ($scope.match && $scope.match.ownerStateLastMessage) {
+          $scope.prepareMatchForView($scope.match);
+        }
+      });
     });
+
+    $scope.translateStatusCodes = function() {
+      $scope.StatusCodes.ERROR_NO_MESSAGE.message = $scope.properties.errorNoMessage;
+    };
 
     $scope.amIOwner = function(match) {
       return ($scope.authentication.user._id.toString() === match.ownerId);
@@ -42,17 +54,29 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       $scope.activeProfile = currentProfile; 
       $('#singleProfile').openModal();
     };
-    
+
+    // Validate a proper match message was provided
+    $scope.validateMatchMessage = function(matchMessage) {
+      var isValid = (matchMessage !== undefined && matchMessage.length > 0);
+      if (!isValid) {
+        $scope.error = $scope.StatusCodes.ERROR_NO_MESSAGE;
+        throw new Error('Match: Invalid message');
+      }
+    };
     
     $scope.createOrUpdate = function() {
-      $scope.error = null;
+      $scope.error = $scope.StatusCodes.NONE;
 
-      validateMatchMessage($scope, $scope.matchMessage);
+      $scope.validateMatchMessage($scope.matchMessage);
+      var newMessage = {
+        language: LanguageService.getCurrentLanguage(),
+        text: $scope.matchMessage
+      };
 
       if ($scope.amIOwner($scope.match)) {
-        $scope.match.ownerState.lastMessage = $scope.matchMessage;
+        $scope.match.ownerState.lastMsg = [newMessage];
       } else {
-        $scope.match.requesterState.lastMessage = $scope.matchMessage;
+        $scope.match.requesterState.lastMsg = [newMessage];
       }
 
       if ($scope.matchId === '0') {
@@ -83,7 +107,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       // but if the match needs to translate anyways, we can save one translation....
       // Yet another option is to get the result from the sendNewMail() request below,
       // and if that contains a translated message, issue a match update...
-      validateMatchMessage($scope, $scope.matchMessage);
+      $scope.validateMatchMessage($scope.matchMessage);
 
       var messageDetails = {
         'title': subject,
@@ -170,45 +194,62 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       }
     };
 
-    $scope.initLanguage = function () {
-      LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
-        $scope.properties = translationList;
-      });
-    };
-
     // Converts server match JSON into client match, for integration with views.
     $scope.prepareMatchForView = function (match) {
-      if (!match.ownerState.lastMessage || (match.ownerState.lastMessage.length === 0)) {
-        match.ownerState.lastMessage = $scope.properties.noMessageYet;
+      if (!match.ownerState.lastMsg || (match.ownerState.lastMsg[0].text.length === 0)) {
+        match.ownerStateLastMessage = $scope.properties.noMessageYet;
+      } else {
+        match.ownerStateLastMessage = LanguageService.getTextForCurrentLanguage(match.ownerState.lastMsg);
       }
-      if (!match.requesterState.lastMessage || (match.requesterState.lastMessage.length === 0)) {
-        match.requesterState.lastMessage = $scope.properties.noMessageYet;
+      if (!match.requesterState.lastMsg || (match.requesterState.lastMsg[0].text.length === 0)) {
+        match.requesterStateLastMessage = $scope.properties.noMessageYet;
+      } else {
+        match.requesterStateLastMessage = LanguageService.getTextForCurrentLanguage(match.requesterState.lastMsg);
       }
       if ($scope.amIOwner(match)) {
         match.theOther = match.requester;
       } else {
         match.theOther = match.owner;
       }
-      if (match.offering && !match.offering.description && match.offering.title) {
+      if (match.offering && match.offering.title) {
         match.offering.description = LanguageService.getTextForCurrentLanguage(match.offering.title);
+      }
+      // Setup the last message from owner and requester, in order, to help with the view
+      var lastOwnerMessage = {
+        date: match.ownerState.updated,
+        user: match.owner,
+        viewName: $scope.amIOwner(match) ? $scope.properties.me : match.owner.displayName,
+        message: match.ownerStateLastMessage
+      };
+      var lastRequesterMessage = {
+        date: match.requesterState.updated,
+        user: match.requester,
+        viewName: $scope.amIOwner(match) ? match.requester.displayName : $scope.properties.me,
+        message: match.requesterStateLastMessage
+      };
+      match.lastMessages = [];
+      if (lastOwnerMessage.date <= lastRequesterMessage.date) {
+        match.lastMessages.push(lastOwnerMessage);
+        match.lastMessages.push(lastRequesterMessage);
+      } else {
+        match.lastMessages.push(lastRequesterMessage);
+        match.lastMessages.push(lastOwnerMessage);
       }
     };
 
     // Find all my matches - init function for matches.listMine
     $scope.findAllMine = function () {
       delete $scope.match;
-      $scope.initLanguage();
-      $scope.matches = Matches.query({
-      }, function () {
-        $scope.matches.forEach(function(match) {
-          $scope.prepareMatchForView(match);
+      LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
+        $scope.properties = translationList;
+        $scope.translateStatusCodes();
+        $scope.matches = Matches.query({
+        }, function () {
+          $scope.matches.forEach(function(match) {
+            $scope.prepareMatchForView(match);
+          });
         });
       });
-    };
-
-    // Pre-fill form based on an existing match - update codepath
-    $scope.initializeFormFromMatch = function (match) {
-      // Nothing to be done yet, views look directly at returned match fields.
     };
 
     // Clear form fields, i.e. after a successful create or update
@@ -236,15 +277,19 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     $scope.findOne = function () {
       LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
         $scope.properties = translationList;
+        $scope.translateStatusCodes();
         // TODO: Display some warning message if contact is blocked?
         // TODO: Display notification (and button to unblock) if we blocked contact?
-        if ($scope.matchId && $scope.matchId !== '0') {
+        if (($scope.matchId === undefined) && ($scope.offeringId === undefined)) {
+          // With no valid match or offering IDs provided, take them to a list of
+          // all their current matches.
+          $location.path('matches');
+        } else if ($scope.matchId && $scope.matchId !== '0') {
           // Pre-populate form based on an existing match, used when editing an offer
           $scope.match = Matches.get({
             matchId: $stateParams.matchId
-          }, function () {
+          }, function (err) {
             // TODO: Error handling? what if match is not found???
-            $scope.initializeFormFromMatch($scope.match);
             $scope.matchId = $scope.match._id.toString();
             $scope.prepareMatchForView($scope.match);
             // TODO: Here, we should set the 'ownerState.seen' flag if the owner
@@ -280,8 +325,10 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
               var now = new Date();
               match.created = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
               match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-              match.ownerState = { 'lastMessage': '', 'updated': new Date(), 'seen': false, 'blockContact': false, 'acceptMatch': false, 'rejectMatch': false };
-              match.requesterState = { 'lastMessage': '', 'updated': new Date(), 'blockContact': false, 'withdrawRequest': false };
+              match.ownerState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'seen': false, 'blockContact': false, 'acceptMatch': false, 'rejectMatch': false };
+              match.ownerStateLastMessage = '';
+              match.requesterState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'blockContact': false, 'withdrawRequest': false };
+              match.requesterStateLastMessage = '';
               match.owner = { 'displayName': $scope.recipientName };
               match.ownerId = $scope.recipientId;
               match.requester = { 'displayName': $scope.authentication.user.displayName };

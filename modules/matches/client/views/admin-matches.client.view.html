@@ -1,0 +1,31 @@
+<section ng-controller="MatchesAdminController" ng-init="sendAdminRequest('list')">
+  <div class="page-header">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>Matches Page: {{currentPage}}</h5>
+      </div>
+      <div>
+        <a href="#!" ng-click="sendAdminRequest('migrate_schema')" class="waves-effect waves-green btn-flat">Migrate Schema</a>
+        <a href="#!" ng-click="sendAdminRequest('delete_all')" class="waves-effect waves-blue btn-flat">Delete All Matches</a>
+      </div>
+      <div class="col-md-4" style="margin-top: 2em">
+        <input class="form-control col-md-4" type="text" ng-model="search" placeholder="Search" ng-change="figureOutItemsToDisplay()" />
+      </div>
+    </div>
+  </div>
+  <div>
+    <table>
+      <tr dir-paginate="match in matches | itemsPerPage: matchesPerPage" total-items="totalMatches" current-page="pagination.current">
+        <td>{{match.owner.displayName}}</td>
+        <td>{{match.requester.displayName}}</td>
+        <td>{{match.offering.description}}</td>
+        <td>
+          <a href="#!" ng-click="removeMatchFromList(match)" class="waves-effect waves-green">Delete match</a>
+        </td>
+      </tr>
+    </table>
+
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+  </div>
+  <pagination boundary-links="true" max-size="8" items-per-page="itemsPerPage" total-items="filterLength" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+</section>

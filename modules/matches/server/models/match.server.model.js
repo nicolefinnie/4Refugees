@@ -31,6 +31,7 @@ var MatchSchema = new Schema({
     ref: 'User'
   },
   ownerState: {
+    lastMsg: [{}],
     lastMessage: {
       type: String,
       default: '',
@@ -58,6 +59,7 @@ var MatchSchema = new Schema({
     }
   },
   requesterState: {
+    lastMsg: [{}],
     lastMessage: {
       type: String,
       default: '',
@@ -133,6 +135,17 @@ MatchSchema.methods.getPublicObject = function() {
   } else {
     pubMatch.requester = this.requester;
   }
+
+  // Tolerate old schema, populate result with new schema format
+  if (pubMatch.ownerState.lastMsg.length === 0) {
+    pubMatch.ownerState.lastMsg = [{ language: 'en', text: pubMatch.ownerState.lastMessage }];
+    delete pubMatch.ownerState.lastMessage;
+  }
+  if (pubMatch.requesterState.lastMsg.length === 0) {
+    pubMatch.requesterState.lastMsg = [{ language: 'en', text: pubMatch.requesterState.lastMessage }];
+    delete pubMatch.requesterState.lastMessage;
+  }
+
   return pubMatch;
 };
 

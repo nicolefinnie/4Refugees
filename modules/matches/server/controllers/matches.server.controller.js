@@ -50,10 +50,11 @@ exports.create = function (req, res) {
   match.ownerState.blockContact = false;
   match.ownerState.acceptMatch = false;
   match.ownerState.rejectMatch = false;
-  match.ownerState.lastMessage = '';
+  match.ownerState.lastMsg = [{ language: 'en', text: '' }];
   match.ownerState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
   // The requester creates the match object, so the initial object must be from the requester.
-  match.requesterState.lastMessage = req.body.requesterState.lastMessage;
+  // TODO: Update this once the match client sends in new schema format!
+  match.requesterState.lastMsg = req.body.requesterState.lastMsg;
   match.requesterState.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
   match.requesterState.blockContact = false;
   match.requesterState.withdrawRequest = false;
@@ -138,38 +139,151 @@ exports.delete = function (req, res) {
   });
 };
 
+function rebuildMatchIndexes() {
+  Match.ensureIndexes(function(err) {
+    if (err) { 
+      console.log('Match: error rebuilding indexes: ' + err); 
+    } else {
+      console.log('Match: indexes re-built succesfully.');
+    } 
+  });
+}
+
+/**
+ * Handle migrating all docs from an old MatchSchema to the current MatchSchema.
+ */
+function adminMatchMigrateSchema(matches) {
+  var numMigrated = 0;
+  matches.forEach(function(match) {
+    if ((match.ownerState.lastMsg.length === 0) || (match.requesterState.lastMsg.length === 0)) {
+      numMigrated = numMigrated + 1;
+      var newOwnerMsg = {
+        language: 'en',
+        text: match.ownerState.lastMessage
+      };
+      var newRequesterMsg = {
+        language: 'en',
+        text: match.requesterState.lastMessage
+      };
+      if (match.ownerState.lastMsg.length === 0) {
+        match.ownerState.lastMsg = [];
+        match.ownerState.lastMsg.push(newOwnerMsg);
+        match.ownerState.lastMessage = undefined;
+      }
+      if (match.requesterState.lastMsg.length === 0) {
+        match.requesterState.lastMsg = [];
+        match.requesterState.lastMsg.push(newRequesterMsg);
+        match.requesterState.lastMessage = undefined;
+      }
+      match.save(function (err) {
+        if (err) {
+          console.log('Match: Admin: Error saving migrated match with id \'' + match._id.toString() + '\', error: ' + JSON.stringify(err));
+        }
+      });
+    }
+  });
+  console.log('Match: Admin: Migrated ' + numMigrated + ' out of ' + matches.length + ' matches to new schema.');
+}
+
+/**
+ * Handle deleting all docs from the MatchSchema.
+ */
+function adminMatchDeleteAll(req, res) {
+  Match.remove({}, function(err, removed) {
+    if (err) {
+      console.log('Match: Admin: error deleting all matches: ' + err);
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else {
+      console.log('Match: Admin: All matches removed: ' + removed);
+      rebuildMatchIndexes();
+      var results = [];
+      res.json(results);
+    }
+  });
+}
+
+/**
+ * Administrative functionality commands, req.query.adminRequest:
+ * 'list' -> list all matches
+ * 'migrate_schema' -> convert matches from old schema to new schema
+ * 'delete_all' -> remove all matches
+ */
+function handleAdminRequests(req, res) {
+  console.log('Match: Admin: \'' + req.query.adminRequest + '\' request issued');
+
+  if ((req.query.adminRequest === 'list') ||
+      (req.query.adminRequest === 'migrate_schema')) {
+    var listQuery = Match.find({});
+    listQuery.sort('-created');
+    listQuery.populate('owner');
+    listQuery.populate('requester');
+    listQuery.populate('offering');
+    listQuery.exec(function (err, matches) {
+      if (err) {
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+      } else {
+        if (req.query.adminRequest === 'migrate_schema') {
+          adminMatchMigrateSchema(matches);
+        }
+        // else, list request, just return current results
+
+        // We don't want to use filterInternalMatchFields(), since that restricts the
+        // results to only those matches with valid owners/requesters/offerings.  The
+        // admin will want to see ALL matches.
+        var publicResults = [];
+        matches.forEach(function(match) {
+          publicResults.push(match.getPublicObject());
+        });
+        res.json(publicResults);
+      }
+    });
+  } else if (req.query.adminRequest === 'delete_all') {
+    adminMatchDeleteAll(req, res);
+  } else {
+    console.log('Match: Admin: \'' + req.query.adminRequest + '\' request not supported.');
+  }
+}
+
 /**
  * Search Matches based on input criteria
  */
 exports.search = function (req, res) {
-  // Build up query, depending on whether the user is authenticated or not.  Authenticated
-  // users are returned a list of all their matches.  Non-authenticated users get
-  // a sampling of 5 (random) matches - the limit is to reduce load on the server.
-  // Note that currently only unit tests call this without authentication.
-  var query = Match.find({});
-  // TODO: If user is admin, then return all matches? use results pagination?
-  if (req.query.offeringId) {
-    query.where('offeringId', req.query.offeringId);
-  }
-  if (req.user) {
-    query.or([{ ownerId: req.user._id.toString() }, { requesterId: req.user._id.toString() }]);
-    query.sort('-created');
-  } else {
-    query.limit(5);
-  }
-  query.populate('owner');
-  query.populate('requester');
-  query.populate('offering');
-
-  query.exec(function (err, matches) {
-    if (err) {
-      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+  if (req.query.adminRequest) {
+    if (!req.user || !req.user.roles || (req.user.roles.indexOf('admin') < 0)) {
+      return res.status(403).json({ message: 'User is not authorized' });
     } else {
-      // restrict results to only public-viewable fields
-      var publicResults = filterInternalMatchFields(matches);
-      res.json(publicResults);
+      handleAdminRequests(req, res);
     }
-  });
+  } else {
+    // Build up query, depending on whether the user is authenticated or not.  Authenticated
+    // users are returned a list of all their matches.  Non-authenticated users get
+    // a sampling of 5 (random) matches - the limit is to reduce load on the server.
+    // Note that currently only unit tests call this without authentication.
+    var query = Match.find({});
+    // TODO: If user is admin, then return all matches? use results pagination?
+    if (req.query.offeringId) {
+      query.where('offeringId', req.query.offeringId);
+    }
+    if (req.user) {
+      query.or([{ ownerId: req.user._id.toString() }, { requesterId: req.user._id.toString() }]);
+      query.sort('-created');
+    } else {
+      query.limit(5);
+    }
+    query.populate('owner');
+    query.populate('requester');
+    query.populate('offering');
+
+    query.exec(function (err, matches) {
+      if (err) {
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+      } else {
+        // restrict results to only public-viewable fields
+        var publicResults = filterInternalMatchFields(matches);
+        res.json(publicResults);
+      }
+    });
+  }
 };
 
 /**
