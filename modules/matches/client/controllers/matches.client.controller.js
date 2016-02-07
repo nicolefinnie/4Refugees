@@ -184,10 +184,13 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       if (!match.requesterState.lastMessage || (match.requesterState.lastMessage.length === 0)) {
         match.requesterState.lastMessage = $scope.properties.noMessageYet;
       }
-      if($scope.amIOwner(match)) {
+      if ($scope.amIOwner(match)) {
         match.theOther = match.requester;
       } else {
         match.theOther = match.owner;
+      }
+      if (match.offering && !match.offering.description && match.offering.title) {
+        match.offering.description = LanguageService.getTextForCurrentLanguage(match.offering.title);
       }
     };
 

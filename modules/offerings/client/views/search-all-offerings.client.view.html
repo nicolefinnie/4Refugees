@@ -147,16 +147,16 @@
                     <a ui-sref="offerings.create({offerType:'request', offeringId:'0'})" ng-if="offerType=='offer'">{{properties.tellOthersNeedsText}}</a>
                 </div>
                 <!-- TODO should be a pop-up and it can be closed -->
-                <div class="col m12 s12" ng-show="error">
-                    <strong ng-bind="error"></strong>
+                <div class="col m12 s12" ng-show="error.message">
+                    <strong ng-bind="error.message"></strong>
                 </div>
               </div> <!-- end of row -->
             </div> <!-- end of ibm-submit-area -->
             <!-- Display current search progress -->
             <div class="offering-search-status" ng-class="properties.rightToLeft ? 'arabic':'latin'">
               <div class="row">
-                <div class="col m12 s12" ng-show="searchStatus">
-                  <strong ng-bind="searchStatus"></strong>
+                <div class="col m12 s12" ng-show="searchStatus.message">
+                  <strong ng-bind="searchStatus.message"></strong>
                 </div>
               </div>
             </div>

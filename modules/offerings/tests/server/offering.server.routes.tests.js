@@ -47,7 +47,10 @@ describe('Offering CRUD tests', function () {
     // Save a user to the test db and create new offering
     user.save(function () {
       offering = {
-        description: 'Offering description',
+        title: [{
+          language: 'en',
+          text: 'Offering description'
+        }],
         city: 'Offering city',
         longitude: '8.8',
         latitude: '9.9',
@@ -94,7 +97,7 @@ describe('Offering CRUD tests', function () {
 
                 // Set assertions
                 (offerings[0].user._id).should.equal(userId);
-                (offerings[0].description).should.match('Offering description');
+                (offerings[0].title[0].text).should.match('Offering description');
 
                 // Call the assertion callback
                 done();
@@ -115,7 +118,7 @@ describe('Offering CRUD tests', function () {
 
   it('should not be able to save an offering if no description is provided', function (done) {
     // Invalidate geo location type field
-    offering.description = '';
+    offering.title = [];
 
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -167,7 +170,7 @@ describe('Offering CRUD tests', function () {
             }
 
             // Update offering title
-            offering.description = 'WHY YOU GOTTA BE SO MEAN?';
+            offering.title[0].text = 'WHY YOU GOTTA BE SO MEAN?';
 
             // Update an existing offering
             agent.put('/api/offerings/' + offeringSaveRes.body._id)
@@ -181,7 +184,7 @@ describe('Offering CRUD tests', function () {
 
                 // Set assertions
                 (offeringUpdateRes.body._id).should.equal(offeringSaveRes.body._id);
-                (offeringUpdateRes.body.description).should.match('WHY YOU GOTTA BE SO MEAN?');
+                (offeringUpdateRes.body.title[0].text).should.match('WHY YOU GOTTA BE SO MEAN?');
 
                 // Call the assertion callback
                 done();
@@ -200,7 +203,10 @@ describe('Offering CRUD tests', function () {
         var offeringObj = new Offering(offering);
         offeringObj.user = user;
         offeringObj.ownerId = user.id;
-        offeringObj.description = 'test';
+        offeringObj.title = [{
+          language: 'en',
+          text: 'test'
+        }];
         offeringObj.loc.type = 'Point';
         offeringObj.loc.coordinates = [ 10,20 ];
 
@@ -227,9 +233,13 @@ describe('Offering CRUD tests', function () {
   it('should be able to get a single offering if not signed in', function (done) {
     // Create new offering model instance
     var offeringObj = new Offering(offering);
+    var offeringTitle = [{
+      language: 'en',
+      text: 'test'
+    }];
     offeringObj.user = user;
     offeringObj.ownerId = user.id;
-    offeringObj.description = 'test';
+    offeringObj.title = offeringTitle;
     offeringObj.loc.type = 'Point';
     offeringObj.loc.coordinates = [ 10,20 ];
 
@@ -238,7 +248,7 @@ describe('Offering CRUD tests', function () {
       request(app).get('/api/offerings/' + offeringObj._id)
         .end(function (req, res) {
           // Set assertion
-          res.body.should.be.instanceof(Object).and.have.property('description', offeringObj.description);
+          res.body.should.be.instanceof(Object).and.have.property('title', offeringTitle);
 
           // Call the assertion callback
           done();
@@ -321,7 +331,10 @@ describe('Offering CRUD tests', function () {
     var offeringObj = new Offering(offering);
     offeringObj.user = user;
     offeringObj.ownerId = user.id;
-    offeringObj.description = 'test';
+    offeringObj.title = [{
+      language: 'en',
+      text: 'test'
+    }];
     offeringObj.loc.type = 'Point';
     offeringObj.loc.coordinates = [ 10,20 ];
 

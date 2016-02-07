@@ -30,7 +30,10 @@ describe('Offering Model Unit Tests:', function () {
 
     user.save(function () {
       offering = new Offering({
-        description: 'Offering description',
+        title: [{
+          language: 'en',
+          text: 'Offering description'
+        }],
         city: 'Offering city',
         loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
         user: user,
@@ -51,7 +54,7 @@ describe('Offering Model Unit Tests:', function () {
     });
 
     it('should be able to show an error when try to save without description', function (done) {
-      offering.description = '';
+      offering.title = [];
 
       return offering.save(function (err) {
         should.exist(err);

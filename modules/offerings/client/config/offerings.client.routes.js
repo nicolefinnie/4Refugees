@@ -10,6 +10,13 @@ angular.module('offerings').config(['$stateProvider',
         url: '/offerings',
         template: '<ui-view/>'
       })
+      .state('offerings.admin', {
+        url: '/admin',
+        templateUrl: 'modules/offerings/client/views/admin-offerings.client.view.html',
+        data: {
+          roles: ['admin']
+        },
+      })
       .state('offerings.listMine', {
         url: '',
         templateUrl: 'modules/offerings/client/views/list-my-offerings.client.view.html'

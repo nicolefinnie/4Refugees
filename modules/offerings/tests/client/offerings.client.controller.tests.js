@@ -26,9 +26,21 @@
         toEqualData: function (util, customEqualityTesters) {
           return {
             compare: function (actual, expected) {
+              var actualObj = {};
+              var expectedObj = {};
+              if (expected instanceof Array) {
+                actualObj = actual[0];
+                expectedObj = expected[0];
+              } else {
+                actualObj = actual;
+                expectedObj = expected;
+              }
               // TODO: Match more values?
-              var myPass = (actual.description === expected.description);
-              console.log('EQUAL ? ' + myPass + '  ' + actual.description + ' = ' + expected.description);
+              var myPass = (actualObj.title[0].text === expectedObj.title[0].text);
+              if (myPass === false) {
+                console.log('Mismatch:   Actual: ' + JSON.stringify(actualObj));
+                console.log('Mismatch: Expected: ' + JSON.stringify(expectedObj));
+              }
               return {
                 pass: myPass
               };
@@ -66,8 +78,10 @@
       // create mock offering
       mockOffering = new Offerings({
         _id: '525a8422f6d0f87f0e407a33',
-        description: 'A MEAN Offering',
-        descriptionLanguage: 'en',
+        title: [{
+          language: 'en',
+          text: 'A MEAN Offering'
+        }],
         offerType: 'offer',
         city: 'Stuttgart',
         loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
@@ -84,16 +98,16 @@
         $scope: scope,
       });
 
-      // Make sure the Socket is connected
-      if (!Socket.socket) {
-        Socket.connect();
-      }
-
-      // Add an event listener to the 'offeringMessage' event and toast logged in users
-      Socket.on('offeringMessage', function (message) {
-        var toastContent = message.content.category;
-        console.log('new stuff ' + toastContent);
-      });
+//      // Make sure the Socket is connected
+//      if (!Socket.socket) {
+//        Socket.connect();
+//      }
+//
+//      // Add an event listener to the 'offeringMessage' event and toast logged in users
+//      Socket.on('offeringMessage', function (message) {
+//        var toastContent = message.content.category;
+//        console.log('new stuff ' + toastContent);
+//      });
 
     }));
 
@@ -150,8 +164,10 @@
         };
         sampleOfferingPostData = new Offerings({
           //_id: '525a8422f6d0f87f0e407a33',
-          description: 'A MEAN Offering',
-          descriptionLanguage: 'en',
+          title: [{
+            language: 'en',
+            text: 'A MEAN Offering'
+          }],
           city: 'Stuttgart',
           //loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
           longitude: Number(8.8),
@@ -185,13 +201,13 @@
         }).respond(mockOffering);
 
         // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-        Socket.on('offeringMessage', function (message) {
-          var toastContent = message.content.category;
-          console.log('new stuff ' + toastContent);
-        });
+//        Socket.on('offeringMessage', function (message) {
+//          var toastContent = message.content.category;
+//          console.log('new stuff ' + toastContent);
+//        });
 
         // Run controller functionality
-        scope.description = mockOffering.description;
+        scope.description = mockOffering.title[0].text;
         // Fake controller initialization needed to create offerings
         scope.offeringId = '0';
         $stateParams.offeringId = '0';
@@ -210,10 +226,10 @@
 
       it('should set scope.error if save error', function () {
         // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-        Socket.on('offeringMessage', function (message) {
-          var toastContent = message.content.category;
-          console.log('new stuff ' + toastContent);
-        });
+//        Socket.on('offeringMessage', function (message) {
+//          var toastContent = message.content.category;
+//          console.log('new stuff ' + toastContent);
+//        });
 
         var errorMessage = 'this is an error message';
         $httpBackend.expectPOST('api/offerings', function(reqHandler) {
@@ -248,10 +264,10 @@
 
       it('should update a valid offering', inject(function (Offerings) {
         // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-        Socket.on('offeringMessage', function (message) {
-          var toastContent = message.content.category;
-          console.log('new stuff ' + toastContent);
-        });
+//        Socket.on('offeringMessage', function (message) {
+//          var toastContent = message.content.category;
+//          console.log('new stuff ' + toastContent);
+//        });
 
         // test update an offer with the new city JSON
         var city = { 'name':mockOffering.city, 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };
@@ -270,10 +286,10 @@
 
       it('should set scope.error to error response message', inject(function (Offerings) {
         // enable socket io listener to mock receive 'offeringMessage' - otherwise located in header
-        Socket.on('offeringMessage', function (message) {
-          var toastContent = message.content.category;
-          console.log('new stuff ' + toastContent);
-        });
+//        Socket.on('offeringMessage', function (message) {
+//          var toastContent = message.content.category;
+//          console.log('new stuff ' + toastContent);
+//        });
 
         // test updating a city JSON without name
         var city = { 'lat':mockOffering.loc.coordinates[1], 'lng':mockOffering.loc.coordinates[0] };

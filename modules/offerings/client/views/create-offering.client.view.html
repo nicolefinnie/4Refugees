@@ -167,8 +167,8 @@
                   <a href="offerings/search?offerType=request" ng-if="offerType=='offer' && offeringId=='0'">{{properties.findOtherNeedsText}}</a>
               </div>
               <!-- TODO should be a pop-up and it can be closed -->
-              <div class="col m12 s12" ng-show="error">
-                  <strong ng-bind="error"></strong>
+              <div class="col m12 s12" ng-show="error.message">
+                  <strong ng-bind="error.message"></strong>
               </div>
             </div> <!-- end of row -->
           </div> <!-- end of ibm-submit-area -->

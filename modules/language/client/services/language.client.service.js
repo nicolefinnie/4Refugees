@@ -11,16 +11,23 @@
  * @code 
   angular.module('core').controller('HomeController', ['$http', '$rootScope','LanguageService',
     function ($http, $rootScope, Authentication, LanguageService) {
- 
-   // language change clicked
+
+    // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       //refresh view properties of home
       LanguageService.getPropertiesByViewName('home', $http, function(translationList) {
         $scope.properties = translationList;
       });
     });
-    
-    }
+
+    var textTranslations = [
+      { language: 'en', text: 'Day' },
+      { language: 'de', text: 'Tag' }
+    };
+    // curText will be set to either 'Day', or 'Tag', depending on the current
+    // language as returned by LanguageService.getCurrentLanguage()
+    var curText = LanguageService.getTextForCurrentLanguage(textTranslations);
+
   ]);
  * @endcode
  * 
@@ -33,6 +40,7 @@
  * //is the only case when two controllers may be initializing at the same time 
  * isLanguageLoadInProgress();
  * getPropertiesByViewName();
+ * getTextForCurrentLanguage(textArray);
  * //only needed for unit tests
  * setupTestEnvironment();
  * 
@@ -46,15 +54,35 @@ angular.module('language').service('LanguageService', ['UserService', 'Authentic
   this.getCurrentLanguage = function() {
     return this.globalCurrentLanguage;
   };
-  
+
   this.isLanguageLoadInProgress = function() {
     return this.languageLoadInProgress;
   };
-  
-  this.setCurrentLanguage = function(newLanguage){
+
+  this.setCurrentLanguage = function(newLanguage) {
     this.globalCurrentLanguage = newLanguage;
   };
-  
+
+  this.getTextForCurrentLanguage = function(textArray) {
+    var self = this;
+    var result;
+    var fallbackResult = textArray[0].text;
+    textArray.forEach(function(translation) {
+      if (translation.language === self.globalCurrentLanguage) {
+        result = translation.text;
+      } else if (translation.language === 'en') {
+        // Default to English, if we don't find a perfect match
+        fallbackResult = translation.text;
+      }
+    });
+    if (result) {
+      return result;
+    } else {
+      // If no perfect translation was found, return the best possible match
+      return fallbackResult;
+    }
+  };
+
   // e.g. viewName is the name of an HTML view, 'home', 'header', 'offering', please refer to public/language/xx_viewProperties 
   this.getPropertiesByViewName = function(viewName, $http, callback) {
     var self = this;

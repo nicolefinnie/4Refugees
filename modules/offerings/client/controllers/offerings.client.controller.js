@@ -1,5 +1,29 @@
 'use strict';
 
+// Global status codes (i.e. errors, search status), used by all controllers in this file.
+// Note that the controller must call translateStatusCodes(properties) when first
+// initialized, and whenever the current language is modified.
+var StatusCodes = {
+  NONE:                 { value: 0, message: '' }, 
+  SEARCH_IN_PROGRESS:   { value: 1, message: '' }, 
+  SEARCH_COMPLETE:      { value: 2, message: '' }, 
+  SEARCH_NO_RESULTS:    { value: 3, message: '' }, 
+  SEARCH_RETRY:         { value: 4, message: '' }, 
+  ERROR_FROM_SERVER:    { value: 5, message: '' }, 
+  ERROR_NO_CITY:        { value: 6, message: '' }, 
+  ERROR_NO_DESCRIPTION: { value: 7, message: '' }
+};
+
+function translateStatusCodes(properties) {
+  StatusCodes.SEARCH_IN_PROGRESS.message = properties.searchInProgress;
+  StatusCodes.SEARCH_COMPLETE.message = properties.searchComplete;
+  StatusCodes.SEARCH_NO_RESULTS.message = properties.searchNoResults;
+  StatusCodes.SEARCH_RETRY.message = properties.searchRetry;
+  StatusCodes.ERROR_FROM_SERVER.message = properties.errorFromServer;
+  StatusCodes.ERROR_NO_CITY.message = properties.errorNoCity;
+  StatusCodes.ERROR_NO_DESCRIPTION.message = properties.errorNoDescription;
+}
+
 // Converts the category selections from the input form into an
 // array of category strings
 function getCategoryArray(cat, defaultSetting) {
@@ -23,7 +47,7 @@ function getCategoryArray(cat, defaultSetting) {
 
 // Convert category string as returned by server back into
 // the same format used when selecting categories
-function convertEnglishCategory(categories, lang, scope)
+function convertServerCategory(categories, lang, scope)
 {
   var converted = '';
   var addComma = false;
@@ -53,22 +77,6 @@ function convertEnglishCategory(categories, lang, scope)
   return converted;
 }
 
-// Convert offer/request string as returned by server to appropriate language
-function convertEnglishOfferType(offerEnglish, scope)
-{
-  var converted = '';
-  if (offerEnglish === 'offer') {
-    converted = scope.properties.offer;
-  } else if (offerEnglish === 'request') {
-    converted = scope.properties.request;
-  } else if (offerEnglish === 'offer (expired)') {
-    converted = scope.properties.offerExpired;
-  } else if (offerEnglish === 'request (expired)') {
-    converted = scope.properties.requestExpired;
-  }
-  return converted;
-}
-
 // Converts UTC date strings returned by server into locale Date objects
 function convertServerOfferingUTCDateToLocal(offering) {
   offering.when = new Date(offering.whenString);
@@ -77,30 +85,37 @@ function convertServerOfferingUTCDateToLocal(offering) {
 }
 
 // Converts server offering JSON into client offering, for integration with views.
-function convertServerOfferingToClientViewOffering(language, $scope, offering) {
-  offering.category = convertEnglishCategory(offering.category, language, $scope);
-  //offering.offerType = convertEnglishOfferType(offering.offerType, $scope);
+function convertServerOfferingToClientViewOffering(LanguageService, $scope, offering) {
+  // First time through, we cache the original un-translated category from the server
+  if (!offering.serverCategory) {
+    offering.serverCategory = offering.category;
+  }
+  offering.category = convertServerCategory(offering.serverCategory, LanguageService.getCurrentLanguage(), $scope);
   convertServerOfferingUTCDateToLocal(offering);
+  // Initialize to generic/unknown description, then find proper language-specific description.
+  offering.description = LanguageService.getTextForCurrentLanguage(offering.title);
+  if (offering.details && offering.details.length > 0) {
+    offering.descriptionDetails = LanguageService.getTextForCurrentLanguage(offering.details);
+  }
 }
 
 // Validate a suitable geoLocation was specified
 function validateGeoLocation(scope, offeringLocation) {
   if (offeringLocation.isInvalid) {
     console.log('Offering: Invalid location: ' + JSON.stringify(offeringLocation));
-    scope.error = scope.properties.errorNoCity;
+    scope.error = StatusCodes.ERROR_NO_CITY;
     throw new Error('Offering: Invalid location');
   }
 }
 
 // Validate a proper offering description was provided
-function validateOfferingDescription(scope, offering) {
-  var isValid = (offering.description !== undefined && offering.description.length > 0);
+function validateOfferingDescription(scope, description) {
+  var isValid = (description !== undefined && description.length > 0);
   if (!isValid) {
-    scope.error = scope.properties.errorNoDescription;
+    scope.error = StatusCodes.ERROR_NO_DESCRIPTION;
     throw new Error('Offering: Invalid description');
   }
 }
-
 
 // Controller handling offering searches
 angular.module('offerings').controller('OfferingsPublicController', ['$scope', '$rootScope', '$http', '$stateParams', '$location', 
@@ -109,7 +124,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
     $scope.authentication = Authentication;
     $rootScope.hideFooter = false;
     $scope.showDetails = false;
-    $scope.searchStatus = null;
+    $scope.searchStatus = StatusCodes.NONE;
+    $scope.error = StatusCodes.NONE;
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': false, 'enableList': true, 'enableManual': false });
 
     // initialize datepicker
@@ -121,7 +137,17 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      $scope.initialize();
+      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
+        $scope.properties = translationList;
+        translateStatusCodes($scope.properties);
+        GeoSelector.updateAutoTextResults($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess);
+        // Update results according to new language
+        if ($scope.offerings) {
+          $scope.offerings.forEach(function(offering) {
+            convertServerOfferingToClientViewOffering(LanguageService, $scope, offering);
+          });
+        }
+      });
     });
 
     $scope.profileModalDetails = function(index, currentProfile){
@@ -138,18 +164,23 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
 
     // Search all offerings for the input criteria
     $scope.searchAll = function () {
-      $scope.error = null;
+      $scope.error = StatusCodes.NONE;
 
       var searchLocation = GeoSelector.getActiveLocation($scope.geo);
       validateGeoLocation($scope, searchLocation);
 
       var now = new Date(); 
       var whenDate = this.when ? new Date(this.when) : new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0);
-      $scope.searchStatus = $scope.properties.searchInProgress;
-      // TODO: Should we re-direct to a new page? or render a new page?
+      var curLanguage = LanguageService.getCurrentLanguage();
+      var offeringDetails = (this.details && (this.details.length > 0)) ? [{ language: curLanguage, text: this.details }] : undefined;
+      $scope.searchStatus = StatusCodes.SEARCH_IN_PROGRESS;
       $scope.offerings = Offerings.query({
-        description: this.description,
-        descriptionLanguage: LanguageService.getCurrentLanguage(),
+        title: [{
+          language: LanguageService.getCurrentLanguage(),
+          text: this.description
+        }],
+        url: this.url,
+        details: offeringDetails,
         city: searchLocation.city,
         longitude: searchLocation.lng,
         latitude: searchLocation.lat,
@@ -160,11 +191,11 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
         offerType: this.offerType 
       }, function () {
         if ($scope.offerings.length < 1) {
-          $scope.searchStatus = $scope.properties.searchNoResults;
+          $scope.searchStatus = StatusCodes.SEARCH_NO_RESULTS;
         } else {
-          $scope.searchStatus = $scope.properties.searchComplete;
+          $scope.searchStatus = StatusCodes.SEARCH_COMPLETE;
           $scope.offerings.forEach(function(offering) {
-            convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
+            convertServerOfferingToClientViewOffering(LanguageService, $scope, offering);
             //FIXME code for demo to make it linkable
             if(offering.description.indexOf('https://') > -1){
               offering.descriptionLink = offering.description.substring(offering.description.indexOf('https://'), offering.description.length);
@@ -177,8 +208,8 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
           });
         }
       }, function (errorResponse) {
-        $scope.error = $scope.properties.errorFromServer;
-        $scope.searchStatus = $scope.properties.searchRetry;
+        $scope.error = StatusCodes.ERROR_FROM_SERVER;
+        $scope.searchStatus = StatusCodes.SEARCH_RETRY;
         console.log('Offering: error response is: ' + JSON.stringify(errorResponse));
       });
     };
@@ -192,7 +223,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.offering = Offerings.get({
         offeringId: $stateParams.offeringId
       }, function () {
-        convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, $scope.offering);
+        convertServerOfferingToClientViewOffering(LanguageService, $scope, $scope.offering);
       });
     };
 
@@ -200,6 +231,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       // initialize all properties in the view (html)
       LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
         $scope.properties = translationList;
+        translateStatusCodes($scope.properties);
         // Ask for our current city+coordinates from Geo services
         GeoSelector.activateLocator($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess, function() {
           // only called if geo location failed, or if the location was returned
@@ -223,6 +255,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.authentication = Authentication;
     $rootScope.hideFooter = false;
     $scope.offering = {};
+    $scope.error = StatusCodes.NONE;
     $scope.geo = GeoSelector.getInitialState({ 'enableLocator': true, 'enableReverseGeocoder': true, 'enableList': true, 'enableManual': true });
 
     // initialize datepicker
@@ -239,7 +272,20 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
 
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      $scope.initLanguage();
+      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
+        $scope.properties = translationList;
+        translateStatusCodes($scope.properties);
+        GeoSelector.updateAutoTextResults($scope.geo, $scope.properties.geolocating, $scope.properties.geolocationSuccess);
+        // Update results according to new language
+        if ($scope.offerings) {
+          $scope.offerings.forEach(function(offering) {
+            convertServerOfferingToClientViewOffering(LanguageService, $scope, offering);
+          });
+        }
+        if ($scope.offering && $scope.offering.serverCategory) {
+          convertServerOfferingToClientViewOffering(LanguageService, $scope, $scope.offering);
+        }
+      });
     });
 
     $scope.cancelEdit = function() {
@@ -261,10 +307,9 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     };
 
     $scope.createOrUpdate = function() {
-      $scope.error = null;
+      $scope.error = StatusCodes.NONE;
 
-      $scope.offering.description = this.description;
-      validateOfferingDescription($scope, $scope.offering);
+      validateOfferingDescription($scope, this.description);
 
       var offeringLocation = GeoSelector.getActiveLocation($scope.geo);
       validateGeoLocation($scope, offeringLocation);
@@ -276,10 +321,12 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       if (this.expiry === undefined) {
         expiryDate.setMonth(expiryDate.getMonth()+1);
       } 
+      var curLanguage = LanguageService.getCurrentLanguage();
       $scope.offering.whenString = whenDate.toUTCString();
       $scope.offering.expiryString = expiryDate.toUTCString();
-      $scope.offering.description = this.description;
-      $scope.offering.descriptionLanguage = LanguageService.getCurrentLanguage();
+      $scope.offering.title = [{ language: curLanguage, text: this.description }];
+      var offeringDetails = (this.details && (this.details.length > 0)) ? [{ language: curLanguage, text: this.details }] : undefined;
+      $scope.offering.details = offeringDetails;
       $scope.offering.category = this.category ? [this.category] : ['others'];
       $scope.offering.city = offeringLocation.city;
       $scope.offering.longitude = offeringLocation.lng;
@@ -332,27 +379,23 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       }
     };
 
-    $scope.initLanguage = function () {
-      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
-        $scope.properties = translationList;
-      });
-    };
-
     // Find all my offerings - init function for offerings.listMine
     $scope.findAllMine = function () {
       delete $scope.offering;
-      $scope.initLanguage();
-      $scope.offerings = Offerings.query({
-      }, function () {
-        $scope.offerings.forEach(function(offering) {
-          convertServerOfferingToClientViewOffering(LanguageService.getCurrentLanguage(), $scope, offering);
+      LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
+        $scope.properties = translationList;
+        translateStatusCodes($scope.properties);
+        $scope.offerings = Offerings.query({
+        }, function () {
+          $scope.offerings.forEach(function(offering) {
+            convertServerOfferingToClientViewOffering(LanguageService, $scope, offering);
+          });
         });
       });
     };
 
     // Pre-fill form based on an existing offering - update codepath
     $scope.initializeFormFromOffering = function (offering) {
-      // FIXME: How to pick correct description language to use?
       $scope.offerType = offering.offerType;
       // each offer or request can only have one category
       if ($scope.offering.category.length > 0){
@@ -364,7 +407,11 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       var expiryDate = new Date(offering.expiryString);
       $scope.when = whenDate;
       $scope.expiry = expiryDate;
-      $scope.description = offering.description;
+      $scope.description = LanguageService.getTextForCurrentLanguage(offering.title);
+      if (offering.details && (offering.details.length > 0)) {
+        $scope.details = LanguageService.getTextForCurrentLanguage(offering.details);
+      }
+      $scope.url = offering.url;
       // pre-fill geo-location with values in retrieved offering
       var manualLocation = {
         'city' : offering.city,
@@ -378,6 +425,8 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.clearForm = function () {
       delete $scope.category;
       delete $scope.description;
+      delete $scope.url;
+      delete $scope.details;
       delete $scope.when;
       delete $scope.expiry;
     };
@@ -386,6 +435,7 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
     $scope.findOne = function () {
       LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
         $scope.properties = translationList;
+        translateStatusCodes($scope.properties);
         if ($stateParams.offeringId !== '0') {
           // Pre-populate form based on an existing offering, used when editing an offer
           $scope.offering = Offerings.get({

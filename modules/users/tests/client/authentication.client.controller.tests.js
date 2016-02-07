@@ -126,6 +126,7 @@
           scope.authentication.user = 'Fred';
           $httpBackend.when('POST', '/api/auth/signup').respond(200, 'Fred');
 
+          scope.credentials = {};
           scope.signup(true);
           $httpBackend.flush();
 
@@ -141,6 +142,7 @@
             'message': 'Username already exists'
           });
 
+          scope.credentials = {};
           scope.signup(true);
           $httpBackend.flush();
 

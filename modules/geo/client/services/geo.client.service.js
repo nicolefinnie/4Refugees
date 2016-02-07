@@ -355,6 +355,8 @@ function (GeoLocator, GeoReverseCoder, GeoList) {
       'auto' : {
         'supported'           : selections.enableLocator,
         'reverseGeocoder'     : selections.enableReverseGeocoder,
+        'initText'            : '...',
+        'successText'         : '...',
         'initialized'         : false,
         'active'              : false,
         'location'            : {}
@@ -376,15 +378,32 @@ function (GeoLocator, GeoReverseCoder, GeoList) {
     return geo;
   };
 
-  // Need to add reverse lookup options, pass to setup?
+  // Allow caller to update default init/success text, for GeoLocator support.
+  // Used, for example, if the language has changed.
+  this.updateAutoTextResults = function(geo, initText, successText) {
+    geo.auto.initText = initText;
+    geo.auto.successText = successText;
+    if (!geo.auto.initialized) {
+      geo.auto.location.city = geo.auto.initText;
+      geo.auto.location.region = geo.auto.initText;
+      geo.auto.location.country = geo.auto.initText;
+    } else if (geo.auto.supported && !geo.auto.reverseGeocoder) {
+      geo.auto.location.city = geo.auto.successText;
+      geo.auto.location.region = geo.auto.successText;
+      geo.auto.location.country = geo.auto.successText;
+    }
+  };
+
   this.activateLocator = function(geo, initText, successText, needDigestCallback) {
     geo.auto.active = true;
     geo.list.active = false;
     geo.manual.active = false;
     if (!geo.auto.initialized) {
-      geo.auto.location.city = initText;
-      geo.auto.location.region = initText;
-      geo.auto.location.country = initText;
+      geo.auto.initText = initText;
+      geo.auto.successText = successText;
+      geo.auto.location.city = geo.auto.initText;
+      geo.auto.location.region = geo.auto.initText;
+      geo.auto.location.country = geo.auto.initText;
       if (geo.auto.reverseGeocoder) {
         GeoReverseCoder.getAddress(null, function(myAddress, digestInProgress) {
           geo.auto.supported = myAddress.available;
@@ -407,9 +426,9 @@ function (GeoLocator, GeoReverseCoder, GeoList) {
           if (geo.auto.supported) {
             geo.auto.location.lat = myLocation.latitude;
             geo.auto.location.lng = myLocation.longitude;
-            geo.auto.location.city = successText;
-            geo.auto.location.region = successText;
-            geo.auto.location.country = successText;
+            geo.auto.location.city = geo.auto.successText;
+            geo.auto.location.region = geo.auto.successText;
+            geo.auto.location.country = geo.auto.successText;
           }
           if (!geo.auto.supported || !digestInProgress) {
             needDigestCallback();

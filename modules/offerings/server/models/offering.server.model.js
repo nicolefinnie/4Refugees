@@ -22,15 +22,25 @@ var OfferingSchema = new Schema({
     type: Date,
     default: function() { return +new Date() + 28*24*60*60*1000; } // default expiry + ~1 month
   },
+  // Array of offering titles, and details, translated into all supported languages
+  // Each entry should contain 'language' and 'text' fields.
+  title: [{}],
+  details: [{}],
+  url: {
+    type: String,
+    default: '',
+    trim: true
+  },
+  // Note: description, descriptionLanguage, descriptionEnglish, descriptionOther
+  // are deprecated, replaced with the 'title' array
   description: {
     type: String,
     default: '',
-    trim: true,
-    required: 'Description cannot be blank'
+    trim: true
   },
   descriptionLanguage: {
     type: String,
-    default: 'en',
+    default: '',
     trim: true
   },
   descriptionEnglish: {
@@ -44,21 +54,6 @@ var OfferingSchema = new Schema({
     type: String,
     default: '',
     trim: true,
-  },
-  descriptionDetails: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  descriptionDetailsEnglish: {
-    type: String,
-    default: '',
-    trim: true
-  },
-  descriptionDetailsOther: {
-    type: String,
-    default: '',
-    trim: true
   },
   city: {
     type: String,
@@ -93,6 +88,18 @@ var OfferingSchema = new Schema({
     required: 'ownerId cannot be blank'
   }
 });
+
+// Validate that there is at least one title/description, and that for all provided
+// titles/descriptions, both mandatory fields are provided.
+OfferingSchema.path('title').validate(function(title){
+  var valid = (title && title.length > 0);
+  title.forEach(function(translation) {
+    if (valid === true) {
+      valid = (translation.language && translation.text && (translation.text.length > 0) && (translation.language.length > 0));
+    }
+  });
+  return (valid);
+}, 'Description cannot be blank');
 
 // Create index on geo location, matching is done first by
 // proximity to request, then filtered further by other fields.
@@ -140,15 +147,47 @@ OfferingSchema.statics.getPublicObject = function (rawDoc, myOwnDoc, includeDist
     whenString: rawDoc.when.toUTCString(),
     updatedString: rawDoc.updated.toUTCString(),
     category: rawDoc.category,
-    description: rawDoc.description,
-    descriptionLanguage: rawDoc.descriptionLanguage,
-    descriptionEnglish: rawDoc.descriptionEnglish,
-    descriptionOther: rawDoc.descriptionOther,
+    title: rawDoc.title,
+    details: rawDoc.details,
+    url: rawDoc.url,
     numOffered: rawDoc.numOffered,
     expiryString: new Date(rawDoc.expiry).toUTCString(),
     offerType: this.mapOfferTypeNumberToString(rawDoc.offerType),
     city: rawDoc.city
   };
+
+  // TODO: Remove this after all offering objects are migrated to new schema
+  if (rawDoc.description && rawDoc.description !== '') {
+    var enTitle = {
+      language: 'en',
+      text: rawDoc.descriptionEnglish
+    };
+    var arTitle = {
+      language: 'ar',
+      text: rawDoc.descriptionOther
+    };
+    var deTitle = {
+      language: 'de',
+      text: rawDoc.description
+    };
+    if (rawDoc.descriptionLanguage === 'de') {
+      // No german translation support, just use un-translated values for English and Arabic
+      enTitle.text = rawDoc.description;
+      arTitle.text = rawDoc.description;
+    } else {
+      if (rawDoc.descriptionLanguage === 'en') {
+        enTitle.text = rawDoc.description;
+      } else {
+        arTitle.text = rawDoc.description;
+      }
+      // No german translation support, just use English version
+      deTitle.text = enTitle.text;
+    }
+    pubOffering.title = [];
+    pubOffering.title.push(enTitle);
+    pubOffering.title.push(arTitle);
+    pubOffering.title.push(deTitle);
+  }
 
   if (myOwnDoc === true) {
     // this is my own document, we can show exact co-ordinates in results

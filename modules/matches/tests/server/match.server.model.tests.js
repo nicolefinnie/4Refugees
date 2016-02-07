@@ -39,7 +39,10 @@ describe('Match Model Unit Tests:', function () {
     });
 
     offering = new Offering({
-      description: 'Match description',
+      title: [{
+        language: 'en',
+        text: 'Match description'
+      }],
       city: 'Match city',
       loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
       user: owner,

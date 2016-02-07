@@ -60,7 +60,10 @@ describe('Match CRUD tests', function () {
     user.save(function () {
       owner.save(function () {
         offering = new Offering({
-          description: 'Match description',
+          title: [{
+            language: 'en',
+            text: 'Match description'
+          }],
           city: 'Match city',
           loc: { type: 'Point', coordinates : [ Number(8.8), Number(9.9) ] },
           user: owner,

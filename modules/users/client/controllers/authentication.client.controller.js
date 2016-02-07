@@ -73,7 +73,9 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$root
         $scope.authentication.user = response;
         // And redirect to the previous or home page
         $state.go($state.previous.state.name || 'home', $state.previous.params);
-        LanguageService.changeLanguage($scope, $scope.authentication.user.languagePreference, false);
+        if (response.languagePreference && (response.languagePreference.length > 0)) {
+          LanguageService.changeLanguage($scope, response.languagePreference, false);
+        }
       }).error(function (response) {
         $scope.error = response.message;
       });

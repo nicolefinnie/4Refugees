@@ -8,8 +8,6 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Offering = mongoose.model('Offering'),
   translater = require(path.resolve('./modules/language/server/watson/language.server.watson.translation')),
-  config = require(path.resolve('./config/config')),
-  extend = require('util')._extend,
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 
@@ -17,56 +15,26 @@ var path = require('path'),
 function doTranslateOfferingAndSave(offering, res) {
   var translateInput = {
     substituteOnFailure: true,
-    sourceLanguage: offering.descriptionLanguage,
-    sourceText: offering.description
+    sourceLanguage: offering.title[0].language,
+    sourceText: offering.title[0].text
   };
   translater.translateAllLanguages(translateInput, function(translationOutput) {
     translationOutput.targets.forEach(function(translation) {
-      // TODO: This needs a redesign!  The offering.description should
-      // have an array of translated languages, we should not have 3
-      // hard-coded and ugly fields.
-      if (translation.language === 'en') {
-        offering.descriptionEnglish = translation.text;
-      } else if (translation.language === 'ar') {
-        offering.descriptionOther = translation.text;
-      }
+      var translatedTitle = {
+        language: translation.language,
+        text: translation.text
+      };
+      offering.title.push(translatedTitle);
     });
     offering.save(function (err) {
       if (err) {
-        return res.status(400).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         var filteredOffering = Offering.getPublicObject(offering, true, false);
         res.json(filteredOffering);
       }
     });
   });
-}
-
-function translateAllOfferings(offerings, desiredLanguage)
-{
-  offerings.forEach(function(offering) {
-    if (desiredLanguage === offering.descriptionLanguage) {
-      // no-op, offering.description is already in the correct language
-    } else if (desiredLanguage === 'en') {
-      // Use the copy we have already translated to english
-      if (offering.descriptionEnglish) {
-        offering.description = offering.descriptionEnglish;
-      }
-      // else, must have been created before translations, return un-translated
-    } else {
-      // if it's not english, and not the source language, must be the
-      // 'other' language.  This only works with 3 supported languages.
-      // If we need to support more languages, we may need to translate
-      // on the fly for queries....
-      if (offering.descriptionOther) {
-        offering.description = offering.descriptionOther;
-      }
-      // else, must have been created before translations, return un-translated
-    }
-  });
-  return offerings;
 }
 
 /**
@@ -91,15 +59,17 @@ function rebuildOfferingIndexes() {
  */
 exports.create = function (req, res) {
   var offering = new Offering();
+  if(!req.body.title || !req.body.title[0] || !req.body.title[0].language || !req.body.title[0].text) {
+    return res.status(400).send({ message: 'Description cannot be blank' });
+  }
   offering.user = req.user;
   offering.ownerId = req.user._id.toString();
   offering.when = new Date(req.body.whenString);
   var now = new Date(); 
   offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
   offering.expiry = new Date(req.body.expiryString);
-  offering.descriptionLanguage = req.body.descriptionLanguage;
-  offering.description = req.body.description;
-  offering.descriptionDetails = req.body.descriptionDetails;
+  offering.title = [];
+  offering.title.push(req.body.title[0]);
   offering.city = req.body.city;
   offering.category = req.body.category;
   offering.loc.type = 'Point';
@@ -122,6 +92,9 @@ exports.read = function (req, res) {
  * Update a offering
  */
 exports.update = function (req, res) {
+  if(!req.body.title || !req.body.title[0] || !req.body.title[0].language || !req.body.title[0].text) {
+    return res.status(400).send({ message: 'Description cannot be blank' });
+  }
   Offering.findOne({ _id: mongoose.Types.ObjectId(req.offering._id) }, function (err, offering){
     if (err) {
       return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
@@ -132,15 +105,34 @@ exports.update = function (req, res) {
       var now = new Date(); 
       offering.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
       offering.expiry = new Date(req.body.expiryString);
-      offering.description = req.body.description;
-      offering.descriptionLanguage = req.body.descriptionLanguage;
+      // TODO: Clear old description* fields for now, remove these after official
+      // site has migrated all offerings to new schema.
+      offering.description = undefined;
+      offering.descriptionLanguage = undefined;
+      offering.descriptionEnglish = undefined;
+      offering.descriptionOther = undefined;
       offering.city = req.body.city;
       offering.category = req.body.category;
       offering.loc.type = 'Point';
       offering.loc.coordinates = [ Number(req.body.longitude),
                                    Number(req.body.latitude) ];
 
-      doTranslateOfferingAndSave(offering, res);
+      if (offering.title[0].text === req.body.title[0].text) {
+        // no need to translate again, text has not changed, just save directly.
+        offering.save(function (err) {
+          if (err) {
+            return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+          } else {
+            var filteredOffering = Offering.getPublicObject(offering, true, false);
+            res.json(filteredOffering);
+          }
+        });
+      } else {
+        // Set the title for the source language, and translate to other supported languages
+        offering.title = [];
+        offering.title.push(req.body.title[0]);
+        doTranslateOfferingAndSave(offering, res);
+      }
     }
   });
 };
@@ -207,12 +199,121 @@ function filterInternalOfferingFields(rawDocs, myOwnDoc, includeDistance) {
 }
 
 /**
+ * Handle migrating all docs from an old OfferingSchema to the current OfferingSchema.
+ */
+function adminOfferingMigrateSchema(offerings) {
+  var numMigrated = 0;
+  offerings.forEach(function(offering) {
+    if (offering.description && offering.description.length > 0) {
+      numMigrated = numMigrated + 1;
+      var enTitle = {
+        language: 'en',
+        text: offering.descriptionEnglish
+      };
+      var arTitle = {
+        language: 'ar',
+        text: offering.descriptionOther
+      };
+      var deTitle = {
+        language: 'de',
+        text: offering.description
+      };
+      if (offering.descriptionLanguage === 'de') {
+        // No german translation support, just use un-translated values for English and Arabic
+        enTitle.text = offering.description;
+        arTitle.text = offering.description;
+      } else {
+        if (offering.descriptionLanguage === 'en') {
+          enTitle.text = offering.description;
+        } else {
+          arTitle.text = offering.description;
+        }
+        // No german translation support, just use English version
+        deTitle.text = enTitle.text;
+      }
+      offering.title = [];
+      offering.title.push(enTitle);
+      offering.title.push(arTitle);
+      offering.title.push(deTitle);
+      offering.description = undefined;
+      offering.descriptionLanguage = undefined;
+      offering.descriptionEnglish = undefined;
+      offering.descriptionOther = undefined;
+      // no need to translate again, text has not changed, just save directly.
+      offering.save(function (err) {
+        if (err) {
+          console.log('Offering: Admin: Error saving migrated offering \'' + offering.title[0].text + '\', error: ' + JSON.stringify(err));
+        }
+      });
+    }
+  });
+  console.log('Offering: Admin: Migrated ' + numMigrated + ' out of ' + offerings.length + ' offerings to new schema.');
+}
+
+/**
+ * Handle deleting all docs from the OfferingSchema.
+ */
+function adminOfferingDeleteAll(req, res) {
+  Offering.remove({}, function(err, removed) {
+    if (err) {
+      console.log('Offering: Admin: error deleting all offerings: ' + err);
+      return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+    } else {
+      console.log('Offering: Admin: All offerings removed: ' + removed);
+      rebuildOfferingIndexes();
+      var results = [];
+      res.json(results);
+    }
+  });
+}
+
+/**
+ * Administrative functionality commands, req.query.adminRequest:
+ * 'list' -> list all offerings
+ * 'migrate_schema' -> convert offerings from old schema to new schema
+ * 'delete_all' -> remove all offerings
+ */
+function handleAdminRequests(req, res) {
+  console.log('Offering: Admin: \'' + req.query.adminRequest + '\' request issued');
+
+  if ((req.query.adminRequest === 'list') ||
+      (req.query.adminRequest === 'migrate_schema')) {
+    var listQuery = Offering.find({});
+    listQuery.sort('-created');
+    listQuery.populate('user');
+    listQuery.exec(function (err, offerings) {
+      if (err) {
+        return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+      } else {
+        if (req.query.adminRequest === 'migrate_schema') {
+          adminOfferingMigrateSchema(offerings);
+        }
+        // else, list request, just return current results
+
+        // restrict results to only public-viewable fields
+        var publicResults = filterInternalOfferingFields(offerings, false, false);
+        res.json(publicResults);
+      }
+    });
+  } else if (req.query.adminRequest === 'delete_all') {
+    adminOfferingDeleteAll(req, res);
+  } else {
+    console.log('Offering: Admin: \'' + req.query.adminRequest + '\' request not supported.');
+  }
+}
+
+/**
  * List of Offerings
  */
 exports.listMine = function (req, res) {
-  var Query = (req.user) ? { 'ownerId': req.user._id.toString() } : {};
 
-  if (req.query.radius) {
+  if (req.query.adminRequest) {
+    if (!req.user || !req.user.roles || (req.user.roles.indexOf('admin') < 0)) {
+      return res.status(403).json({ message: 'User is not authorized' });
+    } else {
+      handleAdminRequests(req, res);
+    }
+  } else if (req.query.radius) {
     // We were passed in fields implying a record-search should be performed.
     var restriction = buildGeoNearAggregateRestriction(req);
     // Run the query, and then do some post-query filtering
@@ -237,8 +338,6 @@ exports.listMine = function (req, res) {
             // restrict results to only public-viewable fields
             var publicResults = filterInternalOfferingFields(docs, false, true);
             //console.log('RETURNING: ' + JSON.stringify(publicResults));
-            // Translate results into the desired language
-            publicResults = translateAllOfferings(publicResults, req.query.descriptionLanguage);
             res.json(publicResults);
           }
         });
@@ -251,7 +350,6 @@ exports.listMine = function (req, res) {
     // Note that currently only unit tests call this without authentication, normally
     // non-authenticated users go through the search path above.
     var query = Offering.find({});
-    // TODO: If user is admin, then return all offerings? use results pagination?
     if (req.user) {
       query.where('ownerId', req.user._id.toString());
       query.sort('-created');
@@ -264,7 +362,6 @@ exports.listMine = function (req, res) {
       if (err) {
         return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
-        // console.log('RAW RESULTS for ' + JSON.stringify(Query) + ' : ' + JSON.stringify(offerings));
         // restrict results to only public-viewable fields
         var publicResults = filterInternalOfferingFields(offerings, true, false);
         // Note - these results do not go through translation services, they are
