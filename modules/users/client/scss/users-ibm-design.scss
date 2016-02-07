@@ -1,5 +1,22 @@
 @import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
 
+/*csslint ids:false*/
+/* override materialize #toast-container */
+
+ @media only screen and (min-width : 601px) and (max-width : 992px) {
+    #toast-container {
+      left: 50%;
+      } }
+  @media only screen and (min-width : 993px) {
+    #toast-container {
+      right: 50%; } }
+
+
+/* override materialize toast */
+.toast{
+    background-color: color('gray',70);
+}
+
 @media screen and (max-width:500px) {
     .ibm-profile-navigator{
         margin-top: 56px;
@@ -46,6 +63,15 @@
     }
 }
 
+.ibm-tags-input {
+    tags-input .tags .tag-item{
+        color: color('gray',70);
+        font-size: 13px;
+        font-weight: 500;
+        border: 0;
+        background: color('gray', 10);
+    }    
+}
 .social-account-container {
   display: inline-block;
   a {

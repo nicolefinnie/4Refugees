@@ -1,0 +1,123 @@
+<div class="col s12 ibm-profile" >
+    <div class="row">
+        <div class="col m4 s12">
+            <img ng-if="!isEditMode" ng-src="{{activeProfile.profileImageURL}}"/>
+            <div ng-if="isEditMode" ng-include src="'/modules/users/client/views/profile/change-profile-picture.client.view.html'"></div>
+            <br><br>
+        </div>
+        <div class="col m8 s12">
+          <div class="row">
+            <h4 ng-if="!isEditMode" ng-bind="activeProfile.displayName"></h4>
+            <div ng-if="isEditMode" >
+                <ul class="collapsible" data-collapsible="accordion">
+                <li>
+                    <h4 class="collapsible-header" ng-bind="activeProfile.displayName" ng-click="toggleProfileAttribute('displayName')"></h4> 
+                    <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-profile-name.client.view.html'">
+                    </div> 
+                </li> 
+                </ul>
+            </div> 
+          </div> <!-- end of display name section -->
+          <!-- About me section begin -->
+          <div class="row">
+            <div class="col m2 s3">
+              <h6>{{properties.aboutMe}}</h6>
+            </div>
+            <div class="col m10 s9">
+              <h6 ng-if="!isEditMode">{{activeProfile.aboutMe}}</h6>
+              <div ng-if="isEditMode" >
+                  <ul class="collapsible" data-collapsible="accordion">
+                      <li>
+                          <h6 class="collapsible-header">{{activeProfile.aboutMe}}</h6> 
+                          <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-aboutMe.client.view.html'"></div>    
+                      </li>
+                  </ul>
+              </div>
+            </div> 
+          </div>
+        
+          <!-- language section begin -->
+          <div class="row">
+            <div class="col m2 s3">
+              <h6>{{properties.languages}}</h6>
+            </div>
+            <div class="col m10 s9">
+              <span ng-if="!isEditMode" class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
+              <div ng-if="isEditMode" >
+                  <ul class="collapsible" data-collapsible="accordion">
+                      <li>
+                          <div class="collapsible-header">
+                            <span class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
+                          </div>
+                          <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-languages.client.view.html'"></div>  
+                       
+                      </li>
+                  </ul>
+              </div>
+            </div>
+          </div>
+        
+          <!-- skill section begin -->
+          <div class="row">
+            <div class="col m2 s3">
+              <h6>{{properties.skills}}</h6>
+            </div>
+            <div class="col m10 s9">
+              <span ng-if="!isEditMode" class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                <div ng-if="isEditMode" >
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header">
+                              <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                            </div>
+                            <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-skills.client.view.html'"></div>  
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        
+          <!-- interest section begin -->
+          <div class="row">
+            <div class="col m2 s3">
+              <h6>{{properties.interests}}</h6>
+            </div>
+            <div class="col m10 s9">
+              <span ng-if="!isEditMode" class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skilltagName}}</span>
+                <div ng-if="isEditMode" >
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header">
+                              <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                            </div>
+                            <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-skills.client.view.html'"></div>  
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </div>
+        
+        
+        <div class="row">
+          <div class="col m2 s3">
+            <i class="fa fa-linkedin-square fa-2x"></i>
+          </div>
+          <div class="col m10 s9">
+              <a ng-if="!isEditMode" ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
+              <div ng-if="isEditMode" >
+                  <ul class="collapsible" data-collapsible="accordion">
+                      <li>
+                          <div class="collapsible-header">
+                              <a ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
+                          </div>
+                          <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-socialProfile.client.view.html'"></div>  
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+        
+        
+      </div> <!-- end of the right section, grid col m8 s12 -->
+    </div><!-- end of the row - profile picture on the left and profile on the right -->
+</div><!-- end of ibm-profile -->

@@ -1,0 +1,51 @@
+<form name="userInterestForm" novalidate autocomplete="off">
+    <div class="row form-group ibm-tags-input" ng-class="properties.rightToLeft ? 'arabic':'latin'">        
+        <div class="col m10 s10 offset-m1 offset-s2">
+            <tags-input name="tags"
+                                ng-model="user.tagsInterests"
+                                display-property="tagName"
+                                replace-spaces-with-dashes="false"
+                                add-from-autocomplete-only="true"
+                                placeholder="{{user.tagsInterests.length ? '' : properties.tagPlaceholder}}"
+                                add-on-enter="true"
+                                add-on-comma="false"
+                                add-on-space="false"
+                                allow-leftover-text="false"
+                                on-invalid-tag="$tag">
+                      <auto-complete source="loadTags($query)"
+                                     load-on-focus="true"
+                                     load-on-empty="true"
+                                     min-length="0"
+                                     highlight-matched-text="true"
+                                     max-results-to-show="10">
+                      </auto-complete>
+            </tags-input>
+            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <div class="row">
+                <div class="col m12 s12">
+                    <button type="submit" class="offering-submit-button btn btn-primary waves-effect waves-light" ng-click="updateUserProfile(userInterestForm.$valid)">
+                        {{properties.save}}
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <polygon points="17,9 15,9 15,15 9,15 9,17 15,17 15,23 17,23 17,17 23,17 23,15 17,15    "/>
+                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                        s12,5.383,12,12S22.617,28,16,28z"/>
+                        </svg>
+                    </button>
+                    <button class="offering-cancel-button btn waves-effect waves-light">
+                        {{properties.cancel}}
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                        <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
+                        20.293,21.707 21.707,20.293 17.414,16 21.707,11.707   "/>
+                        <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+                        s12,5.383,12,12S22.617,28,16,28z"/>
+                        </svg>
+                    </button>
+                </div>
+                <br><br>
+              </div> <!-- end of row -->
+            </div> <!-- end of ibm-submit-area -->
+       </div> <!--  end of grid col s10 offset -->
+    </div> 
+</form>

@@ -1,8 +1,8 @@
 'use strict';
 /* global Materialize:false */
 
-angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService', '$log', 'UserService',
-  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService, log, UserService) {
+angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '$state', '$http', '$interval', 'Authentication', 'Menus', 'Socket', 'LanguageService', 'MailService', '$log',
+  function ($scope, $rootScope, $state, $http, $interval, Authentication, Menus, Socket, LanguageService, MailService, log) {
     // Expose view variables 
     $scope.$state = $state;
     $scope.authentication = Authentication;

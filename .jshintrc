@@ -16,7 +16,8 @@
     "$": false,
     "angular": true,
     "io": true,
-    "ApplicationConfiguration": true
+    "ApplicationConfiguration": true,
+    "Materialize": true
   },
   "predef": [ // Extra globals.
     "inject",

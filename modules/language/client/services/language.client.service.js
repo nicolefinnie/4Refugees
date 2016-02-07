@@ -143,7 +143,7 @@ angular.module('language').service('LanguageService', ['UserService', 'Authentic
     // if the user is logged in, also automatically update the preferred language in the user object
     if (Authentication.user && refreshUserObject) {
       Authentication.user.languagePreference = language;
-      UserService.updateUserProfile(scope, true);
+      UserService.updateUserProfile(Authentication.user, function(errorResponse, userProfile){});
     }
     // refresh view properties in the current language 
     this.getPropertiesByViewName('header', $http, function(translationList) {

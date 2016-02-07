@@ -27,20 +27,16 @@ angular.module('users.admin').factory('Admin', ['$resource',
 angular.module('users').service('UserService', ['$rootScope', '$http', '$location', 'Users', 'Authentication',
   function ($rootScope, $http, $location, Users, Authentication) {
 
-    // Update a user profile
-    this.updateUserProfile = function (ctrl, isValid) {
-      ctrl.success = ctrl.error = null;
-      if (!isValid) {
-        ctrl.$broadcast('show-errors-check-validity', 'userForm');
-        return false;
-      }
-      var user = new Users(Authentication.user);
-      user.$update(function (response) {
-        ctrl.$broadcast('show-errors-reset', 'userForm');
-        ctrl.success = true;
-        Authentication.user = response;
-      }, function (response) {
-        ctrl.error = response.data.message;
+    /* We update the user profile using angular $update function, in the first case (successful) 
+    * we call the callback function and return a user profile with no error response. 
+    * In the second case (error), we return an error response without a user profile.*/
+    this.updateUserProfile = function (newUserProfile, callback) {
+      var user = new Users(newUserProfile);
+      user.$update(function (userProfile) {
+        Authentication.user = userProfile;
+        callback(null, userProfile);
+      }, function (errorResponse) {
+        callback(errorResponse, null);
       });
     };
 

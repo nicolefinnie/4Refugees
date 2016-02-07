@@ -86,7 +86,7 @@
 
 /* Cancel a request to create/update offering */
 .ibm-submit-area button.offering-cancel-button, .ibm-submit-area a.offering-cancel-button {
-  background: #efc100; }
+  background: #aeaeae; }
 
 /* Delete an offering. */
 .ibm-submit-area button.offering-delete-button, .ibm-submit-area a.offering-delete-button {
