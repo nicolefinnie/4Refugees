@@ -117,7 +117,7 @@ exports.update = function (req, res) {
       offering.loc.coordinates = [ Number(req.body.longitude),
                                    Number(req.body.latitude) ];
 
-      if (offering.title[0].text === req.body.title[0].text) {
+      if (offering.title.length > 0 && (offering.title[0].text === req.body.title[0].text)) {
         // no need to translate again, text has not changed, just save directly.
         offering.save(function (err) {
           if (err) {

@@ -1,4 +1,20 @@
-[{"viewName":"header", "currentLanguageShownInHeader":"English",
+[
+{"viewName":"common",
+"aboutMe":"About me",
+"languages":"Languages",
+"skills":"Skills",
+"interests":"Interests",
+"save":"Save",
+"cancel":"Cancel",
+"search":"Search",
+"update":"Update",
+"delete":"Delete",
+"edit":"Edit",
+"errorFromServer":"Whoops, something went wrong",
+"rightToLeft":false
+},
+
+{"viewName":"header", "currentLanguageShownInHeader":"English",
 "signIn":"Sign In", 
 "register":"Register",
 "mail":"Mail",
@@ -26,12 +42,7 @@
 
 
 {"viewName":"offering",
-"search":"Search",
 "add":"Add",
-"updateButton":"Update",
-"deleteButton":"Delete",
-"cancelButton":"Cancel",
-"editButton":"Edit",
 "contact":"Contact",
 "categories":"Categories",
 "location":"Location",
@@ -81,7 +92,6 @@
 "searchNoResults":"No results found, please modify your search and try again",
 "searchComplete":"Search complete, scroll down for results",
 "searchRetry":"Please try your search later, while we try to fix this",
-"errorFromServer":"Whoops, something went wrong",
 "errorNoDescription":"Invalid description, please enter a valid description and try again",
 "errorNoCity":"Invalid location provided, please select your nearest city and try again"
 }, 
@@ -93,8 +103,6 @@
 "description":"Description: ",
 "message":"Additional message to send",
 "contact":"Contact",
-"cancel":"Cancel",
-"delete":"Delete",
 "view":"View",
 "accept":"Accept",
 "reject":"Reject",
@@ -131,8 +139,6 @@
 "languages":"Languages",
 "skills":"Skills",
 "interests":"Interests",
-"save":"Save",
-"cancel":"Cancel",
 "aboutMeText":"Write something about you",
 "chooseTagInterests":"Your interests",
 "chooseTagSkills":"Your skills",
@@ -145,7 +151,6 @@
 "saveProfile":"Save Profile",
 "selectImage":"Select Image",
 "upload":"Upload",
-"cancel":"Cancel",
 "savePassword":"Save Password",
 "connectedSocialAccounts":"Connected social accounts",
 "unconnectedSocialAccounts":"Unconnected social accounts",
@@ -206,9 +211,7 @@
 "reportBody":">> ",
 "replyToOffender":"Contact offender",
 "contactInProgress":"Contact in progress...",
-"contactSuccess":"Your contact request has been sent",
-"errorFromServer":"Whoops, something went wrong",
-"rightToLeft":false
+"contactSuccess":"Your contact request has been sent"
 }
 
 ]

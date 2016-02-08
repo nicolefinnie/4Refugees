@@ -1,4 +1,20 @@
-[{"viewName":"header", "currentLanguageShownInHeader":"Deutsch",
+[
+{"viewName":"common",
+"aboutMe":"Über mich",
+"languages":"Sprachen",
+"skills":"Fähigkeiten",
+"interests":"Interessen",
+"save":"Speichern",
+"cancel":"Abbrechen",
+"search":"Suchen",
+"update":"Ändern",
+"delete":"Löschen",
+"edit":"Bearbeiten",
+"errorFromServer":"Whoops, ging etwas schief",
+"rightToLeft":false
+},
+
+{"viewName":"header", "currentLanguageShownInHeader":"Deutsch",
 "signIn":"Anmelden", 
 "register":"Registrieren",
 "mail":"Nachrichten",
@@ -25,12 +41,7 @@
 },
 
 {"viewName":"offering",
-"search":"suchen",
 "add":"hinzufügen",
-"updateButton":"ändern",
-"deleteButton":"löschen",
-"cancelButton":"abbrechen",
-"editButton":"Bearbeiten",
 "contact":"Kontakt",
 "categories":"Kategorien",
 "location":"Ort",
@@ -80,7 +91,6 @@
 "searchNoResults":"Keine Ergebnisse gefunden, bitte Such ändern und versuchen Sie es erneut",
 "searchComplete":"Suche fertig, scrollen Sie nach unten für Ergebnisse",
 "searchRetry":"Bitte versuchen Sie Ihre Suche später, während wir versuchen, dieses Problem zu beheben",
-"errorFromServer":"Whoops, ging etwas schief",
 "errorNoDescription":"Ungültige Beschreibung, bitte geben Sie eine gültige Beschreibung und versuchen Sie es erneut",
 "errorNoCity":"Ungültige Stelle vorgesehen, wählen Sie bitte Ihre nächstgelegene Stadt und versuchen Sie es erneut"
 },
@@ -92,8 +102,6 @@
 "description":"Beschreibung: ",
 "message":"Zusätzliche Nachricht senden",
 "contact":"Kontakt",
-"cancel":"Absagen",
-"delete":"Löschen",
 "view":"Sehen",
 "accept":"Akzeptieren",
 "reject":"Ablehnen",
@@ -127,12 +135,6 @@
 "langPreference":"Bevorzugte Sprache",
 "languageDropdownPlaceholder":"--- Wählen Sie eine Option ---",
 "spokenLanguages":"Sprachen, die ich spreche",
-"aboutMe":"Über mich",
-"languages":"Sprachen",
-"skills":"Fähigkeiten",
-"interests":"Interessen",
-"save":"Speichern",
-"cancel":"Abbrechen",
 "aboutMeText":"Erzählen Sie etwas über sich",
 "chooseTagInterests":"Deine Interessen",
 "chooseTagSkills":"Deine Fähigkeiten",
@@ -145,7 +147,6 @@
 "saveProfile":"Profil speichern",
 "selectImage":"Bild auswählen",
 "upload":"Hochladen",
-"cancel":"Abbrechen",
 "savePassword":"Passwort speichern",
 "connectedSocialAccounts":"Verknüpfte soziale Konten",
 "unconnectedSocialAccounts":"Nicht verknüpfte soziale Konten",
@@ -205,9 +206,7 @@
 "reportBody":"Inhalt: ",
 "replyToOffender":"Admin Kontakt",
 "contactInProgress":"Kontakt im Gange...",
-"contactSuccess":"Ihre Kontaktanfrage wurde verschickt",
-"errorFromServer":"Whoops, ging etwas schief",
-"rightToLeft":false
+"contactSuccess":"Ihre Kontaktanfrage wurde verschickt"
 }
 
 

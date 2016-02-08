@@ -102,37 +102,49 @@ angular.module('language').service('LanguageService', ['UserService', 'Authentic
         console.log('LanguageService: initially loaded ' + self.globalCurrentLanguage + ' language with status ' + response.status + ' to cache');
         try {
           self.translations[self.globalCurrentLanguage] = response.data;
-          self.languageLoadInProgress = false;
-          
-          self.translations[self.globalCurrentLanguage].forEach(function(translation) {
-            if (translation.viewName === viewName) {
-              callback(translation);
+          // Now go through the array, and add the 'common' properties to all others
+          var commonProperties = self.translations[self.globalCurrentLanguage][0];
+          if (commonProperties.viewName !== 'common') { throw new Error('Expected \'common\' viewName, but saw: ' + commonProperties.viewName); }
+          var resultTranslation;
+          for (var i = 1; i < self.translations[self.globalCurrentLanguage].length; i++) {      
+            // Add common properties unless overridden by more specific translations in the viewName.
+            self.translations[self.globalCurrentLanguage][i] = $.extend({ }, commonProperties, self.translations[self.globalCurrentLanguage][i]);
+            if (self.translations[self.globalCurrentLanguage][i].viewName === viewName) {
+              resultTranslation = self.translations[self.globalCurrentLanguage][i];
+              // Don't break yet, we want to add the common properties to all viewNames
             }
-          });
+          }
+
+          if (!resultTranslation) { throw new Error('Could not find translations for viewName: ' + viewName); }
+
+          self.languageLoadInProgress = false;
+          callback(resultTranslation);
         } catch(e) {
           self.languageLoadInProgress = false;
-          console.log('LanguageService: Error parsing view property list in \'public/'+ url + '\'.  Exception: ' + e);
-          //TODO throw exception
+          throw new Error('LanguageService: Error parsing view property list in \'public/'+ url + '\'.  Exception: ' + e);
         }
       }, function errorCallback(response) {
         self.languageLoadInProgress = false;
-        console.log('LanguageService: Error \'' + response.status + '\' loading view property list in \'public/'+ url+ '\'.');
-        //TODO throw exception
+        throw new Error('LanguageService: Error \'' + response.status + '\' loading view property list in \'public/'+ url+ '\'.');
       });    
     } else {
-      self.translations[self.globalCurrentLanguage].forEach(function(translation) {
+      var resultTranslation;
+      self.translations[self.globalCurrentLanguage].some(function(translation) {
         if (translation.viewName === viewName) {
-          callback(translation);
+          resultTranslation = translation;
+          return true; // break out early once we've found our viewName
         }
       });
+      if (!resultTranslation) { throw new Error('Could not find translations for viewName: ' + viewName); }
+      callback(resultTranslation);
     }
   };
 
   // For unit tests, setup fake/sample language data
   this.setupTestEnvironment = function() {
-    // Offering unit tests have a requirement that this.getPropertiesByViewName()
-    // issues the callback when asked to get the 'offering' translations.
-    var testTranslations = [{ 'viewName':'offering' }];
+    // Some unit tests have a requirement that this.getPropertiesByViewName()
+    // issues the callback when asked to get their translations.
+    var testTranslations = [{ 'viewName':'offering' }, { 'viewName':'user' }, { 'viewName':'mail' }];
     this.translations[this.globalCurrentLanguage] = testTranslations;
   };
 
