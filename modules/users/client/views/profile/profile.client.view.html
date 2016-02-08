@@ -83,39 +83,37 @@
               <h6>{{properties.interests}}</h6>
             </div>
             <div class="col m10 s9">
-              <span ng-if="!isEditMode" class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skilltagName}}</span>
+              <span ng-if="!isEditMode" class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
                 <div ng-if="isEditMode" >
                     <ul class="collapsible" data-collapsible="accordion">
                         <li>
                             <div class="collapsible-header">
-                              <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
+                              <span class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
                             </div>
-                            <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-skills.client.view.html'"></div>  
+                            <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-interests.client.view.html'"></div>  
                         </li>
                     </ul>
                 </div>
             </div>
           </div>
-        
-        
-        <div class="row">
-          <div class="col m2 s3">
-            <i class="fa fa-linkedin-square fa-2x"></i>
+          <div class="row">
+            <div class="col m2 s3">
+              <i class="fa fa-linkedin-square fa-2x"></i>
+            </div>
+            <div class="col m10 s9">
+                <a ng-if="!isEditMode" ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
+                <div ng-if="isEditMode" >
+                    <ul class="collapsible" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header">
+                                <a ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
+                            </div>
+                            <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-socialProfile.client.view.html'"></div>  
+                        </li>
+                    </ul>
+                </div>
+            </div>
           </div>
-          <div class="col m10 s9">
-              <a ng-if="!isEditMode" ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
-              <div ng-if="isEditMode" >
-                  <ul class="collapsible" data-collapsible="accordion">
-                      <li>
-                          <div class="collapsible-header">
-                              <a ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
-                          </div>
-                          <div class="collapsible-body" ng-include src="'/modules/users/client/views/profile/edit-socialProfile.client.view.html'"></div>  
-                      </li>
-                  </ul>
-              </div>
-          </div>
-        </div>
         
         
       </div> <!-- end of the right section, grid col m8 s12 -->

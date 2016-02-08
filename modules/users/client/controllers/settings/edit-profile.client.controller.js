@@ -7,6 +7,8 @@ angular.module('users').config(function(tagsInputConfigProvider) {
 angular.module('users').controller('EditProfileController', ['$scope', '$rootScope', '$http', '$location', 'UserService', 
   function ($scope, $rootScope, $http, $location, UserService) {
     
+    // make a deep copy of the original object, so the values can be reverted when the cancel button is hit
+    var userCopy = angular.copy($scope.user);
     $scope.isEditMode = true;
     $scope.editNameDetails = function(){
       $scope.isEditMode = true;
@@ -36,7 +38,8 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
 
           $scope.user = userProfile;
           $scope.activeProfile = $scope.user;
-          
+          // after updating we should update the copy by replacing it with the current user object saved in the database
+          userCopy = $.extend(true, {}, $scope.user);
           var $toastContent = $('<span>'+$scope.properties.profileSavedSuccessfully+'</span>');
           Materialize.toast($toastContent, 4000);
           
@@ -44,6 +47,23 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       });
     };
 
+    $scope.cancelUserProfile = function (userForm) {
+      if (userForm === 'userNameForm') {
+        $scope.user.firstName = userCopy.firstName;
+        $scope.user.lastName = userCopy.lastName;
+      } else if (userForm === 'userAboutMeForm') {
+        $scope.user.aboutMe = userCopy.aboutMe;
+      } else if (userForm === 'userLanguageForm') {
+        $scope.user.tagsLanguages = angular.copy(userCopy.tagsLanguages);
+      } else if (userForm === 'userSkillForm') {
+        $scope.user.tagsSkills = angular.copy(userCopy.tagsSkills);
+      } else if (userForm === 'userInterestForm') {
+        $scope.user.tagsInterests = angular.copy(userCopy.tagsInterests);
+      } else if (userForm === 'userSocialProfileForm') {
+        $scope.user.publicLinkedInProfile = userCopy.publicLinkedInProfile;
+      }      
+    };
+    
     // Tags for skills and interests
     $scope.loadTags = function($query) {
       var tags = [

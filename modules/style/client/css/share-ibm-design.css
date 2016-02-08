@@ -100,8 +100,8 @@
   color: #121212;
   font-weight: bold; }
 .ibm-profile img {
-  height: 240px;
-  width: 240px;
+  max-height: 240px;
+  max-width: 240px;
   margin-right: 5px;
   margin-bottom: -10px; }
 

@@ -1,5 +1,6 @@
 'use strict';
 
+// library - https://github.com/nervgh/angular-file-upload/wiki/Module-API
 angular.module('users').controller('ChangeProfilePictureController', ['$scope', '$timeout', '$window', 'Authentication', 'FileUploader',
   function ($scope, $timeout, $window, Authentication, FileUploader) {
     $scope.user = Authentication.user;
