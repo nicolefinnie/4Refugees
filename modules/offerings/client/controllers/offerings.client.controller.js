@@ -154,7 +154,7 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       $scope.activeProfile = currentProfile; 
       $('#volunteerProfile-'+index).openModal();
     };
-    
+
     // Called when user clicks to update location
     $scope.toggleGeoLocation = function() {
       // We already tried the geo locator, so future toggles do not need to
@@ -270,6 +270,11 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       format:'yyyy-mm-dd'
     });
 
+    $scope.profileModalDetails = function(index, currentProfile){
+      $scope.activeProfile = currentProfile; 
+      $('#volunteerProfile-'+index).openModal();
+    };
+    
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       LanguageService.getPropertiesByViewName('offering', $http, function(translationList) {
