@@ -46,7 +46,7 @@
   transform: translateY(-50%); }
 
 /* button */
-.ibm-button, .ibm-submit-area button {
+.ibm-button, .ibm-submit-area button, .ibm-submit-area button.confirm-button, .ibm-submit-area a.confirm-button {
   background: #008571;
   font-family: "HelveticaNeueMedium", "HelveticaNeue-Medium", "Helvetica Neue Medium", "HelveticaNeue", "Helvetica Neue", "TeXGyreHerosRegular", "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
   font-weight: 300;
@@ -54,7 +54,7 @@
   font-size: 16px;
   text-transform: capitalize;
   /* override materialize style, use IBM design icons in a button */ }
-  .ibm-button svg, .ibm-submit-area button svg {
+  .ibm-button svg, .ibm-submit-area button svg, .ibm-submit-area button.confirm-button svg, .ibm-submit-area a.confirm-button svg {
     margin-top: 1px;
     height: 24px;
     width: 24px;
@@ -85,7 +85,20 @@
 .ibm-submit-area.arabic-rotate-icon button svg, .ibm-submit-area.arabic-rotate-icon a svg {
   transform: rotate(90deg); }
 
-.ibm-modal .modal .modal-content svg {
+.ibm-submit-area button.setting-button, .ibm-submit-area a.setting-button {
+  font-size: 13px;
+  font-weight: 500;
+  color: #464646;
+  background: #e0e0e0; }
+  .ibm-submit-area button.setting-button svg, .ibm-submit-area a.setting-button svg {
+    fill: #464646; }
+.ibm-submit-area button.confirm-button, .ibm-submit-area a.confirm-button {
+  font-size: 13px; }
+
+.ibm-force-text-black {
+  color: #000; }
+
+.ibm-modal .modal .modal-content svg.cancel {
   fill: #c7c7c7;
   height: 24px; }
 

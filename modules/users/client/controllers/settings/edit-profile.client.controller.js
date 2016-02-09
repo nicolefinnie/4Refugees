@@ -14,6 +14,10 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       $scope.isEditMode = true;
     };
     
+    $scope.toggleAdvancedSetting = function(){
+      $scope.showAdvancedSetting = !$scope.showAdvancedSetting;
+    };
+    
     // activeProfile is used for the profile html view - for better HTML code re-use 
     // so we point the logged-in user object to activeProfile, rather than use logged-in user object directly in HTML
     // because some other modules that include HTML view have the logged-in user itself as well as profiles of other users
@@ -101,5 +105,12 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       });
     };
 
+    $scope.openChangePasswordModal = function(){
+      $('#changePasswordModal').openModal();
+    };
+
+    $scope.openManageSocialAccountModal= function(){
+      $('#manageSocialAccountModal').openModal();
+    };
   }
 ]);

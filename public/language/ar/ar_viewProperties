@@ -141,6 +141,8 @@
 "tagPlaceholder":"الكلمات كنت مهتما في",
 "publicLinkedInProfile":"LinkedIn URL",
 "publicLinkedInProfilePlaceholder":"(اختياري)",
+"showAdvancedSettings":"أظهر الاعدادات المتقدمة",
+"hideAdvancedSettings":"إخفاء الإعدادات المتقدمة",
 "currentPassword":"كلمة السر الحالية",
 "newPassword":"كلمة سر جديدة",
 "verifyPassword":"التحقق من كلمة السر",

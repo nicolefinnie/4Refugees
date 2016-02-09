@@ -122,10 +122,28 @@
         transform: rotate(90deg);
     }
 }
+.ibm-submit-area  {
+  button.setting-button, a.setting-button {
+    font-size: 13px;
+    font-weight: 500;
+    color: color('gray', 70);
+    background: color('gray', 10);
+    svg{
+        fill: color('gray', 70);
+    }
+  }
+  button.confirm-button, a.confirm-button {
+    @extend .ibm-button;
+    font-size: 13px;
+  }
+}
 
+.ibm-force-text-black {
+  color: color('black', core);
+}
 
 .ibm-modal .modal .modal-content {
-  svg {
+  svg.cancel{
         fill: color('gray', 20);
         height: 24px;
     }

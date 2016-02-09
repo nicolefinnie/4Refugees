@@ -141,6 +141,8 @@
 "tagPlaceholder":"Klicken Sie hier um Kategorien auszuwählen",
 "publicLinkedInProfile":"LinkedIn URL",
 "publicLinkedInProfilePlaceholder":"(optional) Ihre öffentliche LinkedIn Profil URL",
+"showAdvancedSettings":"Weitere Einstellungen anzeigen",
+"hideAdvancedSettings":"Weitere Einstellungen ausblenden",
 "currentPassword":"Momentanes Passwort",
 "newPassword":"Neues Passwort",
 "verifyPassword":"Passwort überprüfen",

@@ -62,9 +62,6 @@
   float: left;
   transform: rotate(90deg); }
 
-.ibm-force-text-black {
-  color: #000; }
-
 /* Common button style for offering forms, to display on small and large screens
  * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
  * but the svgs we chose to use in the offerings should not be rotated */
@@ -86,7 +83,12 @@
 
 /* Cancel a request to create/update offering */
 .ibm-submit-area button.offering-cancel-button, .ibm-submit-area a.offering-cancel-button {
-  background: #aeaeae; }
+  color: #464646;
+  background: #e0e0e0; }
+  .ibm-submit-area button.offering-cancel-button svg, .ibm-submit-area a.offering-cancel-button svg {
+    fill: #464646; }
+.ibm-submit-area :hover button.offering-cancel-button svg, .ibm-submit-area :hover a.offering-cancel-button svg {
+  fill: #464646; }
 
 /* Delete an offering. */
 .ibm-submit-area button.offering-delete-button, .ibm-submit-area a.offering-delete-button {

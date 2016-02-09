@@ -7,27 +7,8 @@ footer {height:0;}
 <section ng-controller="SettingsController" ng-init="initialize()">
 <!-- due to RTC https://github.com/Dogfalo/materialize/issues/1488 the side-nav doesn't swap to right in Arabic languages until the window gets resized -->
  <div class="row">
-  <div class="col m10 s11">
-   <div ng-class="properties.rightToLeft ? 'col m4 s1 right':'col m4 s1 left'">
-      <!-- side navigator in Latin languages-->
-      <a ng-if="!properties.rightToLeft" href="#" data-activates="profile-side-navigator" class="button-collapse top-nav full hide-on-large-only" data-sidenav="left" data-menuwidth="240"><i class="mdi-navigation-menu"></i></a>
-      <!-- side navigator in Arabic languages-->
-      <a ng-if="properties.rightToLeft" href="#" data-activates="profile-side-navigator" class="button-collapse top-nav full hide-on-large-only" data-sidenav="right" data-menuwidth="240"><i class="mdi-navigation-menu"></i></a>
-        <ul id="profile-side-navigator" class="side-nav fixed ibm-profile-navigator" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-        <li class="bold" ui-sref-active="active">
-          <a ui-sref="settings.profile">{{properties.editProfile}}</a>
-        </li>
-        <li ui-sref-active="active" ng-show="user.provider === 'local'">
-          <a ui-sref="settings.password">{{properties.changePassword}}</a>
-        </li>
-        <li ui-sref-active="active">
-          <a ui-sref="settings.accounts">{{properties.manageSocialAccount}}</a>
-        </li>
-      </ul>
-    </div> 
-    <div ng-class="properties.rightToLeft ? 'col m10 s12 left':'col m10 s12 right'">
+    <div class="col m11 s12">
       <div ui-view></div> 
     </div>
-   </div>
-   </div>
+  </div>
 </section>
