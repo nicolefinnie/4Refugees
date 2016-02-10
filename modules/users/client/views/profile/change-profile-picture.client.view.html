@@ -7,7 +7,7 @@
           <img ng-src="{{imageURL}}" alt="{{user.displayName}}">
         </div>
         <div class="col s12 form-group" ng-hide="uploader.queue.length">
-          <button class="setting-button no-float waves-effect waves-light btn btn-file">
+          <button class="setting-button waves-effect waves-light btn btn-file">
               {{properties.selectImage}} <input type="file" nv-file-select uploader="uploader">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -18,14 +18,14 @@
           </button>
         </div>
         <div class="col s12" ng-show="uploader.queue.length">
-          <button class="confirm-button no-float button-group btn btn-primary" ng-click="uploadProfilePicture();">{{properties.upload}}
+          <button class="confirm-button btn waves-effect waves-light" ng-click="uploadProfilePicture();">{{properties.upload}}
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
             <polygon points="15,5.414 15,22 17,22 17,5.414 23.293,11.707 24.707,10.293 16,1.585 7.293,10.293 8.707,11.707   "/>
             <polygon points="29,19 29,27 3,27 3,19 1,19 1,27 1,31 3,31 29,31 31,31 31,27 31,19  "/>
             </svg>
           </button>
-          <button class="setting-button no-float btn btn-default" ng-click="cancelUpload();">{{properties.cancel}}
+          <button class="setting-button btn waves-effect waves-light" ng-click="cancelUpload();">{{properties.cancel}}
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
             <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 

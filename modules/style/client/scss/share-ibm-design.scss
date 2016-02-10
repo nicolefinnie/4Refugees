@@ -15,6 +15,7 @@
        transition: fill 1s;
        fill:color('teal', core);
 }
+// for changing password username setting
 .ibm-input-field.latin{
     input + label {
         position: relative;
@@ -22,6 +23,7 @@
         right: 0;
         float: left;
     }
+  
 }   
 
 /* override input field CSS style so people can edit from right to left in Arabic languages*/
@@ -106,8 +108,15 @@
         float:right;
     }
     button svg, a svg{
-    /*both a and button tags can be buttons*/
+    /*svg icons inside buttons*/
         margin-top: 5px;
+        margin-right: 5px;
+        float:left;
+    }
+    
+    button i, a i{
+    /* 3rd library icon inside buttons*/
+        margin-top: 1px;
         margin-right: 5px;
         float:left;
     }

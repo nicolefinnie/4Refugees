@@ -1,0 +1,66 @@
+<section class="row" ng-controller="EditProfileController">
+<br>
+  <div class="col s12">
+    <form name="userLoginForm" novalidate autocomplete="off">
+    <div class="ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div class="row form-group input-field" show-errors>
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <path d="M16,21c5.523,0,10-4.477,10-10S21.523,1,16,1S6,5.477,6,11S10.477,21,16,21z M16,3c4.411,0,8,3.589,8,8s-3.589,8-8,8
+                  s-8-3.589-8-8S11.589,3,16,3z"/>
+                  <path d="M24,23H8c-2.209,0-4,1.791-4,4v4h24v-4C28,24.791,26.209,23,24,23z"/>
+                  </svg>
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                  <input type="text" id="username" name="username" ng-model="user.username" lowercase required>
+                  <label for="username">{{properties.username}}</label>
+                  <div ng-messages="userForm.username.$error" role="alert">
+                  <p class="col s12 m12 help-block error-text" ng-message="required">{{properties.usernameRequired}}</p>
+                  </div>
+            </div>
+        </div>
+        <div class="row form-group ibm-input-field" show-errors>
+            <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                </svg> 
+            </div>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                <input type="email" id="email" name="email" ng-model="user.email" lowercase required>
+                <label for="email">{{properties.email}}</label>
+                <div ng-messages="userForm.email.$error" role="alert">
+                    <p class="col s12 m12 help-block error-text" ng-message="required">{{properties.emailRequired}}</p>
+                    <p class="col s12 m12 help-block error-text" ng-message="email">{{properties.emailInvalid}}</p>
+                </div>
+            </div>
+        </div>
+      </div>
+      <p>
+      <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+          <button type="submit" class="confirm-button btn waves-effect waves-light" ng-click="updateUserProfile(userLoginForm.$valid, 'userLoginForm')">{{properties.save}}
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <path d="M3,3v26h7h12h3l4-4V3H3z M27,24.171L24.172,27H22v-2H10v2H5V5h22V24.171z"/>
+            <path d="M16,22c3.313,0,6-2.687,6-6s-2.687-6-6-6s-6,2.686-6,6S12.686,22,16,22z M16,14c1.104,0,2,0.896,2,2s-0.896,2-2,2
+            s-2-0.896-2-2S14.896,14,16,14z"/>
+            </svg>
+          </button>
+          <button class="setting-button btn waves-effect waves-light" ng-click="cancelUserProfile('userLoginForm')">
+              {{properties.cancel}}
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+              <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
+              20.293,21.707 21.707,20.293 17.414,16 21.707,11.707   "/>
+              <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
+              s12,5.383,12,12S22.617,28,16,28z"/>
+              </svg>
+          </button>
+           <div ng-show="error" class="col s12 text-danger">
+            <strong ng-bind="error"></strong>
+          </div>
+      </div>
+    </form>
+  </div>
+</section>

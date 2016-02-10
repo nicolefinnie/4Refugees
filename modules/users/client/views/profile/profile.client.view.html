@@ -1,12 +1,12 @@
 <div class="col s12 ibm-profile" >
     <div class="row">
-        <div class="col m4 s12">
+        <div class="col m4 s12" ng-class="properties.rightToLeft ? 'right right-align':'left'">
             <img ng-if="!isEditMode" ng-src="{{activeProfile.profileImageURL}}"/>
             <div ng-if="isEditMode" ng-include src="'/modules/users/client/views/profile/change-profile-picture.client.view.html'"></div>
             <br><br>
         </div>
         <div class="col m8 s12">
-          <div class="row">
+          <div class="row" ng-class="properties.rightToLeft ? 'right-align':''">
             <h4 ng-if="!isEditMode" ng-bind="activeProfile.displayName"></h4>
             <div ng-if="isEditMode" >
                 <ul class="collapsible" data-collapsible="accordion">
@@ -20,10 +20,10 @@
           </div> <!-- end of display name section -->
           <!-- About me section begin -->
           <div class="row">
-            <div class="col m2 s3">
+            <div class="col m2 s3" ng-class="properties.rightToLeft ? 'right':''">
               <h6>{{properties.aboutMe}}</h6>
             </div>
-            <div class="col m10 s9">
+            <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
               <h6 ng-if="!isEditMode">{{activeProfile.aboutMe}}</h6>
               <div ng-if="isEditMode" >
                   <ul class="collapsible" data-collapsible="accordion">
@@ -38,10 +38,10 @@
         
           <!-- language section begin -->
           <div class="row">
-            <div class="col m2 s3">
+            <div class="col m2 s3" ng-class="properties.rightToLeft ? 'right':''">
               <h6>{{properties.languages}}</h6>
             </div>
-            <div class="col m10 s9">
+            <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
               <span ng-if="!isEditMode" class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
               <div ng-if="isEditMode" >
                   <ul class="collapsible" data-collapsible="accordion">
@@ -59,10 +59,10 @@
         
           <!-- skill section begin -->
           <div class="row">
-            <div class="col m2 s3">
+            <div class="col m2 s3" ng-class="properties.rightToLeft ? 'right':''">
               <h6>{{properties.skills}}</h6>
             </div>
-            <div class="col m10 s9">
+            <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
               <span ng-if="!isEditMode" class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
                 <div ng-if="isEditMode" >
                     <ul class="collapsible" data-collapsible="accordion">
@@ -79,10 +79,10 @@
         
           <!-- interest section begin -->
           <div class="row">
-            <div class="col m2 s3">
+            <div class="col m2 s3" ng-class="properties.rightToLeft ? 'right':''">
               <h6>{{properties.interests}}</h6>
             </div>
-            <div class="col m10 s9">
+            <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
               <span ng-if="!isEditMode" class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
                 <div ng-if="isEditMode" >
                     <ul class="collapsible" data-collapsible="accordion">
@@ -97,10 +97,10 @@
             </div>
           </div>
           <div class="row">
-            <div class="col m2 s3">
+            <div class="col m2 s3" ng-class="properties.rightToLeft ? 'right':''">
               <i class="fa fa-linkedin-square fa-2x"></i>
             </div>
-            <div class="col m10 s9">
+            <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
                 <a ng-if="!isEditMode" ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
                 <div ng-if="isEditMode" >
                     <ul class="collapsible" data-collapsible="accordion">

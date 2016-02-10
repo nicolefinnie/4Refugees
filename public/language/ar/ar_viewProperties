@@ -130,6 +130,7 @@
 "editProfile":"تعديل الملف الشخصي",
 "changeProfilePicture":"تغيير الصورة الشخصية",
 "changePassword":"تغيير كلمة المرور",
+"changeLogin":"تغيير الدخول",
 "manageSocialAccount":"إدارة الحسابات الاجتماعية",
 
 "langPreference":"لغة مفضلة",

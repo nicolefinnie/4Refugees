@@ -32,16 +32,16 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
         $scope.$broadcast('show-errors-check-validity', userForm);
         return false;
       }
-       
       UserService.updateUserProfile ($scope.user, function(errorResponse, userProfile) {
         if(errorResponse){
           $scope.error = errorResponse.data.message;
         } else {
           $scope.$broadcast('show-errors-reset', userForm);
           $scope.success = true;
-
+         
           $scope.user = userProfile;
           $scope.activeProfile = $scope.user;
+          
           // after updating we should update the copy by replacing it with the current user object saved in the database
           userCopy = $.extend(true, {}, $scope.user);
           var $toastContent = $('<span>'+$scope.properties.profileSavedSuccessfully+'</span>');
@@ -65,7 +65,10 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
         $scope.user.tagsInterests = angular.copy(userCopy.tagsInterests);
       } else if (userForm === 'userSocialProfileForm') {
         $scope.user.publicLinkedInProfile = userCopy.publicLinkedInProfile;
-      }      
+      } else if (userForm === 'userLoginForm') {
+        $scope.user.username = userCopy.username;
+        $scope.user.email = userCopy.email;
+      }     
     };
     
     // Tags for skills and interests
@@ -105,8 +108,8 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       });
     };
 
-    $scope.openChangePasswordModal = function(){
-      $('#changePasswordModal').openModal();
+    $scope.openChangeLoginModal = function(){
+      $('#changeLoginModal').openModal();
     };
 
     $scope.openManageSocialAccountModal= function(){

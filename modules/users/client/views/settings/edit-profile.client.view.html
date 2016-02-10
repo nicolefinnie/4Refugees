@@ -2,24 +2,26 @@
 <br>
 <div ng-include src="'/modules/users/client/views/profile/profile.client.view.html'">
 </div>
-    <div class="ibm-submit-area col m8 s12 offset-m4" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+    <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic col m8 s12 pull-m4':'latin col m8 s12 offset-m4'">
           <div class="row">
              <div class="col s12 m12 divider"></div> <br>
              <div class='col s12 m12' ng-click="toggleAdvancedSetting()">
                 <a ng-if="!showAdvancedSetting">{{properties.showAdvancedSettings}}</a>
                 <a ng-if="showAdvancedSetting">{{properties.hideAdvancedSettings}}</a>
              </div>
-             <div ng-class="properties.rightToLeft ? ' right-align':'left-align'" data-my-slide="showAdvancedSetting">
+             <div ng-class="properties.rightToLeft ? 'right-align':'left-align'" data-my-slide="showAdvancedSetting">
                  <br><br>
                  <div class='col s12 m12'>
                      <button ng-show="user.provider === 'local'" class="setting-button btn waves-effect waves-light modal-trigger"
-                     ng-click="openChangePasswordModal()" href="#changePasswordModal">{{properties.changePassword}}
-                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                         width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                         <path d="M3,3v26h7h12h3l4-4V3H3z M27,24.171L24.172,27H22v-2H10v2H5V5h22V24.171z"/>
-                         <path d="M16,22c3.313,0,6-2.687,6-6s-2.687-6-6-6s-6,2.686-6,6S12.686,22,16,22z M16,14c1.104,0,2,0.896,2,2s-0.896,2-2,2
-                         s-2-0.896-2-2S14.896,14,16,14z"/>
-                         </svg>
+                     ng-click="openChangeLoginModal()" href="#changeLoginModal">{{properties.changeLogin}}
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                            <polygon points="14.5,21.586 12.207,19.293 10.793,20.707 14.5,24.414 21.207,17.707 19.793,16.293"/>
+                            <path d="M24,12.466V9c0-4.418-3.581-8-8-8S8,4.582,8,9v3.467C6.145,14.436,5,17.082,5,20c0,6.074,4.926,11,11,11
+                            c6.076,0,11-4.926,11-11C27,17.081,25.855,14.436,24,12.466z M10,9c0-3.309,2.691-6,6-6s6,2.691,6,6v1.788
+                            C20.273,9.661,18.215,9,16,9c-2.215,0-4.273,0.661-6,1.788V9z M16,29c-4.971,0-9-4.029-9-9s4.029-9,9-9s9,4.029,9,9
+                            S20.971,29,16,29z"/>
+                        </svg>
                      </button>
                      <div ng-show="user.provider === 'local'">
                      <br><br><br>
@@ -28,13 +30,7 @@
                  <div class='col s12 m12'>
                      <button class="setting-button btn waves-effect waves-light modal-trigger" 
                      ng-click="openManageSocialAccountModal()" href="#manageSocialAccountModal">{{properties.manageSocialAccount}}
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                        width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                        <path d="M18,5V1h-4v4H6v26h20V5H18z M16,2c0.552,0,1,0.448,1,1s-0.448,1-1,1s-1-0.448-1-1S15.448,2,16,2z M24,29H8V7h6v2h4V7h6V29z"/>
-                        <path d="M16,11c-2.762,0-5,2.238-5,5s2.238,5,5,5s5-2.238,5-5S18.762,11,16,11z M16,19c-1.654,0-3-1.346-3-3s1.346-3,3-3
-                        s3,1.346,3,3S17.654,19,16,19z"/>
-                        <path d="M12,23c-1.104,0-2,0.896-2,2v2h12v-2c0-1.104-0.896-2-2-2H12z"/>
-                        </svg>
+                        <i class="fa fa-facebook-square fa-2x"></i>
                      </button>
                  <br><br>
                  <br><br>
@@ -46,7 +42,7 @@
 
 <!-- MODAL CHANGE PASSWORD-->
 <div class="ibm-modal">
-  <div id="changePasswordModal" class="modal">
+  <div id="changeLoginModal" class="modal">
     <div class="modal-content">
         <div class="row">
           <div class="col s12">
@@ -60,9 +56,16 @@
             </svg>
           </a>
           </div>
+          <div class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m2':'col m8 s12 offset-m2'">
+          <!-- display change username email dialog -->
+          <div ng-include src="'/modules/users/client/views/settings/change-username-email.client.view.html'"></div>
+          </div>
+          
           <!-- display change password dialog -->
+          <div class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m2':'col m8 s12 offset-m2'">
           <div ng-include src="'/modules/users/client/views/settings/change-password.client.view.html'"></div>
           <!-- end of change password dialog-->
+          </div>
         </div> <!-- end of row of modal-content-->
     </div> <!-- end of modal-content -->
   </div> <!-- end of modal -->
