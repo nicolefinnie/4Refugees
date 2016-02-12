@@ -16,7 +16,6 @@ var path = require('path'),
 exports.create = function (req, res) {
   var mail = new Mail();
   mail.sender = req.user;
-  console.log('sender is: ' + req.user.displayName + ', id: ' + req.user.id);
   mail.updated = new Date();
   mail.title = req.body.title;
   mail.content = req.body.content;
@@ -35,10 +34,7 @@ exports.create = function (req, res) {
   }
   if (!recUser) mail.recipient = mail.sender._id;
 
-  console.log('recipient is ' + mail.recipient.displayName + ', id: ' + mail.recipient._id);
-  //console.log('recipient is either ' + JSON.stringify(mail.recipient) + ' or   ' + JSON.stringify(recUser));
   mail.matchId = req.body.matchId;
-  //mail.replyTo = req.body.mailId;
   // The recipient is the owner of the email, only they can delete it.
   // This ownerId is also used when deleting a user, to delete all their mails.
   mail.ownerId = mail.recipient.toString();
@@ -145,11 +141,9 @@ exports.list = function (req, res) {
     return res.status(400).send({ message: errorHandler.getErrorMessage('no user') });
   }
 
-  //if (!query.recipient && req.user.roles.indexOf('admin') === -1) {
   query.ownerId = req.user._id.toString();
   query.recipient = req.user._id;
-  //}
-
+ 
   if (query.unread === 'true') {
     query.unread = true;
   } else if (query.unread === 'false') {
@@ -185,12 +179,9 @@ exports.list = function (req, res) {
       if (err) {
         return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
-        //if (!query.recipient) {
-        //  query.recipient = req.user._id;
-        //}
         var publicResults = filterInternalMailFields(mails);
+        
         res.json(publicResults);
-        //console.log('mail result: ' + JSON.stringify(publicResults));
   
         if (reset) {
           // mark mails read - even for admins only for their specific id

@@ -33,7 +33,6 @@ angular.module('users.admin').controller('UserListController', ['$scope', '$filt
 
 
     $scope.pageChangeHandler = function(num) {
-      console.log('meals page changed to ' + num);
     };
 
     // Send mail to user

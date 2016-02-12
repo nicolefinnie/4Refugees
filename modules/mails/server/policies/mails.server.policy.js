@@ -48,10 +48,6 @@ exports.invokeRolesPolicies = function () {
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  //if (req.user && req.mail) {
-  //  console.log('isAllowed: user: ' + JSON.stringify(req.user) + '  recipient user: ' + JSON.stringify(req.mail.recipient));
-  //}
-
   // If a mail is being processed and the current user created it then allow any manipulation
   if (req.mail && req.user && (req.mail.recipient._id.toString() === req.user.id.toString())) {
     return next();

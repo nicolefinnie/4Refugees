@@ -49,7 +49,6 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       $scope.mail = mail;
       $scope.reportAdmin = reportAdmin;
 
-      console.log('mail is ' + JSON.stringify(mail));
       if (reportAdmin) {
         $http.get('/api/mails/' + mail,{ cache: true }).then(function(response) {
           $scope.mail = response.data;
@@ -69,7 +68,6 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
         $scope.content = translationList.reportBody + mail.content;
 
         $http.get('/api/users/admin',{ cache: true }).then(function(response) {
-          console.log('report to ' + JSON.stringify(response.data));
           $scope.adminId = response.data;
           $('#modalReport').openModal();
         });
@@ -104,9 +102,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     // Find a list of Mails
     $scope.find = function (num) {
       $scope.initLanguage();
-      //console.log('Window size: ', $window.innerHeight);
       $scope.mailCount = Mails.query({ countOnly: 'true' }, function(err) {
-        //console.log('mailCount = ' + JSON.stringify($scope.mailCount));
         
         if (num === 0 || $scope.mailCount[0] && $scope.mailCount[0].numResults > $scope.numOfMails)
         {
@@ -137,24 +133,13 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
       if (message.content.recipient === Authentication.user._id) {
         if (message.content.title) {
-          console.log('MailController: Received new email');
           $scope.mails = Mails.query({ reset : false, limit: $scope.numOfMails }, function() {
             for(var i = 0,len = $scope.mails.length; i < len;i++) {
               $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
             }
           });
-          //message.content.contentShort = message.content.content.substr(0,30);
-          //$scope.mails.unshift(message.content);
-        }
-        else {
-          console.log('MailController: Received remove email');
         }
       }
-      else
-      {
-        console.log('MailController: Somebody else received email ' + JSON.stringify(message.content.recipient));
-      }
-
     });
 
 
@@ -188,14 +173,12 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     $scope.loadUsers = function($query) {
       var found = false;
-      //console.log("load users for " + $query);
       return $http.get('/api/users',{ cache: true }).then(function(response) {
         var users = response.data;
         return users.filter(function(users) {
           var match = users.username && users.username.toLowerCase().indexOf($query.toLowerCase()) !== -1;
           if (found) match = false;
           else if (match) found = true;
-          //console.log("load user " + users.username + "   " + found + "  " + match);
           return match;
         });
       });

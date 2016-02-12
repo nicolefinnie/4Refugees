@@ -36,37 +36,21 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         content = this.content,
         replyTo = mailId;
 
-      //console.log('replyTo set to : ' + JSON.stringify(replyTo));
-
       // set up mass mail array - for replies turn single recipient into an array
       if (this.recipient && this.recipient[0]) {
-        console.log('admin mail for ' + JSON.stringify(this.recipient[0]));
         recipients = this.recipient;
         reload_on_save = true;
         matchid = this.matchId;
       }
       else {
-        console.log('reply to ' + JSON.stringify(recipient));
         recipients = [recipient];
         reload_on_save = false;
         matchid = matchID;
       }
 
-      //if (this.recipient && this.recipient[0]) {
-      //  console.log('mail for ' + JSON.stringify(this.recipient[0]));
-      //  recipient_id = this.recipient[0]._id;
-      //}
-      //else {
-      //  console.log('reply to ' + JSON.stringify(recipient));
-      //  recipient_id = recipient._id;
-      //  reload_on_save = false;
-      //}
-
       len = recipients.length;
       
       recipients.forEach(function(recp, index) {
-
-        console.log('mail ' + index + ' for ' + JSON.stringify(recp));
 
         // Create new Mail object
         var mail = new Mails({
@@ -83,9 +67,6 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
         var message = {
           content: mail
         };
-        //Socket.emit('mailMessage', message);
-
-        console.log('mail is ' + JSON.stringify(mail));
 
         // Redirect after save
         mail.$save(function (response) {
@@ -115,14 +96,12 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
 
     $scope.loadUsers = function($query) {
       var found = false;
-      //console.log("load users for " + $query);
       return $http.get('/api/users',{ cache: true }).then(function(response) {
         var users = response.data;
         return users.filter(function(users) {
           var match = users.username && users.username.toLowerCase().indexOf($query.toLowerCase()) !== -1;
           if (found) match = false;
           else if (match) found = true;
-          //console.log("load user " + users.username + "   " + found + "  " + match);
           return match;
         });
       });
