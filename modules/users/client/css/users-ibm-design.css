@@ -75,14 +75,14 @@
 
 @media screen and (min-width: 1200px) {
   .social-account-container a, .social-account-container img {
-    width: 128px;
-    height: 128px; }
+    width: 84px;
+    height: 84px; }
 
   .social-account-container:hover a, .social-account-container:hover img {
-    width: 150px;
-    height: 150px; }
+    width: 100px;
+    height: 100px; }
   .social-account-container:hover i, .social-account-container:hover h6 {
-    transform: translate(10px, -140px); } }
+    transform: translate(8px, -100px); } }
 @media screen and (max-width: 1200px) {
   .social-account-container a, .social-account-container img {
     width: 64px;

@@ -115,21 +115,19 @@
 @media screen and (min-width:1200px) {
     .social-account-container {
         a, img{
-            width: 128px;
-            height: 128px;
+            width: 84px;
+            height: 84px;
      }
     }
     .social-account-container:hover{
         a, img{
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
         }
         
         i, h6{
-            transform: translate(10px, -140px);
-        }
-        
-        
+            transform: translate(8px, -100px);
+        } 
     }
 }
 

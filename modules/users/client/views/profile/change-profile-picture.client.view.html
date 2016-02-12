@@ -3,10 +3,10 @@
   <div class="col s12">
     <form>
       <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-        <div class="col s12 form-group">
+        <div class="col s12 form-group" ng-click="togglePictureSection()">
           <img ng-src="{{imageURL}}" alt="{{user.displayName}}">
         </div>
-        <div class="col s12 form-group" ng-hide="uploader.queue.length">
+        <div ng-if="isEditPicture" class="col s12 form-group" ng-hide="uploader.queue.length">
           <button class="setting-button waves-effect waves-light btn btn-file">
               {{properties.selectImage}} <input type="file" nv-file-select uploader="uploader">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -35,14 +35,6 @@
             </svg>
           </button>
         </div>
-        <!--TODO  dialog
-        <div ng-show="success" class="col s12 text-success">
-          <strong>{{properties.profilePictureChangedSuccessfully}}</strong>
-        </div>
-        <div ng-show="error" class="col s12 text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-        -->
       </div> <!-- end of ibm-submit-area -->  
     </form> 
   </div>

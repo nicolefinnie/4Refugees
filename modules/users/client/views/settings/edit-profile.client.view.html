@@ -12,88 +12,63 @@
              <div ng-class="properties.rightToLeft ? 'right-align':'left-align'" data-my-slide="showAdvancedSetting">
                  <br><br>
                  <div class='col s12 m12'>
-                     <button ng-show="user.provider === 'local'" class="setting-button btn waves-effect waves-light modal-trigger"
-                     ng-click="openChangeLoginModal()" href="#changeLoginModal">{{properties.changeLogin}}
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                       <button ng-show="user.provider === 'local'" class="setting-button btn waves-effect waves-light" ng-click="toggleLoginSection()">{{properties.changeLogin}}
+                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                             <polygon points="14.5,21.586 12.207,19.293 10.793,20.707 14.5,24.414 21.207,17.707 19.793,16.293"/>
                             <path d="M24,12.466V9c0-4.418-3.581-8-8-8S8,4.582,8,9v3.467C6.145,14.436,5,17.082,5,20c0,6.074,4.926,11,11,11
                             c6.076,0,11-4.926,11-11C27,17.081,25.855,14.436,24,12.466z M10,9c0-3.309,2.691-6,6-6s6,2.691,6,6v1.788
                             C20.273,9.661,18.215,9,16,9c-2.215,0-4.273,0.661-6,1.788V9z M16,29c-4.971,0-9-4.029-9-9s4.029-9,9-9s9,4.029,9,9
                             S20.971,29,16,29z"/>
-                        </svg>
-                     </button>
-                     <div ng-show="user.provider === 'local'">
-                     <br><br><br>
-                     </div>
+                         </svg>
+                       </button>
+                  
+                 </div>
+                 <div ng-show="showLoginSection" class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m4':'col m8 s12 offset'">
+                   <!-- display change username email dialog -->
+                   <div ng-include src="'/modules/users/client/views/settings/change-username-email.client.view.html'"></div>
+                 </div>
+                 <div ng-show="user.provider === 'local'">
+                    <br><br><br>
                  </div>
                  <div class='col s12 m12'>
+                    <button ng-show="user.provider === 'local'" class="setting-button btn waves-effect waves-light" ng-click="togglePasswordSection()">{{properties.changePassword}}
+                         <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                             <path d="M25,1L12.611,13.388C11.785,13.138,10.908,13,10,13c-4.971,0-9,4.029-9,9s4.029,9,9,9s9-4.029,9-9
+                             c0-0.909-0.138-1.785-0.389-2.612L21,17v-2h2l8-8V1H25z M29,6.171L22.172,13H21h-2v2v1.171l-1.803,1.802l-0.848,0.848l0.348,1.147
+                             C16.898,20.63,17,21.313,17,22c0,3.86-3.141,7-7,7s-7-3.14-7-7s3.141-7,7-7c0.686,0,1.37,0.102,2.031,0.302l1.146,0.348
+                             l0.848-0.848L25.828,3H29V6.171z"/>
+                             <circle cx="8" cy="24" r="2"/>
+                             <rect x="19.757" y="7.5" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 46.6274 -3.3137)" width="8.485" height="1"/>
+                         </svg>
+                    </button>
+                 </div>
+                 
+                 <div ng-show="showPasswordSection" class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m4':'col m8 s12 offset'">
+                    <!-- display change username email dialog -->
+                    <div ng-include src="'/modules/users/client/views/settings/change-password.client.view.html'"></div>
+                 </div>
+                 <div ng-show="user.provider === 'local'">
+                    <br><br><br>
+                 </div>
+             
+                 <div class='col s12 m12'>
                      <button class="setting-button btn waves-effect waves-light modal-trigger" 
-                     ng-click="openManageSocialAccountModal()" href="#manageSocialAccountModal">{{properties.manageSocialAccount}}
+                     ng-click="toggleSocialProfileSection()" href="#manageSocialAccountModal">{{properties.manageSocialAccount}}
                         <i class="fa fa-facebook-square fa-2x"></i>
                      </button>
-                 <br><br>
-                 <br><br>
                  </div>
+                 <div ng-show="showSocialProfileSection" class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m4':'col m8 s12 offset'">
+                    <!-- display change username email dialog -->
+                    <div ng-include src="'/modules/users/client/views/settings/manage-social-accounts.client.view.html'"></div>
+                 </div>
+                
+                 <br><br>
+                 <br><br>
+                 
              </div>
              <br><br>
         </div>
     </div>
-
-<!-- MODAL CHANGE PASSWORD-->
-<div class="ibm-modal">
-  <div id="changeLoginModal" class="modal">
-    <div class="modal-content">
-        <div class="row">
-          <div class="col s12">
-          <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
-            <svg class="cancel" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
-                    20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
-                <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                    s12,5.383,12,12S22.617,28,16,28z"/>
-            </svg>
-          </a>
-          </div>
-          <div class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m2':'col m8 s12 offset-m2'">
-          <!-- display change username email dialog -->
-          <div ng-include src="'/modules/users/client/views/settings/change-username-email.client.view.html'"></div>
-          </div>
-          
-          <!-- display change password dialog -->
-          <div class="ibm-offering-list card card-content" ng-class="properties.rightToLeft ? 'col m8 s12 offset-m2':'col m8 s12 offset-m2'">
-          <div ng-include src="'/modules/users/client/views/settings/change-password.client.view.html'"></div>
-          <!-- end of change password dialog-->
-          </div>
-        </div> <!-- end of row of modal-content-->
-    </div> <!-- end of modal-content -->
-  </div> <!-- end of modal -->
-</div>
-
-<!-- MODAL MANAGE SOCIAL ACCOUNT-->
-<div class="ibm-modal">
-  <div id="manageSocialAccountModal" class="modal">
-    <div class="modal-content">
-        <div class="row">
-          <div class="col s12">
-          <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
-            <svg class="cancel" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
-                    20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
-                <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                    s12,5.383,12,12S22.617,28,16,28z"/>
-            </svg>
-          </a>
-          </div>
-          <!-- display manage social account dialog -->
-          <div ng-include src="'/modules/users/client/views/settings/manage-social-accounts.client.view.html'"></div>
-          <!-- end of manage social account dialog-->
-        </div> <!-- end of row of modal-content-->
-    </div> <!-- end of modal-content -->
-  </div> <!-- end of modal -->
-</div>
-
-
 </section>

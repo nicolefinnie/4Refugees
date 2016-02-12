@@ -1,39 +1,34 @@
 <section class="row" ng-controller="SocialAccountsController">
   <div class="col s12 m12">
-   <h5 class="col m12 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.connectedSocialAccounts}}</h5>
+   <h5 class="col m6 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.connectedSocialAccounts}}</h5>
     <div class="col m3 s3 social-account-container" ng-repeat="(providerName, providerData) in user.additionalProvidersData">
       <a class="btn waves-effect waves-light" ng-click="removeUserSocialAccount(providerName)">
       <img ng-src="/modules/users/client/img/buttons/{{providerName}}.png">
       </a>
-      <i class="material-icons small">delete</i>
     </div>
   </div>
 
   <div class="col s12 m12">
-    <h5 class="col m12 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.unconnectedSocialAccounts}}</h5>
+    <h5 class="col m6 s12" ng-class="properties.rightToLeft?'right-align':'left-align'" ng-show="hasConnectedAdditionalSocialAccounts()">{{properties.unconnectedSocialAccounts}}</h5>
     <div class="col m3 s3 social-account-container" ng-hide="isConnectedSocialAccount('facebook')">
       <a class="btn waves-effect waves-light" href="/api/auth/facebook" target="_self">
       <img ng-src="/modules/users/client/img/buttons/facebook.png">
       </a>
-      <i class="material-icons small">add</i>
     </div>
     <div class="col m3 s3 social-account-container" ng-hide="isConnectedSocialAccount('twitter')">
       <a class="btn waves-effect waves-light" href="/api/auth/twitter" target="_self">
       <img ng-src="/modules/users/client/img/buttons/twitter.png">
       </a>
-      <i class="material-icons small">add</i>
-    </div>
+     </div>
     <div class="col m3 s3 social-account-container" ng-hide="isConnectedSocialAccount('google')">
       <a class="btn waves-effect waves-light" href="/api/auth/google" target="_self">
       <img ng-src="/modules/users/client/img/buttons/google.png">
       </a>
-      <i class="material-icons small">add</i>
     </div>
     <div class="col m3 s3 social-account-container" ng-hide="isConnectedSocialAccount('linkedin')">
       <a class="btn ibm-button-add waves-effect waves-light" href="/api/auth/linkedin" target="_self">
       <img ng-src="/modules/users/client/img/buttons/linkedin.png">
       </a>
-      <i class="material-icons small">add</i>
-    </div>
+     </div>
   </div>
 </section>

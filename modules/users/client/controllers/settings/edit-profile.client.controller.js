@@ -9,21 +9,52 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
     
     // make a deep copy of the original object, so the values can be reverted when the cancel button is hit
     var userCopy = angular.copy($scope.user);
-    $scope.isEditMode = true;
-    $scope.editNameDetails = function(){
-      $scope.isEditMode = true;
-    };
+    $scope.isInProfileEditMode = true;
+    $scope.isEditPicture = false;
+    $scope.isEditName = false;
+    $scope.isEditAboutMe = false;
+    $scope.isEditLanguage = false;
+    $scope.isEditSkill = false;
+    $scope.isEditInterest = false;
+    $scope.isEditSocialProfile = false;
     
+    $scope.toggleProfileSection = function(attribute){
+      if (attribute === 'picture'){
+        $scope.isEditPicture = !$scope.isEditPicture;
+      } else if (attribute === 'name') {
+        $scope.isEditName = !$scope.isEditName;
+      } else if (attribute === 'aboutMe') {
+        $scope.isEditAboutMe = !$scope.isEditAboutMe;
+      } else if (attribute === 'language') {
+        $scope.isEditLanguage = !$scope.isEditLanguage;
+      } else if (attribute === 'skill') {
+        $scope.isEditSkill = !$scope.isEditSkill;
+      } else if (attribute === 'interest') {
+        $scope.isEditInterest = !$scope.isEditInterest;
+      } else if (attribute === 'socialProfile') {
+        $scope.isEditSocialProfile = !$scope.isEditSocialProfile;
+      } 
+    };
     $scope.toggleAdvancedSetting = function(){
       $scope.showAdvancedSetting = !$scope.showAdvancedSetting;
     };
     
+    $scope.toggleLoginSection = function(){
+      $scope.showLoginSection = !$scope.showLoginSection;
+    };
+    
+    $scope.togglePasswordSection = function(){
+      $scope.showPasswordSection = !$scope.showPasswordSection;
+    };
+    
+    $scope.toggleSocialProfileSection = function(){
+      $scope.showSocialProfileSection = !$scope.showSocialProfileSection;
+    };
     // activeProfile is used for the profile html view - for better HTML code re-use 
     // so we point the logged-in user object to activeProfile, rather than use logged-in user object directly in HTML
     // because some other modules that include HTML view have the logged-in user itself as well as profiles of other users
     // it would mistakenly show the logged-in user profile rather than other profiles.
     $scope.activeProfile = $scope.user;
-    
     // Update a user profile
     $scope.updateUserProfile = function (isValid, userForm) {   
       $scope.success = $scope.error = null;
@@ -104,14 +135,6 @@ angular.module('users').controller('EditProfileController', ['$scope', '$rootSco
       return languageTags.filter(function(tag) {
         return tag.tagName.toLowerCase().indexOf($query.toLowerCase()) !== -1;
       });
-    };
-
-    $scope.openChangeLoginModal = function(){
-      $('#changeLoginModal').openModal();
-    };
-
-    $scope.openManageSocialAccountModal= function(){
-      $('#manageSocialAccountModal').openModal();
     };
   }
 ]);

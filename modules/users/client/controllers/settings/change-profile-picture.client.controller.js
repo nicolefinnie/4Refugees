@@ -21,6 +21,10 @@ angular.module('users').controller('ChangeProfilePictureController', ['$scope', 
       }
     });
 
+    $scope.togglePictureSection = function(){
+      $scope.isEditPicture = !$scope.isEditPicture;
+    };
+    
     // Called after the user selected a new picture file
     $scope.uploader.onAfterAddingFile = function (fileItem) {
       if ($window.FileReader) {

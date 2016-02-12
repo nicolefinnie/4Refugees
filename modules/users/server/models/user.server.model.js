@@ -187,6 +187,8 @@ UserSchema.methods.getPublicObject = function () {
   var pubUser = {
     _id: this._id,
     displayName: this.displayName,
+    firstName: this.firstName,
+    lastName: this.lastName,
     languagePreference: this.languagePreference
   };
   if (!this.isPrivate || !this.isPrivate.picture) {
