@@ -106,7 +106,11 @@
 "accept":"Akzeptieren",
 "reject":"Ablehnen",
 "block":"Block",
-"noMessageYet":"Noch nichts.",
+"reply":"Reply",
+"clickForHelp":"Anweisungen für Hilfe, um diese Nachricht zu schreiben",
+"helpForOwner":"Wenn Sie eine Angebote abstimmt, geben Sie bitte Einzelheiten darüber, wo sich zu treffen und was Zeit. Wir empfehlen, Treffen in einem öffentlichen Ort während der Tagesstunden. ",
+"helpForRequester":"Wenn zuerst eine Passende Angebote anfordert, kann es hilfreich sein, sich kurze Sätze in ein paar einzuführen. Bei der Anordnung des Angebots Eigentümer gerecht zu werden, empfehlen wir Treffen in einem öffentlichen Ort während der Tagesstunden. ",
+"helpCommon":"Bitte versuchen Sie es einfach zu verwendende Sprache Missverständnisse zu vermeiden. Und denken Sie daran, höflich zu sein.",
 "noMatches":"Leider sind noch keine Spiele vor. Klicken Sie hier um zu suchen.",
 "errorNoMessage":"Ungültige Nachricht. Bitte geben Sie eine gültige Nachricht, und versuchen Sie es erneut"
 }, 

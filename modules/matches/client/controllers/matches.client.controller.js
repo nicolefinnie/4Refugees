@@ -5,13 +5,6 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
                                                            'Authentication', 'Matches', 'LanguageService', 'MailService',
   function ($scope, $rootScope, $http, $stateParams, $location, Authentication, Matches, LanguageService, MailService) {
     $scope.authentication = Authentication;
-   
-    $scope.match = {};
-    // TODO: Do we need an 'unblock' button if the user changes their mind?
-    $scope.showBlockButton = false;
-    $scope.showAcceptButton = false;
-    $scope.showRejectButton = false;
-    $scope.showContactButton = false;
     $rootScope.hideFooter = false;
     //Note that the controller must call $scope.translateStatusCodes(properties) when first
     //initialized, and whenever the current language is modified.
@@ -31,9 +24,6 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
             $scope.prepareMatchForView(match);
           });
         }
-        if ($scope.match && $scope.match.ownerStateLastMessage) {
-          $scope.prepareMatchForView($scope.match);
-        }
       });
     });
 
@@ -41,65 +31,67 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       $scope.StatusCodes.ERROR_NO_MESSAGE.message = $scope.properties.errorNoMessage;
     };
 
+    $scope.toggleMoreHelp = function(match) {
+      match.showMoreHelp = !match.showMoreHelp;
+    };
+
+    $scope.toggleReplyMode = function(match) {
+      match.replyMode = !match.replyMode;
+    };
+
     $scope.amIOwner = function(match) {
       return ($scope.authentication.user._id.toString() === match.ownerId);
     };
 
-    $scope.profileModalDetails = function(index, currentProfile){
+    $scope.profileModalDetails = function(currentProfile){
       $scope.activeProfile = currentProfile; 
-      $('#theOtherProfile-'+index).openModal();
-    };
-    
-    $scope.singleProfileModalDetails = function(currentProfile){
-      $scope.activeProfile = currentProfile; 
-      $('#singleProfile').openModal();
+      $('#userProfile').openModal();
     };
 
     // Validate a proper match message was provided
-    $scope.validateMatchMessage = function(matchMessage) {
-      var isValid = (matchMessage !== undefined && matchMessage.length > 0);
+    $scope.validateMatchMessage = function(match) {
+      var isValid = (match.newMessage !== undefined && match.newMessage.length > 0);
       if (!isValid) {
-        $scope.error = $scope.StatusCodes.ERROR_NO_MESSAGE;
+        match.error = $scope.StatusCodes.ERROR_NO_MESSAGE;
         throw new Error('Match: Invalid message');
       }
     };
     
-    $scope.createOrUpdate = function() {
-      $scope.error = $scope.StatusCodes.NONE;
+    $scope.createOrUpdate = function(match) {
+      match.error = $scope.StatusCodes.NONE;
 
-      $scope.validateMatchMessage($scope.matchMessage);
+      $scope.validateMatchMessage(match);
       var newMessage = {
         language: LanguageService.getCurrentLanguage(),
-        text: $scope.matchMessage
+        text: match.newMessage
       };
 
-      if ($scope.amIOwner($scope.match)) {
-        $scope.match.ownerState.lastMsg = [newMessage];
+      if ($scope.amIOwner(match)) {
+        match.ownerState.lastMsg = [newMessage];
       } else {
-        $scope.match.requesterState.lastMsg = [newMessage];
+        match.requesterState.lastMsg = [newMessage];
       }
 
-      if ($scope.matchId === '0') {
-        $scope.create();
+      if (match.isNew) {
+        $scope.create(match);
       } else {
-        $scope.update();
+        $scope.update(match);
       }
     };
 
     // Send a mail concerning this match to the other person
-    $scope.sendMessage = function() {
-      var match = $scope.match;
-      var offering = match.offering;
+    $scope.sendMessage = function(match, newMessage, matchIsNew) {
       var recipientId = $scope.amIOwner(match) ? match.requesterId : match.ownerId;
       var subject = '';
       // TODO: Translation/language support, need to know the recipient's
       // preferred language to generate an appropriate subject.  And, we
       // should extend the offering to always send all translated descriptions
       // back, i.e. description.en, description.de, description.ar.
-      if ($scope.matchId === '0') {
-        subject = 'Offering contact request: ' + offering.description;
+      var offeringDescription = LanguageService.getTextForCurrentLanguage(match.offering.title);
+      if (matchIsNew) {
+        subject = 'Offering contact request: ' + offeringDescription;
       } else {
-        subject = 'Follow-up on offering: ' + offering.description;
+        subject = 'Follow-up on offering: ' + offeringDescription;
       }
       // TODO: How to handle message translation? If we do the message translation
       // when we store the match, we can use the pre-translated message here...
@@ -107,73 +99,67 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
       // but if the match needs to translate anyways, we can save one translation....
       // Yet another option is to get the result from the sendNewMail() request below,
       // and if that contains a translated message, issue a match update...
-      $scope.validateMatchMessage($scope.matchMessage);
+      match.newMessage = newMessage;
+      $scope.validateMatchMessage(match);
 
       var messageDetails = {
         'title': subject,
-        'content': $scope.matchMessage,
+        'content': match.newMessage,
         'recipientId': recipientId,
         'matchId': match._id.toString()
       };
       MailService.sendNewMail(messageDetails, function(errorResponse, sentMail) {
         if (errorResponse) {
           // TODO: Better error message handling? Translation support? 'Error sending mail: ' + errorResponse.data.message?
-          $scope.error = errorResponse.data.message;
+          match.error = errorResponse.data.message;
         } else {
-          // On success, re-direct to the list of all the current user's matches.
-          $location.path('matches');
+          $scope.prepareMatchForView(match);
         }
       });
     };
 
     // Create new Match server request
-    $scope.create = function () {
-      // Redirect after save
-      $scope.match.$save(function (response) {
+    $scope.create = function (match) {
+      var messageToSend = match.newMessage;
+      match.$save(function (response) {
         // Send a message to the offering owner now that the match object is created.
-        $scope.sendMessage();
-        $scope.clearForm();
+        $scope.sendMessage(match, messageToSend, true);
       }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+        match.error = errorResponse.data.message;
       });
     };
 
     // Update existing Match server request
-    $scope.update = function () {
-      $scope.match.$update(function () {
-        $scope.sendMessage();
-        $scope.clearForm();
+    $scope.update = function (match) {
+      var messageToSend = match.newMessage;
+      match.$update(function () {
+        $scope.sendMessage(match, messageToSend, false);
       }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+        match.error = errorResponse.data.message;
       });
     };
 
-    // Current user wants to prevent contact from other person about this match
-    $scope.blockContact = function () {
-      if ($scope.amIOwner($scope.match)) {
-        $scope.match.ownerState.blockContact = true;
-      } else {
-        $scope.match.requesterState.blockContact = true;
-      }
-      $scope.createOrUpdate();
+    $scope.contact = function (match) {
+      // Nothing special, just update my last message and send mail
+      $scope.createOrUpdate(match);
     };
 
     // Current user does not want this match
-    $scope.rejectMatch = function () {
-      if ($scope.amIOwner($scope.match)) {
-        $scope.match.ownerState.rejectMatch = true;
+    $scope.rejectMatch = function (match) {
+      if ($scope.amIOwner(match)) {
+        match.ownerState.rejectMatch = true;
       } else {
-        $scope.match.requesterState.withdrawRequest = true;
+        match.requesterState.withdrawRequest = true;
       }
-      $scope.createOrUpdate();
+      $scope.createOrUpdate(match);
     };
 
     // Owner has agreed on this match and will provide the requester with this offering
-    $scope.acceptMatch = function () {
+    $scope.acceptMatch = function (match) {
       // TODO: Assert that we are owner? Button should only be visible to owner....
       // assert($scope.amIOwner($scope.match));
-      $scope.match.ownerState.acceptMatch = true;
-      $scope.createOrUpdate();
+      match.ownerState.acceptMatch = true;
+      $scope.createOrUpdate(match);
     };
 
     // Remove single Match
@@ -185,7 +171,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     };
 
     // Remove one match from within list of all my matches
-    $scope.removeMatchFromList = function (match) {
+    $scope.deleteMatch = function (match) {
       match.$remove();
       for (var i in $scope.matches) {
         if ($scope.matches[i] === match) {
@@ -196,14 +182,10 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
 
     // Converts server match JSON into client match, for integration with views.
     $scope.prepareMatchForView = function (match) {
-      if (!match.ownerState.lastMsg || (match.ownerState.lastMsg[0].text.length === 0)) {
-        match.ownerStateLastMessage = $scope.properties.noMessageYet;
-      } else {
+      if (match.ownerState.lastMsg && (match.ownerState.lastMsg[0].text.length > 0)) {
         match.ownerStateLastMessage = LanguageService.getTextForCurrentLanguage(match.ownerState.lastMsg);
       }
-      if (!match.requesterState.lastMsg || (match.requesterState.lastMsg[0].text.length === 0)) {
-        match.requesterStateLastMessage = $scope.properties.noMessageYet;
-      } else {
+      if (match.requesterState.lastMsg && (match.requesterState.lastMsg[0].text.length > 0)) {
         match.requesterStateLastMessage = LanguageService.getTextForCurrentLanguage(match.requesterState.lastMsg);
       }
       if ($scope.amIOwner(match)) {
@@ -235,113 +217,98 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
         match.lastMessages.push(lastRequesterMessage);
         match.lastMessages.push(lastOwnerMessage);
       }
+      match.newMessage = '';
+      // Determine which buttons should be shown for this match.
+      $scope.setButtonVisibility(match);
+      match.showMoreHelp = false;
+      match.replyMode = false;
     };
 
-    // Find all my matches - init function for matches.listMine
-    $scope.findAllMine = function () {
-      delete $scope.match;
+    // Initialize list of all my matches
+    $scope.initializeMatches = function () {
       LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
         $scope.properties = translationList;
         $scope.translateStatusCodes();
-        $scope.matches = Matches.query({
-        }, function () {
+        $scope.matches = Matches.query({ }, function () {
           $scope.matches.forEach(function(match) {
             $scope.prepareMatchForView(match);
           });
+          var i, foundMatch;
+          if ($scope.matchId && ($scope.matchId !== '0')) {
+            // Look for the given match, if found, put it at the top of the list.
+            for(i = 0; i < $scope.matches.length; i++) {
+              if ($scope.matchId === $scope.matches[i]._id) {
+                if (i !== 0) {
+                  foundMatch = $scope.matches.splice(i, 1);
+                  $scope.matches.splice(0, 0, foundMatch[0]);
+                }
+                break;
+              }
+            }
+          } else if ($scope.offeringId && ($scope.offeringId !== '0')) {
+            // See if we can find an existing match for this offering, and if so,
+            // put that match at the top of the list.
+            for(i = 0; i < $scope.matches.length; i++) {
+              if ($scope.offeringId === $scope.matches[i].offeringId) {
+                foundMatch = $scope.matches[i];
+                if (i !== 0) {
+                  $scope.matches.splice(i, 1);
+                  $scope.matches.splice(0, 0, foundMatch);
+                }
+                break;
+              }
+            }
+
+            // No match for this offering is found, create a new one, and
+            // insert at beginning of the list.
+            if (!foundMatch) {
+              var newMatch = new Matches({ });
+              $scope.initializeNewMatch(newMatch);
+              $scope.matches.splice(0, 0, newMatch);
+            }
+          }
         });
       });
     };
 
-    // Clear form fields, i.e. after a successful create or update
-    $scope.clearForm = function () {
-      delete $scope.message;
-    };
-
-    $scope.setButtonVisibility = function() {
-      if ($scope.amIOwner($scope.match)) {
-        $scope.showBlockButton = !$scope.match.ownerState.blockContact;
+    // Figure out which buttons should be shown for a particular match.  For example, if
+    // the owner has accepted the match, we do not need to show the accept button any more.
+    $scope.setButtonVisibility = function(match) {
+      if ($scope.amIOwner(match)) {
+        match.showBlockButton = !match.ownerState.blockContact;
         // TODO: How to show owner (and requester) that the match is accepted or rejected?
-        $scope.showAcceptButton = !$scope.match.ownerState.acceptMatch;
-        $scope.showRejectButton = !$scope.match.ownerState.rejectMatch;
-        $scope.showContactButton = !$scope.match.requesterState.blockContact;
+        match.showAcceptButton = !match.ownerState.acceptMatch;
+        match.showRejectButton = !match.ownerState.rejectMatch;
+        match.showContactButton = !match.requesterState.blockContact;
       } else {
         // If match has not yet been created, the only option for match requester is to contact owner
-        $scope.showBlockButton = ($scope.matchId !== '0' && !$scope.match.requesterState.blockContact);
-        $scope.showAcceptButton = false;
-        $scope.showRejectButton = ($scope.matchId !== '0' && !$scope.match.requesterState.withdrawRequest);
-        $scope.showContactButton = !$scope.match.ownerState.blockContact;
+        match.showBlockButton = (!match.isNew && !match.requesterState.blockContact);
+        match.showAcceptButton = false;
+        match.showRejectButton = false;
+        match.showContactButton = !match.ownerState.blockContact;
       }
     };
 
-    // Find existing Match - init function for create+edit paths
-    $scope.findOne = function () {
-      LanguageService.getPropertiesByViewName('matches', $http, function(translationList) {
-        $scope.properties = translationList;
-        $scope.translateStatusCodes();
-        // TODO: Display some warning message if contact is blocked?
-        // TODO: Display notification (and button to unblock) if we blocked contact?
-        if (($scope.matchId === undefined) && ($scope.offeringId === undefined)) {
-          // With no valid match or offering IDs provided, take them to a list of
-          // all their current matches.
-          $location.path('matches');
-        } else if ($scope.matchId && $scope.matchId !== '0') {
-          // Pre-populate form based on an existing match, used when editing an offer
-          $scope.match = Matches.get({
-            matchId: $stateParams.matchId
-          }, function (err) {
-            // TODO: Error handling? what if match is not found???
-            $scope.matchId = $scope.match._id.toString();
-            $scope.prepareMatchForView($scope.match);
-            // TODO: Here, we should set the 'ownerState.seen' flag if the owner
-            // just loaded this match, and ownerState.seen === false.
-            $scope.setButtonVisibility();
-          });
-        } else {
-          // Note - query returns an array of matches, although there will only ever
-          // be 1 or 0 matches, we don't allow the same requester to create multiple
-          // matches for the same offering. The match owner may have more than one
-          // match per offering (multiple requesters interested in the offering), but
-          // the owner is not able to get in this code path - they can only access
-          // individual matches when contacted by the requester.
-          $scope.matches = Matches.query({ offeringId: $scope.offeringId }, function () {
-            if ($scope.matches.length > 0) {
-              // TODO: Assert that matches.length === 1?
-              $scope.matches.forEach(function(match) {
-                $scope.match = match;
-                $scope.matchId = match._id.toString();
-                $scope.prepareMatchForView(match);
-                $scope.setButtonVisibility();
-                if($scope.amIOwner(match)===true){
-                  $scope.match.theOther = match.requester;
-                } else {
-                  $scope.match.theOther = match.owner;
-                }
-              });
-            } else {
-              // Start off with an empty match, first time this requester is interested
-              // in the given offering
-              $scope.match = new Matches({ });
-              var match = $scope.match;
-              var now = new Date();
-              match.created = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-              match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-              match.ownerState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'seen': false, 'blockContact': false, 'acceptMatch': false, 'rejectMatch': false };
-              match.ownerStateLastMessage = '';
-              match.requesterState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'blockContact': false, 'withdrawRequest': false };
-              match.requesterStateLastMessage = '';
-              match.owner = { 'displayName': $scope.recipientName };
-              match.ownerId = $scope.recipientId;
-              match.requester = { 'displayName': $scope.authentication.user.displayName };
-              match.requesterId = $scope.authentication.user._id.toString();
-              match.offering = { 'description': $scope.offeringDescription };
-              match.offeringId = $scope.offeringId;
-              $scope.matchId = '0';
-              $scope.prepareMatchForView($scope.match);
-              $scope.setButtonVisibility();
-            }
-          });
-        }
-      });
+    $scope.initializeNewMatch = function(match) {
+      // Start off with an empty match, first time this requester is interested
+      // in the given offering
+      var now = new Date();
+      match.isNew = true;
+      match.created = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+      match.updated = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
+      match.ownerState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'seen': false, 'blockContact': false, 'acceptMatch': false, 'rejectMatch': false };
+      match.ownerStateLastMessage = '';
+      match.requesterState = { 'lastMsg': [{ 'language': 'en', 'text': '' }], 'updated': new Date(), 'blockContact': false, 'withdrawRequest': false };
+      match.requesterStateLastMessage = '';
+      match.owner = { 'displayName': $scope.recipientName };
+      match.ownerId = $scope.recipientId;
+      match.requester = { 'displayName': $scope.authentication.user.displayName };
+      match.requesterId = $scope.authentication.user._id.toString();
+      match.offering = { 'description': $scope.offeringDescription };
+      match.offeringId = $scope.offeringId;
+      $scope.prepareMatchForView(match);
+      // If creating a new match, we default to edit/reply mode.
+      match.replyMode = true;
     };
 
   }

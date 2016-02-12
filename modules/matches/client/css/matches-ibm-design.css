@@ -2,7 +2,7 @@
  * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
  * but the svgs we chose to use in the matches should not be rotated */
 .match-button-style, .ibm-submit-area button.match-submit-button, .ibm-submit-area a.match-submit-button, .ibm-submit-area button.match-cancel-button, .ibm-submit-area a.match-cancel-button, .ibm-submit-area button.match-delete-button, .ibm-submit-area a.match-delete-button {
-  font-size: 10px;
+  font-size: 12px;
   text-transform: capitalize;
   margin-left: 1%;
   margin-right: 1%;
@@ -24,5 +24,12 @@
 /* Delete an match. */
 .ibm-submit-area button.match-delete-button, .ibm-submit-area a.match-delete-button {
   background: #ad1625; }
+
+.ibm-match-user {
+  font-weight: bold; }
+
+.ibm-match-help {
+  font-size: 12px;
+  font-style: italic; }
 
 /*# sourceMappingURL=matches-ibm-design.css.map */

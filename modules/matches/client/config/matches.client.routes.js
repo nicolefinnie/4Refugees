@@ -31,7 +31,7 @@ angular.module('matches').config(['$stateProvider',
           recipientId: null,
           matchId: null
         },
-        templateUrl: 'modules/matches/client/views/single-match.client.view.html',
+        templateUrl: 'modules/matches/client/views/list-my-matches.client.view.html',
         data: {
           roles: ['user', 'admin']
         },
@@ -45,7 +45,7 @@ angular.module('matches').config(['$stateProvider',
       })
       .state('matches.edit', {
         url: '/edit?matchId',
-        templateUrl: 'modules/matches/client/views/single-match.client.view.html',
+        templateUrl: 'modules/matches/client/views/list-my-matches.client.view.html',
         data: {
           roles: ['user', 'admin']
         },

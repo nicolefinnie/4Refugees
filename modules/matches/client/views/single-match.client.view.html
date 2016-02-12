@@ -1,89 +1,109 @@
-<section ng-controller="MatchesController" ng-init="findOne()">
-<div class="row">
-<!-- s11 looks a bit nicer on a smaller screen so it won't display all the way to the edge -->
-  <div class="col m12 s11">
-    <br>
-    <form name="matchForm" novalidate>
-        <!-- title section -->
+<!-- Display a single match -->
+<div class="col s12 ibm-match" >
+
+  <!-- Display which offering this match is associated with -->
+  <div class="row">
+    <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+            <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
+            <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
+            <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
+        </svg>
+    </div>
+    <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+        <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
+          <h5>{{match.offering.description}}</h5>
+        </a>
+    </div>
+  </div>
+  <!-- End display which offering this match is associated with -->
+
+  <!-- Display the last message from the owner and requester -->
+  <div class="row">
+      <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
+        <div class="col s12 list-group-item-text" ng-if="match.lastMessages[0].message">
+          <a class="ibm-match-user waves-effect waves-light modal-trigger" ng-click="profileModalDetails(match.lastMessages[0].user)" href="#userProfile" ng-bind="match.lastMessages[0].viewName"></a>
+          : <span ng-bind="match.lastMessages[0].message"></span>
+          <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[0].date | date:'yyyy.MM.dd'"></span>
+        </div>
+        <div class="col s12 list-group-item-text" ng-if="match.lastMessages[1].message">
+          <a class="ibm-match-user waves-effect waves-light modal-trigger" ng-click="profileModalDetails(match.lastMessages[1].user)" href="#userProfile" ng-bind="match.lastMessages[1].viewName"></a>
+          : <span ng-bind="match.lastMessages[1].message"></span>
+          <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[1].date | date:'yyyy.MM.dd'"></span>
+        </div>
+      </div>
+  </div>
+  <!-- End display of last message from the owner and requester -->
+
+  <!-- Toggle reply mode -->
+  <div ng-if="!match.replyMode" ng-class="properties.rightToLeft ? 'right-align':'left-align'" ng-click="toggleReplyMode(match)">
+      <span><a>{{properties.reply}}</a></span>
+  </div>
+
+  <!-- Start edit/reply mode for match - interact with match owner/requester, hidden by default -->
+  <div data-my-slide="match.replyMode">
+    <!-- Display help/suggestions for the current match action-->
+    <div class="row">
+      <div class="ibm-match-help">
+        <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2 left'">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+              <polygon points="18,14 12,14 12,16 14,16 14,22 12,22 12,24 20,24 20,22 18,22  "/>
+              <circle cx="16" cy="10" r="2"/>
+              <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4 s12,5.383,12,12S22.617,28,16,28z"/>
+            </svg>
+        </div>
+        <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'" ng-click="toggleMoreHelp(match)">
+            <a>{{properties.clickForHelp}}</a>
+        </div>
+      </div>
+    </div>
+    <!-- And extended help description, hidden by default -->
+    <div class="ibm-match-help" data-my-slide="match.showMoreHelp">
         <div class="row">
-            <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'col m12 offset-s1 s11'">
-              <h4 >{{properties.matchTitle}}</h4>
-              <br>
+            <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'">
+                <span ng-if="amIOwner(match)">{{properties.helpForOwner}}{{properties.helpCommon}}</span>
+                <span ng-if="!amIOwner(match)">{{properties.helpForRequester}}{{properties.helpCommon}}</span>
             </div>
-            <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'col m12 offset-s1 s11'">
-            </div>
-        </div> <!-- end of row of title section -->
-        <!-- description section -->
-        <div class="row">
-          <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-            <div ng-class="properties.rightToLeft ? 'col l1 m1 s2 push-s10 right':'col l1 m1 s2'">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                    <polygon points="15,13 13,13 14,9 12,9 11,13 11,17 15,17    "/>
-                    <polygon points="21,13 19,13 20,9 18,9 17,13 17,17 21,17    "/>
-                    <path d="M3,3v19v1l6,6h1h19V3H3z M27,27H10v-5H5V5h22V27z"/>
-                </svg>
-            </div>
-            <div ng-class="properties.rightToLeft ? 'col l11 m11 s10 pull-s2':'col l11 m11 s10'">
-                <a href="/offerings/view?offerType=offer&offeringId={{match.offeringId}}">
-                    <h5>{{match.offering.description}}</h5>
-                </a>
-            </div>
-          </div>
-        </div> <!-- end of row of description section -->
-        <!-- Display the last message from the owner and requester -->
-        <div class="row">
-            <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
-              <div class="col s12 list-group-item-text">
-                <a class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.lastMessages[0].user)" href="#singleProfile" ng-bind="match.lastMessages[0].viewName"></a>
-                : <span ng-bind="match.lastMessages[0].message"></span>
-                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[0].date | date:'yyyy.MM.dd'"></span>
+        </div>
+    </div>
+    <!-- End display help/suggestions for the current match action -->
+
+    <!-- Start input field section, for new message and buttons to send to other match participant -->
+    <div class="row">
+        <div class="col m12 s11">
+          <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+              <!-- Begin icon and text input field for new message to send -->
+              <div class="row">
+                  <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2'">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                          <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
+                              C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
+                              L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
+                              s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
+                          <circle cx="16" cy="13" r="1.5"/>
+                          <circle cx="21" cy="13" r="1.5"/>
+                          <circle cx="11" cy="13" r="1.5"/>
+                      </svg>
+                  </div>
+                  <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
+                      <textarea rows="1" cols="8" ng-model="match.newMessage" placeholder="{{properties.message}}"></textarea>
+                  </div>
               </div>
-              <div class="col s12 list-group-item-text">
-                <a class="waves-effect waves-light modal-trigger" ng-click="singleProfileModalDetails(match.lastMessages[1].user)" href="#singleProfile" ng-bind="match.lastMessages[1].viewName"></a>
-                : <span ng-bind="match.lastMessages[1].message"></span>
-                <span ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="match.lastMessages[1].date | date:'yyyy.MM.dd'"></span>
-              </div>
-            </div>
-        </div> <!-- end of row -->
-        <!-- Start of input fields for match interactions -->
-        <div class="row">
-            <div class="col m12 s11">
-              <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-                  <!-- TODO: Add help for this field - i.e. 'special instructions', 'contact advice', etc. -->
-                  <div class="row">
-                      <div ng-class="properties.rightToLeft ? 'col m1 s2 push-s10 right':'col m1 s2'">
-                          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                              <path d="M24.484,4.515C22.313,2.343,19.313,1,16,1S9.686,2.343,7.516,4.515C5.344,6.687,4,9.686,4,13s1.344,6.313,3.516,8.485
-                                  C9.686,23.657,12.686,25,16,25v6l8.484-9.016C26.656,19.685,28,16.508,28,13C28,9.686,26.656,6.687,24.484,4.515z M23.027,20.613
-                                  L18,25.956V25v-2h-2c-2.671,0-5.182-1.04-7.07-2.93C7.041,18.182,6,15.671,6,13s1.041-5.182,2.93-7.071S13.329,3,16,3
-                                  s5.182,1.04,7.07,2.93C24.959,7.818,26,10.329,26,13C26,15.881,24.945,18.583,23.027,20.613z"/>
-                              <circle cx="16" cy="13" r="1.5"/>
-                              <circle cx="21" cy="13" r="1.5"/>
-                              <circle cx="11" cy="13" r="1.5"/>
-                          </svg>
-                      </div>
-                      <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2':'col m11 s10'">
-                          <input name="message" type="text" ng-model="matchMessage" id="message"
-                          placeholder = "{{properties.message}}">
-                      </div>
-                  </div> <!-- end of row -->
-              </div> <!-- end of input-field ibm-input-field -->
-            </div> <!-- end of grid col m12 s11 -->
-        </div> <!-- end of row of match interactions -->
-        <!-- Match interactions with the other party, contact requests -->
-        <div class="row">
-            <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
-              <div class="col m12 s11">
-                <button ng-if="showContactButton" type="submit" class="match-submit-button btn btn-primary waves-effect waves-light" ng-click="createOrUpdate()">
+              <!-- End icon and text input field for new message to send -->
+
+              <!-- Submit buttons to update server match state and send mail -->
+              <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+                <button ng-if="match.showContactButton" class="match-submit-button btn btn-primary waves-effect waves-light" ng-click="contact(match)">
                   {{properties.contact}}
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                     <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
                   </svg>
                 </button>
-                <button ng-if="showAcceptButton" type="submit" class="match-submit-button btn waves-effect waves-light" ng-click="acceptMatch()">
+                <button ng-if="match.showAcceptButton" class="match-submit-button btn waves-effect waves-light" ng-click="acceptMatch(match)">
                   {{properties.accept}}
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
@@ -91,56 +111,40 @@
                     <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4 s12,5.383,12,12S22.617,28,16,28z"/>
                   </svg>
                 </button>
-                <button ng-if="showRejectButton" type="submit" class="match-cancel-button btn waves-effect waves-light" ng-click="rejectMatch()">
+                <button ng-if="match.showRejectButton" class="match-cancel-button btn waves-effect waves-light" ng-click="rejectMatch(match)">
                   {{properties.reject}}
-                  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                  <svg class="cancel" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                     width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
                     <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 20.293,21.707 21.707,20.293 17.414,16 21.707,11.707   "/>
                     <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4 s12,5.383,12,12S22.617,28,16,28z"/>
                   </svg>
                 </button>
-                <button ng-if="showBlockButton" type="submit" class="match-delete-button btn waves-effect waves-light" ng-click="blockContact()">
-                  {{properties.block}}
+                <button class="match-delete-button btn btn-danger waves-effect waves-light" ng-click="deleteMatch(match);">
+                  {{properties.delete}}
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                    <path d="M16,3L1,29h30L16,3z M16,7.002L27.537,27H4.463L16,7.002z"/>
-                    <polygon points="15,14 15,16 15.5,21 16.5,21 17,16 17,14  "/>
-                    <circle cx="16" cy="23" r="1"/>
+                  width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                  <rect x="12" y="2" width="8" height="2"/>
+                  <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                  <rect x="11" y="14" width="1" height="12"/>
+                  <rect x="14" y="14" width="1" height="12"/>
+                  <rect x="17" y="14" width="1" height="12"/>
+                  <rect x="20" y="14" width="1" height="12"/>
                   </svg>
                 </button>
               </div>
-              <br><br>
-              <!-- TODO should be a pop-up and it can be closed -->
-              <div class="col m12 s11" ng-show="error.message">
-                  <strong ng-bind="error.message"></strong>
-              </div>
-            </div> <!-- end of ibm-submit-area-->
-        </div> <!-- end of row of match interactions-->
-    </form>
-  </div>
-</div> <!-- end of outer row -->
+              <!-- End submit buttons to update server match state and send mail -->
 
-<!-- MODAL OTHER PROFILE : display profile of the requester or owner if it's not you -->
-<div class="ibm-modal">
-  <div id="singleProfile" class="modal">
-    <div class="modal-content">
-        <div class="row">
-          <div class="col s12">
-          <a href="#!" class="modal-action modal-close waves-effect" ng-class="properties.rightToLeft ? 'left':'right'">
-            <svg class="cancel" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
-                <polygon points="20.293,10.293 16,14.586 11.707,10.293 10.293,11.707 14.586,16 10.293,20.293 11.707,21.707 16,17.414 
-                    20.293,21.707 21.707,20.293 17.414,16 21.707,11.707     "/>
-                <path d="M16,2C8.269,2,2,8.269,2,16s6.269,14,14,14s14-6.269,14-14S23.731,2,16,2z M16,28C9.383,28,4,22.617,4,16S9.383,4,16,4
-                    s12,5.383,12,12S22.617,28,16,28z"/>
-            </svg>
-          </a>
-          </div>
-          <!-- display the active profile -->
-          <div ng-include src="'/modules/users/client/views/profile/profile.client.view.html'"></div>
-          <!-- end of display active profile -->
-        </div> <!-- end of row of modal-content-->
-    </div> <!-- end of modal-content -->
-  </div> <!-- end of modal -->
-</div>
-</section>
+              <!-- TODO should be a pop-up and it can be closed -->
+              <div class="col m12 s11" ng-show="match.error.message">
+                  <strong ng-bind="match.error.message"></strong>
+              </div>
+          </div> <!-- end of input-field ibm-input-field -->
+        </div> <!-- end of grid col m12 s11 -->
+    </div>
+    <!-- End input field section, for new message and buttons to send to other match participant -->
+
+  </div>
+  <!-- End edit/reply mode for match - interact with match owner/requester, hidden by default -->
+
+</div><!-- end of current match contents -->
+

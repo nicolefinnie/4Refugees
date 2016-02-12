@@ -4,7 +4,7 @@
  * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
  * but the svgs we chose to use in the matches should not be rotated */
 .match-button-style {
-  font-size: 10px;
+  font-size: 12px;
   text-transform: capitalize;
   margin-left: 1%;
   margin-right: 1%;
@@ -39,4 +39,13 @@
     @extend .match-button-style;
     background: color('red', 60);
   }
+}
+
+.ibm-match-user {
+    font-weight: bold;
+}
+
+.ibm-match-help {
+  font-size: 12px;
+  font-style: italic;
 }
