@@ -11,15 +11,18 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
       $location.path('/');
     }
 
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.properties = translationList;
+      });
+    };
+
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
       $scope.initLanguage();
     });
 
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
+    $scope.initLanguage();
 
     // Create new Mail
     $scope.create = function (isValid, recipient, mailId, matchID, reportAdmin) {
@@ -63,17 +66,8 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
           matchId: matchid
         });
 
-        // Emit a 'mailMessage' message event with the JSON mail object
-        var message = {
-          content: mail
-        };
-
         // Redirect after save
         mail.$save(function (response) {
-          Socket.emit('mailMessage', message);
-
-          var condition = (reload_on_save && (index === (len - 1)));
-          var condition2 = ((index === (len - 1)));
           if (reload_on_save && (index === (len - 1))) {
             // TODO: This causes client exception when the admin user
             // sends a message to users.  Should there be a different
@@ -86,8 +80,6 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
             $scope.title = '';
             $scope.content = '';
           }
-          $scope.authentication = Authentication;
-
         }, function (errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -107,11 +99,6 @@ angular.module('mails').controller('NewMailsController', ['$scope', '$rootScope'
       });
     };
 
-    $scope.initLanguage = function () {
-      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
-        $scope.properties = translationList;
-      });
-    };
   }
 ]);
 

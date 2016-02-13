@@ -47,9 +47,13 @@ angular.module('core').controller('HeaderController', ['$scope', '$rootScope', '
     // Set of all tasks that should be performed periodically
     $scope.runIntervalTasks = function() {
       if (Authentication.user) {
-        // Check for unread mail, set flag to alert user if they have new mail.
+        // Check for unread mail, set menu flag to alert user if they have new mail.
         MailService.checkForUnreadMail($http, function(unreadMailCount) {
           $scope.hasUnreadMail = (unreadMailCount > 0);
+          // Notify the mail module, if active, that new mail has been received.
+          if (unreadMailCount > $scope.unreadMailCount) {
+            $rootScope.$broadcast('newMailReceived');
+          }
           $scope.unreadMailCount = unreadMailCount;
         });
       }

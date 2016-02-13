@@ -2,46 +2,66 @@
 
 // Mails controller - handles listing and replies etc.
 angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '$window', '$http', '$stateParams', '$location',
-     'Authentication', 'Mails', 'Socket', 'LanguageService',
-  function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, Socket, LanguageService) {
+     'Authentication', 'Mails', 'LanguageService',
+  function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, LanguageService) {
     $scope.authentication = Authentication;
     $rootScope.hideFooter = true;
+    $scope.hasMoreMail = true;
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) {
       $location.path('/');
     }
 
-    $scope.languageInitialized = false;
+    $scope.initLanguage = function () {
+      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
+        $scope.properties = translationList;
+      });
+    };
 
     // language change clicked
     $rootScope.$on('tellAllControllersToChangeLanguage', function(){
-      $scope.reloadLanguage();
+      $scope.initLanguage();
     });
 
-    // Make sure the Socket is connected to notify of updates
-    if (!Socket.socket) {
-      Socket.connect();
-    }
+    $scope.initLanguage();
+
+    // The header controller detected we have new mail, refresh new mail list.
+    $rootScope.$on('newMailReceived', function() {
+      $scope.queryEmailsForView();
+    });
+
+    $scope.queryEmailsForView = function() {
+      // We have to read at least one email
+      if ($scope.numOfMails === 0) {
+        $scope.numOfMails = 1;
+      }
+      // Read 1 more email than we want to display, that will let us know if there
+      // are more emails that can be read from the server.
+      $scope.mails = Mails.query({ limit: $scope.numOfMails + 1 }, function(err) {
+        if ($scope.mails.length === ($scope.numOfMails + 1)) {
+          $scope.hasMoreMail = true;
+          // discard the last element, only display desired email count
+          $scope.mails.splice(-1,1);
+        } else {
+          $scope.hasMoreMail = false;
+        }
+        $scope.mails.forEach(function(mail) {
+          mail.contentShort = mail.content.substr(0,80);
+        });
+      });
+    };
 
     // Remove existing Mail
     $scope.removeMail = function (mail) {
-      if (mail) {
-        mail.$remove();
+      mail.$remove();
 
-        for (var i in $scope.mails) {
-          if ($scope.mails[i] === mail) {
-            $scope.mails.splice(i, 1);
-          }
+      for (var i in $scope.mails) {
+        if ($scope.mails[i] === mail) {
+          $scope.mails.splice(i, 1);
         }
-        $scope.numOfMail--;
-        if ($scope.mailCount && $scope.mailCount[0])
-          $scope.mailCount[0].numResults--;
-      } else {
-        $scope.mail.$remove(function () {
-          $location.path('mails');
-        });
       }
+      $scope.numOfMail--;
     };
 
     // ReplyTo existing Mail
@@ -63,137 +83,46 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     // Report existing Mail
     $scope.reportMail = function (mail) {
       $scope.mail = mail;
-      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
-        $scope.title = translationList.reportTitle;
-        $scope.content = translationList.reportBody + mail.content;
+      $scope.title = $scope.properties.reportTitle;
+      $scope.content = $scope.properties.reportBody + mail.content;
 
-        $http.get('/api/users/admin',{ cache: true }).then(function(response) {
-          $scope.adminId = response.data;
-          $('#modalReport').openModal();
-        });
+      $http.get('/api/users/admin',{ cache: true }).then(function(response) {
+        $scope.adminId = response.data;
+        $('#modalReport').openModal();
       });
     };
 
+    $scope.markAsRead = function(mail) {
+      if (mail.unread) {
+        mail.unread = false;
+        mail.$update(function() {
+          mail.contentShort = mail.content.substr(0,80);
+        }, function(errorResponse) {
+          $scope.error = errorResponse.data.message;
+        });
+      }
+    };
 
     $scope.modalDetails = function(mail){
       $scope.mail = mail;
+      $scope.markAsRead(mail);
       $('#modalDetails').openModal();
     };
 
-    // Update existing Mail 
-    $scope.update = function (isValid) {
-      $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'mailForm');
-
-        return false;
-      }
-
-      var mail = $scope.mail;
-
-      mail.$update(function () {
-        $location.path('mails/' + mail._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-
     // Find a list of Mails
-    $scope.find = function (num) {
-      $scope.initLanguage();
-      $scope.mailCount = Mails.query({ countOnly: 'true' }, function(err) {
-        
-        if (num === 0 || $scope.mailCount[0] && $scope.mailCount[0].numResults > $scope.numOfMails)
-        {
-          if (num === 0)
-            $scope.numOfMails = parseInt($window.innerHeight / 100);
-          else 
-            $scope.numOfMails += num;
-
-          $scope.mails = Mails.query({ reset : true, limit: $scope.numOfMails }, function(err) {
-            for(var i = 0,len = $scope.mails.length; i < len;i++) {
-              $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
-            }
-          });
-        }
-      });
-
-      // Emit a 'mailMessage' message event with an empty JSON mail object to erase the new banner
-      var message = {
-        content : {
-          recipient : Authentication.user._id
-        }
-      };
-      Socket.emit('mailMessage', message);
-    };
-
-        // Add an event listener to the 'mailMessage' event and show new inMails for logged in users
-    Socket.on('mailMessage', function (message) {
-
-      if (message.content.recipient === Authentication.user._id) {
-        if (message.content.title) {
-          $scope.mails = Mails.query({ reset : false, limit: $scope.numOfMails }, function() {
-            for(var i = 0,len = $scope.mails.length; i < len;i++) {
-              $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
-            }
-          });
-        }
+    $scope.find = function (numExtraMails) {
+      if (numExtraMails === 0) {
+        $scope.numOfMails = parseInt($window.innerHeight / 100);
+      } else {
+        $scope.numOfMails += numExtraMails;
       }
-    });
-
-
-    // Find a list of new Mails
-    $scope.findNew = function () {
-      $scope.initLanguage();
-      $scope.mails = Mails.query({ unread : true,reset : true }, function() {
-        for(var i = 0,len = $scope.mails.length; i < len;i++) {
-          $scope.mails[i].contentShort = $scope.mails[i].content.substr(0,80);
-        }
-      });
-
-      // Emit a 'mailMessage' message event with an empty JSON mail object
-      var message = {
-        content : {
-          recipient : Authentication.user._id
-        }
-      };
-      Socket.emit('mailMessage', message);
+      $scope.queryEmailsForView();
     };
 
     // Find existing Mail
     $scope.findOne = function () {
-      $scope.initLanguage();
       $scope.mail = Mails.get({
         mailId: $stateParams.MailId
-      });
-    };
-
-    $scope.tags = [];
-
-    $scope.loadUsers = function($query) {
-      var found = false;
-      return $http.get('/api/users',{ cache: true }).then(function(response) {
-        var users = response.data;
-        return users.filter(function(users) {
-          var match = users.username && users.username.toLowerCase().indexOf($query.toLowerCase()) !== -1;
-          if (found) match = false;
-          else if (match) found = true;
-          return match;
-        });
-      });
-    };
-
-    $scope.initLanguage = function () {
-      if (!$scope.languageInitialized) {
-        $scope.languageInitialized = true;
-        $scope.reloadLanguage();
-      }
-    };
-
-    $scope.reloadLanguage = function () {
-      LanguageService.getPropertiesByViewName('mail', $http, function(translationList) {
-        $scope.properties = translationList;
       });
     };
 

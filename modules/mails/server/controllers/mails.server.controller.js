@@ -72,14 +72,22 @@ exports.update = function (req, res) {
       if (req.body.content) {
         mail.content = req.body.content;
       }
-      mail.replyTo = req.body.mailId;
+      if (req.body.unread !== undefined) {
+        mail.unread = req.body.unread;
+      }
 
       mail.save(function (err) {
         if (err) {
           return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
         } else {
-          var filteredMail = mail.getPublicObject();
-          res.json(filteredMail);
+          mail.populate('sender').populate({ path: 'recipient' }, function(err, doc) {
+            if (err) {
+              return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
+            } else {
+              var filteredMail = doc.getPublicObject();
+              res.json(filteredMail);
+            }
+          });
         }
       });
     }
@@ -119,7 +127,7 @@ function filterInternalMailFields(rawDocs) {
 exports.listall = function (req, res) {
   var query = (req.user.roles.indexOf('admin') > -1) ? {} : { 'ownerId' : req.user._id.toString() };
 
-  Mail.find(query).sort('-created').populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
+  Mail.find(query).sort('-created').populate('sender').populate('recipient').exec(function (err, mails) {
     if (err) {
       return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
     } else {
@@ -150,12 +158,6 @@ exports.list = function (req, res) {
     query.unread = false;
   }
   
-  var reset = false;
-  if (query.reset) {
-    reset = query.reset;
-    delete query.reset;
-  }
-
   var limit = 0;
   if (query.limit) {
     limit = query.limit;
@@ -175,20 +177,12 @@ exports.list = function (req, res) {
       }
     });
   } else {
-    Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').populate('matchId').exec(function (err, mails) {
+    Mail.find(query).sort('-created').limit(limit).populate('sender').populate('recipient').exec(function (err, mails) {
       if (err) {
         return res.status(400).send({ message: errorHandler.getErrorMessage(err) });
       } else {
         var publicResults = filterInternalMailFields(mails);
-        
         res.json(publicResults);
-  
-        if (reset) {
-          // mark mails read - even for admins only for their specific id
-          Mail.update(query,{ 'unread': false },{ multi: true }).exec(function(err, res) {
-            console.log('mark mail read result: ' + JSON.stringify(res));
-          });
-        }
       }
     });
   }

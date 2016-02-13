@@ -25,7 +25,7 @@ footer {height:0;}
         </li>
       </ul>
     </div>
-    <button class="" ng-show="mailCount[0].numResults > numOfMails" ng-click="find(5)">{{properties.loadMore}}</button>
+    <button class="" ng-show="hasMoreMail" ng-click="find(5)">{{properties.loadMore}}</button>
   </div>
   <div id="modalDetails" class="modal bottom-sheet">
     <div class="modal-content">
@@ -38,7 +38,7 @@ footer {height:0;}
           <label>{{properties.subject}}</label> {{mail.title}} <br/>
           {{mail.content}} <br/>
           <br/>
-          <a href="/matches/edit?matchId={{mail.matchId._id}}" class="modal-close">{{properties.offerReferral}}</a><br/>
+          <a href="/matches/edit?matchId={{mail.matchId}}" class="modal-close">{{properties.offerReferral}}</a><br/>
         </div>
       </div>
       <div class="modal-footer">
@@ -65,7 +65,7 @@ footer {height:0;}
       </form>
     </div>
     <div class="modal-footer">
-      <a id="mailReplySend" href="#!" ng-click="create(true, mail.sender, mail._id, mail.matchId._id, false)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+      <a id="mailReplySend" href="#!" ng-click="create(true, mail.sender, mail._id, mail.matchId, false)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
     </div>
   </div>
@@ -83,7 +83,7 @@ footer {height:0;}
       </form>
     </div>
     <div class="modal-footer">
-      <a id="mailReportSend" href="#!" ng-click="create(true, adminId, mail._id, mail.matchId._id, true)" class="modal-action modal-close waves-effect waves-green btn-flat">Send Report</a>
+      <a id="mailReportSend" href="#!" ng-click="create(true, adminId, mail._id, mail.matchId, true)" class="modal-action modal-close waves-effect waves-green btn-flat">Send Report</a>
       <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
     </div>
   </div>

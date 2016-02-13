@@ -94,8 +94,7 @@
       var sampleMails = [mockMail];
 
       // Set GET response - first mails are counted, then retrieved with a predefined limit for infinite scrolling
-      $httpBackend.expectGET('api/mails?countOnly=true').respond(sampleMails);
-      $httpBackend.expectGET('api/mails?limit=3&reset=true').respond(sampleMails);
+      $httpBackend.expectGET('api/mails?limit=4').respond(sampleMails);
 
       // Run controller functionality
       scope.find(0);
@@ -246,24 +245,11 @@
         $httpBackend.expectPUT(/api\/mails\/([0-9a-fA-F]{24})$/).respond();
 
         // Run controller functionality
-        scope.update(true);
+        scope.mail.unread = true;
+        scope.markAsRead(scope.mail);
         $httpBackend.flush();
-
-        // Test URL location to new object
-        expect($location.path()).toBe('/mails/' + mockMail._id);
       }));
 
-      it('should set scope.error to error response message', inject(function (Mails) {
-        var errorMessage = 'error';
-        $httpBackend.expectPUT(/api\/mails\/([0-9a-fA-F]{24})$/).respond(400, {
-          message: errorMessage
-        });
-
-        scope.update(true);
-        $httpBackend.flush();
-
-        expect(scope.error).toBe(errorMessage);
-      }));
     });
 
     describe('$scope.removeMail(mail)', function () {
@@ -284,20 +270,5 @@
       }));
     });
 
-    describe('scope.remove()', function () {
-      beforeEach(function () {
-        spyOn($location, 'path');
-        scope.mail = mockMail;
-
-        $httpBackend.expectDELETE(/api\/mails\/([0-9a-fA-F]{24})$/).respond(204);
-
-        scope.removeMail();
-        $httpBackend.flush();
-      });
-
-      it('should redirect to mails', function () {
-        expect($location.path).toHaveBeenCalledWith('mails');
-      });
-    });
   });
 }());
