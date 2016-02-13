@@ -24,7 +24,9 @@
             fill: color('gray', 40);
             margin: auto;
             margin-top: 0.5rem;
-           
+        }
+        svg:hover{
+           fill: color('gray', 70);
         }
     }
     
@@ -94,54 +96,5 @@
     margin-right: 5px;
     float:left;
     transform: rotate(90deg);
-  }
-}
-
-
-/* Common button style for offering forms, to display on small and large screens
- * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
- * but the svgs we chose to use in the offerings should not be rotated */
-.offering-button-style {
-  font-size: 10px;
-  text-transform: capitalize;
-  margin-left: 1%;
-  margin-right: 1%;
-  padding: 0 10px 0 10px;
-  svg{
-    height: 24px;
-    width: 24px;
-    vertical-align: middle;
-    fill: color('white', core);
-  }
-}
-
-/* Create or Update an offering */
-.ibm-submit-area  {
-  button.offering-submit-button, a.offering-submit-button {
-    @extend .offering-button-style;
-    background: color('teal', core);
-  }
-}
-
-/* Cancel a request to create/update offering */
-.ibm-submit-area  {
-  button.offering-cancel-button, a.offering-cancel-button {
-    @extend .offering-button-style;
-    color: color('gray', 70);
-    background: color('gray', 10);
-    svg {
-        fill: color('gray', 70);
-    }
-  }
-  :hover button.offering-cancel-button svg, :hover a.offering-cancel-button svg{
-     fill: color('gray', 70);
-   }
-}
-
-/* Delete an offering. */
-.ibm-submit-area  {
-  button.offering-delete-button, a.offering-delete-button {
-    @extend .offering-button-style;
-    background: color('red', 60);
   }
 }

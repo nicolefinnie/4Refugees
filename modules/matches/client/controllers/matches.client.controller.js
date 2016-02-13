@@ -171,7 +171,7 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
     };
 
     // Remove one match from within list of all my matches
-    $scope.deleteMatch = function (match) {
+    $scope.deleteMatch = function (match) {   
       match.$remove();
       for (var i in $scope.matches) {
         if ($scope.matches[i] === match) {

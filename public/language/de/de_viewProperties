@@ -11,6 +11,8 @@
 "delete":"Löschen",
 "edit":"Bearbeiten",
 "errorFromServer":"Whoops, ging etwas schief",
+"pictureFallback":"Clicken Sie hier, um ein Bild anzulegen",
+"confirmDeleteMessage":"Möchten Sie das wirklich löschen?",
 "rightToLeft":false
 },
 
@@ -103,6 +105,7 @@
 "message":"Zusätzliche Nachricht senden",
 "contact":"Kontakt",
 "view":"Sehen",
+"send":"Senden",
 "accept":"Akzeptieren",
 "reject":"Ablehnen",
 "block":"Block",

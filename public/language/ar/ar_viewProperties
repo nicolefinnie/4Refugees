@@ -11,6 +11,8 @@
 "delete":"حذف",
 "edit":"تغير",
 "errorFromServer":"يصيح، حدث خطأ ما",
+"pictureFallback":"انقر هنا لإضافة صورة",
+"confirmDeleteMessage":"هل أنت متأكد أنك تريد حذف؟",
 "rightToLeft":true
 },
 
@@ -103,6 +105,7 @@
 "message":"رسالة إضافية لإرسال",
 "contact":"اتصال",
 "view":"عرض",
+"send":"إرسال",
 "accept":"تقبل",
 "reject":"رفض",
 "block":"منع",

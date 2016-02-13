@@ -1,0 +1,25 @@
+<div class="card-action">
+      <!-- ibm-submit-area to interact with results, provides appropriate buttons depending on authentication -->
+      <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+        <div class="row">
+          <div class="col m12 s12">
+              <button ng-if="authentication.user._id && (authentication.user._id == offering.user._id)" class="setting-button btn waves-effect waves-light" ng-class="properties.rightToLeft ? 'arabic2-rotate-icon':'latin'" ui-sref="offerings.edit({offerType: offering.offerType, offeringId: offering._id})">
+                {{properties.edit}}
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <rect x="24.379" y="1.257" transform="matrix(0.7071 -0.7071 0.7071 0.7071 3.8726 20.3492)" width="4.243" height="8.485"/>
+                <path d="M5,21l6,6l15-15l-6-6L5,21z M11,24.171L7.828,21L20,8.829L23.172,12L11,24.171z"/>
+                <polygon points="1,31 6,29 3,26   "/>
+                </svg>
+              </button>
+              <button ng-if="!authentication.user || (authentication.user._id != offering.user._id)" class="setting-button btn waves-effect waves-light" ui-sref="matches.createFromOffer({offeringId: offering._id, offeringDescription: offering.description, recipientName: offering.user.displayName, recipientId: offering.user._id})">
+                {{properties.contact}}
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                <path d="M16,4L1,12v1v15h30V13v-1L16,4z M7,11h18v4.2L16,20l-9-4.8V11z M29,26H3V14.066L16,21l13-6.934V26z"/>
+                </svg>
+              </button>
+          </div>
+        </div> <!-- end of row -->
+      </div> <!-- end of ibm-submit-area -->
+</div> <!-- end of card-action -->

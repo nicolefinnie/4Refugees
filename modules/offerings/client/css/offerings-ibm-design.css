@@ -15,6 +15,8 @@
     fill: #959595;
     margin: auto;
     margin-top: 0.5rem; }
+  .ibm-offering-list.card .card-content svg:hover {
+    fill: #464646; }
   .ibm-offering-list.card .card-action a {
     text-transform: lowercase;
     color: #4178be; }
@@ -61,37 +63,5 @@
   margin-right: 5px;
   float: left;
   transform: rotate(90deg); }
-
-/* Common button style for offering forms, to display on small and large screens
- * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
- * but the svgs we chose to use in the offerings should not be rotated */
-.offering-button-style, .ibm-submit-area button.offering-submit-button, .ibm-submit-area a.offering-submit-button, .ibm-submit-area button.offering-cancel-button, .ibm-submit-area a.offering-cancel-button, .ibm-submit-area button.offering-delete-button, .ibm-submit-area a.offering-delete-button {
-  font-size: 10px;
-  text-transform: capitalize;
-  margin-left: 1%;
-  margin-right: 1%;
-  padding: 0 10px 0 10px; }
-  .offering-button-style svg, .ibm-submit-area button.offering-submit-button svg, .ibm-submit-area a.offering-submit-button svg, .ibm-submit-area button.offering-cancel-button svg, .ibm-submit-area a.offering-cancel-button svg, .ibm-submit-area button.offering-delete-button svg, .ibm-submit-area a.offering-delete-button svg {
-    height: 24px;
-    width: 24px;
-    vertical-align: middle;
-    fill: #fff; }
-
-/* Create or Update an offering */
-.ibm-submit-area button.offering-submit-button, .ibm-submit-area a.offering-submit-button {
-  background: #008571; }
-
-/* Cancel a request to create/update offering */
-.ibm-submit-area button.offering-cancel-button, .ibm-submit-area a.offering-cancel-button {
-  color: #464646;
-  background: #e0e0e0; }
-  .ibm-submit-area button.offering-cancel-button svg, .ibm-submit-area a.offering-cancel-button svg {
-    fill: #464646; }
-.ibm-submit-area :hover button.offering-cancel-button svg, .ibm-submit-area :hover a.offering-cancel-button svg {
-  fill: #464646; }
-
-/* Delete an offering. */
-.ibm-submit-area button.offering-delete-button, .ibm-submit-area a.offering-delete-button {
-  background: #ad1625; }
 
 /*# sourceMappingURL=offerings-ibm-design.css.map */

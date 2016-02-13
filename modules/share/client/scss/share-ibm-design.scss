@@ -8,12 +8,13 @@
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg{
     margin: auto;
+    fill:color('gray',50);
 }
 
 /** hover over IBM design icons to make it look materialize css style */
 .ibm-input-field :hover svg{
        transition: fill 1s;
-       fill:color('teal', core);
+       fill:color('gray', 90);
 }
 // for changing password username setting
 .ibm-input-field.latin{
@@ -144,6 +145,54 @@
   button.confirm-button, a.confirm-button {
     @extend .ibm-button;
     font-size: 13px;
+  }
+}
+
+
+/* Common button style for offering forms, to display on small and large screens
+ * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
+ * but the svgs we chose to use in the offerings should not be rotated */
+.offering-button-style {
+  text-transform: capitalize;
+  svg{
+    height: 24px;
+    width: 24px;
+    vertical-align: middle;
+    fill: color('white', core);
+  }
+}
+
+/* Create or Update an offering */
+.ibm-submit-area  {
+  button.offering-submit-button, a.offering-submit-button {
+    @extend .offering-button-style;
+    background: color('teal', core);
+    svg{
+        fill: color('white',core);
+    }
+  }
+}
+
+/* Cancel a request to create/update offering */
+.ibm-submit-area  {
+  button.offering-cancel-button, a.offering-cancel-button {
+    @extend .offering-button-style;
+    color: color('gray', 70);
+    background: color('gray', 10);
+    svg {
+        fill: color('gray', 70);
+    }
+  }
+  :hover button.offering-cancel-button svg, :hover a.offering-cancel-button svg{
+     fill: color('gray', 70);
+   }
+}
+
+/* Delete an offering. */
+.ibm-submit-area  {
+  button.offering-delete-button, a.offering-delete-button {
+    @extend .offering-button-style;
+    background: color('red', 60);
   }
 }
 

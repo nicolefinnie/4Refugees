@@ -10,9 +10,12 @@
       <div ng-class="properties.rightToLeft ? 'right-align col m12 s11 right':'col m12 offset-s1 s11'">
         <ul>
           <li ng-repeat="offering in offerings" class="list-group-item">
-              <!-- start display of offering cards -->
-              <div ng-include src="'/modules/offerings/client/views/offerings-partial-list-card.client.view.html'"></div>
-              <!-- end display of offering cards -->
+            <div class="ibm-offering-list card">
+                  <!-- start display of offering cards -->
+                  <div ng-include src="'/modules/offerings/client/views/single-offering-content.client.view.html'"></div>
+                  <div ng-include src="'/modules/offerings/client/views/single-offering-action.client.view.html'"></div>
+                  <!-- end display of offering cards -->
+            </div>
           </li>
         </ul>
       </div>

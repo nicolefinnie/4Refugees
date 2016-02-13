@@ -4,7 +4,7 @@
     <form>
       <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
         <div class="col s12 form-group" ng-click="togglePictureSection()">
-          <img ng-src="{{imageURL}}" alt="{{user.displayName}}">
+          <img ng-src="{{imageURL}}" data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/1/10/Adalberti_1.jpg" alt="{{properties.pictureFallback}}">
         </div>
         <div ng-if="isEditPicture" class="col s12 form-group" ng-hide="uploader.queue.length">
           <button class="setting-button waves-effect waves-light btn btn-file">

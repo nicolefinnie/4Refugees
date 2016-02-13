@@ -1,14 +1,14 @@
 <div class="col s12 ibm-profile" >
     <div class="row">
         <div class="col m4 s12" ng-class="properties.rightToLeft ? 'right right-align':'left'">
-            <img ng-if="!isInProfileEditMode" ng-src="{{activeProfile.profileImageURL}}"/>
+            <img ng-if="!isInProfileEditMode" ng-src="{{activeProfile.profileImageURL}}" data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/1/10/Adalberti_1.jpg"/>
             <div ng-if="isInProfileEditMode" ng-include src="'/modules/users/client/views/profile/change-profile-picture.client.view.html'"></div>
             <br><br>
         </div>
         <div class="col m8 s12">
           <div class="row" ng-class="properties.rightToLeft ? 'right-align':''">
             <h4 ng-click="toggleProfileSection('name')"><span ng-bind="activeProfile.firstName"></span>&nbsp<span ng-bind="activeProfile.lastName"></span></h4> 
-            <div ng-show="isEditName" class="ibm-offering-list card card-content" ng-include src="'/modules/users/client/views/profile/edit-profile-name.client.view.html'">
+            <div ng-show="isEditName" class="ibm-offering-list card " ng-include src="'/modules/users/client/views/profile/edit-profile-name.client.view.html'">
           </div> <!-- end of display name section -->
           <!-- About me section begin -->
           <div class="row">
@@ -17,7 +17,7 @@
             </div>
             <div class="col m10 s9" ng-class="properties.rightToLeft ? 'right-align':''">
               <h6 ng-click="toggleProfileSection('aboutMe')">{{activeProfile.aboutMe}}</h6>
-              <div ng-show="isEditAboutMe" class="ibm-offering-list card card-content" ng-include src="'/modules/users/client/views/profile/edit-aboutMe.client.view.html'"></div>    
+              <div ng-show="isEditAboutMe" class="ibm-offering-list card" ng-include src="'/modules/users/client/views/profile/edit-aboutMe.client.view.html'"></div>    
             </div> 
           </div>
         
@@ -30,7 +30,7 @@
               <div ng-click="toggleProfileSection('language')">
                 <span class="chip" ng-repeat="language in activeProfile.tagsLanguages">{{language.tagName}}</span>
               </div>
-              <div ng-show="isEditLanguage" class="ibm-offering-list card card-content"  ng-include src="'/modules/users/client/views/profile/edit-languages.client.view.html'"></div>  
+              <div ng-show="isEditLanguage" class="ibm-offering-list card "  ng-include src="'/modules/users/client/views/profile/edit-languages.client.view.html'"></div>  
             </div>
           </div>
         
@@ -43,7 +43,7 @@
                 <div ng-click="toggleProfileSection('skill')">
                     <span class="chip" ng-repeat="skill in activeProfile.tagsSkills">{{skill.tagName}}</span>
                 </div>
-                <div ng-show="isEditSkill" class="ibm-offering-list card card-content" ng-include src="'/modules/users/client/views/profile/edit-skills.client.view.html'"></div>  
+                <div ng-show="isEditSkill" class="ibm-offering-list card " ng-include src="'/modules/users/client/views/profile/edit-skills.client.view.html'"></div>  
             </div>
           </div>
         
@@ -56,7 +56,7 @@
                 <div ng-click="toggleProfileSection('interest')">
                     <span  class="chip" ng-repeat="interest in activeProfile.tagsInterests">{{interest.tagName}}</span>
                 </div>  
-                <div ng-show="isEditInterest" class="ibm-offering-list card card-content" ng-include src="'/modules/users/client/views/profile/edit-interests.client.view.html'"></div>  
+                <div ng-show="isEditInterest" class="ibm-offering-list card " ng-include src="'/modules/users/client/views/profile/edit-interests.client.view.html'"></div>  
             </div>
           </div>
           <div class="row">
@@ -69,7 +69,7 @@
                     <a ng-if="!isInProfileEditMode" ng-href="{{activeProfile.publicLinkedInProfile}}" target="_blank">{{activeProfile.publicLinkedInProfile}}</a>
                     <a ng-if="isInProfileEditMode">{{activeProfile.publicLinkedInProfile}}</a>
                 </div>
-                <div ng-show="isEditSocialProfile" class="ibm-offering-list card card-content" ng-include src="'/modules/users/client/views/profile/edit-socialProfile.client.view.html'"></div>  
+                <div ng-show="isEditSocialProfile" class="ibm-offering-list card " ng-include src="'/modules/users/client/views/profile/edit-socialProfile.client.view.html'"></div>  
             </div>
           </div>
         

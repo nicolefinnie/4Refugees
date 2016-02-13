@@ -11,6 +11,8 @@
 "delete":"Delete",
 "edit":"Edit",
 "errorFromServer":"Whoops, something went wrong",
+"pictureFallback":"Click here to add a picture",
+"confirmDeleteMessage":"Are you sure you want to delete it?",
 "rightToLeft":false
 },
 
@@ -104,6 +106,7 @@
 "message":"Message to send",
 "contact":"Contact",
 "view":"View",
+"send":"Send",
 "accept":"Accept",
 "reject":"Reject",
 "block":"Block",

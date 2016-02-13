@@ -1,35 +1,14 @@
-/* Common button style for match forms, to display on small and large screens
- * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
- * but the svgs we chose to use in the matches should not be rotated */
-.match-button-style, .ibm-submit-area button.match-submit-button, .ibm-submit-area a.match-submit-button, .ibm-submit-area button.match-cancel-button, .ibm-submit-area a.match-cancel-button, .ibm-submit-area button.match-delete-button, .ibm-submit-area a.match-delete-button {
-  font-size: 12px;
-  text-transform: capitalize;
-  margin-left: 1%;
-  margin-right: 1%;
-  padding: 0 10px 0 10px; }
-  .match-button-style svg, .ibm-submit-area button.match-submit-button svg, .ibm-submit-area a.match-submit-button svg, .ibm-submit-area button.match-cancel-button svg, .ibm-submit-area a.match-cancel-button svg, .ibm-submit-area button.match-delete-button svg, .ibm-submit-area a.match-delete-button svg {
-    height: 24px;
-    width: 24px;
-    vertical-align: middle;
-    fill: #fff; }
-
-/* Create or Update an match */
-.ibm-submit-area button.match-submit-button, .ibm-submit-area a.match-submit-button {
-  background: #008571; }
-
-/* Cancel a request to create/update match */
-.ibm-submit-area button.match-cancel-button, .ibm-submit-area a.match-cancel-button {
-  background: #efc100; }
-
-/* Delete an match. */
-.ibm-submit-area button.match-delete-button, .ibm-submit-area a.match-delete-button {
-  background: #ad1625; }
-
 .ibm-match-user {
   font-weight: bold; }
 
 .ibm-match-help {
   font-size: 12px;
   font-style: italic; }
+  .ibm-match-help svg {
+    fill: #777677; }
+
+.ibm-match-help:hover svg {
+  transition: fill 1s;
+  fill: #5596e6; }
 
 /*# sourceMappingURL=matches-ibm-design.css.map */

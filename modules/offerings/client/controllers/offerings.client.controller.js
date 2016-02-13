@@ -150,9 +150,9 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
       });
     });
 
-    $scope.profileModalDetails = function(index, currentProfile){
+    $scope.profileModalDetails = function(currentProfile){
       $scope.activeProfile = currentProfile; 
-      $('#volunteerProfile-'+index).openModal();
+      $('#volunteerProfile').openModal();
     };
 
     // Called when user clicks to update location
@@ -270,9 +270,9 @@ angular.module('offerings').controller('OfferingsController', ['$scope', '$rootS
       format:'yyyy-mm-dd'
     });
 
-    $scope.profileModalDetails = function(index, currentProfile){
+    $scope.profileModalDetails = function(currentProfile){
       $scope.activeProfile = currentProfile; 
-      $('#volunteerProfile-'+index).openModal();
+      $('#volunteerProfile').openModal();
     };
     
     // language change clicked
