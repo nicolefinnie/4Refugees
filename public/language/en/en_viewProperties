@@ -99,24 +99,20 @@
 }, 
 
 {"viewName":"matches",
-"matchTitle":"Offering Match",
 "myMatches":"My Matched Offers",
 "me":"Me",
 "description":"Description: ",
 "message":"Message to send",
 "contact":"Contact",
-"view":"View",
 "send":"Send",
 "accept":"Accept",
-"reject":"Reject",
-"block":"Block",
 "reply":"Reply",
 "clickForHelp":"Click for help writing this message",
-"helpForOwner":"When accepting a match, please provide details on where to meet and what time. We recommend meeting in a public location during daylight hours. ",
-"helpForRequester":"When first requesting a match, it may be helpful to introduce yourself in a couple short sentences. When arranging to meet the offering owner, we recommend meeting in a public location during daylight hours. ",
-"helpCommon":"Please try to use simple language to avoid misunderstandings.  And remember to be polite.",
+"helpForContact":"Have questions or need details?  Ask your question and click 'Send'",
+"helpForAccept":"Happy with the match? Fill in contact information and click 'Accept'",
+"helpForDelete":"Click the garbage can to stop receiving updates",
 "noMatches":"Sorry, no matches found. Click to search.",
-"errorNoMessage":"Invalid message, please enter a valid message and try again"
+"errorNoMessage":"Please enter your message first"
 }, 
 
 {"viewName":"user",

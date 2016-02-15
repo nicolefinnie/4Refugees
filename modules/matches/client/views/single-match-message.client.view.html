@@ -26,8 +26,9 @@
     <div class="ibm-match-help" data-my-slide="match.showMoreHelp">
         <div class="row">
             <div ng-class="properties.rightToLeft ? 'col m11 s10 pull-s2 right-align':'col m11 s10 left-align'">
-                <span ng-if="amIOwner(match)">{{properties.helpForOwner}}{{properties.helpCommon}}</span>
-                <span ng-if="!amIOwner(match)">{{properties.helpForRequester}}{{properties.helpCommon}}</span>
+                <span ng-if="match.showContactButton">{{properties.helpForContact}}<br></span>
+                <span ng-if="match.showAcceptButton">{{properties.helpForAccept}}<br></span>
+                <span>{{properties.helpForDelete}}<br></span>
             </div>
         </div>
     </div>

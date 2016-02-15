@@ -279,13 +279,13 @@ angular.module('matches').controller('MatchesController', ['$scope', '$rootScope
         // TODO: How to show owner (and requester) that the match is accepted or rejected?
         match.showAcceptButton = !match.ownerState.acceptMatch;
         match.showRejectButton = !match.ownerState.rejectMatch;
-        match.showContactButton = !match.requesterState.blockContact;
+        match.showContactButton = !match.showAcceptButton;
       } else {
         // If match has not yet been created, the only option for match requester is to contact owner
         match.showBlockButton = (!match.isNew && !match.requesterState.blockContact);
         match.showAcceptButton = false;
         match.showRejectButton = false;
-        match.showContactButton = !match.ownerState.blockContact;
+        match.showContactButton = true;
       }
     };
 
