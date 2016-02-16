@@ -28,6 +28,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // The header controller detected we have new mail, refresh new mail list.
     $rootScope.$on('newMailReceived', function() {
+      $scope.numOfMails++;
       $scope.queryEmailsForView();
     });
 
@@ -97,6 +98,8 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
         mail.unread = false;
         mail.$update(function() {
           mail.contentShort = mail.content.substr(0,80);
+          // Tell header to refresh new mail count
+          $rootScope.$broadcast('refreshHeader');
         }, function(errorResponse) {
           $scope.error = errorResponse.data.message;
         });
@@ -113,7 +116,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     $scope.find = function (numExtraMails) {
       if (numExtraMails === 0) {
         $scope.numOfMails = parseInt($window.innerHeight / 100);
-      } else {
+      } else if ($scope.hasMoreMail) {
         $scope.numOfMails += numExtraMails;
       }
       $scope.queryEmailsForView();
