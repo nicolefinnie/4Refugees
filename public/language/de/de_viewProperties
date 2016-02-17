@@ -10,6 +10,7 @@
 "update":"Ändern",
 "delete":"Löschen",
 "edit":"Bearbeiten",
+"send":"Senden",
 "errorFromServer":"Whoops, ging etwas schief",
 "pictureFallback":"Clicken Sie hier, um ein Bild anzulegen",
 "confirmDeleteMessage":"Möchten Sie das wirklich löschen?",
@@ -103,7 +104,6 @@
 "description":"Beschreibung: ",
 "message":"Nachricht senden",
 "contact":"Kontakt",
-"send":"Senden",
 "accept":"Akzeptieren",
 "reply":"Antworten",
 "clickForHelp":"Anweisungen für Hilfe, um diese Nachricht zu schreiben",
@@ -194,11 +194,8 @@
 },
 
 {"viewName":"mail",
-"mailTitle":"Ihre emails: ",
-"detailsHeader":"Kompletter Inhalt: ",
-"subject":"Betrifft: ",
 "reply":"Antworten",
-"replyTo":"Antwort an: ",
+"translate":"Übersetzen",
 "content":"Ihr Text",
 "maincategory":"Haupt-Kategorie: ",
 "offerReferral":"Klicken Sie hier für passend Details",
@@ -211,7 +208,8 @@
 "reportBody":"Inhalt: ",
 "replyToOffender":"Admin Kontakt",
 "contactInProgress":"Kontakt im Gange...",
-"contactSuccess":"Ihre Kontaktanfrage wurde verschickt"
+"contactSuccess":"Ihre Kontaktanfrage wurde verschickt",
+"mailSentSuccessfully":"Ihre Nachricht wurde erfolgreich gesendet"
 }
 
 

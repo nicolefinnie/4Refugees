@@ -5,6 +5,22 @@
 *
 **/
 
+textarea {
+    resize: none;
+    overflow: auto;
+    height: 200px;
+    background: color('white', core);
+    
+    /* remove red box-shadow for firefox*/
+    border: 1px solid;
+    border-color: color('gray',20);
+    box-shadow:none;
+}
+textarea:focus {
+    border: 2px solid;
+    border-color: color('gray',20);
+    outline: 0;
+}
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg{
     margin: auto;
@@ -140,6 +156,12 @@
     background: color('gray', 10);
     svg{
         fill: color('gray', 70);
+    }
+  }
+  button.setting-button.disabled, a.setting-button.disabled{
+   svg{
+        transition: fill 1s;
+        fill: color('gray', 30);
     }
   }
   button.confirm-button, a.confirm-button {

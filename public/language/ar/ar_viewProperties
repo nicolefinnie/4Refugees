@@ -10,6 +10,7 @@
 "update":"تحديث",
 "delete":"حذف",
 "edit":"تغير",
+"send":"إرسال",
 "errorFromServer":"يصيح، حدث خطأ ما",
 "pictureFallback":"انقر هنا لإضافة صورة",
 "confirmDeleteMessage":"هل أنت متأكد أنك تريد حذف؟",
@@ -103,7 +104,6 @@
 "description":"الوصف",
 "message":"رسالة لإرسال",
 "contact":"اتصال",
-"send":"إرسال",
 "accept":"تقبل",
 "reply":"رد",
 "clickForHelp":"انقر للحصول على مساعدة كتابة هذه الرسالة",
@@ -197,24 +197,21 @@
 },
 
 {"viewName":"mail",
-"mailTitle":"T-",
-"detailsHeader":"D-",
-"subject":"S-",
-"reply":"R-",
-"replyTo":"R--",
-"content":"C-",
+"reply":"رد",
+"translate":"ترجم",
 "maincategory":"K-",
 "offerReferral":"انقر هنا للمطابقة التفاصيل",
 "about":"حول",
 "sendTo":"S-",
-"loadMore":"L-",
+"loadMore":"حمل أكثر",
 "done":"D-",
 "report":"R-",
 "reportTitle":"Rr",
 "reportBody":"Rr",
 "replyToOffender":"RO",
 "contactInProgress":"الاتصال في التقدم",
-"contactSuccess":"تم ارسال طلب الاتصال الخاصة بك"
+"contactSuccess":"تم ارسال طلب الاتصال الخاصة بك",
+"mailSentSuccessfully":"يتم إرسال الرسالة بنجاح"
 }
 
 ]

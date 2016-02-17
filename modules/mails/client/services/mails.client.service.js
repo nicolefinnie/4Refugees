@@ -68,6 +68,8 @@ angular.module('mails').service('MailService', [ 'Mails', function (Mails) {
     });
   };
 
+  //FIXME remove replyTo
+  // sends a mail JSON to server
   this.sendNewMail = function(mailDetails, callback) {
     var mail = new Mails({
       title: mailDetails.title,
@@ -75,7 +77,7 @@ angular.module('mails').service('MailService', [ 'Mails', function (Mails) {
       unread: true,
       reportAdmin: false,
       recipient: mailDetails.recipientId,
-      replyTo: null,
+      replyTo: mailDetails.replyTo,
       matchId: mailDetails.matchId,
     });
 

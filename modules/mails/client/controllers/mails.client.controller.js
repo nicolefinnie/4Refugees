@@ -2,12 +2,13 @@
 
 // Mails controller - handles listing and replies etc.
 angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '$window', '$http', '$stateParams', '$location',
-     'Authentication', 'Mails', 'LanguageService',
-  function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, LanguageService) {
+     'Authentication', 'Mails', 'LanguageService', 'MailService',
+  function ($scope, $rootScope, $window, $http, $stateParams, $location, Authentication, Mails, LanguageService, MailService) {
     $scope.authentication = Authentication;
     $rootScope.hideFooter = true;
     $scope.hasMoreMail = true;
 
+   
     // If user is not signed in then redirect back home
     if (!Authentication.user) {
       $location.path('/');
@@ -32,13 +33,35 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       $scope.queryEmailsForView();
     });
 
+    //FIXME remove replyTo
+    $scope.sendInMail = function(mail) {
+      var mailDetail = {
+        title: mail.title,
+        content: mail.replyData,
+        recipientId: mail.sender._id,
+        replyTo: mail.recipient._id,
+        matchId: mail.matchId
+      };
+      MailService.sendNewMail(mailDetail, function(errorResponse, successfulMail){
+        if (errorResponse){
+          console.log('failed to send an email ' + errorResponse);
+             
+        } else {
+          console.log('successfully sent an email ' + successfulMail);
+          var $toastContent = $('<span>'+$scope.properties.mailSentSuccessfully+'</span>');
+          Materialize.toast($toastContent, 4000);
+        }
+      });
+    };
+    
     $scope.queryEmailsForView = function() {
       // We have to read at least one email
       if ($scope.numOfMails === 0) {
         $scope.numOfMails = 1;
       }
       // Read 1 more email than we want to display, that will let us know if there
-      // are more emails that can be read from the server.
+      // are more emails that can be read from the server. Mails.query comes from mongoose (Mails is the schema of the collection) 
+      // and routes to the server side
       $scope.mails = Mails.query({ limit: $scope.numOfMails + 1 }, function(err) {
         if ($scope.mails.length === ($scope.numOfMails + 1)) {
           $scope.hasMoreMail = true;
@@ -65,7 +88,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       $scope.numOfMail--;
     };
 
-    // ReplyTo existing Mail
+    // ReplyTo existing Mail FIXME do we need this?
     $scope.replyMail = function (mail, reportAdmin) {
       $scope.mail = mail;
       $scope.reportAdmin = reportAdmin;
@@ -73,15 +96,11 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       if (reportAdmin) {
         $http.get('/api/mails/' + mail,{ cache: true }).then(function(response) {
           $scope.mail = response.data;
-          $('#modalReply').openModal();
         });
-      }
-      else {
-        $('#modalReply').openModal();
       }
     };
 
-    // Report existing Mail
+    // Report existing Mail  FIXME rewrite
     $scope.reportMail = function (mail) {
       $scope.mail = mail;
       $scope.title = $scope.properties.reportTitle;
@@ -89,12 +108,12 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
       $http.get('/api/users/admin',{ cache: true }).then(function(response) {
         $scope.adminId = response.data;
-        $('#modalReport').openModal();
       });
     };
 
-    $scope.markAsRead = function(mail) {
-      if (mail.unread) {
+    $scope.clickMailTitle = function(mail) {
+      // mark as read
+      if (mail.unread === true) {
         mail.unread = false;
         mail.$update(function() {
           mail.contentShort = mail.content.substr(0,80);
@@ -104,12 +123,15 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
           $scope.error = errorResponse.data.message;
         });
       }
+      //if it's in replying mode, remove the replying text area 
+      if (mail.inReplyingMode === true){
+        mail.inReplyingMode = false;
+      }
     };
-
-    $scope.modalDetails = function(mail){
-      $scope.mail = mail;
-      $scope.markAsRead(mail);
-      $('#modalDetails').openModal();
+    
+    // In replying mode, the text reply doesn't show
+    $scope.setReplyingMode = function(mail) {
+      mail.inReplyingMode = true;
     };
 
     // Find a list of Mails
@@ -120,13 +142,6 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
         $scope.numOfMails += numExtraMails;
       }
       $scope.queryEmailsForView();
-    };
-
-    // Find existing Mail
-    $scope.findOne = function () {
-      $scope.mail = Mails.get({
-        mailId: $stateParams.MailId
-      });
     };
 
   }

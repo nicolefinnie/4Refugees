@@ -206,7 +206,7 @@
               </svg>
             </a>
             <a ng-show="authentication.user" class="dropdown-button" href="#" data-activates="dropdownSignin" dropdown>
-                <img ng-src="{{authentication.user.profileImageURL}}"  data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/1/10/Adalberti_1.jpg"  class="header-profile-image" />
+                <img ng-src="{{authentication.user.profileImageURL}}"  data-fallback-src class="header-profile-image" />
                 {{authentication.user.displayName}}
                 <i class="material-icons right">arrow_drop_down</i>
             </a>

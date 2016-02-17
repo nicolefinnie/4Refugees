@@ -4,11 +4,11 @@
     <form>
       <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
         <div class="col s12 form-group" ng-click="togglePictureSection()">
-          <img ng-src="{{imageURL}}" data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/1/10/Adalberti_1.jpg" alt="{{properties.pictureFallback}}">
+          <img ng-src="{{imageURL}}" data-fallback-src alt="{{properties.pictureFallback}}">
         </div>
         <div ng-if="isEditPicture" class="col s12 form-group" ng-hide="uploader.queue.length">
           <button class="setting-button waves-effect waves-light btn btn-file">
-              {{properties.selectImage}} <input type="file" nv-file-select uploader="uploader">
+              {{properties.selectImage}} <input type="file" nv-file-select  uploader="uploader">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
             <path d="M3,3v22v4h26v-4V3H3z M5,5h22v18H5V5z"/>

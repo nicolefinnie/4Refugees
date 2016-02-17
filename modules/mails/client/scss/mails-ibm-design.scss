@@ -1,125 +1,40 @@
 @import "../../../../public/lib/IBM-Design-Colors/ibm-colors";
  
-.ibm-mail-category-checkbox.latin{
-    label{
-        margin-right: 3%;
-     }
- }
- .ibm-mail-category-checkbox.arabic{
-    input, label {
-        margin-left: 3%;
-        float: right;
+.ibm-mail{
+
+    font-weight: 300;
+    .unread-email{
+        font-weight: 900;
     }
-}
- 
-/* geo location when there's no geo service, a drop down select city list is shown*/
-.ibm-input-field select {
-    display: inline-flex;
-    background: color('cool-white', 20);
-    border: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    margin-top: 2%;
-    height: 36px;
-    overflow: hidden;
+    svg {
+        fill: color('gray', 40);
+        height: 24px;
+    }
     
-    option{
-        background: color('gray',80);
-        color: color('white', core);
-        border: 0;
+    .collapsible{
+        box-shadow: none;
+        margin-bottom: -1rem;
     }
-}
-
-/* click to show/hide the advanced mail search/create/edit options */
-.ibm-mail-toggle-advanced-options a {
-  font-size: 14px;
-  line-height: 300%;
-  text-align: center;
-}
-
-.ibm-mail-toggle-advanced-options.latin svg {
-  transform: rotate(270deg);
-}
-
-/* Show current search progress */
-.mail-search-status {
-  strong{
-   color: color('black', core);
-  }
-}
-
-/* search progress area in Latin languages - from left to right*/ 
-.mail-search-status.latin{
-  button, a, strong{
-    float:left;
-  }
-}
-
-/* search progress area in Arabic languages - from right to left */ 
-.mail-search-status.arabic{
-  button, a, strong{
-    float:right;
-  }
-  button svg{
-    margin-top: 5px;
-    margin-right: 5px;
-    float:left;
-    transform: rotate(90deg);
-  }
-}
-
-
-.ibm-force-text-black {
-  color: color('black', core);
-}
-
-/* Common button style for mail forms, to display on small and large screens
- * Do not transform svgs in our buttons, arabic buttons are commonly rotated 90-degrees,
- * but the svgs we chose to use in the mails should not be rotated */
-.mail-button-style {
-  font-size: 10px;
-  text-transform: capitalize;
-  margin-left: 1%;
-  margin-right: 1%;
-  padding: 0 10px 0 10px;
-  svg{
-    height: 24px;
-    width: 24px;
-    vertical-align: middle;
-    fill: color('white', core);
-  }
-}
-
-/* Create or Update an mail */
-.ibm-submit-area  {
-  button.mail-submit-button, a.mail-submit-button {
-    @extend .mail-button-style;
-    background: color('teal', core);
-  }
-}
-
-/* Cancel a request to create/update mail */
-.ibm-submit-area  {
-  button.mail-cancel-button, a.mail-cancel-button {
-    @extend .mail-button-style;
-    background: color('yellow', 30);
-  }
-}
-
-/* Delete an mail. */
-.ibm-submit-area  {
-  button.mail-delete-button, a.mail-delete-button {
-    @extend .mail-button-style;
-    background: color('red', 60);
-  }
-}
-
-.mail-td {
-  padding: 1px 15px;
-}
-
-.mail-btn-report {
-  background-color: #A63826;
+    
+    .collapsible-header{
+        padding: 0;
+    }
+    img.circle{
+      position: relative;
+        width: 42px;
+        height: 42px;
+        overflow: hidden;
+        left: 1rem;
+        top: 0.5rem;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    
+    .mail-content{
+        padding-top: 2rem;
+        
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 

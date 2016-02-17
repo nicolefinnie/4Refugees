@@ -1,90 +1,59 @@
-<style>
+<style> 
 @media screen and (min-width:993px) {
 html {min-height:95%;}
 footer {height:0;}
 }
 </style>
+
 <section ng-controller="MailsController" ng-init="find(0)">
-  <div class="page-header">
-    <h5>{{properties.mailTitle}}</h5>
-  </div>
-  <div scroll class="row">
-    <div class="s12 col">
-      <ul class="collection">
-        <li class="collection-item avatar animated fadeInUp" style="-webkit-animation-duration:{{$index * 300}}ms" ng-repeat="mail in mails| filter:query | orderBy:'mail.created'">
-          <a id="mailDetails.{{$index}}" href="" ng-click="modalDetails(mail)" class="modal-trigger title"><img ng-src="{{mail.sender.picture.thumbnail}}" alt="" class="circle">{{properties.subject}}{{mail.title}}<br>
-            <small>{{mail.contentShort}}</small>
-          </a>
-          <span class="new badge" ng-show="mail.unread"></span>
-          <br>
-          <a id="mailReply.{{$index}}" href="#!" ng-click="replyMail(mail)" class="modal-action waves-effect waves-green">{{properties.replyTo}}{{mail.sender.displayName}}</a>
-          <a id="mailReplyReport.{{$index}}" href="#!" ng-show="{{mail.reportAdmin}}" ng-click="replyMail(mail.replyTo, true)" class="modal-action waves-effect waves-green btn mail-btn-report">{{properties.replyToOffender}}</a>
-          <a id="mailDelete.{{$index}}" href="#!" class="secondary-content" ng-click="removeMail(mail)">
-            <i class="small mdi-action-highlight-remove"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-    <button class="" ng-show="hasMoreMail" ng-click="find(5)">{{properties.loadMore}}</button>
-  </div>
-  <div id="modalDetails" class="modal bottom-sheet">
-    <div class="modal-content">
-      <div class="row">
-        <div class="l2 col">
-          <img ng-src="{{mail.sender.picture.thumbnail}}" alt="{{mail.sender.displayName}}" class="align-right circle">
-        </div>
-        <div class="l10 col">
-          <h6>{{properties.detailsHeader}}</h6>
-          <label>{{properties.subject}}</label> {{mail.title}} <br/>
-          {{mail.content}} <br/>
-          <br/>
-          <a href="/matches/edit?matchId={{mail.matchId}}" class="modal-close">{{properties.offerReferral}}</a><br/>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a id="mailDetailsReport" href="#!" ng-click="reportMail(mail)" class="modal-action btn mail-btn-report waves-effect waves-red">{{properties.report}}</a>
-        <a id="mailDetailsReply" href="#!" ng-click="replyMail(mail)" class="modal-action btn waves-effect waves-green">{{properties.reply}}</a>
-        <!-- 
-          <a href="#!" ng-click="removeMail(mail)" class="modal-action modal-close waves-effect waves-red btn-flat">Remove</a>
-        -->
-        <a id="mailDetailsDone" href="#!" class="modal-action btn modal-close waves-effect waves-blue">{{properties.done}}</a>
-      </div>
-    </div>
-  </div>
-  <div id="modalReply" class="modal" ng-controller="NewMailsController">
-    <div class="modal-content">
-      <form name="mailForm" class="my-form" novalidate>
-        <div class="row">
-          <p>{{properties.replyTo}}{{mail.sender.displayName}}</p>
-          <p>{{properties.about}}{{mail.title}}</p>
-          <input id="titleid" name="title" ng-model="title">
-          <textarea name="content" type="text" ng-model="content" id="content" class="form-control" placeholder="{{properties.content}}" cols="30" rows="10" required>Hier</textarea>
-          <hr>
-          <!-- <label>Content</label> {{mail.content}} <br/> -->
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <a id="mailReplySend" href="#!" ng-click="create(true, mail.sender, mail._id, mail.matchId, false)" class="modal-action modal-close waves-effect waves-green btn-flat">Send</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
+<br>
+  <div class="row">
+    <div class="s12 col ibm-mail">
+    <div ng-repeat="mail in mails| orderBy:'mail.created'">
+        <ul class="collapsible" data-collapsible="accordion">
+          <li >
+          <div class="collapsible-header" ng-click="clickMailTitle(mail)" >
+            <div class="row">
+              <div ng-class="properties.rightToLeft ? 'col l1 m2 s3 push-s9 right':'col l1 m2 s2 left'">
+                  <img ng-src="{{mail.sender.profileImageURL}}" alt="senderPicture" data-fallback-src class="circle">
+              </div>
+              <div ng-class="properties.rightToLeft ? 'col l11 m10 s9 pull-s3 right-align':'col l11 m10 s10'">
+                <span ng-show="!mail.unread && !properties.rightToLeft">{{mail.sender.displayName}} &nbsp;  &nbsp;{{mail.title}}</span>
+                <span ng-show="mail.unread && !properties.rightToLeft" class="unread-email">{{mail.sender.displayName}} &nbsp; &nbsp;{{mail.title}}</span>
+                <!-- for Arabic look -->
+                <span ng-show="mail.unread && properties.rightToLeft" class="unread-email">{{mail.title}} &nbsp; &nbsp;{{mail.sender.displayName}}</span>
+                <span ng-show="!mail.unread && properties.rightToLeft">{{mail.title}} &nbsp;  &nbsp;{{mail.sender.displayName}}</span>
+                <span id="mailDelete.{{$index}}" href="#!" ng-class="properties.rightToLeft ? 'left':'right'"  ng-really-message="{{properties.confirmDeleteMessage}}" ng-really-click="removeMail(mail)">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="32px" height="32px" viewBox="0 0 32 32" enable-background="new 0 0 32 32" xml:space="preserve">
+                    <rect x="12" y="2" width="8" height="2"/>
+                    <path d="M6,5v5h1v20h18V10h1V5H6z M23,28H9V12h14V28z"/>
+                    <rect x="11" y="14" width="1" height="12"/>
+                    <rect x="14" y="14" width="1" height="12"/>
+                    <rect x="17" y="14" width="1" height="12"/>
+                    <rect x="20" y="14" width="1" height="12"/>
+                    </svg>
+                </span>
+                <small ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="mail.created | date:'MMM d, h:mm a'"></small>
+              </div>
+            </div>
+          </div>
+          <div class="collapsible-body" ng-class="properties.rightToLeft ? 'right-align':''">
+            <div ng-include src="'modules/mails/client/views/mail.content.view.html'"></div>
+          </div>
+          <div class="collapsible-body" ng-click="setReplyingMode(mail)">
+            <p ng-if="!mail.inReplyingMode" ng-class="properties.rightToLeft ? 'right-align':''"><a>{{properties.reply}}</a></p>
+            <div ng-if="mail.inReplyingMode" ng-include src="'modules/mails/client/views/mail.reply.view.html'"></div>
+          </div>
+          
+          </li>
+          </ul>
+          </div>
     </div>
   </div>
-  <div id="modalReport" class="modal" ng-controller="NewMailsController">
-    <div class="modal-content">
-      <form name="mailForm" class="my-form" novalidate>
-        <div class="row">
-          <p>{{properties.sendTo}}Admin    {{adminId}}</p>
-          <!-- <p>{{properties.about}}{{mail.title}}</p> -->
-          <input disabled id="titleidrep" name="title" ng-model="title">
-          <textarea name="content" type="text" ng-model="content" id="contentrep" class="form-control" placeholder="{{mail.title}}:{{mail.content}}" cols="30" rows="10" required></textarea>
-          <hr>
-          <!-- <label>Content</label> {{mail.content}} <br/> -->
-        </div>
-      </form>
-    </div>
-    <div class="modal-footer">
-      <a id="mailReportSend" href="#!" ng-click="create(true, adminId, mail._id, mail.matchId, true)" class="modal-action modal-close waves-effect waves-green btn-flat">Send Report</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-blue btn-flat">Cancel</a>
-    </div>
+  <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+    <button class="setting-button btn waves-effect waves-light" ng-show="hasMoreMail" ng-click="find(5)">{{properties.loadMore}}</button>
   </div>
 </section>
+
+

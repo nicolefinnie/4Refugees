@@ -1,7 +1,7 @@
 <div class="col s12 ibm-profile" >
     <div class="row">
         <div class="col m4 s12" ng-class="properties.rightToLeft ? 'right right-align':'left'">
-            <img ng-if="!isInProfileEditMode" ng-src="{{activeProfile.profileImageURL}}" data-fallback-src="https://upload.wikimedia.org/wikipedia/commons/1/10/Adalberti_1.jpg"/>
+            <img ng-if="!isInProfileEditMode" ng-src="{{activeProfile.profileImageURL}}" data-fallback-src/>
             <div ng-if="isInProfileEditMode" ng-include src="'/modules/users/client/views/profile/change-profile-picture.client.view.html'"></div>
             <br><br>
         </div>

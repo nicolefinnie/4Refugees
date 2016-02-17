@@ -2,6 +2,21 @@
 * @notice if you need to change the existing css styles in this file, you have to talk to the GUI team for all modules :D
 *
 **/
+textarea {
+  resize: none;
+  overflow: auto;
+  height: 200px;
+  background: #fff;
+  /* remove red box-shadow for firefox*/
+  border: 1px solid;
+  border-color: #c7c7c7;
+  box-shadow: none; }
+
+textarea:focus {
+  border: 2px solid;
+  border-color: #c7c7c7;
+  outline: 0; }
+
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg {
   margin: auto;
@@ -98,6 +113,9 @@
   background: #e0e0e0; }
   .ibm-submit-area button.setting-button svg, .ibm-submit-area a.setting-button svg {
     fill: #464646; }
+.ibm-submit-area button.setting-button.disabled svg, .ibm-submit-area a.setting-button.disabled svg {
+  transition: fill 1s;
+  fill: #aeaeae; }
 .ibm-submit-area button.confirm-button, .ibm-submit-area a.confirm-button {
   font-size: 13px; }
 
