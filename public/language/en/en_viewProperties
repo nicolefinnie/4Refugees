@@ -194,8 +194,8 @@
 
 {"viewName":"mail",
 "translate":"translate",
+"offerReferral":"Click to open match",
 "about":"About: ",
-"sendTo":"Send mail to: ",
 "loadMore":"Load More",
 "mailSentSuccessfully":"Your message is successfully sent"
 }

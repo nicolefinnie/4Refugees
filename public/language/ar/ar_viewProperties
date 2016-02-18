@@ -191,6 +191,7 @@
 
 {"viewName":"mail",
 "translate":"ترجم",
+"offerReferral":"انقر هنا للمطابقة التفاصيل",
 "about":"حول",
 "loadMore":"حمل أكثر",
 "mailSentSuccessfully":"يتم إرسال الرسالة بنجاح"

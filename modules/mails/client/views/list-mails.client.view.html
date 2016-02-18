@@ -35,6 +35,9 @@ footer {height:0;}
                     </svg>
                 </span>
                 <small ng-class="properties.rightToLeft ? 'left':'right'" ng-bind="mail.created | date:'MMM d, h:mm a'"></small>
+                <div ng-class="properties.rightToLeft ? 'right-align':'left-align'">
+                    <small ng-if="mail.matchId && mail.isTitleExpanded"><a href="/matches/edit?matchId={{mail.matchId._id}}">{{properties.offerReferral}}</a><br></small>  
+                </div>
               </div>
             </div>
           </div>
@@ -53,6 +56,7 @@ footer {height:0;}
   </div>
   <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">
     <button class="setting-button btn waves-effect waves-light" ng-show="hasMoreMail" ng-click="find(5)">{{properties.loadMore}}</button>
+    <br><br><br><br>
   </div>
 </section>
 

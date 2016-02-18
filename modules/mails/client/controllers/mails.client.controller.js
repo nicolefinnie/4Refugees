@@ -29,12 +29,8 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
 
     // The header controller detected we have new mail, refresh new mail list.
     $rootScope.$on('newMailReceived', function() {
-
-      console.log('Start new mail received called ');
       $scope.numOfMails++;
       $scope.queryEmailsForView();
-
-      console.log('End new mail received called ');
     });
 
     
@@ -48,8 +44,9 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       // and routes to the server side
       if ($scope.loadingMailInProgress === false){
         $scope.loadingMailInProgress = true;
-        $scope.mails = Mails.query({ limit: $scope.numOfMails + 1 }, function(err) {
-          if ($scope.mails.length === ($scope.numOfMails + 1)) {
+        var mailLimit = $scope.numOfMails + 1;
+        $scope.mails = Mails.query({ limit: mailLimit }, function(err) {
+          if ($scope.mails.length === (mailLimit)) {
             $scope.hasMoreMail = true;
             // discard the last element, only display desired email count
             $scope.mails.splice(-1,1);
@@ -69,15 +66,12 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
     // Find a list of Mails
     $scope.find = function (numExtraMails) {
 
-      console.log('Start new mail received called - view ');
       if (numExtraMails === 0) {
         $scope.numOfMails = parseInt($window.innerHeight / 100);
       } else if ($scope.hasMoreMail) {
         $scope.numOfMails += numExtraMails;
       }
       $scope.queryEmailsForView();
-
-      console.log('End new mail received called - view');
     };
     /** Mark the InMail as read and update the status in mongos.*/
     $scope.clickMailTitle = function(mail) {
@@ -96,6 +90,7 @@ angular.module('mails').controller('MailsController', ['$scope', '$rootScope', '
       if (mail.inReplyingMode === true){
         mail.inReplyingMode = false;
       }
+      mail.isTitleExpanded = !mail.isTitleExpanded;
     };
     
     /*If this email has been read and it was in reply-mode, that means

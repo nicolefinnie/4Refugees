@@ -191,6 +191,7 @@
 {"viewName":"mail",
 "translate":"Übersetzen",
 "content":"Ihr Text",
+"offerReferral":"Klicken Sie hier für passend Details",
 "loadMore":"Weitere emails",
 "mailSentSuccessfully":"Ihre Nachricht wurde erfolgreich gesendet"
 }
