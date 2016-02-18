@@ -21,6 +21,11 @@ textarea:focus {
     border-color: color('gray',20);
     outline: 0;
 }
+
+textarea.small{
+    height: 30px;
+}
+
 /** make IBM design icons more aligned to the input field*/
 .ibm-input-field svg{
     margin: auto;

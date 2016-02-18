@@ -91,7 +91,7 @@ angular.module('mails').service('MailService', [ 'Mails', function (Mails) {
 }
 ]);
 
-
+//FIXME remove or rewrite it jitters
 angular.module('mails').directive('scroll', function($window, $document) {
   return {
     link: function(scope,element,attribute) {

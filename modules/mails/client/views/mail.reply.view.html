@@ -5,6 +5,9 @@
     <div ng-class="properties.rightToLeft ? 'col l11 m10 s9 pull-s3':'col l11 m10 s10'">
         <form name="replyEmailForm">
         <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
+            <textarea class="small" rows="1" cols="8" ng-model="mail.replyTitle" required></textarea>
+        </div>
+        <div class="input-field ibm-input-field" ng-class="properties.rightToLeft ? 'arabic':'latin'">
             <textarea rows="1" cols="8" ng-model="mail.replyData" required></textarea>
         </div>
         <div class="ibm-submit-area" ng-class="properties.rightToLeft ? 'arabic':'latin'">

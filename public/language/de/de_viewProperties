@@ -130,8 +130,6 @@
 "orRegister":"Oder Registieren?",
 "forgetPassword":"Oder Ihr Passwort vergessen?",
 
-"editProfile":"Profil editieren",
-"changeProfilePicture":"Profilbild ändern",
 "changePassword":"Passwort ändern",
 "changeLogin":"Zugangsdaten ändern",
 "manageSocialAccount":"Soziale Konten verwalten",
@@ -139,9 +137,6 @@
 "languageDropdownPlaceholder":"--- Wählen Sie eine Option ---",
 "spokenLanguages":"Sprachen, die ich spreche",
 "aboutMeText":"Erzählen Sie etwas über sich",
-"chooseTagInterests":"Deine Interessen",
-"chooseTagSkills":"Deine Fähigkeiten",
-"tagPlaceholder":"Klicken Sie hier um Kategorien auszuwählen",
 "publicLinkedInProfile":"LinkedIn URL",
 "publicLinkedInProfilePlaceholder":"(optional) Ihre öffentliche LinkedIn Profil URL",
 "showAdvancedSettings":"Weitere Einstellungen anzeigen",
@@ -194,21 +189,9 @@
 },
 
 {"viewName":"mail",
-"reply":"Antworten",
 "translate":"Übersetzen",
 "content":"Ihr Text",
-"maincategory":"Haupt-Kategorie: ",
-"offerReferral":"Klicken Sie hier für passend Details",
-"about":"Wegen: ",
-"sendTo":"Kontaktiere ",
 "loadMore":"Weitere emails",
-"done":"Fertig",
-"report":"Melden",
-"reportTitle":"Meldung einer ungehörigen email",
-"reportBody":"Inhalt: ",
-"replyToOffender":"Admin Kontakt",
-"contactInProgress":"Kontakt im Gange...",
-"contactSuccess":"Ihre Kontaktanfrage wurde verschickt",
 "mailSentSuccessfully":"Ihre Nachricht wurde erfolgreich gesendet"
 }
 
