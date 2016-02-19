@@ -97,6 +97,15 @@ function convertServerOfferingToClientViewOffering(LanguageService, $scope, offe
   if (offering.details && offering.details.length > 0) {
     offering.descriptionDetails = LanguageService.getTextForCurrentLanguage(offering.details);
   }
+  //FIXME code for demo to make it linkable
+  if(offering.description.indexOf('https://') > -1){
+    offering.descriptionLink = offering.description.substring(offering.description.indexOf('https://'), offering.description.length);
+    offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('https://'));
+  }
+  else if(offering.description.indexOf('http://') > -1){
+    offering.descriptionLink = offering.description.substring(offering.description.indexOf('http://'), offering.description.length);
+    offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('http://'));
+  }
 }
 
 // Validate a suitable geoLocation was specified
@@ -196,15 +205,6 @@ angular.module('offerings').controller('OfferingsPublicController', ['$scope', '
           $scope.searchStatus = StatusCodes.SEARCH_COMPLETE;
           $scope.offerings.forEach(function(offering) {
             convertServerOfferingToClientViewOffering(LanguageService, $scope, offering);
-            //FIXME code for demo to make it linkable
-            if(offering.description.indexOf('https://') > -1){
-              offering.descriptionLink = offering.description.substring(offering.description.indexOf('https://'), offering.description.length);
-              offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('https://'));
-            }
-            else if(offering.description.indexOf('http://') > -1){
-              offering.descriptionLink = offering.description.substring(offering.description.indexOf('http://'), offering.description.length);
-              offering.descriptionTitle = offering.description.substring(0, offering.description.indexOf('http://'));
-            }
           });
         }
       }, function (errorResponse) {
