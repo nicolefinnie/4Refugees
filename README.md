@@ -1,3 +1,56 @@
+## 4Refugees
+
+This app is built on the MEAN.JS stack, please see below for the MEAN.JS README, as well as for
+instructions on how to deploy this MEAN.JS app.
+
+To see a prototype of the app running on the IBM Bluemix platform, please visit:
+https://4refugees.eu-gb.mybluemix.net/
+Note that this website is just a demo, it is not actively monitored.
+
+The 4Refugees app is meant to provide a marketplace where citizens and refugees can interact.
+Volunteers can offer services (such as language or job training), and refugees can search the
+list for offers near them (using geo-spatial searching) to select an offer that they need.
+Or, refugees can submit a particular service they need assistance with, and volunteers (or other
+refugees) can search requests near them to see if they can provide the needed assistance.
+The hope is that refugees can get individualized assistance to help them integrate into society
+and become productive citizens, and maybe also help new refugees integrate as well.  Of course,
+besides the HTML text, there is nothing in the core app that is refugee-specific, the app can
+easily be tailored for any sort of marketplace situation trying to match offers and requests.
+
+Taking from the basic MEAN.JS infrastructure, each feature of the app was designed as a separate
+module, and interactions/dependencies between modules are minimized as much as possible, to allow
+for easy integration and/or removal of specific modules as needed.  The modules are:
+* about - 'About us' display
+* chat - not used, but came from MEAN.JS framework
+* core - module to control header/footer, handle bootstrapping, etc
+* firststep - resources to help newcomers find basic assistance before using the app marketplace
+* geo - geospatial support, for providing coordinates of offers to be used in geo searches
+* language - static and dynamic translation support. HTML text can be translated once, and displayed
+  in the user's language of choice.  Individual offers can use IBM Watson Language Translation service.
+  3 languages are currently supported - English, German, and Arabic.
+* mails - send internal mail notifications to other registered users
+* matches - handles matching of an offering between the 2 parties
+* offerings - individual services being offered or requested
+* share - common helper routines shared across modules, for example, SCSS for a common style
+* tags - work in progress, codifying tags to make them easier to store in the database and to translate
+* users - user profiles, user registration, login via social networks, etc
+
+For language support, each 'view' (a module may have multiple views, for now, there is usually
+only a single view per module) obtains static text from the public/language/*/??_viewProperties.
+If adding new languages, the majority of the work is to translate all the text from one of the
+existing *viewProperties files to the new language.  The other modules themselves do not (or
+should not) contain static text, they should always retrieve the properly-translated text from
+these properties files. Dynamic text entered by the user must be translated via a 3rd party
+service - the 4Refugees app is currently enabled to use IBM Watson Language Translation services,
+when available.
+
+If you want to use 3rd party authentication or registration (i.e. via social websites), you will
+need to first register the proper IDs, credentials, and redirect URIs for your app, and then fill
+in the IDs and SECRETs in config/env/credentials.js.
+
+The core design principle of the app is to keep things simple - users should be able to
+navigate through the site easily the very first time.
+
 [![MEAN.JS Logo](http://meanjs.org/img/logo-small.png)](http://meanjs.org/)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/meanjs/mean?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
