@@ -1,11 +1,14 @@
 ## 4Refugees
 
+
 This app is built on the MEAN.JS stack, please see below for the MEAN.JS README, as well as for
 instructions on how to deploy this MEAN.JS app.
 
 To see a prototype of the app running on the IBM Bluemix platform, please visit:
 https://4refugees.eu-gb.mybluemix.net/
-Note that this website is just a demo, it is not actively monitored.
+
+- Note that this website is just a demo, it is not actively monitored.
+- **We don't maintain this website anymore, for more details, see [slides](4Refugees.pdf)**
 
 The 4Refugees app is meant to provide a marketplace where citizens and refugees can interact.
 Volunteers can offer services (such as language or job training), and refugees can search the
